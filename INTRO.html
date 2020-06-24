@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Welcome!" />
+
+
+<title>Intro to NRES 710</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">NRES 710</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="schedule.html">Schedule</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="INTRO.html">Introduction to NRES 710</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Links.html">Links</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Intro to NRES 710</h1>
+<h4 class="author">Welcome!</h4>
+
+</div>
+
+
+<p>Many PhD-granting institutions make students meet a language requirement. These days, most of them allow statistics as the language requirement! So, we can think of this class as learning the language of statistics- and another one thrown on just for fun- computer programming in R!</p>
+<p>Both languages- statistics and computer programming- both begin and end with pure logic! Learning these languages is easier than learning a spoken language in many ways, because spoken languages often don’t follow pure logic. Statistics and computer programming are nothing if they don’t make logical sense!</p>
+<div id="what-is-statistics" class="section level2">
+<h2>What is statistics</h2>
+<p><img src="statistics1.png" /></p>
+<p>Statistics is the process of making inference about a property of a <em>population</em> (a parameter) from a representative <em>sample</em>.</p>
+<p>It’s not just you. Many ecologists are fuzzy about the language, and even the concepts!</p>
+</div>
+<div id="why-do-we-need-stats-class" class="section level2">
+<h2>Why do we need stats class?</h2>
+<p>Side note: my background in statistics.</p>
+<p>I tend to recommend that grad students take the least coursework possible- but I think stats is an exception. I think it’s more efficient, fun, and rewarding to learn stats as a group rather than on your own. I hope you agree by the end of this class!</p>
+</div>
+<div id="types-of-data" class="section level2">
+<h2>Types of data</h2>
+<p>Statistics is fundamentally about making sense of data. Therefore understanding statistics requires starting with an understanding types of data.</p>
+<p>What types of data are there?<br />
+1. Categorical (Can be quantitative or qualitative) – represents characteristics, can be logical a. Nominal (labels, &gt; 2 categories) b. Dichotomous (2 categories) c. Ordinal (ordered units) 2. Quantitative a. Discrete: can be counted (number of individuals in a population) b. Continuous: not countable, but can be measured (total body length) i. Interval data: the difference between two values is meaningful but zero doesn’t mean the absence of a thing (e.g., temperature in Celsius) ii. Ratio: zero means complete absence (e.g., temperature in Kelvin). If zero means absence, then the ratio between two values is meaningful (something that weighs 4 g has twice the mass of something that weighs 2 g). Note that you can’t say that for interval data (e.g., something with a temperature of 4 C doesn’t have twice the heat of something at 2 C).</p>
+<p>Why do we need to know about data types? We have to deal with these data types differently!</p>
+<p>For example:</p>
+<ul>
+<li>Nominal data: frequencies, pie charts</li>
+<li>Continuous data: calculate percentiles, mean and variance.</li>
+</ul>
+</div>
+<div id="messing-around-with-data-types-in-r" class="section level2">
+<h2>Messing around with data types in R:</h2>
+<p>Let’s explore some existing data that is easily obtained in R: iris, mtcars, titanic (install titanic package first)</p>
+<p>We will also simulate some data on our own!</p>
+<div id="notes-about-working-in-r" class="section level3">
+<h3>Notes about working in R:</h3>
+<p>R is open source, so it is ‘messy’. Packages are being added all the time, there are millions of ways to accomplish the same task.</p>
+<p>R is incredibly powerful and feature rich- you are NOT expected to memorize much, just know that the answer is always a few clicks away!</p>
+<p>When in doubt, Google it!!</p>
+<p>Here is a <a href="r-cheat-sheet-3.pdf">base R cheat sheet (from RStudio)</a>- this is a great reference for most of the basic tasks you will need to perform in R. Keep it handy!</p>
+<p>Learn to use R scripts- and save the R script frequently!! This is the primary record of what you’ve done and allows you and other scientists to reproduce your models, analyses and visualizations.</p>
+</div>
+<div id="first-r-demo" class="section level3">
+<h3>First R demo!</h3>
+<p><strong>NOTE:</strong> for those wishing to follow along with the R-based demo in class, <a href="INTRO.R">click here</a> for an R-script that contains all of the code blocks in this web-based lecture.</p>
+<p>All of you should have R and RStudio installed on your computers. See the <a href="https://kevintshoemaker.github.io/NRES-746/">links page</a> for some useful references. I will be leading <a href="http://naes.unr.edu/shoemaker/teaching/R-Bootcamp/index.html">“bootcamps” on using R</a> in two upcoming Saturday afternoons (TBD)- please consider attending if you don’t have much experience in R!</p>
+<p>First of all, R can be used as a calculator. Try it!</p>
+<pre class="r"><code>2+2               # use R as a calculator</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>four &lt;- 2+2       # define your first variable!
+four</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>five&lt;-2+2         # you can make mistakes and define misleading labels- R will let you!
+five&lt;-2+3
+five&lt;-four+1      # you can use variables to define new ones</code></pre>
+<p>Q: what are those hashtags doing in the above code block? [these are ‘comments’ and they are super helpful- use them early and often!]</p>
+<p>Note: Be careful about creating object names. Try to avoid any names that might already be defined as a function- like ‘sum’.</p>
+<p>Use variable names that will not confuse you.</p>
+<p>Use Rstudio’s autofill feature to avoid typos!</p>
+<p>Variable names can not start with a number - e.g., 5pt</p>
+<div id="explore-rs-existing-datasets" class="section level4">
+<h4>Explore R’s existing datasets</h4>
+<pre class="r"><code># data()     # &#39;uncomment&#39; this command and run it to explore built-in datasets</code></pre>
+<p>Let’s start by working with the famous iris dataset:</p>
+<pre class="r"><code>iris                   # this is a data frame- the basic data storage type in R</code></pre>
+<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 1            5.1         3.5          1.4         0.2     setosa
+## 2            4.9         3.0          1.4         0.2     setosa
+## 3            4.7         3.2          1.3         0.2     setosa
+## 4            4.6         3.1          1.5         0.2     setosa
+## 5            5.0         3.6          1.4         0.2     setosa
+## 6            5.4         3.9          1.7         0.4     setosa
+## 7            4.6         3.4          1.4         0.3     setosa
+## 8            5.0         3.4          1.5         0.2     setosa
+## 9            4.4         2.9          1.4         0.2     setosa
+## 10           4.9         3.1          1.5         0.1     setosa
+## 11           5.4         3.7          1.5         0.2     setosa
+## 12           4.8         3.4          1.6         0.2     setosa
+## 13           4.8         3.0          1.4         0.1     setosa
+## 14           4.3         3.0          1.1         0.1     setosa
+## 15           5.8         4.0          1.2         0.2     setosa
+## 16           5.7         4.4          1.5         0.4     setosa
+## 17           5.4         3.9          1.3         0.4     setosa
+## 18           5.1         3.5          1.4         0.3     setosa
+## 19           5.7         3.8          1.7         0.3     setosa
+## 20           5.1         3.8          1.5         0.3     setosa
+## 21           5.4         3.4          1.7         0.2     setosa
+## 22           5.1         3.7          1.5         0.4     setosa
+## 23           4.6         3.6          1.0         0.2     setosa
+## 24           5.1         3.3          1.7         0.5     setosa
+## 25           4.8         3.4          1.9         0.2     setosa
+## 26           5.0         3.0          1.6         0.2     setosa
+## 27           5.0         3.4          1.6         0.4     setosa
+## 28           5.2         3.5          1.5         0.2     setosa
+## 29           5.2         3.4          1.4         0.2     setosa
+## 30           4.7         3.2          1.6         0.2     setosa
+## 31           4.8         3.1          1.6         0.2     setosa
+## 32           5.4         3.4          1.5         0.4     setosa
+## 33           5.2         4.1          1.5         0.1     setosa
+## 34           5.5         4.2          1.4         0.2     setosa
+## 35           4.9         3.1          1.5         0.2     setosa
+## 36           5.0         3.2          1.2         0.2     setosa
+## 37           5.5         3.5          1.3         0.2     setosa
+## 38           4.9         3.6          1.4         0.1     setosa
+## 39           4.4         3.0          1.3         0.2     setosa
+## 40           5.1         3.4          1.5         0.2     setosa
+## 41           5.0         3.5          1.3         0.3     setosa
+## 42           4.5         2.3          1.3         0.3     setosa
+## 43           4.4         3.2          1.3         0.2     setosa
+## 44           5.0         3.5          1.6         0.6     setosa
+## 45           5.1         3.8          1.9         0.4     setosa
+## 46           4.8         3.0          1.4         0.3     setosa
+## 47           5.1         3.8          1.6         0.2     setosa
+## 48           4.6         3.2          1.4         0.2     setosa
+## 49           5.3         3.7          1.5         0.2     setosa
+## 50           5.0         3.3          1.4         0.2     setosa
+## 51           7.0         3.2          4.7         1.4 versicolor
+## 52           6.4         3.2          4.5         1.5 versicolor
+## 53           6.9         3.1          4.9         1.5 versicolor
+## 54           5.5         2.3          4.0         1.3 versicolor
+## 55           6.5         2.8          4.6         1.5 versicolor
+## 56           5.7         2.8          4.5         1.3 versicolor
+## 57           6.3         3.3          4.7         1.6 versicolor
+## 58           4.9         2.4          3.3         1.0 versicolor
+## 59           6.6         2.9          4.6         1.3 versicolor
+## 60           5.2         2.7          3.9         1.4 versicolor
+## 61           5.0         2.0          3.5         1.0 versicolor
+## 62           5.9         3.0          4.2         1.5 versicolor
+## 63           6.0         2.2          4.0         1.0 versicolor
+## 64           6.1         2.9          4.7         1.4 versicolor
+## 65           5.6         2.9          3.6         1.3 versicolor
+## 66           6.7         3.1          4.4         1.4 versicolor
+## 67           5.6         3.0          4.5         1.5 versicolor
+## 68           5.8         2.7          4.1         1.0 versicolor
+## 69           6.2         2.2          4.5         1.5 versicolor
+## 70           5.6         2.5          3.9         1.1 versicolor
+## 71           5.9         3.2          4.8         1.8 versicolor
+## 72           6.1         2.8          4.0         1.3 versicolor
+## 73           6.3         2.5          4.9         1.5 versicolor
+## 74           6.1         2.8          4.7         1.2 versicolor
+## 75           6.4         2.9          4.3         1.3 versicolor
+## 76           6.6         3.0          4.4         1.4 versicolor
+## 77           6.8         2.8          4.8         1.4 versicolor
+## 78           6.7         3.0          5.0         1.7 versicolor
+## 79           6.0         2.9          4.5         1.5 versicolor
+## 80           5.7         2.6          3.5         1.0 versicolor
+## 81           5.5         2.4          3.8         1.1 versicolor
+## 82           5.5         2.4          3.7         1.0 versicolor
+## 83           5.8         2.7          3.9         1.2 versicolor
+## 84           6.0         2.7          5.1         1.6 versicolor
+## 85           5.4         3.0          4.5         1.5 versicolor
+## 86           6.0         3.4          4.5         1.6 versicolor
+## 87           6.7         3.1          4.7         1.5 versicolor
+## 88           6.3         2.3          4.4         1.3 versicolor
+## 89           5.6         3.0          4.1         1.3 versicolor
+## 90           5.5         2.5          4.0         1.3 versicolor
+## 91           5.5         2.6          4.4         1.2 versicolor
+## 92           6.1         3.0          4.6         1.4 versicolor
+## 93           5.8         2.6          4.0         1.2 versicolor
+## 94           5.0         2.3          3.3         1.0 versicolor
+## 95           5.6         2.7          4.2         1.3 versicolor
+## 96           5.7         3.0          4.2         1.2 versicolor
+## 97           5.7         2.9          4.2         1.3 versicolor
+## 98           6.2         2.9          4.3         1.3 versicolor
+## 99           5.1         2.5          3.0         1.1 versicolor
+## 100          5.7         2.8          4.1         1.3 versicolor
+## 101          6.3         3.3          6.0         2.5  virginica
+## 102          5.8         2.7          5.1         1.9  virginica
+## 103          7.1         3.0          5.9         2.1  virginica
+## 104          6.3         2.9          5.6         1.8  virginica
+## 105          6.5         3.0          5.8         2.2  virginica
+## 106          7.6         3.0          6.6         2.1  virginica
+## 107          4.9         2.5          4.5         1.7  virginica
+## 108          7.3         2.9          6.3         1.8  virginica
+## 109          6.7         2.5          5.8         1.8  virginica
+## 110          7.2         3.6          6.1         2.5  virginica
+## 111          6.5         3.2          5.1         2.0  virginica
+## 112          6.4         2.7          5.3         1.9  virginica
+## 113          6.8         3.0          5.5         2.1  virginica
+## 114          5.7         2.5          5.0         2.0  virginica
+## 115          5.8         2.8          5.1         2.4  virginica
+## 116          6.4         3.2          5.3         2.3  virginica
+## 117          6.5         3.0          5.5         1.8  virginica
+## 118          7.7         3.8          6.7         2.2  virginica
+## 119          7.7         2.6          6.9         2.3  virginica
+## 120          6.0         2.2          5.0         1.5  virginica
+## 121          6.9         3.2          5.7         2.3  virginica
+## 122          5.6         2.8          4.9         2.0  virginica
+## 123          7.7         2.8          6.7         2.0  virginica
+## 124          6.3         2.7          4.9         1.8  virginica
+## 125          6.7         3.3          5.7         2.1  virginica
+## 126          7.2         3.2          6.0         1.8  virginica
+## 127          6.2         2.8          4.8         1.8  virginica
+## 128          6.1         3.0          4.9         1.8  virginica
+## 129          6.4         2.8          5.6         2.1  virginica
+## 130          7.2         3.0          5.8         1.6  virginica
+## 131          7.4         2.8          6.1         1.9  virginica
+## 132          7.9         3.8          6.4         2.0  virginica
+## 133          6.4         2.8          5.6         2.2  virginica
+## 134          6.3         2.8          5.1         1.5  virginica
+## 135          6.1         2.6          5.6         1.4  virginica
+## 136          7.7         3.0          6.1         2.3  virginica
+## 137          6.3         3.4          5.6         2.4  virginica
+## 138          6.4         3.1          5.5         1.8  virginica
+## 139          6.0         3.0          4.8         1.8  virginica
+## 140          6.9         3.1          5.4         2.1  virginica
+## 141          6.7         3.1          5.6         2.4  virginica
+## 142          6.9         3.1          5.1         2.3  virginica
+## 143          5.8         2.7          5.1         1.9  virginica
+## 144          6.8         3.2          5.9         2.3  virginica
+## 145          6.7         3.3          5.7         2.5  virginica
+## 146          6.7         3.0          5.2         2.3  virginica
+## 147          6.3         2.5          5.0         1.9  virginica
+## 148          6.5         3.0          5.2         2.0  virginica
+## 149          6.2         3.4          5.4         2.3  virginica
+## 150          5.9         3.0          5.1         1.8  virginica</code></pre>
+<pre class="r"><code>head(iris)             # [add your own comment here!]</code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa
+## 6          5.4         3.9          1.7         0.4  setosa</code></pre>
+<pre class="r"><code>tail(iris)</code></pre>
+<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+## 145          6.7         3.3          5.7         2.5 virginica
+## 146          6.7         3.0          5.2         2.3 virginica
+## 147          6.3         2.5          5.0         1.9 virginica
+## 148          6.5         3.0          5.2         2.0 virginica
+## 149          6.2         3.4          5.4         2.3 virginica
+## 150          5.9         3.0          5.1         1.8 virginica</code></pre>
+<pre class="r"><code>#  ?iris               # uncomment this to learn more about the iris dataset
+str(iris)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    150 obs. of  5 variables:
+##  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+##  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+##  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+##  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+##  $ Species     : Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+<pre class="r"><code>len&lt;-iris$Petal.Length
+hist(len)             # what does this do? How could you learn more about this &#39;hist&#39; function?</code></pre>
+<p><img src="INTRO_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code># Q: what kind of data are petal lengths?</code></pre>
+<p>Now let’s switch to the ‘titanic’ dataset. To get this dataset you need to install an R package!</p>
+<pre class="r"><code>#install.packages(&quot;titanic&quot;)     # uncomment this command to install the package- you only need to install once!
+ 
+library(titanic)              # this &#39;loads&#39; the package and needs to be done every time you run this script</code></pre>
+<pre><code>## Warning: package &#39;titanic&#39; was built under R version 3.6.3</code></pre>
+<pre class="r"><code>head(titanic_train)</code></pre>
+<pre><code>##   PassengerId Survived Pclass
+## 1           1        0      3
+## 2           2        1      1
+## 3           3        1      3
+## 4           4        1      1
+## 5           5        0      3
+## 6           6        0      3
+##                                                  Name    Sex Age SibSp
+## 1                             Braund, Mr. Owen Harris   male  22     1
+## 2 Cumings, Mrs. John Bradley (Florence Briggs Thayer) female  38     1
+## 3                              Heikkinen, Miss. Laina female  26     0
+## 4        Futrelle, Mrs. Jacques Heath (Lily May Peel) female  35     1
+## 5                            Allen, Mr. William Henry   male  35     0
+## 6                                    Moran, Mr. James   male  NA     0
+##   Parch           Ticket    Fare Cabin Embarked
+## 1     0        A/5 21171  7.2500              S
+## 2     0         PC 17599 71.2833   C85        C
+## 3     0 STON/O2. 3101282  7.9250              S
+## 4     0           113803 53.1000  C123        S
+## 5     0           373450  8.0500              S
+## 6     0           330877  8.4583              Q</code></pre>
+<pre class="r"><code># ?titanic_train              # uncomment and run to learn more about the data
+
+# Q: What kind of data are those in the &quot;Embarked&quot; column? 
+# Q: What kind of data are those in &quot;Pclass?&quot;</code></pre>
+<p>We can even make our own dataset!</p>
+<pre class="r"><code># Make our own data
+# lets pull 15 numbers from the standard normal distribution
+
+a &lt;- rnorm(15)
+a &lt;- rnorm(15,mean=2,sd=0.5)
+a</code></pre>
+<pre><code>##  [1] 1.464874 1.848222 1.537186 2.421553 2.264205 1.905743 2.127606
+##  [8] 3.085320 2.844102 2.074142 2.717911 1.969223 2.423507 2.083948
+## [15] 2.034486</code></pre>
+<pre class="r"><code># want to be able to repeat this? set the &quot;seed.&quot;
+
+set.seed(1234)
+a &lt;- rnorm(15)
+a</code></pre>
+<pre><code>##  [1] -1.20706575  0.27742924  1.08444118 -2.34569770  0.42912469
+##  [6]  0.50605589 -0.57473996 -0.54663186 -0.56445200 -0.89003783
+## [11] -0.47719270 -0.99838644 -0.77625389  0.06445882  0.95949406</code></pre>
+<pre class="r"><code># let&#39;s pull 15 numbers from the binomial distribution
+b&lt;- rbinom(15, size=1, prob=0.2) # we could &quot;weight the coin&quot;
+b</code></pre>
+<pre><code>##  [1] 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0</code></pre>
+<pre class="r"><code># we can create categories: 
+unit&lt;-rep(c(&quot;Control&quot;,&quot;+N&quot;,&quot;+P&quot;,&quot;+NP&quot;),each=20)
+unit</code></pre>
+<pre><code>##  [1] &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot;
+##  [8] &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot;
+## [15] &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;+N&quot;     
+## [22] &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;     
+## [29] &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;     
+## [36] &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+P&quot;      &quot;+P&quot;     
+## [43] &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;     
+## [50] &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;     
+## [57] &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;    
+## [64] &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;    
+## [71] &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;    
+## [78] &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;</code></pre>
+<pre class="r"><code># we can even create a whole dataframe
+my.data &lt;- data.frame(
+  Obs.Id = 1:100,
+  Treatment = rep(c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;),each=20),
+  Block = rep(1:20,times=5),
+  Germination = rpois(100,lambda=rep(c(1,5,4,7,1),each=20)),
+  AvgHeight = rnorm(100,mean=rep(c(10,30,31,25,35,7),each=20))
+)
+head(my.data)</code></pre>
+<pre><code>##   Obs.Id Treatment Block Germination AvgHeight
+## 1      1         A     1           1 10.325180
+## 2      2         A     2           1 10.166115
+## 3      3         A     3           1 10.193746
+## 4      4         A     4           0  9.256534
+## 5      5         A     5           2 11.037570
+## 6      6         A     6           0 12.262523</code></pre>
+<p>We can also import data from files stored on our computers (or even directly from the web)</p>
+<pre class="r"><code># Then, we can import data. 
+
+# Don&#39;t forget to set your working directory (or just make sure you&#39;re using an Rstudio Project). I did it here, just for fun... but remember to use the &quot;Session-&gt;Set Working Directory&quot; drop down menu above if you aren&#39;t savvy in Terminal talk.
+
+# setwd(&quot;~/Desktop&quot;)       # uncomment and run if you want to set the desktop as your working directory.
+
+#Read in the data. Note that the file needs to be in csv format, the name must be in quotes, and the name must include the csv extension.
+
+# Pleach&lt;-read.csv(&quot;PbyTime_Bio.csv&quot;, header=T) # obvs, this won&#39;t work for you because you don&#39;t have this file. 
+
+# Use your own file to try it out. This is an example! </code></pre>
+<p>Note: I recommend always using Rstudio Projects. This reduces the hassle of setting working directories. By default the project directory becomes your working directory!</p>
+</div>
+</div>
+</div>
+<div id="mathbio-stats-chats" class="section level2">
+<h2><a href="https://kevintshoemaker.github.io/StatsChats/">math/bio “stats chats”</a></h2>
+<p>Paul Hurtado (math/stats dept), Ken Nussear (geography) and I host informal sessions for grad students in EECB, NRES, Geography etc (and faculty) to discuss data analysis questions. This can be a good opportunity to ask questions, find out more about what types of data and questions your peers are working with, and contribute some insights! We haven’t figured out a time yet for this semester, but I’ll keep you posted.</p>
+</div>
+<div id="introductions" class="section level2">
+<h2>Introductions</h2>
+<p>Let’s take some time go around the room and introduce each other and what we are hoping to get out of this course.</p>
+<p>Please take the time to introduce yourself in more detail on the <a href="https://unr.canvaslms.com/courses/45665">“WebCampus” site</a> – I posted a question on the discussion board, which some of you have already responded to…</p>
+<p>Remember, I need your frequent and honest feedback in order to make sure that the level is appropriate and the topics are useful!</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

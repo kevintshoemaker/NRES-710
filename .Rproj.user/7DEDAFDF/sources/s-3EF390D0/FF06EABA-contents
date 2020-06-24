@@ -1,0 +1,20 @@
+name: NRES_710
+output_dir: '.'
+navbar:
+  title: NRES 710
+  left:
+  - text: Home
+    href: index.html
+  - text: Schedule
+    href: schedule.html
+  - text: Lectures
+    menu:
+    - text: Introduction to NRES 710
+      href: INTRO.html
+  - text: Links
+    href: Links.html
+output:
+  html_document:
+    lib_dir: site_libs
+    self_contained: no
+

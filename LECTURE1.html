@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="NRES 746" />
+
+
+<title>Why focus on algorithms?</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">NRES 710</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="schedule.html">Schedule</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="INTRO.html">Introduction to NRES 710</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Links.html">Links</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Why focus on algorithms?</h1>
+<h4 class="author">NRES 746</h4>
+<h4 class="date">Fall 2019</h4>
+
+</div>
+
+
+<p><strong>NOTE:</strong> for those wishing to follow along with the R-based demo in class, <a href="LECTURE1.R">click here</a> for an R-script that contains all of the code blocks in this lecture.</p>
+<div id="algorithmic-vs-standard-statistics-a-brief-demonstration" class="section level2">
+<h2>Algorithmic vs standard statistics: a brief demonstration</h2>
+<div id="standard-t-test" class="section level3">
+<h3>Standard t-test</h3>
+<p>Here is a made-up data set.</p>
+<p><img src="shorthornedlizard.jpg" /></p>
+<p>Let’s imagine we’re interested in testing whether the expected mass of a study organism (let’s say a pygmy short-horned lizard, <em>Phrynosoma douglasii</em>) in Treatment A (e.g., habitat restoration treatment) differs from Treatment B (e.g., no habitat restoration). In other words: does knowledge of an individuals <em>treatment</em> status contribute anything to understanding and/or predicting an individual’s mass?</p>
+<pre class="r"><code>#############
+# Start with a made-up data frame!
+#############
+
+df &lt;- data.frame(
+  TreatmentA = c(175, 168, 168, 190, 156, 181, 182, 175, 174, 179),
+  TreatmentB = c(185, 169, 173, 173, 188, 186, 175, 174, 179, 180) 
+)
+
+summary(df)    # summarize! </code></pre>
+<pre><code>##    TreatmentA      TreatmentB   
+##  Min.   :156.0   Min.   :169.0  
+##  1st Qu.:169.5   1st Qu.:173.2  
+##  Median :175.0   Median :177.0  
+##  Mean   :174.8   Mean   :178.2  
+##  3rd Qu.:180.5   3rd Qu.:183.8  
+##  Max.   :190.0   Max.   :188.0</code></pre>
+<pre class="r"><code>sample.size &lt;- length(df$TreatmentA)     # determine sample size    
+
+reshape_df &lt;- data.frame(                # &quot;reshape&quot; the data frame so each observation gets its own row (standard format)
+  Treatment = rep(c(&quot;A&quot;,&quot;B&quot;),each=sample.size),
+  Mass = c(df$TreatmentA,df$TreatmentB)
+)
+plot(Mass~Treatment, data=reshape_df)    # explore/visualize the data</code></pre>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code># boxplot(df$TreatmentA,df$TreatmentB,names=c(&quot;TreatmentA&quot;,&quot;TreatmentB&quot;))  # (alternative method!)
+
+observed_dif &lt;- mean(df$TreatmentA) - mean(df$TreatmentB)     # compute sample statistic
+observed_dif</code></pre>
+<pre><code>## [1] -3.4</code></pre>
+<p>You probably recognize this as a standard t-test. For now, we are assuming that the samples are independently drawn from normally distributed populations with equal variances. We can run a t-test in R easily, using just one line of code!</p>
+<pre class="r"><code>################
+# Perform standard t-test
+################
+
+t.test(df$TreatmentA,df$TreatmentB, var.equal=TRUE, paired=FALSE)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  df$TreatmentA and df$TreatmentB
+## t = -0.94737, df = 18, p-value = 0.356
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -10.93994   4.13994
+## sample estimates:
+## mean of x mean of y 
+##     174.8     178.2</code></pre>
+</div>
+<div id="brute-force-t-test" class="section level3">
+<h3>Brute-force t-test</h3>
+<p>But imagine that we didn’t know about the t-test. Let’s build a solution to the same problem from the ground up, using our statistical intuition and R! Of course this is totally unnecessary in this case, but you will quickly run into problems with no simple, “canned” solution. That’s where you might really need to develop an algorithm from scratch!</p>
+<p>First, let’s state the problem:</p>
+<p>We want to know if the expected value (mean mass) differs by treatment (habitat restoration vs control). We have small random (but representative) samples from these two putative populations.</p>
+<p>Can we build an <strong>algorithm</strong> to generate a p-value?</p>
+<p>Recall the difference between a “population” and a “sample” in statistics:</p>
+<p><img src="statistics1.png" /></p>
+<p>Ultimately, we want to make inference about a <strong>population</strong>, but all we have in hand is the <strong>sample</strong>. So we compute one or more <strong>statistics</strong> from our sample and use probabilistic reasoning to infer what our sample says about the population-level <strong>parameters</strong> we are interested in. Because we didn’t observe the whole population (the sample typically represents only a small fraction of the total population), there’s often substantial uncertainty about how well the sample statistic actually represents the population of interest- this is called <strong>sampling uncertainty</strong>.</p>
+<p>Here, the <em>population</em> we are referring to is all pygmy short-horned lizards living in sagebrush habitats. The population <em>parameter</em> we are interested in is the difference in body mass between lizards raised on restored sagebrush habitats versus those raised on cheatgrass-invaded sites. The <em>sample</em> refers to all lizards actually measured as part of this study. Finally, the sample <em>statistic</em> is the observed difference in mean body mass between the two treatment groups.</p>
+<p>Let’s start by simulating a <em>statistical population</em> under the null hypothesis (no treatment effect):</p>
+<pre class="r"><code>######################
+   # ALTERNATIVE ALGORITHMIC APPROACH!
+######################
+
+#############
+# Simulate the STATISTICAL POPULATION under the null hypothesis
+#############
+
+lots &lt;- 1000000  # large number approximating infinity 
+
+popMean_null &lt;- mean(reshape_df$Mass)        # assume groups A and B come from a population with common mean 
+popSD_null &lt;- sd(reshape_df$Mass)                      # and common standard deviation... 
+popData_null &lt;- rnorm(n=lots,mean=popMean_null,sd=popSD_null)    # the statistical &quot;population&quot; of interest (under null model w no treatment effect)</code></pre>
+<p>Then we can draw a <strong>sample</strong> from that population:</p>
+<pre class="r"><code>#############
+# Draw a SAMPLE from that population
+#############
+
+sampleA &lt;- sample(popData_null,size=sample.size)    # use R&#39;s native &quot;sample()&quot; function
+sampleB &lt;- sample(popData_null,size=sample.size)
+
+round(sampleA)</code></pre>
+<pre><code>##  [1] 181 177 167 195 184 177 178 184 182 178</code></pre>
+<pre class="r"><code>difference &lt;- mean(sampleA)-mean(sampleB)   # sample statistic = difference between sample means
+difference</code></pre>
+<pre><code>## [1] 4.464412</code></pre>
+<p>Try it! What did you get? It may differ quite a bit from what I got!</p>
+<p>This difference between sample means represents one possible observation under a <em>null hypothesis</em> that there is no underlying difference in body mass between the two treatments. The fact that this difference is not zero (despite the fact that the null hypothesis is true!) represents <strong>sampling error</strong>.</p>
+<p>Our ultimate goal is to determine how likely it is that the observed difference in treatment means is just an artifact of sampling error! This is exactly what the <strong>p-value</strong> from a t-test tells us!</p>
+<p>Our job then is to develop a computational algorithm that allows us to use the sample statistic (difference in sample means) to infer something about the population-level parameter (effect of habitat restoration on lizard body mass).</p>
+<p><strong>Q</strong> What exactly are we trying to infer about the population-level parameter here?</p>
+<p><strong>Q</strong> Given that our main goal is to <strong>falsify</strong> our null hypothesis about the population of interest, can you think of an algorithmic way to do this?</p>
+<p>Let’s generate a <strong>distribution</strong> of sampling-error “anomalies” (differences between the group means resulting from sampling error) expected under the null hypothesis (i.e., there is fundamentally no difference between the two groups).</p>
+<p>Here, we repeat this process many times (using a “FOR” loop in R), each time drawing a different random sample of body masses from our statistical population.</p>
+<pre class="r"><code>#################
+# Repeat this process using a FOR loop
+#################
+
+reps &lt;- 1000                 # set the number of replicates
+null_difs &lt;- numeric(reps)       # initialize a storage vector
+
+for(i in 1:reps){            # for each replicate... 
+  sampleA &lt;- sample(popData_null,size=sample.size)      # draw a sample of body masses assuming no treatment effect       
+  sampleB &lt;- sample(popData_null,size=sample.size)      # draw a sample of body masses assuming no treatment effect (again!)
+  null_difs[i] &lt;- mean(sampleA)-mean(sampleB)           # compute and store the sampling error produced under the null hypothesis
+}
+
+hist(null_difs)       # plot out all the sampling errors under the null hypothesis as a histogram
+abline(v=observed_dif,col=&quot;green&quot;,lwd=3)     # indicate the observed sample statistic. </code></pre>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Now, all we need to do to compute a p-value is to compare this vector of sampling errors with the observed statistic (between-group difference):</p>
+<pre class="r"><code>############
+# Generate a p-value algorithmically!!
+############
+
+ordered_difs &lt;- sort(abs(null_difs))       # sort the vector of (absolute) anomalies (sampling errors) 
+higher_anomaly &lt;- length(which(ordered_difs&gt;=abs(observed_dif)))       # how many of these sampling errors equal or exceed the &quot;error&quot; represented by the observed statistic?
+p_value &lt;- higher_anomaly/reps       # compute a p-value! 
+p_value</code></pre>
+<pre><code>## [1] 0.342</code></pre>
+<p>Now, for convenience, let’s collapse this all into a function for conducting our algorithmic t-test:</p>
+<pre class="r"><code>#############
+# Develop a function that wraps up all the above steps into one!
+#############
+
+t.test.algorithm &lt;- function(dat = reshape_df, group = &quot;Treatment&quot;, value = &quot;Mass&quot; ){
+  
+  #############
+  # Compute the sample statistic
+  #############
+  
+  indexA &lt;- which(dat[,group]==&quot;A&quot;)     # rows representing treatment A
+  indexB &lt;- which(dat[,group]==&quot;B&quot;)     # rows representing treatment B
+  observed_dif &lt;- mean(dat[indexA,value]) - mean(dat[indexB,value])
+  
+  sample.size &lt;- length(indexA)   # compute sample size
+  
+  #############
+  # Simulate the STATISTICAL POPULATION under the null hypothesis
+  #############
+  
+  lots &lt;- 1000000  # large number approximating infinity 
+  
+  popMean_null &lt;- mean(dat[,value])           # assume groups A and B come from a population with common mean 
+  popSD_null &lt;- sd(dat[,value])                      # and common standard deviation... 
+  popData_null &lt;- rnorm(n=lots,mean=popMean_null,sd=popSD_null)    # the statistical &quot;population&quot; of interest (under null model w no treatment effect)
+
+  #################
+  # Repeat sampling process (sampling from population) using a FOR loop
+  #################
+  
+  reps &lt;- 1000                 # set the number of replicates
+  null_difs &lt;- numeric(reps)       # initialize a storage structure to hold one anomaly (sampling error) per replicate
+  
+  for(i in 1:reps){            # for each replicate... 
+    sampleA &lt;- sample(popData_null,size=sample.size)      # draw a sample assuming no treatment effect       
+    sampleB &lt;- sample(popData_null,size=sample.size)      # draw a sample assuming no treatment effect (again!)
+    null_difs[i] &lt;- mean(sampleA)-mean(sampleB)           # compute and store the sampling error produced under the null hypothesis
+  }
+  
+  ordered_difs &lt;- sort(abs(null_difs))       # sort the vector of sampling errors 
+  higher_anomaly &lt;- length(which(ordered_difs&gt;=abs(observed_dif)))       # how many of these sampling errors equal or exceed the sample statistic?
+  p_value &lt;- higher_anomaly/reps
+  
+  to_return &lt;- list()   # initialize object to return
+  
+  to_return$null_difs &lt;- null_difs
+  to_return$p_value &lt;- p_value
+  to_return$observed_dif &lt;- observed_dif
+  
+  return(to_return)
+
+}
+
+ttest &lt;- t.test.algorithm(dat = reshape_df, group = &quot;Treatment&quot;, value = &quot;Mass&quot; )   # try to run the new function
+
+ttest$p_value     # get the p_value
+
+hist(ttest$null_difs)       # plot out all the sampling errors under the null hypothesis as a histogram
+abline(v=ttest$observed_dif,col=&quot;green&quot;,lwd=3)     # indicate the observed sample statistic. </code></pre>
+<p><strong>NOTE</strong> The following exercises are part of lab 1- don’t be too afraid if you don’t know how to answer these just yet!</p>
+<div id="challenge-question-part-of-lab-1" class="section level4">
+<h4>Challenge question (part of Lab 1):</h4>
+<p>What if we wanted to relax the assumption of equal variances? That is, what if our null hypothesis were that each treatment group has the same mean, but could differ in variance? Modify the above function (“t.test.algorithm()”) to do this! To enable automated grading, please name your new function “t.test.vardif()”. To convince yourself that your new function works, try running the following code:</p>
+<pre><code>
+ttest_vardif &lt;- t.test.vardif(dat=df.vardif)
+</code></pre>
+<p>where “df.vardif” is the following dataframe (before reshaping- note that you need to reshape this dataframe before using it in the function!):</p>
+<pre class="r"><code>###########
+# Test data for unequal variances...
+
+df.vardif &lt;- data.frame(
+  TreatmentA = c(135, 128, 139, 122, 126, 121, 128, 135, 134, 129),
+  TreatmentB = c(215, 69, 143, 153, 218, 186, 125, 98, 271, 340) 
+)
+
+summary(df.vardif)    # summarize! </code></pre>
+</div>
+<div id="challenge-2-part-of-lab-1" class="section level4">
+<h4>Challenge 2 (part of Lab 1)</h4>
+<p>Modify the above algorithm to allow for unequal sample sizes AND unequal variances. That is, our null hypothesis is the same (equal treatment means, potentially unequal variances), but now we enable each treatment group to have different sample sizes! To enable automated grading, please name your new function “t.test.ndif()”. To convince yourself that your new function works, try running the following code:</p>
+<pre><code>
+ttest_ndif &lt;- t.test.ndif(dat=df.ndif)
+</code></pre>
+<p>where “df.ndif” is the following dataframe (before reshaping- note that you need to reshape this dataframe before using it in the function!):</p>
+<pre class="r"><code>###########
+# Test data for unequal sample sizes...
+
+# NOTE: we use R&#39;s missing data designation &quot;NA&quot; to fill in missing data for treatment B here... 
+
+df.ndif &lt;- data.frame(
+  TreatmentA = c(135, 128, 139, 122, 126, 121, 128, 135, 134, 129, 134, 125, 130, 132, 125),
+  TreatmentB = c(98, 271, 340, rep(NA,12)) 
+)
+
+summary(df.ndif)    # summarize!    </code></pre>
+</div>
+<div id="take-home-message" class="section level4">
+<h4>Take-home message</h4>
+<p>The value of the algorithmic, brute-force approach to statistics is the flexibility! We have to be aware of assumptions in all of our analyses, but when we build our own computational algorithms, we can easily “relax” these assumptions! We only make the assumptions we are comfortable making. And we have to be totally explicit about our assumptions, because they are literally built into the code- we can’t ignore any assumptions!</p>
+</div>
+</div>
+<div id="a-non-parametric-alternative-permutation-test-algorithm" class="section level3">
+<h3>A non-parametric alternative: permutation test algorithm</h3>
+<p>What if we don’t want to make any assumptions about the process that generated the data? The normal distribution can arise in many different ways, but many data-generating processes <strong>don’t</strong> result in a normal distribution!</p>
+<p>We might be able to intuit which of the many alternative distributions makes the most sense for our data. But many times we can’t do this with any level of certainty. What can we do in this case? A permutation test provides one answer.</p>
+<p>Let’s build this algorithm together.</p>
+<p>Here is some <strong>pseudocode</strong>:</p>
+<ol style="list-style-type: decimal">
+<li>Define the number of permutations to run (number of replicates)</li>
+<li>For each replicate:
+<ol style="list-style-type: decimal">
+<li>randomly assign each observed body mass to a treatment group (so that any information about the true treatment group is lost!)</li>
+<li>compute the difference between the group means after randomly shuffling the assignment of treatment groups</li>
+<li>store this value in a vector</li>
+</ol></li>
+<li>Plot a histogram of null differences between group A and group B under the null hypothesis (sampling errors)</li>
+<li>Add a vertical line to the plot to indicate the observed difference</li>
+</ol>
+<pre class="r"><code>##################
+# NON-PARAMETRIC T-TEST -- PERMUTATION TEST
+##################
+
+reps &lt;- 5000            # Define the number of permutations to run (number of replicates)
+null_difs &lt;- numeric(reps)   # initialize storage variable
+for (i in 1:reps){          # For each replicate:       
+  newGroup &lt;- reshape_df$Treatment[sample(c(1:nrow(reshape_df)))]              # randomly shuffle the observed data with respect to treatment group
+    dif &lt;- mean(reshape_df$Mass[newGroup==&quot;A&quot;]) - mean(reshape_df$Mass[newGroup==&quot;B&quot;])     #  compute the difference between the group means after reshuffling the data
+    null_difs[i] &lt;- dif     # store this value in a vector
+}
+hist(null_difs)    # Plot a histogram of null differences between group A and group B under the null hypothesis (sampling errors)
+abline(v=observed_dif,col=&quot;green&quot;,lwd=3)   # Add a vertical line to the plot to indicate the observed difference</code></pre>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Now we can compute a p-value, just as we did before:</p>
+<pre class="r"><code>########
+# Compute a p-value based on the permutation test, just like we did before!
+########
+
+higher_anomaly &lt;- length(which(abs(null_difs)&gt;=abs(observed_dif)))
+p_value &lt;- higher_anomaly/reps  
+p_value</code></pre>
+<pre><code>## [1] 0.3746</code></pre>
+<p>Again, for convenience, let’s package this new t test into an R function:</p>
+<pre class="r"><code>#############
+# Develop a function that performs a permutation-t-test!
+#############
+
+t.test.permutation &lt;- function(dat = reshape_df, group = &quot;Treatment&quot;, value = &quot;Mass&quot; ){
+  
+  #############
+  # Compute the sample statistic
+  #############
+  
+  indexA &lt;- which(dat[,group]==&quot;A&quot;)     # rows representing treatment A
+  indexB &lt;- which(dat[,group]==&quot;B&quot;)     # rows representing treatment B
+  observed_dif &lt;- mean(dat[indexA,value]) - mean(dat[indexB,value])
+  
+  reps &lt;- 5000            # Define the number of permutations to run (number of replicates)
+  null_difs &lt;- numeric(reps)   # initialize storage variable
+  for (i in 1:reps){            # For each replicate:       
+    newGroup &lt;- reshape_df$Treatment[sample(c(1:nrow(reshape_df)))]            # randomly shuffle the observed data with respect to treatment group
+    dif &lt;- mean(reshape_df$Mass[newGroup==&quot;A&quot;]) - mean(reshape_df$Mass[newGroup==&quot;B&quot;])     #  compute the difference between the group means after reshuffling the data
+    null_difs[i] &lt;- dif     # store this value in a vector
+  }
+  
+  higher_anomaly &lt;- length(which(abs(null_difs)&gt;=abs(observed_dif)))
+  p_value &lt;- higher_anomaly/reps  
+  
+  to_return &lt;- list()   # initialize object to return
+  
+  to_return$null_difs &lt;- null_difs
+  to_return$p_value &lt;- p_value
+  to_return$observed_dif &lt;- observed_dif
+  
+  return(to_return)
+  
+}
+
+ttest2 &lt;- t.test.permutation()
+
+ttest2$p_value
+
+hist(ttest2$null_difs)    # Plot a histogram of null differences between group A and group B under the null hypothesis (sampling errors)
+abline(v=ttest2$observed_dif,col=&quot;green&quot;,lwd=3)   # Add a vertical line to the plot to indicate the observed difference</code></pre>
+</div>
+</div>
+<div id="bootstrapping-a-confidence-interval" class="section level2">
+<h2>Bootstrapping a confidence interval</h2>
+<p>Let’s imagine we want to compare different predictor variables in terms of how strong the relationship is with a response variable. In this case, we will use the coefficient of determination (<span class="math inline">\(R^2\)</span>) as a measure of how good a predictor is. However, we want to be able to say that one predictor is definatively <em>better</em> than another one – for that, we would like a confidence interval around the <span class="math inline">\(R^2\)</span> value.</p>
+<p>But… none of the standard R packages provide a confidence interval around the <span class="math inline">\(R^2\)</span> value… What do do???</p>
+<p>With an algorithmic approach to statistics, getting stuck is not an option. We can just write some code!</p>
+<p>Let’s use the “trees” dataset provided in base R:</p>
+<pre class="r"><code>##############
+# Demonstration: bootstrapping a confidence interval!
+
+## use the &quot;trees&quot; dataset in R:
+
+head(trees)   # use help(trees) for more information</code></pre>
+<pre><code>##   Girth Height Volume
+## 1   8.3     70   10.3
+## 2   8.6     65   10.3
+## 3   8.8     63   10.2
+## 4  10.5     72   16.4
+## 5  10.7     81   18.8
+## 6  10.8     83   19.7</code></pre>
+<p>Tree volume is our response variable. We want to test whether girth or height are better predictors of tree volume.</p>
+<p>Let’s first do some basic data explorations:</p>
+<pre class="r"><code>#########
+# Basic data exploration
+
+plot(trees$Volume~trees$Height, main = &#39;Black Cherry Tree Height/Volume Relationship&#39;, xlab = &#39;Height&#39;, ylab = &#39;Volume&#39;, pch = 16, col =&#39;blue&#39;)</code></pre>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<pre class="r"><code>plot(trees$Volume~trees$Girth, main = &#39;Black Cherry Tree Girth/Volume Relationship&#39;, xlab = &#39;Girth&#39;, ylab = &#39;Volume&#39;, pch = 16, col =&#39;red&#39;)</code></pre>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
+<p>Let’s write a simple function that generates coefficients of determination given a response and some predictor variables:</p>
+<pre class="r"><code>#########
+# Function for returning a vector of R-squared statistics from models regressing a response variable on multiple possible predictor variables
+   # here we assume that all columns in the input data frame that are NOT the response variable are potential predictor variables.
+
+Rsquared &lt;- function(df,responsevar=&quot;Volume&quot;){    # univariate models only- interaction and multiple regression not implemented here
+  response &lt;- df[,responsevar]       # extract the response variable
+  names &lt;- names(df)                  
+  rsq &lt;- numeric(length(names))        # named storage vector
+  names(rsq) &lt;- names(df)               
+  rsq &lt;- rsq[names(rsq)!=responsevar]           # assume that all columns that are not the response variable are possible predictor variables
+  for(i in names(rsq)){         # loop through predictors
+      predictor &lt;- df[,i]                  # extract this predictor
+      model &lt;- lm(response~predictor)       # regress response on predictor
+      rsq[i] &lt;- summary(model)$r.square       # extract R-squared statistic
+  }
+  return(rsq)     
+}</code></pre>
+<p>Let’s first compute the <span class="math inline">\(R^2\)</span> values for all predictor variables:</p>
+<pre class="r"><code>#########
+# test the function to see if it works!
+
+stat &lt;- Rsquared(trees,&quot;Volume&quot;)
+stat</code></pre>
+<pre><code>##     Girth    Height 
+## 0.9353199 0.3579026</code></pre>
+<p>Now we can use a “bootstrapping” procedure to generate a confidence interval around these values, to see how certain we can be about the strength of the linear relationship between the response and the predictor variable in general (the population-level <em>parameter</em>) on the basis of the computed R-squared value (a sample <em>statistic</em>)</p>
+<p>Let’s first write a function to generate bootstrap samples from a dataset:</p>
+<pre class="r"><code>############
+# new function to generate &quot;bootstrap&quot; samples from a data frame
+
+boot_sample &lt;- function(df,statfunc,n_samples,n_stats,responsevar=&quot;Volume&quot;){
+  indices &lt;- c(1:nrow(df))
+  output &lt;- matrix(NA,nrow=n_samples,ncol=n_stats)        # storage object- to store a single bootstrapped sample from the original data
+  
+  for(i in 1:n_samples){              # for each bootstrap replicate:
+    boot_rows &lt;- sample(indices,size=nrow(df),replace=T)         # randomly sample observations with replacement
+    newdf &lt;- df[boot_rows,]                       # dataframe of bootstrapped observations
+    output[i,] &lt;- statfunc(newdf,responsevar)                 # generate statistics from the bootstrapped sample  (e.g., compute Rsquared after regressing y on all possible x variables)
+  }
+  return(output)
+}</code></pre>
+<p>Now we can generate a bunch of “bootstrapped” statistics to compare with the ones we calculated from the full dataset. Here, the values represent R-squared values from alternative bootstrapped samples. Each row is a different bootstrapped sample, and each column is a different predictor variable.</p>
+<pre class="r"><code>##########
+# Generate a few bootstrapped samples!
+
+boot &lt;- boot_sample(df=trees,statfunc=Rsquared,n_samples=10,n_stats=2)       # generate test stats from lots of bootstrapped samples
+colnames(boot) &lt;- names(stat)         # name the columns to recall which predictor variables they represent
+
+boot</code></pre>
+<pre><code>##           Girth    Height
+##  [1,] 0.9618751 0.4038844
+##  [2,] 0.9285556 0.4370219
+##  [3,] 0.9040846 0.5274028
+##  [4,] 0.9328471 0.3301241
+##  [5,] 0.9350686 0.3758060
+##  [6,] 0.8907767 0.2047991
+##  [7,] 0.9281989 0.2743616
+##  [8,] 0.9243251 0.2400101
+##  [9,] 0.9404552 0.3986418
+## [10,] 0.9491087 0.4400782</code></pre>
+<pre class="r"><code>stat</code></pre>
+<pre><code>##     Girth    Height 
+## 0.9353199 0.3579026</code></pre>
+<p>Finally, we can use the quantiles of the bootstrap samples to generate bootstrap confidence intervals.</p>
+<pre class="r"><code>#############
+# use bootstrapping to generate confidence intervals for R-squared statistic!
+
+boot &lt;- boot_sample(df=trees,statfunc=Rsquared,n_samples=1000,n_stats=2)   # generate test statistics (Rsquared vals) for 1000 bootstrap samples
+confint &lt;- apply(boot,2,function(t)  quantile(t,c(0.025,0.5,0.975)))       # summarize the quantiles to generate confidence intervals for each predictor variable
+colnames(confint) &lt;- names(stat)
+t(confint)</code></pre>
+<pre><code>##             2.5%       50%     97.5%
+## Girth  0.8959950 0.9377498 0.9636173
+## Height 0.1345282 0.3621348 0.5856605</code></pre>
+<div id="bootstrapping-challenge-problem-lab-1" class="section level4">
+<h4>Bootstrapping challenge problem (lab 1):</h4>
+<p>Generate bootstrap confidence intervals around the regression coefficients by modifying the above code. Compare with the standard confidence intervals on the regression coefficients given by R in the standard “lm()” and “confint()” functions. To do this:</p>
+<ol style="list-style-type: decimal">
+<li><p>Generate a new R function, called “RegressionCoefs()” that takes a data frame as the first input and the name of the response variable as the second input, and returns the (univariate) regression coefficients (<span class="math inline">\(\beta\)</span>) produced by regressing the response variable on each predictor variable (returning a vector of regression coefficients). You can use the “Rsquared()” function above as a reference!</p></li>
+<li><p>Generate a new R function, called “BootCoefs()” that meets the following specifications:</p>
+<ul>
+<li><strong>inputs</strong>:
+<ul>
+<li>“df” = a data frame that includes the response variable and all possible predictor variables<br />
+</li>
+<li>“statfunc” = a function for generating summary statistics (regression coefficients) from a data frame (which you already developed in part 1 of this challenge problem)<br />
+</li>
+<li>“n_samples” = the number of bootstrapped samples to generate<br />
+</li>
+<li>“n_stats” = the number of predictor variables</li>
+</ul></li>
+<li><strong>algorithm</strong>:
+<ul>
+<li>with the data frame, first use the “boot_sample()” function provided above to generate summary statistics for multiple bootstrap samples.<br />
+</li>
+<li>Then, generate confidence intervals for each variable as the 2.5%, 50% and 97.5% quantile of the summary statistic for each predictor variables.</li>
+</ul></li>
+<li><strong>return</strong>: a matrix (rows=predictor vars, cols=2.5%, 50%, and 97.5% quantiles). Make sure the rows and columns are labeled properly!</li>
+</ul></li>
+<li><p>Test your new function(s)!</p></li>
+</ol>
+<p><a href="LECTURE2.html">–go to next lecture–</a></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

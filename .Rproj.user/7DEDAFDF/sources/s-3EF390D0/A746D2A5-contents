@@ -1,0 +1,211 @@
+---
+title: "Welcome to NRES 710"
+author: "Graduate Environmental Statistics"
+date: "Fall 2020"
+output:
+  html_document:
+    theme: yeti
+    toc: yes
+    toc_float: yes
+---
+      
+### Instructor 
+Kevin Shoemaker			
+Office: FA 220E					
+Phone: (775)682-7449					
+Email: [kevinshoemaker@unr.edu](kevinshoemaker@unr.edu)			
+Office hours: Wednesdays at 1pm in FA 220e (and by appointment)
+
+### Course Meeting Times
+**Lecture & Discussion**: M at 8am in MS 227 (110 mins)          
+**Study session**: Wednesday at 9am in FA 109 (50 mins)        
+
+### Course Website
+[http://kevintshoemaker.github.io/NRES-710/](http://kevintshoemaker.github.io/NRES-710/)
+
+### Course Objectives
+Statistics are fundamental to addressing environmental questions. In this course, students will learn basic principles of model-based and design-based inference and will gain lots of experience in the use of R software for data science. In this course we focus on the concepts and implementation and we generally leave the nitty-gritty stats questions to statisticians.
+
+### Student Learning Objectives
+Students will be able to:
+1.	Communicate, in writing or verbally, the assumptions associated with parametric statistical models. 
+2.	Calculate, by hand, statistical tests such as T-test, ANOVAs, and regression. 
+3.	Identify and perform appropriate statistical tests on their own data collected during their graduate program 
+4.	Compare and contrast statistical tools. 
+5.	Import data, visualize patterns, interpret plots, and perform statistical tests using R code. 
+
+
+### Prerequisites
+Curious scientific mind, broad research interests, comfort with (or at least, lack of fear regarding) equations and computer programming. Students are expected to already have a solid foundation in standard statistical concepts and methods, obtained through other coursework. If this is not the case, they should be prepared to work harder to develop the necessary prerequisite knowledge.
+
+### Required materials
+Students will use the open source statistical software R. Readings and handouts will be provided as appropriate. All students should bring laptops to each class; much of class time will be devoted to hands-on learning in R. 
+
+There are many good R books, but ultimately, most material can be found for free online. For the beginner in statistics or R, I recommend the following: 
+1.	Discovering Statistics using R (Andy Field and Jeremy Miles)
+2.	Introductory R: A beginner’s guide to data visualization, statistical analysis, and programming in R (Robert Knell)
+3.	R Graphics Cookbook (Winston Chang). This book is available for free as a PDF online. 
+4.	Qian, Song S. Environmental and Ecological Statistics with R, Second Edition, 2nd Edition. Chapman & Hall, 2017. 
+
+### Course structure
+
+Instruction will consist of lessons on statistics and lessons on the tools to perform statistical analysis. Stats lessons will include both lecture-style material, readings, demonstrations, exercises and class discussions.  
+
+There will be one midterm exam and one final project. The midterm exam will be based on stats lessons and will include both a traditional in-class exam and a take-home exam in which you will use R to make inference from provided datasets. 
+
+Homework assignments will occur throughout the semester. They are designed to provide you and me with progress assessments. Therefore, the frequency and subjects of the assignments will depend on the pace of progress during the semester. 
+
+The final project is designed to test your ability to understand and apply the tools that you have developed during the semester using R. The project will involve data analysis using 4 statistical tools that we have learned during the semester (or other tools as approved by me). Post-hoc and preliminary statistical tools count toward the four tools, so use them as appropriate. You can choose whichever statistical tools are suitable to your project scope and questions, but they must be something we covered in class and appropriate to your data. Please turn in your own work and assignment, but you may use as many resources as you wish (class material, online material, or the insight/experience of other students) to generate the material presented. More specific instructions will come during the semester. 
+
+With roughly a month left in the semester, first drafts of your final projects will be due. These first drafts will then be subjected to anonymous peer review. At this time, the assignment itself will not be “graded,” but the assignment will be reviewed by at least two other students, and the reviews will be graded. The reviews are designed to provide feedback on the statistical approach being used. For example, are the stats relevant to the data? Will the stats appropriate to the experimental design? The reviews will be due in one week and will be provided to the author for their consideration and assistance in their final project. 
+
+Given the nature of graduate classes, student participation is encouraged. 
+
+Grades will be assigned as follows (percentage is calculated as fraction of total semester score): 
+Midterm exam: 30%
+Final project: 30%
+Homework/Peer-Review: 30%
+Overall class participation: 10%
+
+### Grading
+
+|Course component                | Weight                                   |
+|--------------------------------|------------------------------------------|
+|Midterm exam                    |	30%                                     |
+|Final project                   |	30%                                     |
+|Mini-analyses and peer-review	 |  30%                                     |
+|Participation                   |  10%                                     |
+
+Letter grades will be assigned as follows:	
+
+|Grade                           | Semester Average (%)                     |
+|--------------------------------|------------------------------------------|
+|A                               |	100-94                                  |
+|A-                              |	93-89                                   |
+|B+                              |	88-83                                   |
+|B                               |	82-75                                   |
+|C                            	 |  74-60                                   |
+
+### [Course Schedule](schedule.html)  
+
+NOTE: the course schedule is subject to change, so please check back frequently!
+
+[http://kevintshoemaker.github.io/NRES-746/schedule.html](schedule.html)
+
+### Make-up policy and late work:
+If you miss a class meeting or lab period, it is your responsibility to talk to one of your classmates about what you missed. If you miss a lab meeting, you are still responsible for completing the lab activities and write-up on your own time. You do not need to let me know in advance that you are going to miss class or lab.
+
+### Students with Disabilities
+Any student with a disability needing academic adjustments or accommodations is requested to speak with the Disability Resource Center (Thompson Building, Suite 101) as soon as possible to arrange for appropriate accommodations.
+
+### Statement on Academic Dishonesty
+Cheating, plagiarism or otherwise obtaining grades under false pretenses constitute academic dishonesty according to the code of this university. Plagiarism is using the ideas or words of another person without giving credit to the original source; this includes copying another student in class. Always cite the source of your information. This includes copying or paraphrasing from a book, journal, or unpublished material without giving credit to the author(s), and submitting a term paper that was used in another course. Academic dishonesty will not be tolerated and penalties can include filing a final grade of "F"; reducing the student's final course grade one or two full grade points; awarding a failing mark on the coursework in question; or requiring the student to retake or resubmit the coursework. For more details, see the [University of Nevada, Reno General Catalog](http://catalog.unr.edu/). 
+
+### This is a safe space
+The University of Nevada, Reno is committed to providing a safe learning and work environment for all. If you believe you have experienced discrimination, sexual harassment, sexual assault, domestic/dating violence, or stalking, whether on or off campus, or need information related to immigration concerns, please contact the University's Equal Opportunity & Title IX Office at 775-784-1547. Resources and interim measures are available to assist you. For more information, please visit: http://www.unr.edu/equal-opportunity-title-ix"
+
+### Statement on Audio and Video Recording
+Surreptitious or covert video-taping of class or unauthorized audio recording of class is prohibited by law and by Board of Regents policy. This class may be videotaped or audio recorded only with the written permission of the instructor. In order to accommodate students with disabilities, some students may have been given permission to record class lectures and discussions. Therefore, students should understand that their comments during class may be recorded.
+
+
+
+
+
+
+```{r echo=FALSE, eval=FALSE}
+rmarkdown::render('index.Rmd', 'word_document')
+rmarkdown::render('schedule.Rmd', 'word_document')
+
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+rmarkdown::render('index.Rmd',rmarkdown::pdf_document())
+rmarkdown::render('schedule.Rmd',rmarkdown::pdf_document())
+rmarkdown::render('INTRO.Rmd',rmarkdown::pdf_document())
+rmarkdown::render('LECTURE1.Rmd',rmarkdown::pdf_document())
+rmarkdown::render('LECTURE2.Rmd',rmarkdown::pdf_document())  # latex_engine="xelatex"
+rmarkdown::render('LECTURE3.Rmd',rmarkdown::pdf_document())
+rmarkdown::render('LECTURE4.Rmd',rmarkdown::pdf_document())
+rmarkdown::render('LECTURE5.Rmd',rmarkdown::pdf_document())
+rmarkdown::render('LECTURE6.Rmd',rmarkdown::pdf_document())
+rmarkdown::render('LECTURE7.Rmd',rmarkdown::pdf_document())
+rmarkdown::render('LECTURE8.Rmd',rmarkdown::pdf_document())
+rmarkdown::render('LECTURE9.Rmd',rmarkdown::pdf_document())
+rmarkdown::render('LECTURE10.Rmd',rmarkdown::pdf_document())
+
+
+```
+
+```{r echo=FALSE}
+rmd2rscript <- function(infile="LECTURE2.Rmd"){    # function for converting markdown to scripts
+  outfile <- gsub(".Rmd",".R",infile)
+  close( file( outfile, open="w" ) )   # clear output file
+  con1 <- file(infile,open="r")
+  con2 <- file(outfile,"w")
+  stringToFind <- "```{r*"
+  stringToFind2 <- "echo"
+  isrblock <- FALSE
+  #count=0
+  blocknum=0
+  
+  while(length(input <- readLines(con1, n=1)) > 0){   # while there are still lines to be read
+    isrblock <- grepl(input, pattern = stringToFind, perl = TRUE)   # is it the start of an R block?
+    showit <- !grepl(input, pattern = stringToFind2, perl = TRUE)   # is it hidden (echo=FALSE)
+    if(isrblock){
+      blocknum=blocknum+1
+      while(!grepl(newline<-readLines(con1, n=1),pattern="```",perl=TRUE)){
+        if((blocknum>1)&((showit)|(blocknum==2))) write(newline,file=con2,append=TRUE)
+        #count=count+1
+      }
+      isrblock=FALSE
+    }
+  }
+  closeAllConnections()
+}
+
+```
+
+
+```{r echo=FALSE, eval=FALSE}
+
+rmd2rscript("INTRO.Rmd")
+rmd2rscript("LECTURE1.Rmd")
+rmd2rscript("LECTURE2.Rmd")
+rmd2rscript("LECTURE3.Rmd")
+rmd2rscript("LECTURE4.Rmd")
+rmd2rscript("LECTURE5.Rmd")
+rmd2rscript("LECTURE6.Rmd")
+rmd2rscript("LECTURE7.Rmd")  ##
+rmd2rscript("LECTURE8.Rmd")
+rmd2rscript("LECTURE9.Rmd")
+rmd2rscript("LECTURE10.Rmd")
+rmd2rscript("FigureDemo.Rmd")
+
+
+rmd2rscript("SDM_v5.Rmd")
+rmd2rscript("TimeSeries.Rmd")
+rmd2rscript("SEM.Rmd")
+rmd2rscript("SpatialAutocorrelation.Rmd")
+rmd2rscript("BayesianNetworks.Rmd")
+rmd2rscript("MixedEffects.Rmd")
+rmd2rscript("QuantileRegression.Rmd")
+rmd2rscript("ordination_lecture.Rmd")
+rmd2rscript("RSFs.Rmd")
+
+```
+
+
+
+```{r echo=FALSE, eval=FALSE}
+
+# to embed html
+<!--html_preserve-->
+<div>
+    <div>
+       <h1>Courses &amp; Teaching</h1>
+    </div>
+</div>
+<!--/html_preserve-->
+```
+
+
+
+
