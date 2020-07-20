@@ -1,0 +1,57 @@
+---
+title: "Chi-squared tests etc."
+author: "NRES 710"
+date: "Fall 2020"
+output: 
+  html_document: 
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+
+```
+
+```{r echo=FALSE}
+
+############################################################
+####                                                    ####  
+####  NRES 710, Lecture 3                               ####
+####                                                    ####
+####  Kevin Shoemaker and Ben Sullivan                  #### 
+####  University of Nevada, Reno                        ####
+####                                                    #### 
+############################################################
+
+
+############################################################
+####  Chi-squared tests etc.                            ####
+############################################################
+
+
+```
+
+
+
+
+[--go to next lecture--](LECTURE4.html) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

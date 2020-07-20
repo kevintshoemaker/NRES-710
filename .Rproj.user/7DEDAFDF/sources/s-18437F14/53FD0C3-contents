@@ -1,0 +1,25 @@
+#Steven Bristow
+#Assignment 1
+#09/04/18
+#NRES 710
+
+##### Set WD #####
+#setwd("C:/Users/sbristow/OneDrive/Grad Coursework/NRES 710/Assignments")
+##### Make Object #####
+object <- log(1)
+
+##### Install Package Tidyverse #####
+install.packages("tidyverse")
+library(tidyverse)
+
+##### Explore PlantGrowth #####
+head(PlantGrowth) 
+str(PlantGrowth)
+
+
+##### Load .csv #####
+test.data <- read.csv("data.csv")
+test.data
+
+head(test.data) #shows entire csv
+str(test.data) 

@@ -1,0 +1,3 @@
+"0","confint <- c(sample.mean+std.error*qt(0.025,n-1),sample.mean+std.error*qt(0.975,n-1))"
+"0","abline(v=confint,col=""blue"",lty=2)"
+"0",""

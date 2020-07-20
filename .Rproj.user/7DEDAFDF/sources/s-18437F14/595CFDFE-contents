@@ -1,0 +1,60 @@
+####################
+# by hand
+####################
+
+ex<- c(4.1,6.5,12.6,25.5)
+why<- c(2.2,4.5,10.4,23.1)
+ellem<-lm(why~ex)
+summary(ellem)
+plot(ellem)
+plot(ex,why)
+abline(ellem)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+####################
+# "actual" example
+####################
+
+
+
+
+
+library("MASS")
+data(cats)
+str(cats) # considers the structure of the object
+#Bwt = body weight in kg, Hwt = heart weight in g
+
+summary(cats)
+
+#Visualize data
+with(cats, plot(Bwt, Hwt))
+#could also make this simpler: 
+plot(cats$Bwt, cats$Hwt)
+#Or
+plot(Hwt ~ Bwt, data=cats)
+
+lm(Hwt ~ Bwt, data=cats)
+summary(lm(Hwt ~ Bwt, data=cats))
+
+kitties<-lm(Hwt ~ Bwt, data=cats)
+summary(kitties)
+plot(kitties)
+
+plot(Hwt ~ Bwt, data=cats)
+abline(kitties, col="blue")
+

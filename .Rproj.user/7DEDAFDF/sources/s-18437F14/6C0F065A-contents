@@ -1,0 +1,92 @@
+# Jacob Macdonald
+# Home Work 3
+# 10/14/19
+# NRES 710
+
+data <- read.csv("slope_cover.csv")
+
+################
+# By Hand
+################
+
+xbar <- mean(data[1:5,1])
+ybar <- mean(data[1:5,2])
+
+n <- 0
+d <- 0
+for(i in 1:5)
+  {
+  temp<-(data[i,1]-xbar)*(data[i,2]-ybar)
+  n <- n + temp
+  
+  temp<-((data[i,1]-xbar)^2)
+  d <- d + temp
+  }
+m <- n/d
+
+b <- ybar-(xbar*m)
+
+n <- 0
+d1 <- 0
+d2 <- 0
+for(i in 1:5)
+  {
+  temp<-(data[i,1]-xbar)*(data[i,2]-ybar)
+  n <- n + temp
+  
+  temp<-((data[i,1]-xbar)^2)
+  d1 <- d1 +temp
+  
+  temp <- ((data[i,2]-ybar)^2)
+  d2 <- d2 +temp  
+  }
+d3 <- d1*d2
+r <- n/sqrt(d3)
+r.squared <- r^2
+
+check.hand <- lm(data[1:5,2]~data[1:5,1])
+summary(check.hand)
+
+print(m)
+print(b)
+print(r)
+
+###############
+# linear model
+###############
+
+model <- lm(data$cover~data$slope)
+summary(model) 
+#plot(model)
+plot(data$slope, residuals(model))
+
+# The model only explains about 10% of the variance in the data (r squared = .1036), so I would not say that it fits the data well
+
+# The data are not perfectly normaly distributed, but they are probably close enough to use least squared regression on. I 
+# infered this by looking at the quantile quantile plot of the normal dist. vs the residuals. The relationshit between the two is
+# reasonably close to linear
+
+# The data are homoscedastic. There is no evidence of a trend in the relationship between the residuals and the independant var.
+
+# No outliers, based on inspection of scatterplot of the data
+
+plot(data$slope,data$cover)
+abline(model)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

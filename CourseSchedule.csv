@@ -1,18 +1,18 @@
-Week,Mon class meeting,Wed class meeting,Assignment
-Aug. 24,"Introduction, Data and probability",Probability,Install R!
-Aug. 31,"Hypothesis testing, Central Limit Theorem",CLT,Probability exercises
-Sept. 7,No Class (labor day),"Z-test, t-test",
-Sept. 14,Analyses: linear regression,LM,HW: t-tests and regression
-Sept. 21,Analyses: analysis of variance,ANOVA,
-Sept. 28,Repeated measures analysis of variance,ANOVA,
-Oct. 5,Posthoc tests,posthoc,HW: ANOVAs+ 
-Oct. 12,Study session,Midterm Exam,
-Oct. 19,Data problems ,data checking,
-Oct. 26,Data solutions: Transformations,data wrangling,
-Nov. 2,Nonparametric tests 1,rank tests,HW: exploring nonparametric tests
-Nov. 9,Nonparametric tests 2,other nonparametrics,
-Nov. 16,Ordination,ordination,First draft of projects due
-Nov. 23,Post-ordination statistics,post-ordination,Reviews due
-Nov. 30,"Intro to likelihood, Bayesian theory ",Bayes rule,
-Dec. 7,Where to go now?,NA,
-Dec. 16,Final projects due 5pm,NA,
+Week,Mon class meeting,Wed class meeting R 'mini-lab',Assignment
+Aug. 24,Basics of probability and statistics,Probability distributions in R,Install R!
+Aug. 31,Basics of probability and statistics,Central limit theorem in R,
+Sept. 7,No Class (labor day),T-test and Z-test in R,
+Sept. 14,"Analyses: T-test, Chi-squared",Chi-squared test in R,"HW #1: T-test, Z-test, Chi-squared test"
+Sept. 21,Analyses: Linear Regression,Linear regression in R,
+Sept. 28,Analyses: ANOVA and posthoc tests,ANOVA in R,
+Oct. 5,Goodness of fit and validation,Model validation in R,HW #2: Regression and ANOVA 
+Oct. 12,REVIEW SESSION,Midterm Exam (10/14/20),
+Oct. 19,Common data 'problems' and solutions,Data checking in R,
+Oct. 26,Data solutions: Transformations,Data 'wrangling' in R,
+Nov. 2,Analyses: Nonparametric tests #1,Rank tests in R,HW #3: exploring nonparametric tests
+Nov. 9,Analyses: Nonparametric tests #2,Other nonparametric analyses in R,
+Nov. 16,Intro to multivariate analysis,Ordination in R,First draft of projects due Nov. 20
+Nov. 23,Post-ordination statistics,post-ordination in R,Reviews due
+Nov. 30,"Intro to likelihood, Bayesian theory ",Bayesian regression in R,
+Dec. 7,Where to go next?,NA,
+Dec. 16,Final projects due 5pm,NA,Final projects due
