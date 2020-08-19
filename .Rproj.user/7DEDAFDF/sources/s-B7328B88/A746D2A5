@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "0",
+    "hash" : "3367176211",
     "id" : "A746D2A5",
-    "lastKnownWriteTime" : 1597864450,
-    "last_content_update" : 1597864450304,
+    "lastKnownWriteTime" : 1597866265,
+    "last_content_update" : 1597866265319,
     "path" : "~/GitHub/NRES-710/index.Rmd",
     "project_path" : "index.Rmd",
     "properties" : {
-        "cursorPosition" : "19,8",
-        "scrollLine" : "8"
+        "cursorPosition" : "20,46",
+        "scrollLine" : "4"
     },
     "read_only" : false,
     "read_only_alternatives" : [
