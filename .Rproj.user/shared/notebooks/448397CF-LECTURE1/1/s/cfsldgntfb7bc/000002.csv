@@ -1,0 +1,3 @@
+"0",""
+"0","hist(rbinom(10000,1,.5),xlab=""N heads out of 1"")"
+"0",""

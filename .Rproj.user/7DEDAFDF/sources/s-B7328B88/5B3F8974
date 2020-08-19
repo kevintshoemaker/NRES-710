@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1595208867850.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "5B3F8974",
+    "lastKnownWriteTime" : 1595266239,
+    "last_content_update" : 1595266239610,
+    "path" : "~/GitHub/NRES-710/LECTURE3.Rmd",
+    "project_path" : "LECTURE3.Rmd",
+    "properties" : {
+        "cursorPosition" : "36,0",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 12,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
