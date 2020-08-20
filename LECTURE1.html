@@ -364,6 +364,24 @@ div.tocify {
     <li>
       <a href="INTRO.html">Introduction to NRES 710</a>
     </li>
+    <li>
+      <a href="LECTURE1.html">Basic Concepts</a>
+    </li>
+    <li>
+      <a href="LECTURE2.html">Analysis- t test</a>
+    </li>
+    <li>
+      <a href="LECTURE3.html">Analysis- chi2 test</a>
+    </li>
+    <li>
+      <a href="LECTURE4.html">Analysis- linear regression</a>
+    </li>
+    <li>
+      <a href="LECTURE5.html">Analysis- ANOVA</a>
+    </li>
+    <li>
+      <a href="LECTURE6.html">Analysis- Multivariate</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -488,7 +506,7 @@ O1/O2/X7/X8 (2) O1/O4/X6/X8 (2) O2/O3/X7/X8 (2) O3/O4/X6/X8 (2)</p>
 <p>Imagine drawing 10 M&amp;Ms from some much larger population of M&amp;Ms in a big jar and counting the proportion of red ones. There are practically countless possible samples we could draw (each one potentially associated with a different proportion of reds), even though there is only one true proportion of red M+Ms in the big jar.</p>
 <p><strong>the truth is fixed but unknown and we can only approach the truth indirectly and imperfectly via sampling</strong></p>
 <p>We often (if performing a test) start off by pretending we live in the null universe, and we start collecting imaginary samples (LOTS of them) in the null universe. We then determine the probability that these imaginary results are at least as extreme as our observed results. This is our p value. We use our p value, along with our pre-determined type I error rate (level of surprise we need to reject the null universe).</p>
-<p>Even more generally, the goal of statistics (even when not performing a test) is to infer something about a population from a sample. In the yellow-legged frog esample, there is a “true” mean body size of frogs in ponds in the central Sierra Nevada. We just don’t know what it is! After collecting the data, statistics might help use to say something about the mean body size in the population – both about what we know AND what we don’t know! In fact, all of statistics is about dealing with uncertainty. We don’t need statistics if we have complete certainty!</p>
+<p>Even more generally, the goal of statistics (even when not performing a test) is to infer something about a population from a sample. In the yellow-legged frog example, there is a “true” mean body size of frogs in ponds in the central Sierra Nevada. We just don’t know what it is! After collecting the data, statistics might help use to say something about the mean body size in the population – both about what we know AND what we don’t know! In fact, all of statistics is about dealing with uncertainty. We don’t need statistics if we have complete certainty!</p>
 <p>Yellow-Legged frog example:<br />
 <em>Population</em>: all yellow-legged frogs in ponds in the central Sierra Nevada<br />
 <em>Parameter</em>: mean body size (SVL) of adult yellow-legged frogs in all ponds in the central Sierra Nevada<br />
@@ -563,7 +581,7 @@ hist(samplemeans,xlab=&quot;mean body size (n=30)&quot;)</code></pre>
 <p>One way to think about this is just that there are more ways of getting a sample mean near the real mean than to get one far away from the sample mean. It doesn’t matter what the raw distribution is. Of all the samples you could get, there are very few that are all at one end of the distribution. There are a lot more random samples that span the full distribution of values, from low to high. Take the average af all those values, low and high, and you get something in the middle. The normal distribution is humped right in the middle, becuase of the tendency for low and high observations to ‘average out’ within a sample.</p>
 <p>This works with coin flips too!</p>
 <p>Here’s the sampling distribution for the number of heads out of a single coin flip:</p>
-<pre class="r"><code>hist(rbinom(10000,1,.5))</code></pre>
+<pre class="r"><code>hist(rbinom(10000,1,.5),xlab=&quot;N heads out of 1&quot;)</code></pre>
 <p><img src="LECTURE1_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>Now let’s build up sample size and see how the sampling distribution changes.</p>
 <pre class="r"><code>par(mfrow=c(4,3))
@@ -571,6 +589,9 @@ for(i in 2:12){
    hist(rbinom(10000,i,.5),main=paste0(&quot;sample size = &quot;,i),xlab=sprintf(&quot;N heads out of %s&quot;,i)) 
 }</code></pre>
 <p><img src="LECTURE1_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>And with really big sample size:</p>
+<pre class="r"><code>hist(rbinom(10000,1000,.5),xlab=&quot;N heads out of 1&quot;)</code></pre>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 </div>
 <div id="replication" class="section level2">
@@ -678,23 +699,24 @@ curve(sampdist,0,11,ylab=&quot;probability density&quot;,xlab=&quot;value&quot;,
 abline(v=sample.mean,col=&quot;green&quot;,lwd=3)
 confint &lt;- c(sample.mean+std.error*qt(0.025,n-1),sample.mean+std.error*qt(0.975,n-1))
 abline(v=confint,col=&quot;blue&quot;,lty=2)</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>The vertical blue lines indicate the <em>confidence interval</em> around the mean with the <em>confidence level</em> set at 95%. We will talk about confidence intervals a lot more, but just know that about 95% of sample means should fall within the 95% confidence interval if the true population mean were equal to the sample mean (Note that we are assuming here that the sample mean is equal to the population mean). The confidence interval helps us visualize what might happen if we repeated our sampling over and over and over- how might our summary statistic change?</p>
 <p>Note the use of the <em>t distribution</em> in the above code block. The t distribution represents the sampling variation that you would expect to observe for the sample mean if you collected many many samples of the same size as yours (see more details below).</p>
 <p>Just to cement this concept, let’s compare the distribution above (based on a t distribution) with a brute-force simulation method!</p>
 <pre class="r"><code>#######
 # Sampling distribution: the sample mean #2 (brute force simulation version)
 
-mysample &lt;- c(4.1,3.5,3.7,6.6,8.0,5.4,7.3,4.4)
+mysample &lt;- c(4.1,1.5,3.7,6.6,8.0,4.5,5.3,4.4)
 mysample</code></pre>
-<pre><code>## [1] 4.1 3.5 3.7 6.6 8.0 5.4 7.3 4.4</code></pre>
+<pre><code>## [1] 4.1 1.5 3.7 6.6 8.0 4.5 5.3 4.4</code></pre>
 <pre class="r"><code>n &lt;- length(mysample)    # sample size
 sample.mean &lt;- mean(mysample)  # sample mean
 sample.stdev &lt;- sd(mysample)   # sample standard deviation (r uses denominator of n-1 by default!)
 
 simulated.samples &lt;- list()
-for(s in 1:1000){
-  simulated.samples[[paste0(&quot;sample &quot;,s)]] &lt;- rnorm(n,sample.mean,sample.stdev)
+for(s in 1:10000){
+  sd1 &lt;- sqrt(sum((sample(mysample,length(mysample)-1,replace = T)-sample.mean)^2)/(length(mysample)-2))  # account for unknown standard deviation
+  simulated.samples[[paste0(&quot;sample &quot;,s)]] &lt;- rnorm(n,sample.mean,sd1)
 }
 sampling.distribution &lt;- sapply(simulated.samples,mean)
 
@@ -703,9 +725,9 @@ hist(sampling.distribution,add=T,freq=F)
 par(new=T)
 curve(sampdist,0,11,xlim=c(0,11),xaxt=&quot;n&quot;,yaxt=&quot;n&quot;,xlab=&quot;&quot;,ylab=&quot;&quot;,col=&quot;red&quot;,lwd=2)  # official sampling distribution
 abline(v=sample.mean,col=&quot;green&quot;,lwd=3)</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>Not a bad match right? Obviously it’s easier and faster to use the t distribution (and more accurate) to approximate the sampling distribution, but I hope this helps to cement the concept!!</p>
-<p>NOTE: the tails on the t distribution are a little heavier than the bootstrapped mean values. The reason is that the t distribution accounts for uncertainty in the sample variance, whereas the bootstrap assumed it was known with certainty. Therefore it is more appropriate to use the t distribution than to use the brute force approach (it was just for educational purposes!)</p>
+<p>NOTE: the t distribution accounts for uncertainty in the sample variance, which is why I did not just use the sample variance in the code block above (if I had, you would see that the t distribution had ‘heavier tails’ than the brute force distribution)</p>
 </div>
 </div>
 <div id="the-t-statistic-standardized-differences-between-two-means" class="section level2">
@@ -722,7 +744,7 @@ abline(v=sample.mean,col=&quot;green&quot;,lwd=3)</code></pre>
 
 weightloss.data &lt;- c(-10.4,-11.6,3.9,1.5,-0.3,-3.5 -10.0,-6.7,-6.1,-2.4,-6.0,2.3,0.1,-4.1,-3.2, -11.3,-3.2,-9.3,-7.5,-5.7,-0.1,0.0,-9.8,1.0,-11.9)
 hist(weightloss.data,breaks=7)</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <pre class="r"><code>mean.weightloss &lt;- mean(weightloss.data)
 null.weightloss &lt;- 0
 stdev.weightloss &lt;- sd(weightloss.data)
@@ -734,7 +756,7 @@ t.statistic</code></pre>
 <pre><code>## [1] -4.544623</code></pre>
 <pre class="r"><code>curve(dt(x,sample.size-1),-5.5,2)
 abline(v=t.statistic,col=&quot;green&quot;,lwd=3)</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
 <pre class="r"><code>p=pt(t.statistic,sample.size-1)
 p    # this is the p value</code></pre>
 <pre><code>## [1] 7.241049e-05</code></pre>
@@ -804,7 +826,7 @@ Chisq.stat</code></pre>
 
 curve(dchisq(x,k-1),0,75)
 abline(v=Chisq.stat,col=&quot;green&quot;,lwd=3)</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <pre class="r"><code>p &lt;- 1-pchisq(Chisq.stat,k-1)
 p</code></pre>
 <pre><code>## [1] 0.01213825</code></pre>
@@ -852,7 +874,7 @@ z.statistic</code></pre>
 <pre><code>## [1] 0.6454972</code></pre>
 <pre class="r"><code>curve(dnorm(x),-3,3)
 abline(v=z.statistic,col=&quot;green&quot;,lwd=3)</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <pre class="r"><code>p &lt;- 1-pnorm(z.statistic)    # is the p value enough evidence to tell you that GSW players are taller than the NBA average??
 p       </code></pre>
 <pre><code>## [1] 0.2593025</code></pre>
@@ -886,16 +908,16 @@ p       </code></pre>
 
 mean &lt;- 5
 rpois(10,mean)    # the random numbers have no decimal component</code></pre>
-<pre><code>##  [1] 6 3 6 8 3 6 5 3 3 3</code></pre>
+<pre><code>##  [1] 3 8 4 3 5 5 2 7 6 1</code></pre>
 <pre class="r"><code>             # plot a discrete distribution!
 xvals &lt;- seq(0,15,1)
 probs &lt;- dpois(xvals,lambda=mean)
 names(probs) &lt;- xvals
                
 barplot(probs,ylab=&quot;Probability&quot;,main=&quot;Poisson distribution (discrete)&quot;)</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <pre class="r"><code>barplot(cumsum(probs),ylab=&quot;Cumulative Probability&quot;,main=&quot;Poisson distribution (discrete)&quot;)   # cumulative distribution</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
 <pre class="r"><code>sum(probs)   # just to make sure it sums to 1!  Does it??? </code></pre>
 <pre><code>## [1] 0.999931</code></pre>
 <p>In <em>continuous distributions</em>, the height of the curve corresponds to <em>probability density</em>, <span class="math inline">\(f(x)\)</span>, not probability <span class="math inline">\(Prob(x)\)</span>. This is because the probability of getting exactly one value in a continuous distribution is effectively zero. This arises from the problem of precision. The sum of the probability distribution must be 1 (there is only 100% of probability to go around). In a continuous distribution, there are an infinite number of possible values of x. So any individual probability is always divided by infinity, which makes it zero. Therefore we have to talk about probability density, unless we want to specify a particular range of values – we can’t calculate <span class="math inline">\(Prob(x = 5)\)</span>, but we can calculate <span class="math inline">\(Prob(4 &lt; x &lt; 6)\)</span> or <span class="math inline">\(Prob(x &gt; 5)\)</span>. Let’s consider the beta distribution:</p>
@@ -906,12 +928,12 @@ shape1 = 0.5
 shape2 = 0.5
 
 rbeta(10,shape1,shape2)</code></pre>
-<pre><code>##  [1] 0.883084677 0.999628608 0.492437835 0.563058913 0.902458372
-##  [6] 0.928073006 0.158109689 0.422012152 0.378678092 0.005035396</code></pre>
+<pre><code>##  [1] 0.04497302 0.72321374 0.06914056 0.90778325 0.90290874 0.45334160
+##  [7] 0.03217884 0.94619811 0.22658847 0.74430730</code></pre>
 <pre class="r"><code>curve(dbeta(x,shape1,shape2))   # probability density</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <pre class="r"><code>curve(pbeta(x,shape1,shape2))   # cumulative distribution</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
 <pre class="r"><code>integrate(f=dbeta,lower=0,upper=1,shape1=shape1,shape2=shape2)    # just to make sure it integrates to 1!!</code></pre>
 <pre><code>## 1 with absolute error &lt; 3e-06</code></pre>
 <div id="some-other-probability-distribution-terms" class="section level4">
@@ -944,15 +966,15 @@ rbeta(10,shape1,shape2)</code></pre>
 size &lt;- 10
 prob &lt;- 0.3
 rbinom(10,size,prob)</code></pre>
-<pre><code>##  [1] 1 4 1 4 4 2 5 4 3 0</code></pre>
+<pre><code>##  [1] 3 4 4 2 4 5 6 4 2 3</code></pre>
 <pre class="r"><code>xvals &lt;- seq(0,size,1)
 probs &lt;- dbinom(xvals,size,prob)
 names(probs) &lt;- xvals
                
 barplot(probs,ylab=&quot;Probability&quot;,main=&quot;Binomial distribution&quot;)</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <pre class="r"><code>barplot(cumsum(probs),ylab=&quot;Cumulative Probability&quot;,main=&quot;Binomial distribution&quot;)   # cumulative distribution</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
 <pre class="r"><code>sum(probs)   # just to make sure it sums to 1!  Does it???</code></pre>
 <pre><code>## [1] 1</code></pre>
 </div>
@@ -965,12 +987,12 @@ mean = 7.1
 stdev = 1.9
 
 rnorm(10,mean,stdev)</code></pre>
-<pre><code>##  [1] 7.060956 6.169988 7.276898 5.122949 5.429252 5.159673 4.907536
-##  [8] 5.237161 4.592726 8.070755</code></pre>
+<pre><code>##  [1]  5.890820  5.900514  9.921486  8.816792  5.663758  9.978905  9.631804
+##  [8] 10.239950  6.454574  8.265606</code></pre>
 <pre class="r"><code>curve(dnorm(x,mean,stdev),0,15)   # probability density</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <pre class="r"><code>curve(pnorm(x,mean,stdev),0,15)   # cumulative distribution</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
 <pre class="r"><code>integrate(f=dnorm,lower=-Inf,upper=Inf,mean=mean,sd=stdev)    # just to make sure it integrates to 1!!</code></pre>
 <pre><code>## 1 with absolute error &lt; 1.1e-05</code></pre>
 </div>
@@ -982,12 +1004,12 @@ rnorm(10,mean,stdev)</code></pre>
 df = 6
 
 rt(10,df)     # random numbers from the t distribution (not sure why you would ever want this!)</code></pre>
-<pre><code>##  [1]  2.0929282  0.2454876  0.1248241  1.4434582  0.8576103  0.3621373
-##  [7]  0.9314581 -0.9545919  0.1581071 -0.1860955</code></pre>
+<pre><code>##  [1]  2.573241968 -0.759434782 -2.157031081  0.210267202  1.380242324
+##  [6]  1.887153986  0.283492578 -0.004982913  0.794519871 -0.811977296</code></pre>
 <pre class="r"><code>curve(dt(x,df),-4,4)   # probability density</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <pre class="r"><code>curve(pt(x,df),-4,4)   # cumulative distribution</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-20-2.png" width="672" /></p>
 <pre class="r"><code>integrate(f=dt,lower=-Inf,upper=Inf,df=df)    # just to make sure it integrates to 1!!</code></pre>
 <pre><code>## 1 with absolute error &lt; 1.9e-05</code></pre>
 </div>
@@ -999,12 +1021,12 @@ rt(10,df)     # random numbers from the t distribution (not sure why you would e
 df = 6
 
 rchisq(10,df)     # random numbers from the t distribution (not sure why you would ever want this!)</code></pre>
-<pre><code>##  [1] 11.436148  3.457814  1.622500  3.260638 11.205637  8.449162  7.482310
-##  [8]  8.472756  6.804808  4.860275</code></pre>
+<pre><code>##  [1]  6.838754  7.356305  4.458348  4.066501 12.479474  2.128835  5.203163
+##  [8]  8.181791  6.352078  8.253694</code></pre>
 <pre class="r"><code>curve(dchisq(x,df),0,15)   # probability density</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <pre class="r"><code>curve(pchisq(x,df),0,15)   # cumulative distribution</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-20-2.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
 <pre class="r"><code>integrate(f=dchisq,lower=0,upper=Inf,df=df)    # just to make sure it integrates to 1!!</code></pre>
 <pre><code>## 1 with absolute error &lt; 2.3e-05</code></pre>
 </div>
