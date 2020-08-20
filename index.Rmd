@@ -14,11 +14,11 @@ Kevin Shoemaker
 Office: FA 220E					
 Phone: (775)682-7449					
 Email: [kevinshoemaker@unr.edu](kevinshoemaker@unr.edu)			
-Office hours: Wednesdays at 1pm in FA 220e (and by appointment)
+Office hours: Wednesdays at 1pm via Zoom (and by appointment)
 
 ### Course Meeting Times
-**Lecture & Discussion**: M at 8am in DMS 103 (105 mins)          
-**Study session**: Wednesday at 9am in DMS 103 (45 mins)        
+**Lecture**: M at 8am in DMS 103 (105 mins)          
+**Discussion/demo**: W at 9am in DMS 103 (45 mins)        
 
 ### Course Website
 [http://kevintshoemaker.github.io/NRES-710/](http://kevintshoemaker.github.io/NRES-710/)
