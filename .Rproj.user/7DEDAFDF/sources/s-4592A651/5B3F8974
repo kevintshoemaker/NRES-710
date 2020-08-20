@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "2829477543",
+    "hash" : "0",
     "id" : "5B3F8974",
-    "lastKnownWriteTime" : 1595266239,
-    "last_content_update" : 1595266239610,
+    "lastKnownWriteTime" : 1597955590,
+    "last_content_update" : 1597955590714,
     "path" : "~/GitHub/NRES-710/LECTURE3.Rmd",
     "project_path" : "LECTURE3.Rmd",
     "properties" : {
-        "cursorPosition" : "36,0",
-        "scrollLine" : "0"
+        "cursorPosition" : "40,24",
+        "scrollLine" : "24"
     },
     "read_only" : false,
     "read_only_alternatives" : [

@@ -34,6 +34,11 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```
 
+## Download the R code for this lecture!
+
+To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](LECTURE4.R)
+
+## Overview: Linear Regression
 
 T-tests roll us straight into linear regression. Why? 
 

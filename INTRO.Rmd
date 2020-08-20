@@ -33,10 +33,13 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```
 
-
 Many PhD-granting institutions make students meet a language requirement. These days, most of them allow statistics as the language requirement! So, we can think of this class as learning the language of statistics- and another one thrown on just for fun- computer programming in R! 
 
 Both languages- statistics and computer programming- both begin and end with pure logic! Learning these languages is easier than learning a spoken language in many ways, because spoken languages often don't follow pure logic. Statistics and computer programming are nothing if they don't make logical sense! 
+
+## Download the R code for this lecture!
+
+To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](INTRO.R)
 
 ## What is statistics
 

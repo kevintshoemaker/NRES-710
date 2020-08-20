@@ -34,6 +34,13 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```
 
+
+## Download the R code for this lecture!
+
+To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](LECTURE2.R)
+
+## Overview: t-tests
+
 T-tests are extremely flexible: 
 They can be paired or unpaired. 
 They can be a one-sample test (x1 = V (any value))

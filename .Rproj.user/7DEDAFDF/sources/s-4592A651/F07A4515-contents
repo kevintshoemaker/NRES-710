@@ -34,6 +34,11 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```
 
+## Download the R code for this lecture!
+
+To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](LECTURE1.R)
+
+## Overview of basic concepts of probability and statistics
 
 Now that we've explored data types, we are going to talk about interpreting data! Specifically, through the lens of (frequentist) probability and (classical) statistical tests!
 
@@ -64,7 +69,7 @@ We would want to identify, and then sample, the population!
 *Sample*: ???
 *(summary) Statistic*: ???
 
-When we go from the population to the sample, we implicitly make several assumptions about the sample (i.e., that the sample is representative of the population, and that it is unbiased).
+When we go from the population to the sample, we implicitly make several assumptions about the sample (i.e., that the sample is representative of the population).
 
 When we make *inference* about a population-level property (the *parameter*) from a sample, we use *statistics*.
 

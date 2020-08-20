@@ -1,21 +1,3 @@
----
-title: "Chi-squared tests etc."
-author: "NRES 710"
-date: "Fall 2020"
-output: 
-  html_document: 
-    theme: cerulean
-    toc: yes
-    toc_float: yes
----
-
-```{r setup, include=FALSE}
-
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
-
-```
-
-```{r echo=FALSE}
 
 ############################################################
 ####                                                    ####  
@@ -30,34 +12,5 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ############################################################
 ####  Chi-squared tests etc.                            ####
 ############################################################
-
-
-```
-
-## Download the R code for this lecture!
-
-To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](LECTURE3.R)
-
-## Overview: Chi-squared-tests
-
-
-
-
-[--go to next lecture--](LECTURE4.html) 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

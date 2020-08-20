@@ -7,14 +7,14 @@
     "folds" : "",
     "hash" : "0",
     "id" : "F07A4515",
-    "lastKnownWriteTime" : 1595988851,
-    "last_content_update" : 1595988851979,
+    "lastKnownWriteTime" : 1597955548,
+    "last_content_update" : 1597955548593,
     "path" : "~/GitHub/NRES-710/LECTURE1.Rmd",
     "project_path" : "LECTURE1.Rmd",
     "properties" : {
-        "cursorPosition" : "581,31",
+        "cursorPosition" : "40,30",
         "last_setup_crc32" : "",
-        "scrollLine" : "0"
+        "scrollLine" : "16"
     },
     "read_only" : false,
     "read_only_alternatives" : [
