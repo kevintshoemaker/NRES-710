@@ -1,24 +1,24 @@
 {
     "collab_server" : "",
     "contents" : "",
-    "created" : 1595265925849.000,
+    "created" : 1593016765304.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "0",
-    "id" : "F4B5522D",
-    "lastKnownWriteTime" : 1597955633,
-    "last_content_update" : 1597955633290,
-    "path" : "~/GitHub/NRES-710/LECTURE6.Rmd",
-    "project_path" : "LECTURE6.Rmd",
+    "hash" : "1604139239",
+    "id" : "4D9E9D6C",
+    "lastKnownWriteTime" : 1595268599,
+    "last_content_update" : 1595268599486,
+    "path" : "~/GitHub/NRES-710/schedule.Rmd",
+    "project_path" : "schedule.Rmd",
     "properties" : {
-        "cursorPosition" : "40,34",
+        "cursorPosition" : "13,3",
         "scrollLine" : "0"
     },
     "read_only" : false,
     "read_only_alternatives" : [
     ],
-    "relative_order" : 10,
+    "relative_order" : 3,
     "source_on_save" : false,
     "source_window" : "",
     "type" : "r_markdown"
