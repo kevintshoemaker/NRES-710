@@ -57,16 +57,17 @@ I tend to recommend that grad students take the least coursework possible- but I
 
 Statistics is fundamentally about making sense of data. Therefore understanding statistics requires starting with an understanding types of data. 
 
-What types of data are there?   
-1.	Categorical (Can be quantitative or qualitative) – represents characteristics, can be logical
-    a.	Nominal (labels, > 2 categories)
-    b.	Dichotomous (2 categories)
-    c.	Ordinal (ordered units)
-2.	Quantitative
+What types of data are there? 
+
+1.	Categorical (Can be quantitative or qualitative) – represents characteristics, can be logical      
+    a.	Nominal (labels, > 2 categories)     
+    b.	Dichotomous (2 categories)    
+    c.	Ordinal (ordered units)     
+2.	Quantitative     
     a.	Discrete: can be counted (number of individuals in a population)
     b.	Continuous: not countable, but can be measured (total body length)
-        i.	Interval data: the difference between two values is meaningful but zero doesn't mean the absence of a thing (e.g., temperature in Celsius)
-        ii.	Ratio: zero means complete absence (e.g., temperature in Kelvin). If zero means absence, then the ratio between two values is meaningful (something that weighs 4 g has twice the mass of something that weighs 2 g). Note that you can't say that for interval data (e.g., something with a temperature of 4 C doesn't have twice the heat of something at 2 C). 
+        i.	Interval data: the difference between two values is meaningful but zero doesn't mean the absence of a thing (e.g., temperature in Celsius)     
+        ii.	Ratio: zero means complete absence     (e.g., temperature in Kelvin). If zero means absence, then the ratio between two values is meaningful (something that weighs 4 g has twice the mass of something that weighs 2 g). Note that you can't say that for interval data (e.g., something with a temperature of 4 C doesn't have twice the heat of something at 2 C).    
 
 
 Why do we need to know about data types? We have to deal with these data types differently! 

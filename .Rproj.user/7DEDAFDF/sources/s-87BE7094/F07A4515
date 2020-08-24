@@ -5,7 +5,7 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "3679280945",
+    "hash" : "0",
     "id" : "F07A4515",
     "lastKnownWriteTime" : 1598246499,
     "last_content_update" : 1598246499719,
@@ -13,8 +13,8 @@
     "project_path" : "LECTURE1.Rmd",
     "properties" : {
         "cursorPosition" : "824,156",
-        "last_setup_crc32" : "87184335961f6f53",
-        "scrollLine" : "816"
+        "last_setup_crc32" : "",
+        "scrollLine" : "0"
     },
     "read_only" : false,
     "read_only_alternatives" : [
