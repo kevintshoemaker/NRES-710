@@ -14,7 +14,7 @@ Kevin Shoemaker
 Office: FA 220E					
 Phone: (775)682-7449					
 Email: [kevinshoemaker@unr.edu](kevinshoemaker@unr.edu)			
-Office hours: Wednesdays at 1pm via Zoom (and by appointment)
+Office hours: Wednesdays from 1 to 230pm via Zoom (and by appointment)
 
 ### Course Meeting Times
 **Lecture**: M at 8am in DMS 103 (105 mins)          
@@ -24,24 +24,26 @@ Office hours: Wednesdays at 1pm via Zoom (and by appointment)
 [http://kevintshoemaker.github.io/NRES-710/](http://kevintshoemaker.github.io/NRES-710/)
 
 ### Course Objectives
-Statistics are fundamental to addressing environmental questions. In this course, students will learn basic principles of model-based and design-based inference and will gain lots of experience in the use of R software for data science. In this course we focus on the concepts and implementation and we generally leave the nitty-gritty stats questions to statisticians.
+Statistics are fundamental to the generation of scientific knowledge. In this course, students will learn basic principles of statistical inference and will gain experience applying these principles to questions in ecology and environmental science using the R environment for statistical computing. In this course we focus on the concepts and implementation and we generally leave the nitty-gritty stats questions to statisticians.
 
 ### Student Learning Objectives
-Students will be able to:
-1.	Communicate, in writing or verbally, the assumptions associated with classical statistical models. 
-2.	Understand and perform statistical tests such as T-test, ANOVAs, and linear regression. 
-3.	Identify and perform appropriate statistical tests on data collected during their graduate program 
-4.	Compare and contrast statistical tools. 
-5.	Import data, visualize patterns, interpret plots, and perform statistical tests using R. 
+Students will be able to:   
+
+1. Communicate, in writing or verbally, the assumptions associated with classical statistical models.   
+2. Understand and perform statistical tests such as T-test, ANOVAs, and linear regression.   
+3. Identify and perform appropriate statistical tests on data collected during their graduate program   
+4. Compare and contrast statistical tools and methods.      
+5. Import data, visualize patterns, interpret plots, and perform statistical tests using R.      
 
 
 ### Prerequisites
 Curious scientific mind, broad research interests, readiness to engage with equations and computer programming. Students are expected to already have a basic understanding of standard statistical concepts and methods, obtained through other coursework. If this is not the case, they should be prepared to work harder to develop the necessary prerequisite knowledge.
 
 ### Required materials
-Students will use the open source statistical software R to perform analyses. Readings and handouts will be provided as appropriate. All students should bring laptops to each class; much of class time will be devoted to hands-on learning in R. 
+Students will use the open source statistical software R to perform analyses. Readings and handouts will be provided as appropriate. *All students should bring laptops to each class*; much of class time will be devoted to hands-on learning in R. 
 
-There are many good R books, but ultimately, most material can be found for free online. For the beginner in statistics or R, I recommend the following: 
+There are many good R books, but ultimately, most material can be found for free online. For the beginner in statistics or R, I recommend the following:
+
 1.	Discovering Statistics using R (Andy Field and Jeremy Miles)
 2.	Introductory R: A beginner’s guide to data visualization, statistical analysis, and programming in R (Robert Knell)
 3.	R Graphics Cookbook (Winston Chang). This book is available for free as a PDF online. 
@@ -49,13 +51,13 @@ There are many good R books, but ultimately, most material can be found for free
 
 ### Course structure
 
-Instruction will consist of lessons on statistics and lessons on the tools to perform statistical analysis (in R). Stats lessons will include both lecture-style material, readings, demonstrations, exercises and class discussions.  
+Instruction will consist of lessons on general statistical concepts and specific methods commonly used to address questions in ecology and environmental science. Stats lessons will include lecture-style materials, readings, demonstrations, exercises and class discussions.  
 
 There will be one midterm exam and one final project. The midterm exam will be based on stats lessons and will include both a traditional in-class exam and a take-home exam in which you will use R to make inference from provided datasets. 
 
 Homework assignments will occur throughout the semester. They are designed to provide you and me with progress assessments. Therefore, the frequency and subjects of the assignments will depend on the pace of progress during the semester. 
 
-The final project is designed to test your ability to understand and apply the tools that you have developed during the semester using R. The project will involve data analysis using statistical tools that we have learned during the semester (or other tools as approved by me). You can choose whichever statistical tools are suitable to your project scope and questions, but they must be something we covered in class and appropriate to your data. Please turn in your own work and assignment, but you may use as many resources as you wish (class material, online material, or the insight/experience of other students) to generate the material presented. More specific instructions will come during the semester. 
+The final project is designed to test your ability to understand and apply the tools that you have developed during the semester using R. The project will involve conducting a rigorous data analysis using statistical approaches that we have learned during the semester (or other tools as approved by the instructor). You can choose whichever statistical methods are suitable to your project scope and questions, but they must be methods we covered in class and appropriate to your data. Please turn in your own work and assignment, but you may use as many resources as you wish (class material, online material, or the insight/experience of other students) to generate the material presented. More specific instructions will come during the semester. 
 
 With roughly a month left in the semester, first drafts of your final projects will be due. These first drafts will then be subjected to anonymous peer review. At this time, the assignment itself will not be “graded,” but the assignment will be reviewed by at least two other students, and the reviews will be graded. The reviews are designed to provide feedback on the statistical approach being used. For example, are the stats relevant to the data? Will the stats appropriate to the experimental design? The reviews will be due in one week and will be provided to the author for their consideration and assistance in their final project. 
 
