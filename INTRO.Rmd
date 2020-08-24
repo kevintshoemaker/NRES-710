@@ -33,15 +33,14 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```
 
-Many PhD-granting institutions make students meet a language requirement. These days, most of them allow statistics as the language requirement! So, we can think of this class as learning the language of statistics- and another one thrown on just for fun- computer programming in R! 
 
-Both languages- statistics and computer programming- both begin and end with pure logic! Learning these languages is easier than learning a spoken language in many ways, because spoken languages often don't follow pure logic. Statistics and computer programming are nothing if they don't make logical sense! 
+This course provides an introduction to both statistics and computer programming. Statistics and computer programming can in some ways be considered 'languages' because they help us to understand and communicate complex ideas (to other people and with computers!). But learning these languages is easier than learning a spoken language in many ways, because statistics and computer programming begin and end with pure logic! Statistics and computer programming are nothing if they don't make logical sense! Spoken languages on the other hand often don't follow completely logical structures- they don't always 'make sense'. So you can't 'get by' in most spoken languages simply by following a few basic rules. With statistics and computer programming, you can! With a solid grounding in basic rules of probability and statistics, and armed with some basic computer programming abilities (and some human creativity and ingenuity), you can go extremely far in making sense of data and communicating that understanding with others!!   
 
 ## Download the R code for this lecture!
 
 To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](INTRO.R)
 
-## What is statistics
+## What is statistics?
 
 ![](statistics1.png)
 
@@ -51,8 +50,6 @@ It’s not just you. Many ecologists are fuzzy about the language, and even the 
 
 
 ## Why do we need stats class?
-
-Side note: my background in statistics.
 
 I tend to recommend that grad students take the least coursework possible- but I think stats is an exception. I think it's more efficient, fun, and rewarding to learn stats as a group rather than on your own. I hope you agree by the end of this class! 
 
@@ -93,7 +90,7 @@ R is incredibly powerful and feature rich- you are NOT expected to memorize much
 
 When in doubt, Google it!! 
 
-Here is a [base R cheat sheet (from RStudio)](r-cheat-sheet-3.pdf)- this is a great reference for most of the basic tasks you will need to perform in R. Keep it handy!
+Here is a [base R cheat sheet (from RStudio)](base-r.pdf)- this is a great reference for most of the basic tasks you will need to perform in R. Keep it handy!
 
 Learn to use R scripts- and save the R script frequently!! This is the primary record of what you've done and allows you and other scientists to reproduce your models, analyses and visualizations.
 
@@ -101,7 +98,7 @@ Learn to use R scripts- and save the R script frequently!! This is the primary r
 
 **NOTE:** for those wishing to follow along with the R-based demo in class, [click here](INTRO.R) for an R-script that contains all of the code blocks in this web-based lecture. 
 
-All of you should have R and RStudio installed on your computers. See the [links page](https://kevintshoemaker.github.io/NRES-746/) for some useful references. I will be leading ["bootcamps" on using R](http://naes.unr.edu/shoemaker/teaching/R-Bootcamp/index.html) in two upcoming Saturday afternoons (TBD)- please consider attending if you don't have much experience in R!
+All of you should have R and RStudio installed on your computers. See the [links page](https://kevintshoemaker.github.io/NRES-746/) for some useful references. I will be leading ["bootcamps" on using R](http://naes.unr.edu/shoemaker/teaching/R-Bootcamp/index.html) in two upcoming Saturday afternoons (Sep 12 and 19- virtual of course)- please consider attending if you don't have much experience in R!
 
 First of all, R can be used as a calculator. Try it! 
 
@@ -139,7 +136,7 @@ Let's start by working with the famous iris dataset:
 
 ```{r}
 
-iris                   # this is a data frame- the basic data storage type in R
+#iris                   # this is a data frame- the basic data storage type in R
 head(iris)             # [add your own comment here!]
 tail(iris)
 
@@ -163,6 +160,7 @@ Now let's switch to the 'titanic' dataset. To get this dataset you need to insta
  
 library(titanic)              # this 'loads' the package and needs to be done every time you run this script
 
+data("titanic_train")
 head(titanic_train)
 # ?titanic_train              # uncomment and run to learn more about the data
 
@@ -221,7 +219,7 @@ We can also import data from files stored on our computers (or even directly fro
 
 # Then, we can import data. 
 
-# Don't forget to set your working directory (or just make sure you're using an Rstudio Project). I did it here, just for fun... but remember to use the "Session->Set Working Directory" drop down menu above if you aren't savvy in Terminal talk.
+# Don't forget to set your working directory (or just make sure you're using an Rstudio Project). I did it here, just for fun... 
 
 # setwd("~/Desktop")       # uncomment and run if you want to set the desktop as your working directory.
 

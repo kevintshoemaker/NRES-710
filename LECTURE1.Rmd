@@ -59,15 +59,16 @@ We would want to identify, and then sample, the population!
 
 ![](statistics1.png)
 
-**Q**: what is the population here? 
-**Q** what is the sample in the above example?
-**Q** what is the parameter in the above example?
-**Q** what is the 'statistic' in the above example?
 
-*Population*: ???
-*Parameter*: ???
-*Sample*: ???
-*(summary) Statistic*: ???
+**Q**: what is the population here?     
+**Q** what is the sample in the above example?     
+**Q** what is the parameter in the above example?     
+**Q** what is the 'statistic' in the above example?    
+
+*Population*: ???     
+*Parameter*: ???     
+*Sample*: ???     
+*(summary) Statistic*: ???    
 
 When we go from the population to the sample, we implicitly make several assumptions about the sample (i.e., that the sample is representative of the population).
 
@@ -77,7 +78,7 @@ Classical statistics involves computing a *summary statistic* from the data, and
 
 ## Frequentist Probability Part 1
 
-Where does probability come in? Well, samples are random- and by random we mean that every sample is different. Therefore, all *statistics* derived from samples are random quantities, and will differ with each sample. When something is random, we use probability to quantify how commonplace or unexpected an outcome is. Probability helps us to quantify the unknowable.
+Where does probability come in? Well, samples are random- and by random we mean that every time we sample from a population can result in a different outcome. Therefore, all *statistics* derived from samples are random quantities, and will differ with each sample. When something is random, we use probability to quantify how commonplace or unexpected an outcome is. Probability helps us to quantify things that we can't know with certainty.
 
 If all samples (and the statistics derived from them) differ from one another, how can we be sure that our statistic (derived from a random sample) is actually telling us something about the population of interest? How can we be convinced that our result is meaningful and not simply an *artifact of random sampling*?
 
@@ -89,26 +90,26 @@ We assume that heads or tails are equally likely outcomes of a single coin flip 
 
 How many possible outcomes are there?
 
-TTTT
-TTTH
-TTHT
-TTHH
-THTT
-THTH
-THHT
-THHH
-HTTT
-HTTH
-HTHT
-HTHH
-HHTT
-HHTH
-HHHT
-HHHH
+TTTT     
+TTTH     
+TTHT     
+TTHH     
+THTT     
+THTH     
+THHT     
+THHH     
+HTTT     
+HTTH     
+HTHT     
+HTHH     
+HHTT     
+HHTH          
+HHHT     
+HHHH     
 
 Are each of these outcomes equally likely?
 
-How many of possible outcomes meet our criterion (all heads)? (How many ways are there of getting 4 heads?)
+How many of the possible outcomes meet our criterion (all heads)? (How many ways are there of getting 4 heads?)
 
 What is the probability of getting all heads?
 
@@ -134,12 +135,12 @@ The p value is simply the probability of obtaining a result at least as extreme 
 
 ### Aside: extremeness
 
-When we use the phrase 'at least as extreme as your observed result' we mean a result that would lend even more support for rejecting the null hypothesis than your observed result. For example, let's imagine the following scenario for the height/last name question:
+When we use the phrase 'at least as extreme as your observed result' we mean a result that would lend even more support for rejecting the null hypothesis than your observed result (a result with even more 'signal' than the observed data). For example, let's imagine the following scenario for the height/last name question:
 
 Sample size: 20, 10 with names between A and M and 10 with names between N and Z.        
 Observed summary statistic: mean height for A-M is 2 cm greater than mean height for N-Z     
-**Q** What are some results that would lend at least as much support for supporting the notion that the null hypothesis is false??    
-**Q** Would you be comfortable rejecting the null hypothesis if random sampling in the null universe yielded mean height differences of 2 cm of greater 20% of the time (p = 0.2)?       
+**Q** What are some results that would lend at least as much support for supporting the notion that the null hypothesis is false??     
+**Q** Would you be comfortable rejecting the null hypothesis if random sampling in the null universe yielded mean height differences of 2 cm or greater 20% of the time (p = 0.2)?           
 
 ### Rejecting the null
 
@@ -153,11 +154,11 @@ A Woman claimed she could tell if milk was added to a cup of tea first or last.
 
 Fisher suggested we give her 8 cups of tea at once, 4 with milk first and 4 with tea first. The woman is asked to identify the four cups that were poured with milk first. 
 
-There are 70 possible ways of choosing four cups out of 8. The probability of getting all of them right by random chance (in the null universe) would be 1/70 = 0.014 = 1.4%. That would be kinda surprising, right? So if the lady selected all four cups correctly, are we surprised enough to reject the null?
+There are 70 possible ways of choosing four cups out of 8. The probability of getting all of them right by random chance (in the null universe) would be 1/70 = 0.014 = 1.4%. That would be kinda surprising, right (in the null universe that is)? So if the lady selected all four cups correctly, are we surprised enough to reject the null?
 
 Here are the possibilities (X=correct id, O=false id), which in the null universe are equally likely (since the lady can't actually tell the difference!). Let's assume cups 5-8 are milk first and 1-4 are milk last. The number of correct choices is in parentheses...
 
-O1/O2/O3/O4 (0)    O1/O3/O4/X5 (1)    O1/O4/X7/X8 (2)   O2/O4/X5/X6 (2)    O3/O4/X7/X8 (2)    
+O1/O2/O3/O4 (0)    O1/O3/O4/X5 (1)    O1/O4/X7/X8 (2)   O2/O4/X5/X6 (2)    O3/O4/X7/X8 (2)        
 O1/O2/O3/X5 (1)    O1/O3/O4/X6 (1)    O1/X5/X6/X7 (3)   O2/O4/X5/X7 (2)    O3/X5/X6/X7 (3)    
 O1/O2/O3/X6 (1)    O1/O3/O4/X7 (1)    O1/X5/X6/X8 (3)   O2/O4/X5/X8 (2)    O3/X5/X6/X8 (3)    
 O1/O2/O3/X7 (1)    O1/O3/O4/X8 (1)    O1/X5/X7/X8 (3)   O2/O4/X6/X7 (2)    O3/X5/X7/X8 (3)    
@@ -166,7 +167,7 @@ O1/O2/O4/X5 (1)    O1/O3/X5/X7 (2)    O2/O3/O4/X5 (1)   O2/O4/X7/X8 (2)    O4/X5
 O1/O2/O4/X6 (1)    O1/O3/X5/X8 (2)    O2/O3/O4/X6 (1)   O2/X5/X6/X7 (3)    O4/X5/X6/X8 (3)    
 O1/O2/O4/X7 (1)    O1/O3/X6/X7 (2)    O2/O3/O4/X7 (1)   O2/X5/X6/X8 (3)    O4/X5/X7/X8 (3)    
 O1/O2/O4/X8 (1)    O1/O3/X6/X8 (2)    O2/O3/O4/X8 (1)   O2/X5/X7/X8 (3)    O4/X6/X7/X8 (3)    
-O1/O2/X5/X6 (2)    O1/O3/X7/X8 (2)    O2/O3/X5/X6 (2)   O2/X6/X7/X8 (3)    *X5/X6/X7/X8 (4)*    
+O1/O2/X5/X6 (2)    O1/O3/X7/X8 (2)    O2/O3/X5/X6 (2)   O2/X6/X7/X8 (3)    *X5/X6/X7/X8 (4)*      
 O1/O2/X5/X7 (2)    O1/O4/X5/X6 (2)    O2/O3/X5/X7 (2)   O3/O4/X5/X6 (2)    
 O1/O2/X5/X8 (2)    O1/O4/X5/X7 (2)    O2/O3/X5/X8 (2)   O3/O4/X5/X7 (2)    
 O1/O2/X6/X7 (2)    O1/O4/X5/X8 (2)    O2/O3/X6/X7 (2)   O3/O4/X5/X8 (2)    
@@ -181,11 +182,11 @@ O1/O2/X7/X8 (2)    O1/O4/X6/X8 (2)    O2/O3/X7/X8 (2)   O3/O4/X6/X8 (2)
 
 A type 1 error is mistakenly rejecting a true null hypothesis. 
 
-**Alpha** is the probability of committing a Type 1 error. We usually set alpha prior to performing an experiment or collecting data. 
+A *p value* is the probability that you collect a sample in the null universe with greater evidence against the null (signal) than your observed data. 
 
-A p value is the probability that you collect a sample in the null universe with greater evidence against the null than your observed data. 
+**Alpha** is the threshold p value above which we are insufficiently convinced that we can reject the null. We usually set the alpha level prior to performing an experiment or collecting data so we ensure a low probability of committing a type 1 error. 
 
-You can reject the null if p < alpha. Conversely you will fail to reject the null hypothesis if p > alpha (you are insufficiently convinced that you are not living in the null universe!)
+You can reject the null if *p* < alpha. Conversely you will fail to reject the null hypothesis if p > alpha (you are insufficiently convinced that you are NOT living in the null universe!)
 
 A type 2 error is mistakenly failing to reject a false null hypothesis (you are not living in the null universe but you fail to realize it!)
 
@@ -193,17 +194,17 @@ A type 2 error is mistakenly failing to reject a false null hypothesis (you are 
 
 **Q** what would it mean to set the Beta level? Why do we set alpha rather than beta?
 
-**Q** how many universes are there where the null hypothesis is true? How about where the null hypothesis is false?
+**Q** how many universes are there where the null hypothesis is true? How about where the null hypothesis is false?    
 
-Finally *Power* is defined as the probability of correctly rejecting an incorrect null hypothesis. Power is simply 1-Beta!
+Finally *Power* is defined as the probability of correctly rejecting an incorrect null hypothesis. Power is simply 1-Beta!       
 
 ![](clt1.jpg)
 
 ## Quick Review of Basic Concepts
 
-A p value is the probability of obtaining a result at least as extreme as the observed result, given you are dwelling in the null universe. 
+A p value is the probability of obtaining a result at least as extreme (containing at least as much 'signal') as the observed result, given you are dwelling in the null universe. 
 
-Usually the 'result' we are referring to is a single 'summary statistic' calculated from our sample -- for example, the sample mean, the standardized difference between two sample means (as in a 2-sample t test), or the proportion of a sample that meets some criterion (e.g., proportion red M+Ms).   
+Usually the 'result' we are referring to is a single 'summary statistic' calculated from our sample -- for example, the sample mean, the standardized difference between two sample means (as in a 2-sample t test), some other signal to noise ratio, or the proportion of a sample that meets some criterion (e.g., proportion red M+Ms).   
 
 This implies a multitude of potential results. Your observed result is just one of an infinite number of possible results from some sampling/measurement process. This variation across possible samples/results is called 'sampling variation'
 
@@ -338,8 +339,8 @@ Now let's build up sample size and see how the sampling distribution changes.
 
 
 ```{r}
-par(mfrow=c(4,3))
-for(i in 2:12){
+par(mfrow=c(3,2))
+for(i in seq(2,12,2)){
    hist(rbinom(10000,i,.5),main=paste0("sample size = ",i),xlab=sprintf("N heads out of %s",i)) 
 }
 
@@ -562,11 +563,12 @@ abline(v=sample.mean,col="green",lwd=3)
 ```
 
 
+
 Not a bad match right? Obviously it's easier and faster to use the t distribution (and more accurate) to approximate the sampling distribution, but I hope this helps to cement the concept!! 
 
 NOTE: the t distribution accounts for uncertainty in the sample variance, which is why I did not just use the sample variance in the code block above (if I had, you would see that the t distribution had 'heavier tails' than the brute force distribution) 
 
-## The t statistic: standardized differences between two means
+## The t statistic: signal to noise ratio for comparing 1 or 2 means
 
 The *t statistic* (not the same thing as the t distribution) is just another summary statistic that we can calculate from a sample. In this way it is no different from the sample mean or the standard deviation. But, since it has a simple, well described sampling variance, it helps us perform rigorous hypothesis tests and is therefore a very useful summary statistic!
 
@@ -820,7 +822,7 @@ integrate(f=dbeta,lower=0,upper=1,shape1=shape1,shape2=shape2)    # just to make
 
 #### Some other probability distribution terms:
 
-**Moments** – descriptions of the distribution. For a bounded probability distribution, the collection of all the moments (of all orders, from 0 to ∞) uniquely determines the shape of the distribution.  
+**Moments** – descriptions of the distribution. For a bounded probability distribution, the collection of all the moments (of all orders, from 0 to infinity) uniquely determines the shape of the distribution.  
 
 * The zeroth central moment ($\int \left ( x-\mu  \right )^{0}Prob(x)\partial x$) is the total probability (i.e. one),  
 * The first central moment ($\int \left ( x-\mu  \right )^{1}Prob(x)\partial x$) is $\mu - \mu = 0$.   

@@ -44,6 +44,7 @@ hist(len)             # what does this do? How could you learn more about this '
  
 library(titanic)              # this 'loads' the package and needs to be done every time you run this script
 
+data("titanic_train")
 head(titanic_train)
 # ?titanic_train              # uncomment and run to learn more about the data
 
@@ -89,7 +90,7 @@ head(my.data)
 
 # Then, we can import data. 
 
-# Don't forget to set your working directory (or just make sure you're using an Rstudio Project). I did it here, just for fun... but remember to use the "Session->Set Working Directory" drop down menu above if you aren't savvy in Terminal talk.
+# Don't forget to set your working directory (or just make sure you're using an Rstudio Project). I did it here, just for fun... 
 
 # setwd("~/Desktop")       # uncomment and run if you want to set the desktop as your working directory.
 

@@ -1,5 +1,5 @@
-"0","par(mfrow=c(4,3))"
-"0","for(i in 2:12){"
+"0","par(mfrow=c(3,2))"
+"0","for(i in seq(2,12,2)){"
 "0","   hist(rbinom(10000,i,.5),main=paste0(""sample size = "",i),xlab=sprintf(""N heads out of %s"",i)) "
 "0","}"
 "0",""
