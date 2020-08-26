@@ -1,9 +1,9 @@
 {
-    "path" : "~/GitHub/NRES-710",
-    "sortOrder" : [
+    "path": "~/GitHub/NRES-710",
+    "sortOrder": [
         {
-            "ascending" : true,
-            "columnIndex" : 2
+            "ascending": true,
+            "columnIndex": 2
         }
     ]
 }
