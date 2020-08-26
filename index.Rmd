@@ -40,7 +40,9 @@ Students will be able to:
 Curious scientific mind, broad research interests, readiness to engage with equations and computer programming. Students are expected to already have a basic understanding of standard statistical concepts and methods, obtained through other coursework. If this is not the case, they should be prepared to work harder to develop the necessary prerequisite knowledge.
 
 ### Required materials
-Students will use the open source statistical software R to perform analyses. Readings and handouts will be provided as appropriate. *All students should bring laptops to each class*; much of class time will be devoted to hands-on learning in R. 
+Readings and handouts will be provided as appropriate. Unless otherwise noted, all readings assigned for a given week should be done before our Wednesday class meetings. All readings will be posted to WebCampus at least a week before they are due.
+
+Students will use the open source statistical software R to perform analyses. *All students should bring laptops to each class*; much of class time will be devoted to hands-on learning in R. 
 
 There are many good R books, but ultimately, most material can be found for free online. For the beginner in statistics or R, I recommend the following:
 
@@ -51,7 +53,7 @@ There are many good R books, but ultimately, most material can be found for free
 
 ### Course structure
 
-Instruction will consist of lessons on general statistical concepts and specific methods commonly used to address questions in ecology and environmental science. Stats lessons will include lecture-style materials, readings, demonstrations, exercises and class discussions.  
+Instruction will consist of lessons on general statistical concepts and specific methods commonly used to address questions in ecology and environmental science. Stats lessons will include lecture-style materials, readings, demonstrations, exercises and class discussions. In general, our Monday class meetings will consist of instructor-led lectures and R demos, and the Wednesday class meetings will consist of student-led discussions.   
 
 There will be one midterm exam and one final project. The midterm exam will be based on stats lessons and will include both a traditional in-class exam and a take-home exam in which you will use R to make inference from provided datasets. 
 
