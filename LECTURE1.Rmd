@@ -1,5 +1,5 @@
 ---
-title: "Basic concepts of Prob. and Stats."
+title: "Basic Concepts of Prob. and Stats."
 author: "NRES 710"
 date: "Fall 2020"
 output: 
@@ -84,7 +84,7 @@ If all samples (and the statistics derived from them) differ from one another, h
 
 ### Aside: probability measures lack of surprise!
 
-**Q**: what is the probability of getting three heads out of 4 coin flips?
+**Q**: what is the probability of getting four heads out of 4 coin flips?
 
 We assume that heads or tails are equally likely outcomes of a single coin flip and that the four flips are completely independent.
 
@@ -107,11 +107,13 @@ HHTH
 HHHT     
 HHHH     
 
-Are each of these outcomes equally likely?
+Are each of these outcomes/sequences equally likely?
 
 How many of the possible outcomes meet our criterion (all heads)? (How many ways are there of getting 4 heads?)
 
 What is the probability of getting all heads?
+
+If you get four heads in a row, are you *surprised* enough by that outcome to reject the assumption that the coin is 'fair'? What about if you got 100 heads in a row?
 
 Probability of a specific outcome = (# ways of getting a specific outcome)/(total number of equally plausible outcomes)
 
@@ -123,23 +125,29 @@ How surprised would you be to flip 4 coins and observe at least three flips with
 
 ## Classical Statistics Part 2 (the null!)
 
-The null hypothesis is simply the notion that the effect you are testing for is absent or inconsequential, or that the question you are asking is testable yet totally false. 
+The null hypothesis is simply the notion that the effect you are testing for is entirely absent. 
 
-The null universe is the universe where the null hypothesis is true. It is this universe that we must dwell in when we practice statistics, at least in classical/frequentist statistics! Therefore in this class we will tend to dwell in the null universe a lot!
+The null universe is the universe where the null hypothesis is true. It is this universe that we must dwell in when we practice statistics, at least in classical/frequentist statistics! Therefore in this class we will tend to dwell in the null universe quite a lot!
 
 **Q** what is the null hypothesis for the height example above?
 
 The *p value* is a key concept of frequentist statistics, but one that is often misinterpreted and misunderstood. 
 
-The p value is simply the probability of obtaining a result at least as extreme as your observed result *in the null universe*. The p value answers the question: "what's the probability that my result (or one even more extreme) could have happened by chance alone?"
+The p value is the probability of obtaining a result at least as extreme as your observed result, *given you are dwelling in the null universe*. The p value answers the question: "what's the probability that my result (or one even more extreme) could have happened by chance alone?"
+
+Another way of stating the p-value:
+
+"Given the null hypothesis is true, how *unsurprised* would you be to observe a *signal* at least as strong as the one you observed?". The lower the p-value, the more surprised you will be that your result could simply be a result of random chance. AND the more likely you might be to reject the null hypothesis (we just can't be living in the null universe- the result is too unlikely!) 
 
 ### Aside: extremeness
 
-When we use the phrase 'at least as extreme as your observed result' we mean a result that would lend even more support for rejecting the null hypothesis than your observed result (a result with even more 'signal' than the observed data). For example, let's imagine the following scenario for the height/last name question:
+When we use the phrase 'at least as extreme as your observed result' we mean a result that would lend even more support for rejecting the null hypothesis than your observed result (a result with even more *signal* than the observed data). For example, let's imagine the following scenario for the height/last name question:
 
-Sample size: 20, 10 with names between A and M and 10 with names between N and Z.        
-Observed summary statistic: mean height for A-M is 2 cm greater than mean height for N-Z     
+Sample size: 20, 10 with names between A and M and 10 with names between N and Z.              
+Observed summary statistic: mean height for A-M is 2 cm greater than mean height for N-Z                  
+
 **Q** What are some results that would lend at least as much support for supporting the notion that the null hypothesis is false??     
+
 **Q** Would you be comfortable rejecting the null hypothesis if random sampling in the null universe yielded mean height differences of 2 cm or greater 20% of the time (p = 0.2)?           
 
 ### Rejecting the null
@@ -148,6 +156,8 @@ We reject the null hypothesis if the chance of the result occurring by random ch
 
 Fisher proposed alpha=0.05 as a nice balance between the probability of mistakenly rejecting a true null hypothesis (Type 1 error), and the probability of failing to reject a false null hypothesis (a Type 2 error). This cutoff value was NEVER intended to be a fixed value to be applied unthinkingly though!!!
 
+Increasingly, scientists are rejecting the threshold of 0.05 and p-values in general. We will discuss this in more detail on Wednesday. 
+
 ### Example: Fisher’s cups of tea: 
 
 A Woman claimed she could tell if milk was added to a cup of tea first or last.
@@ -155,6 +165,8 @@ A Woman claimed she could tell if milk was added to a cup of tea first or last.
 Fisher suggested we give her 8 cups of tea at once, 4 with milk first and 4 with tea first. The woman is asked to identify the four cups that were poured with milk first. 
 
 There are 70 possible ways of choosing four cups out of 8. The probability of getting all of them right by random chance (in the null universe) would be 1/70 = 0.014 = 1.4%. That would be kinda surprising, right (in the null universe that is)? So if the lady selected all four cups correctly, are we surprised enough to reject the null?
+
+**Q**: If we decide to reject the null, what do we now believe about our tea-taster?
 
 Here are the possibilities (X=correct id, O=false id), which in the null universe are equally likely (since the lady can't actually tell the difference!). Let's assume cups 5-8 are milk first and 1-4 are milk last. The number of correct choices is in parentheses...
 
@@ -175,18 +187,19 @@ O1/O2/X6/X8 (2)    O1/O4/X6/X7 (2)    O2/O3/X6/X8 (2)   O3/O4/X6/X7 (2)
 O1/O2/X7/X8 (2)    O1/O4/X6/X8 (2)    O2/O3/X7/X8 (2)   O3/O4/X6/X8 (2)    
 
 
-**Q** what if the lady selected 3 of 4 correctly? [there are 17 ways of getting three of the four correct out of 70 total permutations]. Would you be surprised enough to reject the null hypothesis. Is it possible that you and the lady are living in the null universe? How surprised would you have to be to reject the null universe and admit that she can tell the difference??
+**Q** what if the lady selected 3 of 4 correctly? [there are 17 ways of getting three of the four correct out of 70 total permutations]. Would you be surprised enough to reject the null hypothesis. Is it possible that you (and the lady) are living in the null universe? How surprised would you have to be to reject the null universe and admit that she can tell the difference??
 
+ASIDE: the test above is called 'Fisher's exact test' because it literally enumerates all the possible outcomes to compute the exact probability of observing any particular outcome under the null hypothesis. Most tests we will use in this class are (necessarily) approximations that rely on certain strong assumptions that may or not be met in practice. Fisher's exact test assumes that all observations are independent, but otherwise makes no additional assumptions.
 
 ### Statistics Terminology: Type 1 and Type 2 errors
 
-A type 1 error is mistakenly rejecting a true null hypothesis. 
+A type 1 error is mistakenly rejecting a true null hypothesis (probability of false positive). 
 
-A *p value* is the probability that you collect a sample in the null universe with greater evidence against the null (signal) than your observed data. 
+A *p value* is the probability that you collect a sample in the null universe with at least as much evidence against the null (at least as much signal) than your observed data. 
 
-**Alpha** is the threshold p value above which we are insufficiently convinced that we can reject the null. We usually set the alpha level prior to performing an experiment or collecting data so we ensure a low probability of committing a type 1 error. 
+**Alpha** is the threshold p value below which we are sufficiently convinced (surprised) that we can reject the null. We usually set the alpha level prior to performing an experiment or collecting data so we ensure a low probability of committing a type 1 error. 
 
-You can reject the null if *p* < alpha. Conversely you will fail to reject the null hypothesis if p > alpha (you are insufficiently convinced that you are NOT living in the null universe!)
+You can reject the null if *p* < alpha. Conversely you will fail to reject the null hypothesis if *p* > alpha (you are insufficiently convinced that you are NOT living in the null universe!)
 
 A type 2 error is mistakenly failing to reject a false null hypothesis (you are not living in the null universe but you fail to realize it!)
 
@@ -204,17 +217,19 @@ Finally *Power* is defined as the probability of correctly rejecting an incorrec
 
 A p value is the probability of obtaining a result at least as extreme (containing at least as much 'signal') as the observed result, given you are dwelling in the null universe. 
 
-Usually the 'result' we are referring to is a single 'summary statistic' calculated from our sample -- for example, the sample mean, the standardized difference between two sample means (as in a 2-sample t test), some other signal to noise ratio, or the proportion of a sample that meets some criterion (e.g., proportion red M+Ms).   
+Usually the 'result' we are referring to is a single 'summary statistic' calculated from our sample -- for example, the sample mean, the difference between two sample means relative to sampling error (as in a 2-sample t test), some other signal-to0-noise ratio, or the proportion of a sample that meets some criterion (e.g., proportion red M+Ms).
 
-This implies a multitude of potential results. Your observed result is just one of an infinite number of possible results from some sampling/measurement process. This variation across possible samples/results is called 'sampling variation'
+This implies a multitude of potential results. Your observed result (observed test statistic) is just one of an infinite number of possible results from some sampling/measurement process. This variation across possible samples/results is called 'sampling variation'
 
 Imagine drawing 10 M&Ms from some much larger population of M&Ms in a big jar and counting the proportion of red ones. There are practically countless possible samples we could draw (each one potentially associated with a different proportion of reds), even though there is only one true proportion of red M+Ms in the big jar.
 
 **the truth is fixed but unknown and we can only approach the truth indirectly and imperfectly via sampling**    
 
-We often (if performing a test) start off by pretending we live in the null universe, and we start collecting imaginary samples (LOTS of them) in the null universe. We then determine the probability that these imaginary results are at least as extreme as our observed results. This is our p value. We use our p value, along with our pre-determined type I error rate (level of surprise we need to reject the null universe).
+We often (if performing a test) start off by pretending we live in the null universe, and we start collecting imaginary samples (LOTS of them) in the null universe. We then determine the probability that these simulated results are at least as extreme as our observed results. This is our p value. We use our p value, along with our pre-determined type I error rate (threshold level of surprise we need to reject the null universe).
 
-Even more generally, the goal of statistics (even when not performing a test) is to infer something about a population from a sample. In the yellow-legged frog example, there is a “true” mean body size of frogs in ponds in the central Sierra Nevada. We just don’t know what it is! After collecting the data, statistics might help use to say something about the mean body size in the population -- both about what we know AND what we don't know! In fact, all of statistics is about dealing with uncertainty. We don't need statistics if we have complete certainty!
+## Statistics: inference from a sample
+
+Even more generally, the goal of statistics (even when not performing a test) is to infer something about a population from a sample. In the yellow-legged frog example below, there is a “true” mean body size of frogs in ponds in the central Sierra Nevada. We just don’t know what it is! After collecting the data, statistics might help use to say something about the mean body size in the population -- both about what we know AND what we don't know! In fact, all of statistics is about dealing with uncertainty. We don't need statistics if we have complete certainty!
 
 Yellow-Legged frog example:    
 *Population*: all yellow-legged frogs in ponds in the central Sierra Nevada     
@@ -226,7 +241,7 @@ However, we assume that our sample mean is representative of the population mean
 
 ## The Central Limit Theorem
 
-The Central Limit Theorem (CLT) says that if you have a sample with a reasonably large number of observations, and each observation is randomly sampled, then the mean of those values will be similar to the actual population mean: the mean of ALL yellow-legged frogs in ponds in the central Sierra Nevada. And as the sample size gets bigger, the sample mean will become more representative of the true mean (it will converge on the true mean as sample size approaches infinity).
+The Central Limit Theorem (CLT) says that if you have a sample with a reasonably large number of observations, and each observation is randomly sampled, then the sample mean will be similar to the actual population mean: the mean of ALL yellow-legged frogs in ponds in the central Sierra Nevada. And as the sample size gets bigger, the sample mean will become more representative of the true mean (it will converge on the true mean as sample size approaches infinity).
 
 This is useful, but that's not all. 
 
@@ -234,7 +249,7 @@ The CLT is the magic wand of statistics. It does enormous amounts of work for us
 
 The CLT also implies that the distribution of sample means collected from repeated sampling is approximately normally distributed even if the underlying data themselves are not normally distributed. 
 
-Did you ever wonder why the normal distribution is so common in statistics? It's because of the CLT- many summary statistics derived from a sample are expected to have a sampling distribution that is approximately normally distributed!
+Did you ever wonder why the normal distribution is so common in statistics? It's because of the CLT- many summary statistics derived from a sample are expected to have a sampling distribution that is approximately normally distributed (based on the CLT)!
 
 ![](clt1.png)
 
@@ -322,7 +337,7 @@ Interesting- does this look skewed to you? Doesn't it look like a normal distrib
 It's the CLT at work!!
 
 
-One way to think about this is just that there are more ways of getting a sample mean near the real mean than to get one far away from the sample mean. It doesn't matter what the raw distribution is. Of all the samples you could get, there are very few that are all at one end of the distribution. There are a lot more random samples that span the full distribution of values, from low to high. Take the average af all those values, low and high, and you get something in the middle. The normal distribution is humped right in the middle, becuase of the tendency for low and high observations to 'average out' within a sample. 
+One way to think about this is just that there are more ways of getting a sample mean near the real mean than to get one far away from the sample mean. It doesn't matter what the raw distribution is. Of all the samples you could get, there are very few that are all at one end of the distribution. There are a lot more possible random samples that span the full distribution of values, from low to high. Take the average af all those values, low and high, and you get something in the middle. The normal distribution is humped right in the middle, because of the tendency for low and high observations to 'average out' within a sample. 
 
 This works with coin flips too!
 
@@ -354,7 +369,7 @@ hist(rbinom(10000,1000,.5),xlab="N heads out of 1")
 
 ```
 
-## Replication
+## Replication and pseudoreplication
 
 Let’s explore replication, and what it truly means. 
 
@@ -364,7 +379,7 @@ To start, read the following two popular-press articles, which have to do with s
 
 [The New York Times: "When the revolution came for Amy Cuddy"](https://www.nytimes.com/2017/10/18/magazine/when-the-revolution-came-for-amy-cuddy.html). This was a statistically 'valid' study – and yet when truly “replicated”, power-posing was shown to be largely ineffective. As ecologists, we are all busy trying to adequately replicate our science. But what does that really mean? 
 
-And, while you're on a reading spree, read this [highly influential monograph on 'Pseudoreplication' by Stuart Hurlburt](hurlburt.pdf).  
+Next, read this [highly influential monograph on 'Pseudoreplication' by Stuart Hurlburt](hurlburt.pdf).  
 
 And here's [one more paper for good measure, by Davies and Gray (2015)](daviesandgray.pdf): this is a counter to the Hurlburt article.
 
@@ -392,11 +407,6 @@ Q: How do we know if a result is general, and not a result of just some localize
 *Sample*: 10,000 humans sampled in Sweden    
 *Statistic*: Infection rate in Uppsala (control) vs infection rate in Helsingborg (treatment)    
 
-*Population*: All humans    
-*Parameter*: Effectiveness of a coronavirus vaccine    
-*Sample*: 10,000 humans sampled in Sweden    
-*Statistic*: Infection rate in Uppsala (control) vs infection rate in Helsingborg (treatment)    
-
 *Population*: all yellow-legged frogs in ponds in the central Sierra Nevada     
 *Parameter*: mean body size (SVL) of adult yellow-legged frogs in all ponds in the central Sierra Nevada    
 *Sample*: 3,000 frogs sampled from a pond in the central Sierra Nevada    
@@ -405,7 +415,7 @@ Q: How do we know if a result is general, and not a result of just some localize
 
 The takeaway: you can only convince yourself of the generality of a result if the sample is representative of the population. In experimental design, one way to try to ensure generality is to sample randomly from the population of interest. 
 
-One part of the scientific endeavor is to poke holes in other people's research. Even more so, we poke holes in our own research. If we can convince ourselves of the truth of our result, only then can we feel comfortable sharing the result with the scientific community. That's not out of meanness or masochism, it's out of a search for truth and generality!  
+One part of the scientific endeavor is to poke at other people's research to see if it stands up to scrutiny. Even more so, we poke at in our own research. If we can convince ourselves of the truth of our results and conclusions, only then can we feel comfortable sharing the results with the scientific community. That's not out of meanness or masochism, it's out of a search for truth and generality!  
 
 But the search for the truth is messy. In environmental science, we pseudoreplicate all the time - by necessity. For practical reasons our observations are not always completely independent from one another. Are we ever truly replicating perfectly and sampling sufficiently from our generalized target of inference? In many cases we are not. But that shouldn't stop us from trying to find truth- we just need to proceed with caution! 
 
@@ -416,48 +426,46 @@ We often summarize our samples by their centers (e.g., average) and possibly the
 
 ### "Center" statistics: means, medians, geometric mean      
 
-Sample Mean (arithmetic mean) = sum of all sampled values divided by the sample size
-Sample Median (midway point) = 50% quantile. Order the values and select the value at the center.     
-Sample Geometric mean: product of numbers taken to the nth root. For two numbers, 3 and 4, you’d have the sq root of 3*4 = 3.46
+Sample Mean (arithmetic mean) = sum of all sampled values divided by the sample size     
+Sample Median (midway point) = 50% quantile. Order the values and select the value at the center.          
+Sample Geometric mean: product of numbers taken to the nth root. For two numbers, 3 and 4, you’d have the sq root of 3*4 = 3.46         
 
 ### Data spread, or dispersion: 
 
-Sample Standard Deviation – sigma for population standard deviation, s for the sample standard deviation
-Calculated differently for population than sample
-Sample Variance - Square of the standard deviation   (different from sampling variance)
-Coefficient of variation
-
+Sample Standard Deviation – sigma for population standard deviation, s for the sample standard deviation       
+Calculated differently for population than sample      
+Sample Variance - Square of the standard deviation (different from sampling variance)       
+Coefficient of variation      
 
 #### Std deviation calculation example
 
-For a complete population:  $\sigma = \sqrt{\sum_{n=1}^{i}{\frac{(x_i-\mu)^2}{N}}}$    
+For a complete population:  $\sigma = \sqrt{\sum_{n=1}^{i}{\frac{(x_i-\mu)^2}{N}}}$       
 For a sample (estimating population variance from a sample):  $s = \sqrt{\sum_{n=1}^{i}{\frac{(x_i-\bar{x})^2}{(N-1)}}}$
 
 For example: compute the variance of 5 numbers: 4, 3, 5, 5, 2
 
 $\mu = (4+3+5+5+2)/5 = 3.8$
 
-(4-3.8)^2 = 0.04
-(3-3.8)^2  = 0.64
-(5-3.8)^2 = 1.44
-(5-3.8)^2 = 1.44
-(2-2.8)^2 = 3.24
+(4-3.8)^2 = 0.04     
+(3-3.8)^2  = 0.64     
+(5-3.8)^2 = 1.44     
+(5-3.8)^2 = 1.44     
+(2-3.8)^2 = 3.24     
 
-Sum these  = 6.8
-Divide by 5  = $\sigma$ = 6.8/5 = 1.36   
+Sum these  = 6.8     
+Divide by 5  = $\sigma$ = 6.8/5 = 1.36        
 
 For sample sd (summary statistic for population variance from a sample):    
 
-$\bar{x}$  = (4+3+5+5+2)/5 = 3.8
+$\bar{x}$  = (4+3+5+5+2)/5 = 3.8     
 
-4-3.8^2 = 0.2^2 = 0.04
-3-3.8^2  = 0.64
-5-3.8^2 = 1.44
-5-3.8^2 = 1.44
-2-2.8^2 = 3.24
-Sum these  = 6.8
-Divide by 4  = $s$ = 6.8/4 = 1.7
-
+4-3.8^2 = 0.2^2 = 0.04          
+3-3.8^2  = 0.64     
+5-3.8^2 = 1.44     
+5-3.8^2 = 1.44     
+2-3.8^2 = 3.24          
+Sum these  = 6.8     
+Divide by 4  = $s$ = 6.8/4 = 1.7     
 
 #### Aside: degrees of freedom
 
@@ -475,10 +483,9 @@ The sample standard deviation $s$, on the other hand, is an imperfect estimate o
 
 NOTE: the formula for sample stdev *uses the sample mean*. Therefore, the sample data have already been used once to compute the standard deviation. If the true population mean was different than the sample mean, what would happen to the estimate of stdev if we replaced the sample mean with the true mean? Is it possible that the sample mean is not equal to the true mean?
 
-NOTE ALSO: if you know that four of the five sampled values are 4, 3, 5, and 2 AND we know that the sample mean is 3.8, we know that the final sampled data point MUST be 5. There is no *freedom* there- the data point has to be 5. Therfore, even though we have 5 data points, we have only 4 degrees of freedom since the sample mean is included in the formula for the estimate for sample stdev.  
+NOTE ALSO: if you know that four of the five sampled values are 4, 3, 5, and 2 AND we know that the sample mean is 3.8, we know that the final sampled data point MUST be 5. There is no *freedom* there- the data point has to be 5. Therefore, even though we have 5 data points, we have only 4 degrees of freedom since the sample mean is included in the formula for the estimate for sample stdev.  
 
 By dividing the sum of squared deviations from the sample mean by 4 instead of 5, we are *unbiasing* the estimate of dispersion so that it is a better estimate of the population standard deviation.
-
 
 ## Sampling variance
 
@@ -583,8 +590,8 @@ This is almost easier to conceptualize if we imagine a *paired* design in which,
 So for each patient we compute the change in weight between the first and second measurements. In the null universe, the drug is not effective and we would expect the change to be no greater than expected by random chance. Our task is to convince ourselves that the results (mean weight loss across all patients) are meaningful, allowing us to break free of the null universe.
 
 Remember:
-    - the t statistic is the difference between the sample mean and some hypothesized value, standardized in units of standard error.
-    - the t distribution is the sampling distribution for the t statistic. 
+    - the t statistic is the difference between the sample mean and some hypothesized value, standardized in units of standard error.   
+    - the t distribution is the sampling distribution for the t statistic.    
 
 Here is a worked example, in R:
 
