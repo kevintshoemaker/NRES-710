@@ -1,18 +1,18 @@
 Week,Mon class meeting,Wed class meeting
-Aug. 24,Basics of probability and statistics,Base R demo; hot hand reading; face mask reading
-Aug. 31,Basics of probability and statistics,Central limit theorem demo; p-value reading
-Sept. 7,No Class (labor day),T-test and Z-test demo; New Yorker reading
-Sept. 14,"Analyses: T-test, Chi-squared",Chi-squared test demo; 
-Sept. 21,Analyses: Linear Regression,Linear regression
-Sept. 28,Analyses: ANOVA and posthoc tests,ANOVA
-Oct. 5,Goodness of fit and validation,Model validation
-Oct. 12,REVIEW SESSION,Midterm Exam (10/14/20)
+Aug. 24,Basics of probability and statistics,Discussion: hot hand reading; face mask reading
+Aug. 31,Basics of probability and statistics,Discussion: p-value readings
+Sept. 7,No Class (labor day),Discussion: p-hacking readings
+Sept. 14,Basics of probability and statistics,Discussion: pseudoreplication
+Sept. 21,"Analyses: T-test, Chi-squared",T-test and Z-test demo
+Sept. 28,Analyses: Linear Regression,Linear regression
+Oct. 5,Analyses: ANOVA and posthoc tests,ANOVA
+Oct. 12,Goodness of fit and validation,Model validation
 Oct. 19,Common data 'problems' and solutions,Data checking
 Oct. 26,Data solutions: Transformations,Data 'wrangling'
 Nov. 2,Analyses: Nonparametric tests #1,Rank tests
 Nov. 9,Analyses: Nonparametric tests #2,Other nonparametric analyses
-Nov. 16,Intro to multivariate analysis,Ordination in R
-Nov. 23,Post-ordination statistics,post-ordination in R
+Nov. 16,REVIEW SESSION,Midterm Exam (11/18/20)
+Nov. 23,Intro to multivariate analysis,Ordination in R
 Nov. 30,"Intro to likelihood, Bayesian theory ",Bayesian regression in R
 Dec. 7,Where to go next?,NA
 Dec. 16,Final projects due 5pm,NA
