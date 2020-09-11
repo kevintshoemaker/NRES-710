@@ -3,7 +3,7 @@
     "path": "~/GitHub/NRES-710/LECTURE1.Rmd",
     "project_path": "LECTURE1.Rmd",
     "type": "r_markdown",
-    "hash": "0",
+    "hash": "164424409",
     "contents": "",
     "dirty": false,
     "created": 1593023770676.0,
@@ -11,8 +11,8 @@
     "relative_order": 5,
     "properties": {
         "cursorPosition": "609,15",
-        "last_setup_crc32": "E1E8006D961f6f53",
-        "scrollLine": "600"
+        "last_setup_crc32": "",
+        "scrollLine": "592"
     },
     "folds": "",
     "lastKnownWriteTime": 1599630079,
