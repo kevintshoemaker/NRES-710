@@ -52,8 +52,8 @@ hist(samplemeans,xlab="mean body size (n=30)")
 
 hist(rbinom(10000,1,.5),xlab="N heads out of 1")
 
-par(mfrow=c(4,3))
-for(i in 2:12){
+par(mfrow=c(3,2))
+for(i in seq(2,12,2)){
    hist(rbinom(10000,i,.5),main=paste0("sample size = ",i),xlab=sprintf("N heads out of %s",i)) 
 }
 

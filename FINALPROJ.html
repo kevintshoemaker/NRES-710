@@ -12,7 +12,7 @@
 <meta name="author" content="NRES 710" />
 
 
-<title>Schedule</title>
+<title>Final Project Overview</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,6 +20,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -249,6 +252,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -256,6 +322,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -335,121 +411,67 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Schedule</h1>
+<h1 class="title toc-ignore">Final Project Overview</h1>
 <h4 class="author">NRES 710</h4>
 <h4 class="date">Fall 2020</h4>
 
 </div>
 
 
-<div id="schedule" class="section level2">
-<h2>Schedule</h2>
-<p>Note: this schedule is subject to change. Please check for updates frequently!</p>
-<table>
-<colgroup>
-<col width="9%" />
-<col width="39%" />
-<col width="51%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Week</th>
-<th align="left">Mon. meeting</th>
-<th align="left">Wed. meeting (R mini-lab)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Aug. 24</td>
-<td align="left">Basics of probability and statistics</td>
-<td align="left">Discussion: hot hand reading; face mask reading</td>
-</tr>
-<tr class="even">
-<td align="left">Aug. 31</td>
-<td align="left">Basics of probability and statistics</td>
-<td align="left">Discussion: p-value readings</td>
-</tr>
-<tr class="odd">
-<td align="left">Sept. 7</td>
-<td align="left">No Class (labor day)</td>
-<td align="left">Discussion: p-hacking readings</td>
-</tr>
-<tr class="even">
-<td align="left">Sept. 14</td>
-<td align="left">Basics of probability and statistics</td>
-<td align="left">Discussion: pseudoreplication</td>
-</tr>
-<tr class="odd">
-<td align="left">Sept. 21</td>
-<td align="left">Analyses: T-test, Chi-squared</td>
-<td align="left">T-test and Z-test demo</td>
-</tr>
-<tr class="even">
-<td align="left">Sept. 28</td>
-<td align="left">Analyses: Linear Regression</td>
-<td align="left">Linear regression</td>
-</tr>
-<tr class="odd">
-<td align="left">Oct. 5</td>
-<td align="left">Analyses: ANOVA and posthoc tests</td>
-<td align="left">ANOVA</td>
-</tr>
-<tr class="even">
-<td align="left">Oct. 12</td>
-<td align="left">Goodness of fit and validation</td>
-<td align="left">Model validation</td>
-</tr>
-<tr class="odd">
-<td align="left">Oct. 19</td>
-<td align="left">Common data ‘problems’ and solutions</td>
-<td align="left">Data checking</td>
-</tr>
-<tr class="even">
-<td align="left">Oct. 26</td>
-<td align="left">Data solutions: Transformations</td>
-<td align="left">Data ‘wrangling’</td>
-</tr>
-<tr class="odd">
-<td align="left">Nov. 2</td>
-<td align="left">Analyses: Nonparametric tests #1</td>
-<td align="left">Rank tests</td>
-</tr>
-<tr class="even">
-<td align="left">Nov. 9</td>
-<td align="left">Analyses: Nonparametric tests #2</td>
-<td align="left">Other nonparametric analyses</td>
-</tr>
-<tr class="odd">
-<td align="left">Nov. 16</td>
-<td align="left">REVIEW SESSION</td>
-<td align="left">Midterm Exam (11/18/20)</td>
-</tr>
-<tr class="even">
-<td align="left">Nov. 23</td>
-<td align="left">Intro to multivariate analysis</td>
-<td align="left">Ordination in R</td>
-</tr>
-<tr class="odd">
-<td align="left">Nov. 30</td>
-<td align="left">Intro to likelihood, Bayesian theory</td>
-<td align="left">Bayesian regression in R</td>
-</tr>
-<tr class="even">
-<td align="left">Dec. 7</td>
-<td align="left">Where to go next?</td>
-<td align="left">NA</td>
-</tr>
-<tr class="odd">
-<td align="left">Dec. 16</td>
-<td align="left">Final projects due 5pm</td>
-<td align="left">NA</td>
-</tr>
-</tbody>
-</table>
+<div id="final-projects-expectations" class="section level2">
+<h2>Final projects: expectations</h2>
+<p>The final project is designed to test your ability to understand and apply the tools that you have developed during the semester using R. The project will involve conducting a rigorous data analysis using statistical approaches that we have learned during the semester (or other tools as approved by the instructor). You can choose whichever statistical methods are suitable to your project scope and questions, but they must be methods we covered in class (unless otherwise approved) and appropriate to your data. Please turn in your own work and assignment, but you may use as many resources as you wish (class material, online material, or the insight/experience of other students) to help generate the results and figures.</p>
+<p>The write-up will loosely take the format of a scientific paper to be submitted to a professional journal. However, because of the nature of this course, the most important pieces of the write-up are the <strong>methods</strong> and <strong>results</strong> sections. Nonetheless, I expect at least a few paragraphs introducing the topic and why it’s important, and a few paragraphs discussing the implications of the results. Be concise- include only enough text to convey the important information for each section! See below for details.</p>
+</div>
+<div id="picking-a-topic-and-data-set" class="section level2">
+<h2>Picking a topic and data set</h2>
+<p>I encourage you to talk with your advisor to see if there is a way you can make the final project directly part of your thesis project or at least relevant to your thesis/dissertation project. You will end up spending quite a bit of time on your final projects, so think about what types of analyses you want/need to get to know better as part of your graduate research. If you don’t have a dataset to work with you can choose to work with a public dataset- there are lots of great datasets out there… see <a href="Links.html#Data_links">links page</a></p>
+<div id="project-proposal-1-page-due-sep-23" class="section level4">
+<h4>Project proposal (1 page) (due Sep 23)</h4>
+<p>Please provide a 1-page project description. Make sure you include:</p>
+<ul>
+<li>Project title<br />
+</li>
+<li>Name of researcher<br />
+</li>
+<li>Brief background (motivation for research question)<br />
+</li>
+<li>Research question(s)<br />
+</li>
+<li>Primary and ancillary data sources<br />
+</li>
+<li>Anticipated analytical approach</li>
+</ul>
+</div>
+</div>
+<div id="draft-manuscript" class="section level2">
+<h2>Draft manuscript</h2>
+<p>Here is a more detailed description of expectations for the manuscript.</p>
+<p><strong>Introduction:</strong> Provide enough description so that the reader understands why the research is important and (if appropriate) what research question(s) and/or hypotheses are being addressed. (approx. 2-3 paragraphs)</p>
+<p><strong>Methods:</strong></p>
+<ul>
+<li>Provide just enough details about the data collection to give the reader the context necessary to understand the data.<br />
+</li>
+<li>Provide plenty of detail about the analytical approach- enough detail to replicate the analysis. Justify all decisions that were made and (where appropriate) discuss why you did not use alternative approaches.<br />
+</li>
+<li>Discuss key assumptions.</li>
+</ul>
+<p><strong>Results:</strong> Present all relevant results completely yet concisely. Wherever possible, results should be presented via figures and tables. There is a limit of 4 figures and 2 tables, so choose carefully which figures and tables to present. Figures should be <em>publication quality</em>.</p>
+<p><strong>Discussion:</strong> Write at least two paragraphs that put the results in a larger context (returning to the key research questions) and discuss areas of uncertainty. Potential topics are possible violations of assumptions, and future work that your analysis suggests would be profitable.</p>
+<p><strong>Supplement</strong> Provide all code used to run the analyses presented in the paper as an R script.</p>
+</div>
+<div id="peer-review" class="section level2">
+<h2>Peer review</h2>
+<p>With roughly a month left in the semester, first drafts of your final projects will be due. These first drafts will then be subjected to anonymous peer review. At this time, the assignment itself will not be “graded,” but the assignment will be reviewed by at least two other students, and the reviews will be graded. The reviews are designed to provide feedback on the statistical approach being used. For example, are the stats relevant to the data? Will the stats appropriate to the experimental design? The reviews will be due in</p>
+</div>
+<div id="final-manuscript" class="section level2">
+<h2>Final manuscript</h2>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -482,6 +504,32 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

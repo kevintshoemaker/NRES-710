@@ -23,8 +23,12 @@ navbar:
       href: LECTURE5.html
     - text: Analysis- Multivariate
       href: LECTURE6.html
-  - text: Links
-    href: Links.html
+  - text: More Resources
+    menu:
+    - text: Links 
+      href: Links.html
+    - text: Final Projects 
+      href: FINALPROJ.html
 output:
   html_document:
     lib_dir: site_libs
