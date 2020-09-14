@@ -255,7 +255,7 @@ The CLT is the magic wand of statistics. It does enormous amounts of work for us
 
 The CLT also implies that the distribution of sample means collected from repeated sampling is approximately normally distributed even if the underlying data themselves are not normally distributed. 
 
-Did you ever wonder why the normal distribution is so common in statistics? It's because of the CLT- many summary statistics derived from a sample are expected to have a sampling distribution that is approximately normally distributed (based on the CLT)!
+Did you ever wonder why the normal distribution is so common in statistics? It's because of the CLT- many summary statistics derived from a sample are expected to have a sampling distribution that is *approximately* normally distributed (based on the CLT)!
 
 ![](clt1.png)
 
@@ -266,7 +266,7 @@ How does this work? Let’s use the yellow-legged frog example.
 
 Let’s say that we could measure ALL the frogs in ALL the ponds in CA. What would that look like? 
 
-Let’s simulate it using a log-normal distribution that is strongly right skewed (positively skewed), suggesting that there are a lot of frogs out there that are relatively small-bodied, and a few that are giants! NOTE: this is not biologically realistic, but it makes a point.  
+Let’s simulate it using a log-normal distribution that is strongly right skewed (positively skewed), suggesting that there are a lot of frogs out there that are relatively small-bodied, and a few that are giants! NOTE: this is not necessarily biologically realistic, but it makes a point.  
 
 First, let's set the population/parameter (the truth about which we hope to make inference but can never know in reality)
 
@@ -309,7 +309,7 @@ mean(mysample)   # compute the sample mean
 
 Since sampling is random, sampling will produce a different result every time.
 
-To get a better picture of the sampling variance, lets' sample many times!
+To get a better picture of the sampling variance, let's sample many times!
 
 
 
@@ -422,7 +422,7 @@ One part of the scientific endeavor is to poke at other people's research to see
 But the search for the truth is messy. In environmental science, we pseudoreplicate all the time - by necessity. For practical reasons our observations are not always completely independent from one another. Are we ever truly replicating perfectly and sampling sufficiently from our generalized target of inference? In many cases we are not. But that shouldn't stop us from trying to find truth- we just need to proceed with caution! 
 
 
-## Summary statistics
+## Summary statistics (calculated from sample data)
 
 We often summarize our samples by their centers (e.g., average) and possibly their spread (dispersion)    
 
@@ -475,7 +475,7 @@ OK, so why the different estimate of dispersion for population vs. sample?
 
 Which is larger? Which are we less confident in? 
 
-Has to do with a concept called *degrees of freedom*. 
+This has to do with a concept called *degrees of freedom*. 
 
 Sigma is known. Since you have the entire population measured, you can compute a measure of dispersion for the population and that measure is perfect. It is not an estimate, it is a perfect point value that is known without uncertainty. No bias, perfect precision.
 

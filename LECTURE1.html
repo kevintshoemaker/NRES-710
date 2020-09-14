@@ -572,13 +572,13 @@ O1/O2/X7/X8 (2) O1/O4/X6/X8 (2) O2/O3/X7/X8 (2) O3/O4/X6/X8 (2)</p>
 <p>This is useful, but that’s not all.</p>
 <p>The CLT is the magic wand of statistics. It does enormous amounts of work for us. Why?</p>
 <p>The CLT also implies that the distribution of sample means collected from repeated sampling is approximately normally distributed even if the underlying data themselves are not normally distributed.</p>
-<p>Did you ever wonder why the normal distribution is so common in statistics? It’s because of the CLT- many summary statistics derived from a sample are expected to have a sampling distribution that is approximately normally distributed (based on the CLT)!</p>
+<p>Did you ever wonder why the normal distribution is so common in statistics? It’s because of the CLT- many summary statistics derived from a sample are expected to have a sampling distribution that is <em>approximately</em> normally distributed (based on the CLT)!</p>
 <p><img src="clt1.png" /></p>
 <div id="example" class="section level3">
 <h3>Example</h3>
 <p>How does this work? Let’s use the yellow-legged frog example.</p>
 <p>Let’s say that we could measure ALL the frogs in ALL the ponds in CA. What would that look like?</p>
-<p>Let’s simulate it using a log-normal distribution that is strongly right skewed (positively skewed), suggesting that there are a lot of frogs out there that are relatively small-bodied, and a few that are giants! NOTE: this is not biologically realistic, but it makes a point.</p>
+<p>Let’s simulate it using a log-normal distribution that is strongly right skewed (positively skewed), suggesting that there are a lot of frogs out there that are relatively small-bodied, and a few that are giants! NOTE: this is not necessarily biologically realistic, but it makes a point.</p>
 <p>First, let’s set the population/parameter (the truth about which we hope to make inference but can never know in reality)</p>
 <p><strong>Q</strong> if we could measure the entire population of interest, do we even need statistics???</p>
 <pre class="r"><code>#### ALL FROGS IN CA
@@ -598,7 +598,7 @@ mean(mysample)   # compute the sample mean</code></pre>
 mean(mysample)   # compute the sample mean</code></pre>
 <pre><code>## [1] 4.444531</code></pre>
 <p>Since sampling is random, sampling will produce a different result every time.</p>
-<p>To get a better picture of the sampling variance, lets’ sample many times!</p>
+<p>To get a better picture of the sampling variance, let’s sample many times!</p>
 <pre class="r"><code>lotsofsamples &lt;- list()
 
 for(s in 1:5000){
@@ -678,8 +678,8 @@ A: We draw our sample randomly from the entire population so that our sample is 
 <p>But the search for the truth is messy. In environmental science, we pseudoreplicate all the time - by necessity. For practical reasons our observations are not always completely independent from one another. Are we ever truly replicating perfectly and sampling sufficiently from our generalized target of inference? In many cases we are not. But that shouldn’t stop us from trying to find truth- we just need to proceed with caution!</p>
 </div>
 </div>
-<div id="summary-statistics" class="section level2">
-<h2>Summary statistics</h2>
+<div id="summary-statistics-calculated-from-sample-data" class="section level2">
+<h2>Summary statistics (calculated from sample data)</h2>
 <p>We often summarize our samples by their centers (e.g., average) and possibly their spread (dispersion)</p>
 <div id="center-statistics-means-medians-geometric-mean" class="section level3">
 <h3>“Center” statistics: means, medians, geometric mean</h3>
@@ -720,7 +720,7 @@ Divide by 4 = <span class="math inline">\(s\)</span> = 6.8/4 = 1.7</p>
 <h4>Aside: degrees of freedom</h4>
 <p>OK, so why the different estimate of dispersion for population vs. sample?</p>
 <p>Which is larger? Which are we less confident in?</p>
-<p>Has to do with a concept called <em>degrees of freedom</em>.</p>
+<p>This has to do with a concept called <em>degrees of freedom</em>.</p>
 <p>Sigma is known. Since you have the entire population measured, you can compute a measure of dispersion for the population and that measure is perfect. It is not an estimate, it is a perfect point value that is known without uncertainty. No bias, perfect precision.</p>
 <p>The sample standard deviation <span class="math inline">\(s\)</span>, on the other hand, is an imperfect estimate of dispersion for a much larger population!</p>
 <p><strong>Q</strong> would you expect the sample standard deviation using the first formula (pop stdev) to be biased? Why or why not??</p>
