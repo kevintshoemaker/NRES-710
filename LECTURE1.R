@@ -61,6 +61,81 @@ for(i in seq(2,12,2)){
 hist(rbinom(10000,1000,.5),xlab="N heads out of 1")
 
 
+# pseudoreplication demonstration
+
+meansize.allfrogs <- 1.5    # population mean 
+sdsize.allfrogs <- 0.5     # population sd
+sdsize.amongpond <- 0.44   # standard deviation among ponds 
+
+nponds <- 5000   # total number of ponds in the population
+nfrogs.perpond <- 1000    # 1000 frogs in each pond
+
+
+
+pondmeans <- rnorm(nponds,meansize.allfrogs,sdsize.amongpond)
+ # hist(pondmeans)
+allfrogs <- sapply(pondmeans, function(t) rnorm(nfrogs.perpond,t,sqrt(sdsize.allfrogs^2-sdsize.amongpond^2)) )
+rownames(allfrogs) <- paste0("frog",1:(nfrogs.perpond))
+colnames(allfrogs) <- paste0("pond",1:nponds)
+
+  # confirm that population mean and standard deviation are as specified
+sd(allfrogs)
+mean(allfrogs)
+
+
+nponds.sampled <- 2
+nsamp.perpond <- 50 
+
+ponds.sampled <- sample(1:nponds,nponds.sampled)
+frogs.sampled <- replicate(nponds.sampled,sample(1:nfrogs.perpond,nsamp.perpond))
+
+thissamp <- sapply(1:nponds.sampled,function(t) allfrogs[frogs.sampled[,t],ponds.sampled[t]])
+rownames(thissamp) <- paste0("frog",1:(nsamp.perpond))
+colnames(thissamp) <- paste0("pond",1:nponds.sampled)
+
+head(thissamp)
+
+
+test <- t.test(as.vector(thissamp),mu=1.5,alternative="greater")
+test
+
+
+means <- numeric(1000)
+means.ind <- numeric(1000)
+
+ttest <- numeric(1000)
+ttest.ind <- numeric(1000)
+
+for(scenario in 1:1000){
+  ponds.sampled <- sample(1:nponds,nponds.sampled)
+  frogs.sampled <- replicate(nponds.sampled,sample(1:nfrogs.perpond,nsamp.perpond))
+  
+  thissamp <- sapply(1:nponds.sampled,function(t) allfrogs[frogs.sampled[,t],ponds.sampled[t]])
+  thissamp.ind <- matrix(sample(allfrogs,nsamp.perpond*nponds.sampled),ncol=nponds.sampled)
+  
+  means[scenario] <- mean(thissamp)
+  means.ind[scenario] <- mean(thissamp.ind)
+  
+  test <- t.test(as.vector(thissamp),mu=1.5,alternative="greater")
+  test.ind <- t.test(as.vector(thissamp.ind),mu=1.5,alternative="greater")
+  
+  ttest[scenario] <- test$p.value
+  ttest.ind[scenario] <- test.ind$p.value
+  
+}
+
+
+
+
+layout(matrix(1:2,nrow=1))
+hist(means,xlim=c(0,3))
+hist(means.ind,xlim=c(0,3))
+
+length(which(ttest<0.05))/1000
+
+length(which(ttest.ind<0.05))/1000
+
+
 #######
 # Sampling distribution: the sample mean
 
