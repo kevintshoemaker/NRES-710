@@ -424,33 +424,34 @@ div.tocify {
 </div>
 <div id="overview-of-basic-concepts-of-probability-and-statistics" class="section level2">
 <h2>Overview of basic concepts of probability and statistics</h2>
-<p>Now that we’ve explored data types, we are going to talk about interpreting data! Specifically, through the lens of (frequentist) probability and (classical) statistical tests!</p>
+<p>Now that we’ve explored data types, we are going to talk about making sense of data! Specifically, through the lens of (frequentist) probability and (classical) statistical tests!</p>
 <p>Probability can be tricky. Humans are not very intuitive about probability!</p>
 <p>Yet it’s not just laypeople who are confused by concepts of probability and uncertainty. Statisticians themselves argue about probabilities. For example, the <a href="hothand.pdf">hot hand in basketball</a>.</p>
 <p>Why does this matter to us? Because we have to use probability to make inferences from our data (which is what statistics is all about)!</p>
 </div>
 <div id="classical-statistics-part-1" class="section level2">
 <h2>Classical Statistics Part 1</h2>
-<p>For example, say I asked you… Are people with last names beginning A-M taller than those with last names beginning N-Z?</p>
-<p>As a scientist, what would we do?</p>
-<p>We would want to identify, and then sample, the population!</p>
-<p><img src="statistics1.png" /></p>
-<p><strong>Q</strong>: what is the population here?<br />
+<p>For example, say I asked you: are people with last names beginning A-M taller than those with last names beginning N-Z?<br />
+As a scientist, what would we do?</p>
+<p>We would want to identify, and then sample, the population of interest!</p>
+<p><img src="statistics1.png" /> Unseen population of interest:<br />
+<strong>Q</strong>: what is the population in the above example?<br />
+<strong>Q</strong> what is the parameter in the above example?</p>
+<p>Observed sample from which we can make inference:<br />
 <strong>Q</strong> what is the sample in the above example?<br />
-<strong>Q</strong> what is the parameter in the above example?<br />
 <strong>Q</strong> what is the ‘statistic’ in the above example?</p>
 <p><em>Population</em>: ???<br />
 <em>Parameter</em>: ???<br />
 <em>Sample</em>: ???<br />
-<em>(summary) Statistic</em>: ???</p>
+<em>Statistic</em>: ???</p>
 <p>When we go from the population to the sample, we implicitly make several assumptions about the sample (i.e., that the sample is representative of the population).</p>
-<p>When we make <em>inference</em> about a population-level property (the <em>parameter</em>) from a sample, we use <em>statistics</em>.</p>
-<p>Classical statistics involves computing a <em>summary statistic</em> from the data, and then using a ‘sampling distribution’ to determine whether or not that summary statistic is meaningful or likely a result of random noise.</p>
+<p><em>Statistics</em> is about making <em>inference</em> about a population-level property (the <em>parameter</em>) from a sample.</p>
+<p>Classical statistics involves computing a <em>summary statistic</em> from the data, and then using a (usually theoretical) ‘sampling distribution’ to determine whether or not that summary statistic contains a meaningful signal or is likely to be a result of random noise.</p>
 </div>
 <div id="frequentist-probability-part-1" class="section level2">
 <h2>Frequentist Probability Part 1</h2>
 <p>Where does probability come in? Well, samples are random- and by random we mean that every time we sample from a population can result in a different outcome. Therefore, all <em>statistics</em> derived from samples are random quantities, and will differ with each sample. When something is random, we use probability to quantify how commonplace or unexpected an outcome is. Probability helps us to quantify things that we can’t know with certainty.</p>
-<p>If all samples (and the statistics derived from them) differ from one another, how can we be sure that our statistic (derived from a random sample) is actually telling us something about the population of interest? How can we be convinced that our result is meaningful and not simply an <em>artifact of random sampling</em>?</p>
+<p>If all samples (and the statistics derived from them) differ from one another, how can we be sure that our statistic (derived from a random sample) is actually telling us something about the population of interest (i.e., a true signal)? How can we be convinced that our result is meaningful and not simply an <em>artifact of random sampling</em>?</p>
 <div id="aside-probability-measures-lack-of-surprise" class="section level3">
 <h3>Aside: probability measures lack of surprise!</h3>
 <p><strong>Q</strong>: what is the probability of getting four heads out of 4 coin flips?</p>
@@ -484,13 +485,13 @@ HHHH</p>
 </div>
 <div id="classical-statistics-part-2-the-null" class="section level2">
 <h2>Classical Statistics Part 2 (the null!)</h2>
-<p>The null hypothesis is simply the notion that the effect you are testing for is entirely absent.</p>
+<p>The null hypothesis is simply the notion that the effect you are testing for is entirely absent in the population of interest.</p>
 <p>The null universe is the universe where the null hypothesis is true. It is this universe that we must dwell in when we practice statistics, at least in classical/frequentist statistics! Therefore in this class we will tend to dwell in the null universe quite a lot!</p>
 <p><strong>Q</strong> what is the null hypothesis for the height example above?</p>
 <p>The <em>p value</em> is a key concept of frequentist statistics, but one that is often misinterpreted and misunderstood.</p>
-<p>The p value is the probability of obtaining a result at least as extreme as your observed result, <em>given you are dwelling in the null universe</em>. The p value answers the question: “what’s the probability that my result (or one even more extreme) could have happened by chance alone (given the null hypothesis is true)?”</p>
+<p>The p value is the probability of obtaining a result at least as extreme as your observed result, <em>given you are dwelling in the null universe</em> (the effect you are testing for is entirely absent in the population of interest). The p value answers the question: “what’s the probability that my result (or one even more extreme) could have happened by chance alone, given the null hypothesis is true?”</p>
 <p>Another way of stating the p-value:</p>
-<p>“Given the null hypothesis is true, how <em>unsurprised</em> would you be to observe a <em>signal</em> at least as strong as the one you observed?”. The lower the p-value, the more surprised you will be that your result could simply be a result of random chance. AND the more likely you might be to reject the null hypothesis (we just can’t be living in the null universe- the result is too unlikely!)</p>
+<p>“Given the null hypothesis is true, how <em>unsurprised</em> would you be to observe a <em>signal</em> at least as strong as the one you observed?”. The lower the p-value, the more surprised you will be that your result could simply be a result of random chance in the null universe AND the more likely you might be to reject the null hypothesis (we just can’t be living in the null universe- the result is too unlikely!)</p>
 <div id="aside-extremeness" class="section level3">
 <h3>Aside: extremeness</h3>
 <p>When we use the phrase ‘at least as extreme as your observed result’ we mean a result that would lend even more support for rejecting the null hypothesis than your observed result (a result with even more <em>signal</em> than the observed data). For example, let’s imagine the following scenario for the height/last name question:</p>
@@ -530,7 +531,7 @@ O1/O2/X6/X7 (2) O1/O4/X5/X8 (2) O2/O3/X6/X7 (2) O3/O4/X5/X8 (2)<br />
 O1/O2/X6/X8 (2) O1/O4/X6/X7 (2) O2/O3/X6/X8 (2) O3/O4/X6/X7 (2)<br />
 O1/O2/X7/X8 (2) O1/O4/X6/X8 (2) O2/O3/X7/X8 (2) O3/O4/X6/X8 (2)</p>
 <p><strong>Q</strong> what if the lady selected 3 of 4 correctly? [there are 17 ways of getting three of the four correct out of 70 total permutations]. Would you be surprised enough to reject the null hypothesis. Is it possible that you (and the lady) are living in the null universe? How surprised would you have to be to reject the null universe and admit that she can tell the difference??</p>
-<p>ASIDE: the test above is called ‘Fisher’s exact test’ because it literally enumerates all the possible outcomes to compute the exact probability of observing any particular outcome under the null hypothesis. Most tests we will use in this class are (necessarily) approximations that rely on certain strong assumptions that may or not be met in practice. Fisher’s exact test assumes that all observations are independent, but otherwise makes no additional assumptions.</p>
+<p>ASIDE: the test above is called ‘Fisher’s exact test’ because it literally enumerates all the possible outcomes to compute the exact probability of observing any particular outcome under the null hypothesis. Most tests we will use in this class are (necessarily) approximations that rely on certain assumptions that may or not be met in practice. Fisher’s exact test assumes that all observations are independent, but otherwise makes no additional assumptions.</p>
 </div>
 <div id="statistics-terminology-type-1-and-type-2-errors" class="section level3">
 <h3>Statistics Terminology: Type 1 and Type 2 errors</h3>
@@ -541,16 +542,17 @@ O1/O2/X7/X8 (2) O1/O4/X6/X8 (2) O2/O3/X7/X8 (2) O3/O4/X6/X8 (2)</p>
 <p>A <em>type 2 error</em> is mistakenly failing to reject a false null hypothesis (you are not living in the null universe but you fail to realize it!)</p>
 <p><strong>Beta</strong> is the probability of committing a Type 2 error.</p>
 <p><strong>Q</strong> what would it mean to set the Beta level? Why do we set alpha rather than beta?</p>
-<p><strong>Q</strong> how many universes are there where the null hypothesis is true? How about where the null hypothesis is false?</p>
+<p><strong>Q</strong> Related question: how many universes are there where the null hypothesis is true? How about where the null hypothesis is false?</p>
 <p>Finally <em>Power</em> is defined as the probability of correctly rejecting an incorrect null hypothesis. Power is simply 1-Beta!</p>
+<p>Power is influenced by sample size and effect size (signal strength in the population of interest), among other things. A <em>Power analysis</em> is an attempt to see how much power you have to detect a true signal under a given sampling design.</p>
 <p><img src="clt1.jpg" /></p>
 </div>
 </div>
 <div id="quick-review-of-basic-concepts" class="section level2">
 <h2>Quick Review of Basic Concepts</h2>
-<p>A p value is the probability of obtaining a result at least as extreme (containing at least as much ‘signal’) as the observed result, given you are dwelling in the null universe.</p>
-<p>Usually the ‘result’ we are referring to is a single ‘summary statistic’ calculated from our sample – for example, the sample mean, the difference between two sample means relative to sampling error (as in a 2-sample t test), some other signal-to-noise ratio, or the proportion of a sample that meets some criterion (e.g., proportion red M+Ms).</p>
-<p>This implies a multitude of potential results. Your observed result (observed test statistic) is just one of an infinite number of possible results from some sampling/measurement process. This variation across possible samples/results is called ‘sampling variation’</p>
+<p>A p value is the probability of obtaining a result at least as extreme (containing at least as much ‘signal’) as the observed result due to random sampling, given you are dwelling in the null universe.</p>
+<p>Usually the ‘result’ we are referring to is a single ‘summary statistic’ calculated from our sample and representing the amount of signal in our sample – for example, the sample mean, the difference between two sample means relative to sampling error (as in a 2-sample t test), some other signal-to-noise ratio, or the proportion of a sample that meets some criterion (e.g., proportion red M+Ms).</p>
+<p>This implies a multitude of potential results. Your observed result (observed test statistic) is just one of an infinite number of possible results from some sampling/measurement process. This variation across possible samples/results is called ‘sampling variation’ or ‘sampling error’.</p>
 <p>Imagine buying a random bag of M&amp;Ms from a random convenience store (one of many possible bags you could buy at many possible convenience stores) and counting the proportion of red ones. There are practically countless possible samples (bags) we could get (each one potentially associated with a different proportion of reds), even though there is only one true proportion of red M+Ms in the world. Each dataset you collect is like one bag of M&amp;Ms out a much larger population of potential bags.</p>
 <p><strong>the truth is fixed but unknown and we can only approach the truth indirectly and imperfectly via sampling</strong></p>
 <p>Now imagine we want to test the hypothesis that there are a greater proportion of red M&amp;Ms than other five classic colors– that is, that P(red)&gt;(1/6). We start off by pretending we live in the null universe (first level of pretending in classical statistics), and we start collecting imaginary samples (LOTS of potential bags of M&amp;Ms– this is the second level of pretending!) in the null universe where reds are exactly 1/6 of the population. We then determine the probability that these simulated bags have a greater proportion of reds than our observed results (proportion of reds in our bag). This is our p-value. We use our p-value, along with our pre-determined type I error rate (threshold level of surprise we need to reject the null universe).</p>
@@ -571,11 +573,11 @@ O1/O2/X7/X8 (2) O1/O4/X6/X8 (2) O2/O3/X7/X8 (2) O3/O4/X6/X8 (2)</p>
 <h2>The Central Limit Theorem</h2>
 <p>The Central Limit Theorem (CLT) says that if you have a sample with a reasonably large number of observations, and each observation is randomly sampled, then the sample mean will be similar to the actual population mean: the mean of ALL yellow-legged frogs in ponds in the central Sierra Nevada (how similar? that’s where the t-distribution comes in- we’ll get there). And as the sample size gets bigger, the sample mean will become more representative of the true mean (it will converge on the true mean as sample size approaches infinity).</p>
 <p>The concept of <strong>regression to the mean</strong> is a natural consequence of the Central Limit Theorem!</p>
-<p>[In-class R demo]</p>
+<p>[In-class R demo: regression to the mean]</p>
 <p>This is useful, but that’s not all.</p>
 <p>The CLT is the magic wand of statistics. It does enormous amounts of work for us. Why?</p>
 <p>The CLT also implies that the distribution of sample means collected from repeated sampling is approximately normally distributed even if the underlying data themselves are not normally distributed.</p>
-<p>Did you ever wonder why the normal distribution is so common in statistics? It’s because of the CLT- many summary statistics derived from a sample are expected to have a sampling distribution that is <em>approximately</em> normally distributed (based on the CLT)!</p>
+<p>Did you ever wonder why the normal (Gaussian) distribution is so common in statistics? It’s because of the CLT- many summary statistics derived from a sample are expected to have a sampling distribution that is <em>approximately</em> normally distributed (based on the CLT)!</p>
 <p><img src="clt1.png" /></p>
 <div id="example" class="section level3">
 <h3>Example</h3>
@@ -678,15 +680,17 @@ A: We draw our sample randomly from the entire population so that our sample is 
 <em>Statistic</em>: Sample mean</p>
 <p>The takeaway: you can only convince yourself of the generality of a result if the sample is representative of the population. In experimental design, one way to try to ensure generality is to sample randomly from the population of interest.</p>
 <p>One part of the scientific endeavor is to poke at other people’s research to see if it stands up to scrutiny. Even more so, we poke at in our own research. If we can convince ourselves of the truth of our results and conclusions, only then can we feel comfortable sharing the results with the scientific community. That’s not out of meanness or masochism, it’s out of a search for truth and generality!</p>
-<p>But the search for the truth is messy. In environmental science, we pseudoreplicate all the time - by necessity. For practical reasons our observations are not always completely independent from one another. Are we ever truly replicating perfectly and sampling sufficiently from our generalized target of inference? In many cases we are not. But that shouldn’t stop us from trying to find truth- we just need to proceed with caution!</p>
+<p>But the search for the truth is messy. In environmental science, we pseudoreplicate all the time - by necessity. For practical reasons our observations are not always completely independent from one another.</p>
+<p>Are we ever truly replicating perfectly and sampling sufficiently from our generalized target of inference? In many cases we are not. But that shouldn’t stop us from trying to find truth- we just need to proceed with caution!</p>
 </div>
 </div>
 <div id="assumption-all-data-points-are-independent" class="section level2">
 <h2>Assumption: all data points are independent!</h2>
-<p>Nearly all of the classical statistical analyses and tests we will go over in this class make a very important assumption – that all data points are independent samples from the population of interest. Unfortunately, truly independent data points are far from the norm in ecology and environmental science! When data points are not independent, the information content of the sample (relative to the population of interest) is reduced. When we treat non-independent data points as independent we are committing pseudoreplication! Pseudoreplication, when left ‘untreated’ (i.e., subjected to statistical analyses that account for sources of non-independence), can result in using statistical methods that mistakenly assume that you have more information than you actually have.</p>
-<div id="r-demo-non-independence-and-sampling-distributions" class="section level3">
-<h3>R demo: non-independence and sampling distributions</h3>
-<p>Let’s see what happens to sampling distributions with and without pseudoreplication. We are interested in testing whether mountain yellow-legged frogs in the cascade range tend to be heavier than frogs in the sierra nevada (which we know to be 1.5 g from previous studies). We take a sample of 100 individuals: 20 from each of 5 ponds.</p>
+<p>Nearly all of the classical statistical analyses and tests we will go over in this class make a very important assumption – that all data points are independent samples drawn from the population of interest. Unfortunately, truly independent data points are far from the norm in ecology and environmental science! When data points are not independent, the information content of the sample (relative to the population of interest) is reduced. Does this make sense? When we treat non-independent data points as independent we are committing pseudoreplication!</p>
+<p>Pseudoreplication, when left ‘untreated’ (i.e., subjected to statistical analyses that account for sources of non-independence), can result in using statistical methods inappropriately – mistakenly assuming that you have more information than you actually have.</p>
+<div id="demo-non-independence-and-sampling-distributions" class="section level3">
+<h3>Demo: non-independence and sampling distributions</h3>
+<p>Let’s see what happens to sampling distributions with and without pseudoreplication. We are interested in testing whether mountain yellow-legged frogs in the cascade range tend to be heavier than frogs in the sierra nevada (which we know to be 1.5 g from previous studies). We take a sample of 100 individuals: 50 from each of 2 ponds.</p>
 <p>We assume that frogs from the two mountain ranges are the same size on average (null hypothesis is true) and that the distribution of sizes is Gaussian. However, individuals from the same pond tend to be more similar to one another than individuals sampled from other ponds. Here is the scenario:</p>
 <pre class="r"><code># pseudoreplication demonstration
 
@@ -708,7 +712,7 @@ sd(allfrogs)</code></pre>
 <pre><code>## [1] 0.4986642</code></pre>
 <pre class="r"><code>mean(allfrogs)</code></pre>
 <pre><code>## [1] 1.511712</code></pre>
-<p>Okay, now we have a population of frogs. Now we need to sample from this population!! Remember that for practical reasons we are only able to sample from 5 ponds.</p>
+<p>Okay, now we have a population of frogs. Now we need to sample from this population!! Remember that for practical reasons we are only able to sample from 2 ponds.</p>
 <pre class="r"><code>nponds.sampled &lt;- 2
 nsamp.perpond &lt;- 50 
 
@@ -727,7 +731,7 @@ head(thissamp)</code></pre>
 ## frog4 2.563914 1.636544
 ## frog5 2.249525 2.043594
 ## frog6 1.839806 2.153330</code></pre>
-<p>Okay, now that we have sampled data, let’s run a t-test to see if the mean in our sample is different from 1.5</p>
+<p>Okay, now that we have collected our sample, let’s run a t-test to see if the mean in our sample is different from 1.5</p>
 <pre class="r"><code>test &lt;- t.test(as.vector(thissamp),mu=1.5,alternative=&quot;greater&quot;)
 test</code></pre>
 <pre><code>## 
@@ -774,6 +778,9 @@ hist(means.ind,xlim=c(0,3))</code></pre>
 <pre><code>## [1] 0.423</code></pre>
 <pre class="r"><code>length(which(ttest.ind&lt;0.05))/1000</code></pre>
 <pre><code>## [1] 0.091</code></pre>
+<p>In the pseudoreplicated design, we have a ca. 40% chance of incorrectly rejecting the null hypothesis with nominal alpha = 0.05! With independent samples the rate is around 0.05 as it should be.</p>
+<p>Try running this script with less egregious pseudoreplication- e.g., with 5 ponds with 20 frogs each. How much does this improve the result??</p>
+<p>NOTE: in the above example, the only reason pseudoreplication is a problem is that we are incorrectly assuming that the sampling distribution of our test statistic resembles the histogram on the right (independent samples). If we used the sampling distribution on the left (which correctly accounts for pseudoreplication) there would be no issue – except that we would need to see much more extreme results in order to reject our null hypothesis!</p>
 </div>
 </div>
 <div id="summary-statistics-calculated-from-sample-data" class="section level2">
@@ -787,17 +794,19 @@ Sample Geometric mean: product of numbers taken to the nth root. For two numbers
 </div>
 <div id="data-spread-or-dispersion" class="section level3">
 <h3>Data spread, or dispersion:</h3>
-<p>Sample Standard Deviation – sigma for population standard deviation, s for the sample standard deviation<br />
-Calculated differently for population than sample<br />
-Sample Variance - Square of the standard deviation (different from sampling variance)<br />
-Coefficient of variation</p>
+<p>Sample Standard Deviation – sigma (<span class="math inline">\(\sigma\)</span>) for population standard deviation, <em>s</em> for the sample standard deviation.</p>
+<p>Standard deviations and variances are calculated differently depending on whether we are computing these quantities for an entire population of interest vs a sample drawn from a larger population!<br />
+The variance of a sample (<span class="math inline">\(s^2\)</span>) or the variance of the population parameter (<span class="math inline">\(\sigma^2\)</span>) can be computed as the square of the standard deviation.</p>
+<p>The variance represents the average squared difference from the mean. The standard deviation represents the square root of the average squared difference from the mean.</p>
+<p>Standard deviation is much more commonly reported than variance because it is in the same units/scale as the original measurements.</p>
+<p>Coefficient of variation (cv) is the standard deviation represented as a fraction of the mean. The cv only has meaning for <em>ratio data</em>.</p>
 <div id="std-deviation-calculation-example" class="section level4">
 <h4>Std deviation calculation example</h4>
-<p>For a complete population: <span class="math inline">\(\sigma = \sqrt{\sum_{n=1}^{i}{\frac{(x_i-\mu)^2}{N}}}\)</span><br />
+<p>For a population: <span class="math inline">\(\sigma = \sqrt{\sum_{n=1}^{i}{\frac{(x_i-\mu)^2}{N}}}\)</span><br />
 For a sample (estimating population variance from a sample): <span class="math inline">\(s = \sqrt{\sum_{n=1}^{i}{\frac{(x_i-\bar{x})^2}{(N-1)}}}\)</span></p>
 <p>For example: compute the variance of 5 numbers: 4, 3, 5, 5, 2</p>
 <p><span class="math inline">\(\mu = (4+3+5+5+2)/5 = 3.8\)</span></p>
-<p>(4-3.8)^2 = 0.04<br />
+<p>(4-3.8)^2 = 0.2^2 = 0.04<br />
 (3-3.8)^2 = 0.64<br />
 (5-3.8)^2 = 1.44<br />
 (5-3.8)^2 = 1.44<br />
@@ -805,34 +814,36 @@ For a sample (estimating population variance from a sample): <span class="math i
 <p>Sum these = 6.8<br />
 Divide by 5 = <span class="math inline">\(\sigma\)</span> = 6.8/5 = 1.36</p>
 <p>For sample sd (summary statistic for population variance from a sample):</p>
-<p><span class="math inline">\(\bar{x}\)</span> = (4+3+5+5+2)/5 = 3.8</p>
-<p>4-3.8^2 = 0.2^2 = 0.04<br />
-3-3.8^2 = 0.64<br />
-5-3.8^2 = 1.44<br />
-5-3.8^2 = 1.44<br />
-2-3.8^2 = 3.24<br />
-Sum these = 6.8<br />
+<p><span class="math inline">\(\bar{x} = (4+3+5+5+2)/5 = 3.8\)</span></p>
+<p>(4-3.8)^2 = 0.2^2 = 0.04<br />
+(3-3.8)^2 = 0.64<br />
+(5-3.8)^2 = 1.44<br />
+(5-3.8)^2 = 1.44<br />
+(2-3.8)^2 = 3.24</p>
+<p>Sum these = 6.8<br />
 Divide by 4 = <span class="math inline">\(s\)</span> = 6.8/4 = 1.7</p>
+<p>So the population sd is 1.36 whereas the sample sd is 1.7.</p>
 </div>
 <div id="aside-degrees-of-freedom" class="section level4">
 <h4>Aside: degrees of freedom</h4>
 <p>OK, so why the different estimate of dispersion for population vs. sample?</p>
 <p>Which is larger? Which are we less confident in?</p>
 <p>This has to do with a concept called <em>degrees of freedom</em>.</p>
-<p>Sigma is known. Since you have the entire population measured, you can compute a measure of dispersion for the population and that measure is perfect. It is not an estimate, it is a perfect point value that is known without uncertainty. No bias, perfect precision.</p>
+<p>Sigma is known. Since you have the entire population measured, you can compute a measure of dispersion for the population and that measure is perfect. It is not an estimate, it is a perfect point value that is known with certainty and that represents the square root of the average squared difference from the mean. No bias, perfect precision.</p>
 <p>The sample standard deviation <span class="math inline">\(s\)</span>, on the other hand, is an imperfect estimate of dispersion for a much larger population!</p>
-<p><strong>Q</strong> would you expect the sample standard deviation using the first formula (pop stdev) to be biased? Why or why not??</p>
-<p>NOTE: the formula for sample stdev <em>uses the sample mean</em>. Therefore, the sample data have already been used once to compute the standard deviation. If the true population mean was different than the sample mean, what would happen to the estimate of stdev if we replaced the sample mean with the true mean? Is it possible that the sample mean is not equal to the true mean?</p>
-<p>NOTE ALSO: if you know that four of the five sampled values are 4, 3, 5, and 2 AND we know that the sample mean is 3.8, we know that the final sampled data point MUST be 5. There is no <em>freedom</em> there- the data point has to be 5. Therefore, even though we have 5 data points, we have only 4 degrees of freedom since the sample mean is included in the formula for the estimate for sample stdev.</p>
+<p><strong>Q</strong> would you expect the sample standard deviation using the first formula (pop stdev) to be biased? Why or why not?? In what direction would it be biased?</p>
+<p>NOTE: the formula for sample stdev <em>uses the sample mean</em>. Therefore, the sample data have already been used once to compute the standard deviation. If the true population mean was different than the sample mean, what would happen to the estimate of stdev if we replaced the sample mean with the true mean? Is it possible that the sample mean is not equal to the true mean? (of course it is!!)</p>
+<p>NOTE ALSO: if you know that four of the five sampled values are 4, 3, 5, and 2 AND we know that the sample mean is 3.8, we know that the final sampled data point MUST be 5. There is no <em>freedom</em> there- the data point has to be 5. Therefore, even though we have 5 data points, we have only 4 <em>degrees of freedom</em> since the sample mean is included in the formula for the estimate for sample stdev. That is, we have four independent pieces of information that we can use for computing standard deviation (we ‘spent’ one degree of freedom already to compute the sample mean!).</p>
 <p>By dividing the sum of squared deviations from the sample mean by 4 instead of 5, we are <em>unbiasing</em> the estimate of dispersion so that it is a better estimate of the population standard deviation.</p>
 </div>
 </div>
 </div>
-<div id="sampling-variance" class="section level2">
-<h2>Sampling variance</h2>
+<div id="sampling-variance-variance-among-hypothetical-sample-summary-statistics" class="section level2">
+<h2>Sampling variance (variance among hypothetical sample summary statistics)</h2>
+<p>NOTE: sampling variance is NOT the same thing as the variance of a sample!</p>
 <p>Review: we collect a random sample from a population. We want to know something about the population, but any summary statistic we compute from the sample (e.g., mean, median, variance, stdev, whatever!) will be an imperfect estimate of the true population parameter. So what do we do? How can we truly make inference about the population??</p>
-<p>First, we need to know something about the sampling variance. We know that the summary statistic will be different for every sample we collect, but <em>how different, really???</em></p>
-<p>Statisticians have used probability calculus to work out the sampling distributions (often called sampling variance) for some common summary statistics. For example, the sample mean (super common summary statistics) has a sampling distribution that is centered on the sample mean (or zero, if living in the null universe) and follows a t-distribution (similar to the normal distribution) described by the standard error of the mean and degrees of freedom of N-1. Let’s dissect this one!</p>
+<p>First, we need to know something about the sampling variance. We know the summary statistic will be different for every sample we collect, but <em>how different, really???</em>. How surprised should be be to get a sample statistic as or more extreme than a particular observation under the null hypothesis? What does the sample really tell us about the population of interest??</p>
+<p>Statisticians have used probability calculus to work out the sampling distributions (often called sampling variance) for some common summary statistics. For example, the sample mean (super common summary statistic) has a theoretical sampling distribution that follows the t-distribution (N-1 degrees of N-1 for a single sample) and is centered on your null hypothesis value (e.g., zero) with dispersion described by the standard error of the mean. Let’s dissect this one!</p>
 <div id="standard-error-of-the-mean" class="section level3">
 <h3>Standard error of the mean</h3>
 <p>Standard error of the mean = sample std deviation divided by the square root of the sample size</p>
@@ -859,8 +870,8 @@ abline(v=sample.mean,col=&quot;green&quot;,lwd=3)
 confint &lt;- c(sample.mean+std.error*qt(0.025,n-1),sample.mean+std.error*qt(0.975,n-1))
 abline(v=confint,col=&quot;blue&quot;,lty=2)</code></pre>
 <p><img src="LECTURE1_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-<p>The vertical blue lines indicate the <em>confidence interval</em> around the mean with the <em>confidence level</em> set at 95%. We will talk about confidence intervals a lot more, but just know that about 95% of sample means should fall within the 95% confidence interval if the true population mean were equal to the sample mean (Note that we are assuming here that the sample mean is equal to the population mean). The confidence interval helps us visualize what might happen if we repeated our sampling over and over and over- how might our summary statistic change?</p>
-<p>Note the use of the <em>t distribution</em> in the above code block. The t distribution represents the sampling variation that you would expect to observe for the sample mean if you collected many many samples of the same size as yours (see more details below).</p>
+<p>The vertical blue lines indicate the <em>confidence interval</em> around the mean with the <em>confidence level</em> set at 95%. We will talk about confidence intervals a lot more, but just know that about 95% of such confidence intervals generated from random samples should include the true mean. The confidence interval helps us visualize what might happen if we repeated our sampling over and over and over- how might our summary statistic change?</p>
+<p>Note the use of the <em>t distribution</em> in the above code block. The t distribution represents the sampling variation that you would expect to observe around the sample mean (or an arbitrary hypothesized value) if you collected many many samples of the same size as yours (see more details below). The t distribution is expressed in units of standard error.</p>
 <p>Just to cement this concept, let’s compare the distribution above (based on a t distribution) with a brute-force simulation method!</p>
 <pre class="r"><code>#######
 # Sampling distribution: the sample mean #2 (brute force simulation version)
@@ -886,19 +897,18 @@ curve(sampdist,0,11,xlim=c(0,11),xaxt=&quot;n&quot;,yaxt=&quot;n&quot;,xlab=&quo
 abline(v=sample.mean,col=&quot;green&quot;,lwd=3)</code></pre>
 <p><img src="LECTURE1_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>Not a bad match right? Obviously it’s easier and faster to use the t distribution (and more accurate) to approximate the sampling distribution, but I hope this helps to cement the concept!!</p>
-<p>NOTE: the t distribution accounts for uncertainty in the sample variance, which is why I did not just use the sample variance in the code block above (if I had, you would see that the t distribution had ‘heavier tails’ than the brute force distribution)</p>
+<p>NOTE: the t distribution accounts for uncertainty about the true population variance as well as the true population mean, which is why I did not just use the sample variance in the code block above (if I had, you would see that the t distribution had ‘heavier tails’ than the brute force distribution)</p>
 </div>
 </div>
 <div id="the-t-statistic-signal-to-noise-ratio-for-comparing-1-or-2-means" class="section level2">
 <h2>The t statistic: signal to noise ratio for comparing 1 or 2 means</h2>
-<p>The <em>t statistic</em> (not the same thing as the t distribution) is just another summary statistic that we can calculate from a sample. In this way it is no different from the sample mean or the standard deviation. But, since it has a simple, well described sampling variance, it helps us perform rigorous hypothesis tests and is therefore a very useful summary statistic!</p>
+<p>The <em>t statistic</em> (the t distribution is the theoretical sampling distribution for the t-statistic) is just another summary statistic that we can calculate from a sample. In this way it is no different from the sample mean or the standard deviation. But, since it has a simple, well described sampling variance, it helps us perform rigorous hypothesis tests and is therefore a very useful summary statistic!</p>
 <p>Mathematically, <em>t</em> is the ratio of the departure of the sample mean from its hypothesized value to its standard error:</p>
 <p><span class="math inline">\(t = \frac{(\bar{x}-\mu_0)}{s.e.}\)</span></p>
 <p>Let’s assume that we are living in a null universe, and that our null hypothesis is that the sample mean is equal to zero.</p>
-<p>This is almost easier to conceptualize if we imagine a <em>paired</em> design in which, say, a set of individuals are monitored at two points in time: before a treatment and after. Let’s imagine we are researching the effectiveness of a weight loss drug. We sample 25 overweight patients and weigh them before they start taking the drug and then weigh all of them 1 month after they start taking the drug. Never mind that this isn’t the best drug trial!</p>
+<p>This is almost easier to conceptualize if we imagine a <em>paired</em> design in which, say, a set of individuals are monitored at two points in time: before a treatment and after. Let’s imagine we are researching the effectiveness of a weight loss drug. We sample 25 overweight patients and weigh them before they start taking the drug and then weigh all of them 1 month after they start taking the drug. Never mind that this isn’t the best drug trial design!</p>
 <p>So for each patient we compute the change in weight between the first and second measurements. In the null universe, the drug is not effective and we would expect the change to be no greater than expected by random chance. Our task is to convince ourselves that the results (mean weight loss across all patients) are meaningful, allowing us to break free of the null universe.</p>
-<p>Remember: - the t statistic is the difference between the sample mean and some hypothesized value, standardized in units of standard error.<br />
-- the t distribution is the sampling distribution for the t statistic.</p>
+<p>Remember: - the t statistic is the difference between the sample mean and some hypothesized value, standardized in units of standard error. - in classical null hypothesis testing, the t statistic represents the difference in standard errors between your sample mean and the hypothesized true mean. - the t distribution is the sampling distribution for the t statistic.</p>
 <p>Here is a worked example, in R:</p>
 <pre class="r"><code>## Paired t-test example:
 
@@ -936,7 +946,7 @@ t.test(weightloss.data,alternative = &quot;less&quot;)   # should get the same p
 ##   -4.7625</code></pre>
 <p><strong>Q</strong> Does a significant p value here mean that everyone who takes the drug will lose weight? If not, what does it mean?</p>
 <p>NOTE: as the df gets large, the t distribution approximates a <em>standard normal</em> distribution.</p>
-<p>Fun fact: William Sealy Gosset – a student of Pearson, worked at Guinness brewery. He was hired to work out a way to determine the quality of stout. He published anonymously as ‘student’ because Guinness prevented its employees from publishing. That’s why we call it the ‘Student’s t-test’!</p>
+<p>Fun fact: William Sealy Gosset – a student of Pearson, worked at Guinness brewery. He was hired to work out a way to determine the quality of stout. He published anonymously as ‘Student’ because Guinness prevented its employees from publishing. That’s why we call it the ‘Student’s t-test’!</p>
 </div>
 <div id="other-statistics-and-sampling-distributions" class="section level2">
 <h2>Other statistics and sampling distributions</h2>
