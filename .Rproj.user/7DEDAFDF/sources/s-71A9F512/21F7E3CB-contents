@@ -775,7 +775,15 @@ t.test(weightloss.data,alternative = "less")   # should get the same p=value!
 
 NOTE: as the df gets large, the t distribution approximates a *standard normal* distribution.
 
-Fun fact: William Sealy Gosset – a student of Pearson, worked at Guinness brewery. He was hired to work out a way to determine the quality of stout. He published anonymously as 'Student' because Guinness prevented its employees from publishing. That's why we call it the 'Student's t-test'! 
+Fun fact: William Sealy Gosset – a student of Pearson, worked at Guinness brewery. He was hired to work out a way to determine the quality of stout. He published anonymously as 'Student' because Guinness prevented its employees from publishing. That's why we call it the 'Student's t-test'!
+
+
+## Confidence intervals
+
+Confidence intervals, like p-values are super commonly used and are misinterpreted almost as often as they are used! 
+
+Remember that in classical, frequentist statistics, the population parameter of interest is fixed- there is no uncertainty associated with the population parameter itself -- it's just that we can only collect and assess a small sample from the much larger population. So it does not make sense to say something like "the parameter has a 90% chance of falling within the confidence interval". The true parameter is either in the interval (100% probability) or it is not in the interval (0% probability). All we can say is something more like "90% of confidence intervals generated from different random samples would contain the true parameter".   
+
 
 
 ## Other statistics and sampling distributions
