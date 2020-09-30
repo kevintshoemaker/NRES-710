@@ -1,18 +1,30 @@
 Week,Mon class meeting,Wed class meeting
-Aug. 24,Basics of probability and statistics,Discussion: hot hand reading; face mask reading
-Aug. 31,Basics of probability and statistics,Discussion: p-value readings
+Aug. 24,"Intro, Overview, Data types ",Discussion: hot hand reading; face mask reading
+Aug. 31,"P-values, sampling",Discussion: p-value readings
 Sept. 7,No Class (labor day),Discussion: p-hacking readings
-Sept. 14,Basics of probability and statistics,Discussion: pseudoreplication
-Sept. 21,"Analyses: T-test, Chi-squared",T-test and Z-test demo
-Sept. 28,Analyses: Linear Regression,Linear regression
-Oct. 5,Analyses: ANOVA and posthoc tests,ANOVA
-Oct. 12,Goodness of fit and validation,Model validation
-Oct. 19,Common data 'problems' and solutions,Data checking
-Oct. 26,Data solutions: Transformations,Data 'wrangling'
-Nov. 2,Analyses: Nonparametric tests #1,Rank tests
-Nov. 9,Analyses: Nonparametric tests #2,Other nonparametric analyses
-Nov. 16,REVIEW SESSION,Midterm Exam (11/18/20)
+Sept. 14,"Replication, sampling distributions",Discussion: pseudoreplication
+Sept. 21,"Central limit theorem, data simulation",Discussion: final projects
+Sept. 28,"Data independence, t distribution",Discussion: code and data sharing
+Oct. 5,"Confidence intervals, probability in R",R exercise: probability distributions
+Oct. 12,"T-tests, z-tests","R exercise: t-test, z-test"
+Oct. 19,Analyses: Linear Regression,Linear regression
+Oct. 26,Analyses: ANOVA and posthoc tests,Midterm Exam (10/28/20)
+Nov. 2,Analyses: mixed-effects models,Mixed-effects models
+Nov. 9,Goodness of fit and validation,Model validation
+Nov. 16,Analyses: Nonparametric tests #1,Rank tests
 Nov. 23,Intro to multivariate analysis,Ordination in R
 Nov. 30,"Intro to likelihood, Bayesian theory ",Bayesian regression in R
 Dec. 7,Where to go next?,NA
 Dec. 16,Final projects due 5pm,NA
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,REVIEW SESSION,
