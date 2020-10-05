@@ -506,6 +506,14 @@ Observed summary statistic: mean height for A-M is 2 cm greater than mean height
 <p>Fisher proposed alpha=0.05 as a nice balance between the probability of mistakenly rejecting a true null hypothesis (Type 1 error), and the probability of failing to reject a false null hypothesis (a Type 2 error). This cutoff value was NEVER intended to be a fixed value to be applied unthinkingly!!! In addition, it made computation easier in the days of the slide rule!</p>
 <p>Increasingly, scientists are rejecting the threshold of 0.05 and many are rejecting p-values in general.</p>
 </div>
+<div id="the-p-value-good-or-evil" class="section level3">
+<h3>The p-value: good or evil?</h3>
+<p>There has been a lot of hating on p-values in recent decades. Largely this is due to frequent misinterpretation of what they mean, unthinking use of the alpha=0.05 threshold, and failure to report other important pieces of information like effect sizes and confidence intervals (reporting only p-values is called the ‘naked p-value’ phenomenon!).</p>
+<p>The American Statistical Association (ASA) released a statement about p-values and their misuse:</p>
+<p><a href="pval_asa1.pdf">Summary of ASA statement</a><br />
+<a href="pval_asa2.pdf">ASA statement</a></p>
+<p>P-values remain very important and widely used and reported. But we need to keep in mind the common pitfalls and try to avoid them!</p>
+</div>
 <div id="example-fishers-cups-of-tea" class="section level3">
 <h3>Example: Fisher’s cups of tea:</h3>
 <p>A Woman claimed she could tell if milk was added to a cup of tea first or last.</p>
@@ -843,7 +851,7 @@ Divide by 4 = <span class="math inline">\(s\)</span> = 6.8/4 = 1.7</p>
 <p>NOTE: sampling variance is NOT the same thing as the variance of a sample!</p>
 <p>Review: we collect a random sample from a population. We want to know something about the population, but any summary statistic we compute from the sample (e.g., mean, median, variance, stdev, whatever!) will be an imperfect estimate of the true population parameter. So what do we do? How can we truly make inference about the population??</p>
 <p>First, we need to know something about the sampling variance. We know the summary statistic will be different for every sample we collect, but <em>how different, really???</em>. How surprised should be be to get a sample statistic as or more extreme than a particular observation under the null hypothesis? What does the sample really tell us about the population of interest??</p>
-<p>Statisticians have used probability calculus to work out the sampling distributions (often called sampling variance) for some common summary statistics. For example, the sample mean (super common summary statistic) has a theoretical sampling distribution that follows the t-distribution (N-1 degrees of N-1 for a single sample) and is centered on your null hypothesis value (e.g., zero) with dispersion described by the standard error of the mean. Let’s dissect this one!</p>
+<p>Statisticians have used probability calculus to work out the sampling distributions (often called sampling variance) for some common summary statistics. For example, the sample mean (super common summary statistic) has a theoretical sampling distribution that follows the t-distribution (N-1 degrees of freedom for a single sample) and is centered on a hypothetical value (e.g., zero under many null hypotheses, or the sample mean when you are generating a confidence interval) with dispersion described by the standard error of the mean. Let’s dissect this one!</p>
 <div id="standard-error-of-the-mean" class="section level3">
 <h3>Standard error of the mean</h3>
 <p>Standard error of the mean = sample std deviation divided by the square root of the sample size</p>
@@ -896,7 +904,7 @@ par(new=T)
 curve(sampdist,0,11,xlim=c(0,11),xaxt=&quot;n&quot;,yaxt=&quot;n&quot;,xlab=&quot;&quot;,ylab=&quot;&quot;,col=&quot;red&quot;,lwd=2)  # official sampling distribution
 abline(v=sample.mean,col=&quot;green&quot;,lwd=3)</code></pre>
 <p><img src="LECTURE1_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<p>Not a bad match right? Obviously it’s easier and faster to use the t distribution (and more accurate) to approximate the sampling distribution, but I hope this helps to cement the concept!!</p>
+<p>Not a bad match right? Obviously it’s easier and faster (and more accurate) to use the t distribution to approximate the sampling distribution, but I hope this helps to cement the concept!!</p>
 <p>NOTE: the t distribution accounts for uncertainty about the true population variance as well as the true population mean, which is why I did not just use the sample variance in the code block above (if I had, you would see that the t distribution had ‘heavier tails’ than the brute force distribution)</p>
 </div>
 </div>
@@ -908,7 +916,7 @@ abline(v=sample.mean,col=&quot;green&quot;,lwd=3)</code></pre>
 <p>Let’s assume that we are living in a null universe, and that our null hypothesis is that the sample mean is equal to zero.</p>
 <p>This is almost easier to conceptualize if we imagine a <em>paired</em> design in which, say, a set of individuals are monitored at two points in time: before a treatment and after. Let’s imagine we are researching the effectiveness of a weight loss drug. We sample 25 overweight patients and weigh them before they start taking the drug and then weigh all of them 1 month after they start taking the drug. Never mind that this isn’t the best drug trial design!</p>
 <p>So for each patient we compute the change in weight between the first and second measurements. In the null universe, the drug is not effective and we would expect the change to be no greater than expected by random chance. Our task is to convince ourselves that the results (mean weight loss across all patients) are meaningful, allowing us to break free of the null universe.</p>
-<p>Remember: - the t statistic is the difference between the sample mean and some hypothesized value, standardized in units of standard error. - in classical null hypothesis testing, the t statistic represents the difference in standard errors between your sample mean and the hypothesized true mean. - the t distribution is the sampling distribution for the t statistic.</p>
+<p>Remember: - the t statistic is the difference between the sample mean and some hypothesized value, standardized in units of standard error. - in classical null hypothesis testing, the t statistic represents the difference in standard errors between your sample mean and the hypothetical true mean (e.g., under the null hypothesis). - the t distribution is the sampling distribution for the t statistic.</p>
 <p>Here is a worked example, in R:</p>
 <pre class="r"><code>## Paired t-test example:
 
@@ -927,7 +935,9 @@ t.statistic</code></pre>
 <pre class="r"><code>curve(dt(x,sample.size-1),-5.5,2)
 abline(v=t.statistic,col=&quot;green&quot;,lwd=3)</code></pre>
 <p><img src="LECTURE1_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
-<pre class="r"><code>p=pt(t.statistic,sample.size-1)
+<pre class="r"><code>t.crit &lt;- qt(0.05,sample.size-1)    # &#39;critical value&#39; of the t statistic- you can reject the null if your value is more extreme than this!
+
+p=pt(t.statistic,sample.size-1)    # p value
 p    # this is the p value</code></pre>
 <pre><code>## [1] 7.241049e-05</code></pre>
 <pre class="r"><code>####### Alternative: use R&#39;s built in t test
@@ -947,27 +957,35 @@ t.test(weightloss.data,alternative = &quot;less&quot;)   # should get the same p
 <p><strong>Q</strong> Does a significant p value here mean that everyone who takes the drug will lose weight? If not, what does it mean?</p>
 <p>NOTE: as the df gets large, the t distribution approximates a <em>standard normal</em> distribution.</p>
 <p>Fun fact: William Sealy Gosset – a student of Pearson, worked at Guinness brewery. He was hired to work out a way to determine the quality of stout. He published anonymously as ‘Student’ because Guinness prevented its employees from publishing. That’s why we call it the ‘Student’s t-test’!</p>
+<p>[R demo: difference between dnorm, pnorm, and qnorm]</p>
+<p>[R demo: difference between t distribution and normal distribution]</p>
 </div>
 <div id="confidence-intervals" class="section level2">
 <h2>Confidence intervals</h2>
 <p>Confidence intervals, like p-values are super commonly used and are misinterpreted almost as often as they are used!</p>
 <p>Remember that in classical, frequentist statistics, the population parameter of interest is fixed- there is no uncertainty associated with the population parameter itself – it’s just that we can only collect and assess a small sample from the much larger population. So it does not make sense to say something like “the parameter has a 90% chance of falling within the confidence interval”. The true parameter is either in the interval (100% probability) or it is not in the interval (0% probability). All we can say is something more like “90% of confidence intervals generated from different random samples would contain the true parameter”.</p>
+<p>[Whiteboard example: confidence intervals]</p>
+<p>[R demo: confidence interval for the weight loss example]</p>
+<p>[quick discussion: define the confidence interval in the context of the weight loss example]</p>
 </div>
 <div id="other-statistics-and-sampling-distributions" class="section level2">
 <h2>Other statistics and sampling distributions</h2>
-<p>Pretty much all of classical statistics works this way. We compute summary statistics from data that have well-described sampling distributions. We climb into the null universe and, using the known sampling distribution, compute if our summary statistic (computed from our data) could have been a result of random sampling error. If not (if <span class="math inline">\(p\le\alpha\)</span>) then we remain unconvinced that the null universe is indeed false.</p>
-<div id="goodness-of-fit-chi-square-test." class="section level3">
-<h3>Goodness of fit/ Chi-square test.</h3>
+<p>Pretty much all of classical statistics works this way. We compute summary statistics from data that have well-described sampling distributions. We climb into the null universe and, using the known sampling distribution, inquire whether or not our summary statistic (computed from our data) could have been a result of random sampling error under the null hypothesis. If not (if <span class="math inline">\(p\ge\alpha\)</span>) then we remain unconvinced that the null universe is indeed false.</p>
+<div id="chi-square-goodness-of-fit-test." class="section level3">
+<h3>Chi-square goodness-of-fit test.</h3>
 <p>This test asks the question “do the data sort into categories as you hypothesized?”</p>
-<p>Karl Pearson – Founded the first stats dept, was a socialist and social Darwinist… and became a eugenicist.</p>
-<p><em>Example</em>: Are grad students more likely to be born in a given season?</p>
+<p>Karl Pearson – Founded the first statistics dept, was a socialist and social Darwinist… and became a eugenicist. <em>Example</em>: Are grad students more likely to be born some months versus other months?</p>
+<p><strong>Q</strong>: what is the statistical population? Parameter? Sample? Statistic?</p>
 <div id="assumptions" class="section level4">
 <h4>Assumptions</h4>
 <ul>
-<li>Data must be <em>categorical</em></li>
-<li>Samples must be independent</li>
-<li>Data must be randomly sampled from the population</li>
-<li>There must be a sufficient sample size such that the expected number of observations in each categories is at least 5!</li>
+<li>Response variable must be <em>categorical</em> (actually number of observations in each of &gt;1 categories)<br />
+</li>
+<li>Samples must be independent<br />
+</li>
+<li>Data must be randomly sampled from the population of interest<br />
+</li>
+<li>There must be a sufficient sample size such that the <em>expected number of observations</em> in each categories is at least 5!</li>
 </ul>
 <p>The Chi-squared statistic is computed from the data. The sampling distribution for the statistic is called the <em>Chi-squared distribution</em>.</p>
 </div>
@@ -1017,17 +1035,18 @@ chisq.test(birthdays.bymonth)     # should get the same p value!</code></pre>
 </div>
 <div id="z-tests" class="section level3">
 <h3>Z-tests</h3>
-<p>The Z-test is a simpler version of the t test for when sample size is large enough (n&gt;50) or the population dispersion is known.</p>
+<p>The Z-test is a simpler version of the t-test for when sample size is large enough (n&gt;50) or the population dispersion is known.</p>
 <p>The Z statistic is:</p>
 <p><span class="math inline">\(Z = \frac{(\bar{X}-\mu_0)}{s.e.}\)</span></p>
-<p>As you can see, this looks very much like the t statistic! Actually it is exactly the same. The difference is that we are now assuming that the sampling variation for this statistic is normally distributed!</p>
+<p>As you can see, this looks very much like the t statistic! Actually it is exactly the same. The difference is that we are now assuming that the sampling variation for this statistic is normally distributed instead of t-distributed!</p>
 <div id="example-z-test-golden-state-warriors-height" class="section level4">
 <h4>Example z-test: Golden State Warriors height</h4>
 <p>Tall basketball players are often successful. The Golden State Warriors are often successful. How tall are the Golden State Warriors relative to other basketball players in the NBA?</p>
 <p>The GSW are 15 players with an average height of 6’8” (80”). A large survey of NBA players suggests they are, on average, 6’7” tall (79") with a standard deviation of 4 inches.</p>
-<p>NOTE: the z-test is only appropriate here because we know the population standard deviation.</p>
+<p>NOTE: the z-test is only appropriate here because we know the population standard deviation. If this is the case, we know under the CLT that the sample means should follow a normal distribution. (the only reason the t-distribution differs from the normal distribution is that we also are estimating the sample standard deviation- it is not known with certainty!).</p>
 <p>NOTE: B. Sullivan obtained those values from research into the height of NBA players.</p>
 <p>Here, the mean (mu) and the standard deviation (q) are coming from the population (all NBA players) instead of the sample. There are situations where you can use the standard deviation of the sample, but those should be only when the sample size is very large.</p>
+<p>Use this link to download the data for this example: <a href="GSW_height.csv">link to GSW data</a></p>
 <pre class="r"><code>## Z test  (Ben Sullivan example)
 
 df &lt;- read.csv(&quot;GSW_height.csv&quot;)
@@ -1037,17 +1056,18 @@ GSWheight</code></pre>
 <pre class="r"><code>mean.gsw &lt;- mean(GSWheight)
 sd.gsw &lt;- sd(GSWheight) 
 sd.pop &lt;- 4
+mean.pop &lt;- 79
 n &lt;- length(GSWheight)
 s.e. &lt;- sd.pop/sqrt(n)
 
 
 
-null.height &lt;- 79
+null.height &lt;- mean.pop
 
 z.statistic &lt;- (mean.gsw-null.height)/s.e.
 z.statistic</code></pre>
 <pre><code>## [1] 0.6454972</code></pre>
-<pre class="r"><code>curve(dnorm(x),-3,3)
+<pre class="r"><code>curve(dnorm(x),-3,3)    # we assume that the z statistic is normally distributed- standard normal!
 abline(v=z.statistic,col=&quot;green&quot;,lwd=3)</code></pre>
 <p><img src="LECTURE1_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <pre class="r"><code>p &lt;- 1-pnorm(z.statistic)    # is the p value enough evidence to tell you that GSW players are taller than the NBA average??
@@ -1062,16 +1082,8 @@ p       </code></pre>
 </div>
 <div id="f-tests-anova-regression" class="section level3">
 <h3>F tests (ANOVA, regression)</h3>
-<p>Fill this in</p>
+<p>We will get there in a couple weeks! Hang tight!</p>
 </div>
-</div>
-<div id="the-p-value-good-or-evil" class="section level2">
-<h2>The p-value: good or evil?</h2>
-<p>There has been a lot of hating on p-values in recent decades. Largely this is due to frequent misinterpretation of what they mean, unthinking use of the alpha=0.05 threshold, and failure to report other important pieces of information like effect sizes and confidence intervals (reporting only p-values is called the ‘naked p-value’ phenomenon!).</p>
-<p>The American Statistical Association (ASA) released a statement about p-values and their misuse:</p>
-<p><a href="pval_asa1.pdf">Summary of ASA statement</a><br />
-<a href="pval_asa2.pdf">ASA statement</a></p>
-<p>P-values remain very important and widely used and reported. But we need to keep in mind the common pitfalls and try to avoid them!</p>
 </div>
 <div id="probability-distributions--the-basics-and-how-to-use-them-in-r" class="section level2">
 <h2>Probability distributions- the basics (and how to use them in R)</h2>
@@ -1125,14 +1137,14 @@ rbeta(10,shape1,shape2)</code></pre>
 <li><p>The fourth central moment is the kurtosis.</p></li>
 </ul>
 <p><strong>Parameters</strong> – the values in the probability distribution function, describing the exact shape and location of the distribution. <em>Parametric statistics</em> require assuming certain things about distributions &amp; parameters, while <em>nonparametric stats</em> do not require these assumptions.</p>
-<p><strong>PDF</strong> -</p>
-<p><strong>CDF</strong> -</p>
-<p><strong>Quantiles</strong> -</p>
+<p><strong>PDF</strong> - Probability density function (e.g., ‘dnorm’)</p>
+<p><strong>CDF</strong> - Cumulative distribution function (e.g., ‘pnorm’)</p>
+<p><strong>Quantiles</strong> - inverse of CDF- the values below which x percent of the data lie (e.g., ‘qnorm’)</p>
 </div>
 </div>
 <div id="some-probability-distributions" class="section level3">
 <h3>Some probability distributions</h3>
-<p>The Bolker book goes through the main distributions we will be using in this course. Pay particular attention to the type of <em>process</em> described by each distribution. The key to using these distributions to represent random variables is to figure out which statistical process best matches the ecological process you’re studying, then use that distribution. e.g., am I counting independent, random events occurring in a fixed window of time or space (like sampling barnacles in quadrats on an intertidal bench)? Then the distribution of their occurrence is likely to follow a Poisson or Negative Binomial distribution.</p>
+<p>Here are some common probability distributions. Pay particular attention to the type of <em>process</em> described by each distribution. The key to using these distributions to represent random variables is to figure out which statistical process best matches the ecological process you’re studying, then use that distribution. e.g., am I counting independent, random events occurring in a fixed window of time or space (like sampling barnacles in quadrats on an intertidal bench)? Then the distribution of their occurrence is likely to follow a Poisson or Negative Binomial distribution.</p>
 <div id="binomial" class="section level4">
 <h4>Binomial</h4>
 <pre class="r"><code>##########

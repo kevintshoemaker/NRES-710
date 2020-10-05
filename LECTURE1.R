@@ -197,7 +197,9 @@ t.statistic
 curve(dt(x,sample.size-1),-5.5,2)
 abline(v=t.statistic,col="green",lwd=3)
 
-p=pt(t.statistic,sample.size-1)
+t.crit <- qt(0.05,sample.size-1)    # 'critical value' of the t statistic- you can reject the null if your value is more extreme than this!
+
+p=pt(t.statistic,sample.size-1)    # p value
 p    # this is the p value
 
 
@@ -243,17 +245,18 @@ GSWheight
 mean.gsw <- mean(GSWheight)
 sd.gsw <- sd(GSWheight) 
 sd.pop <- 4
+mean.pop <- 79
 n <- length(GSWheight)
 s.e. <- sd.pop/sqrt(n)
 
 
 
-null.height <- 79
+null.height <- mean.pop
 
 z.statistic <- (mean.gsw-null.height)/s.e.
 z.statistic
 
-curve(dnorm(x),-3,3)
+curve(dnorm(x),-3,3)    # we assume that the z statistic is normally distributed- standard normal!
 abline(v=z.statistic,col="green",lwd=3)
 
 p <- 1-pnorm(z.statistic)    # is the p value enough evidence to tell you that GSW players are taller than the NBA average??
