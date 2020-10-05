@@ -1,4 +1,0 @@
-"0",""
-"0","t.crit <- qt(0.975,sample.size-1)    # for 95% confidence interval"
-"0",""
-"0","abline(v=-1*t.crit,col=""red"",lty=2)"

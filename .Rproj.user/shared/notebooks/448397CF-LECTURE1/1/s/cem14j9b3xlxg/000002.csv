@@ -1,3 +1,0 @@
-"0",""
-"0","layout(matrix(1:2,nrow=1))"
-"0","hist(means,xlim=c(0,3))"

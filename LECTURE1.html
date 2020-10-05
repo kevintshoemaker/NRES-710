@@ -994,7 +994,7 @@ lower.bound</code></pre>
 </div>
 <div id="other-statistics-and-sampling-distributions" class="section level2">
 <h2>Other statistics and sampling distributions</h2>
-<p>Pretty much all of classical statistics works this way. We compute summary statistics from data that have well-described sampling distributions. We climb into the null universe and, using the known sampling distribution, inquire whether or not our summary statistic (computed from our data) could have been a result of random sampling error under the null hypothesis. If not (if <span class="math inline">\(p\ge\alpha\)</span>) then we remain unconvinced that the null universe is indeed false.</p>
+<p>Pretty much all of classical statistics works this way. We compute summary statistics from data that have well-described sampling distributions. We climb into the null universe and, using the known sampling distribution, inquire whether or not our summary statistic (computed from our sample data) could have been a result of random sampling error under the null hypothesis. If not (if <span class="math inline">\(p\ge\alpha\)</span>) then we remain unconvinced that the null universe is indeed false.</p>
 <div id="chi-square-goodness-of-fit-test." class="section level3">
 <h3>Chi-square goodness-of-fit test.</h3>
 <p>This test asks the question “do the data sort into categories as you hypothesized?”</p>
@@ -1113,61 +1113,118 @@ p       </code></pre>
 <h2>Probability distributions- the basics (and how to use them in R)</h2>
 <div id="discrete-vs.-continuous" class="section level3">
 <h3>Discrete vs. continuous</h3>
-<p>In <em>discrete distributions</em>, each outcome has a specific probability (like the probability of flipping a coin 10 times and getting 4 heads). For example, let’s consider the Poisson distribution</p>
+<p>In <em>discrete distributions</em>, each outcome (value that could be sampled under this probability distribution) has a specific <em>probability mass</em> (like the probability of flipping a coin 10 times and getting 4 heads). For example, let’s consider the Poisson distribution:</p>
 <pre class="r"><code>#################
-# Probability distributions
+# Discrete probability distributions
 
 mean &lt;- 5
-rpois(10,mean)    # the random numbers have no decimal component</code></pre>
+rpois(10,mean)    # note: the random numbers sampled from this distribution have no decimal component</code></pre>
 <pre><code>##  [1] 4 3 4 9 5 5 7 8 5 4</code></pre>
-<pre class="r"><code>             # plot a discrete distribution!
+<pre class="r"><code>             # plot discrete probabilities of getting particular outcomes!
 xvals &lt;- seq(0,15,1)
 probs &lt;- dpois(xvals,lambda=mean)
 names(probs) &lt;- xvals
                
-barplot(probs,ylab=&quot;Probability&quot;,main=&quot;Poisson distribution (discrete)&quot;)</code></pre>
+barplot(probs,ylab=&quot;Probability Mass&quot;,main=&quot;Poisson distribution (discrete)&quot;)</code></pre>
 <p><img src="LECTURE1_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <pre class="r"><code>barplot(cumsum(probs),ylab=&quot;Cumulative Probability&quot;,main=&quot;Poisson distribution (discrete)&quot;)   # cumulative distribution</code></pre>
 <p><img src="LECTURE1_files/figure-html/unnamed-chunk-23-2.png" width="672" /></p>
-<pre class="r"><code>sum(probs)   # just to make sure it sums to 1!  Does it??? </code></pre>
+<pre class="r"><code>sum(probs)   # just to make sure it sums to 1!  Does it???</code></pre>
 <pre><code>## [1] 0.999931</code></pre>
-<p>In <em>continuous distributions</em>, the height of the curve corresponds to <em>probability density</em>, <span class="math inline">\(f(x)\)</span>, not probability <span class="math inline">\(Prob(x)\)</span>. This is because the probability of getting exactly one value in a continuous distribution is effectively zero. This arises from the problem of precision. The sum of the probability distribution must be 1 (there is only 100% of probability to go around). In a continuous distribution, there are an infinite number of possible values of x. So any individual probability is always divided by infinity, which makes it zero. Therefore we have to talk about probability density, unless we want to specify a particular range of values – we can’t calculate <span class="math inline">\(Prob(x = 5)\)</span>, but we can calculate <span class="math inline">\(Prob(4 &lt; x &lt; 6)\)</span> or <span class="math inline">\(Prob(x &gt; 5)\)</span>. Let’s consider the beta distribution:</p>
+<p>In <em>continuous distributions</em>, each possible value/quantity that could be randomly sampled is associated with a <em>probability density</em>, <span class="math inline">\(f(x)\)</span>, not probability mass <span class="math inline">\(Prob(x)\)</span>. This is because the probability of getting any particular value in a continuous distribution is effectively zero. This arises from the problem of precision. The sum of the probability distribution must be 1 (there is only 100% of probability to go around). In a continuous distribution, there are an infinite number of possible values of x. So any individual probability is always divided by infinity, which makes it zero. Therefore we have to talk about probability density, unless we want to specify a particular range of values – we can’t calculate <span class="math inline">\(Prob(x = 5)\)</span>, but we can calculate <span class="math inline">\(Prob(4 &lt; x &lt; 6)\)</span> or <span class="math inline">\(Prob(x &gt; 5)\)</span>. The probability density is defined as the probability of getting a value within an infinitesimally small range of a particular value, divided by that infinitessimally small interval. No worries if you don’t understand that - you can just think of probability density as the relative likelihood of sampling one value versus another. Let’s consider the beta distribution:</p>
 <pre class="r"><code>#########
 # continuous distributions
 
 shape1 = 0.5
 shape2 = 0.5
 
-rbeta(10,shape1,shape2)</code></pre>
+rbeta(10,shape1,shape2)   # generate 10 random numbers from a continuous distribution</code></pre>
 <pre><code>##  [1] 0.086404688 0.893367684 0.064836894 0.007518622 0.117761028 0.854379153
 ##  [7] 0.041965947 0.897675434 0.834074868 0.125783456</code></pre>
-<pre class="r"><code>curve(dbeta(x,shape1,shape2))   # probability density</code></pre>
+<pre class="r"><code>curve(dbeta(x,shape1,shape2),ylab=&quot;probability density&quot;,xlab=&quot;possibilities&quot;)   # probability density function (PDF)</code></pre>
 <p><img src="LECTURE1_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
-<pre class="r"><code>curve(pbeta(x,shape1,shape2))   # cumulative distribution</code></pre>
+<pre class="r"><code>curve(pbeta(x,shape1,shape2),ylab=&quot;cumulative probability&quot;,xlab=&quot;possibilities&quot;)   # cumulative distribution</code></pre>
 <p><img src="LECTURE1_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
 <pre class="r"><code>integrate(f=dbeta,lower=0,upper=1,shape1=shape1,shape2=shape2)    # just to make sure it integrates to 1!!</code></pre>
 <pre><code>## 1 with absolute error &lt; 3e-06</code></pre>
-<div id="some-other-probability-distribution-terms" class="section level4">
-<h4>Some other probability distribution terms:</h4>
-<p><strong>Moments</strong> – descriptions of the distribution. For a bounded probability distribution, the collection of all the moments (of all orders, from 0 to infinity) uniquely determines the shape of the distribution.</p>
+</div>
+<div id="parameters-and-parametric-statistics" class="section level3">
+<h3>Parameters and parametric statistics</h3>
+<p><strong>Parameters</strong> are the arguments used to describe probability distributions - they describe the exact shape and location of the distribution. Different distribution families are associated with different parameters. For example, the normal distribution is described by 2 parameters: mean and stdev. The Poisson distribution has only one parameter (the mean). The binomial distribution is described by 2 parameters: size (number of trials) and prob (success probability for each trial).</p>
+<p><em>Parametric statistics</em> require assuming certain things about distributions &amp; parameters, while <em>nonparametric stats</em> do not require these assumptions.</p>
+</div>
+<div id="probability-distributions-in-r" class="section level3">
+<h3>Probability distributions in R</h3>
+<div id="random-number-generators" class="section level4">
+<h4>Random number generators</h4>
+<p><strong>Random number generators</strong> are functions for generating random values from a specified probability distribution (e.g., ‘rnorm’, ‘rpois’, ‘rt’)</p>
+<pre class="r"><code># random number generators
+
+rnorm(10)    # generate 10 random numbers from a standard normal distribution</code></pre>
+<pre><code>##  [1]  0.46096461 -0.15328342 -1.13624449 -1.56251267 -0.39129639 -1.90759534
+##  [7] -0.32517573  0.11105774 -1.79404025  0.04077623</code></pre>
+<pre class="r"><code>rnorm(5,25,5)  # generate 5 random numbers from a normal distribution with mean=25 and sd=5</code></pre>
+<pre><code>## [1] 30.00552 26.33139 17.13330 24.13147 28.24708</code></pre>
+<pre class="r"><code>rpois(8,18)  # generate 8 random numbers from a poisson distribution with mean=18</code></pre>
+<pre><code>## [1] 26 19 21 19 15 24 24 22</code></pre>
+</div>
+<div id="probability-density-functions" class="section level4">
+<h4>Probability density functions</h4>
+<p>Continuous distributions are associated with <strong>PDFs</strong>, or probability density functions (e.g., ‘dnorm’,‘dt’,‘dgamma’). These functions give you the probability density (relative probability) of any particular value/quantity that could be randomly sampled under this distribution.</p>
+<pre class="r"><code>## probability density function example 
+
+curve(dt(x,8),-4,4,xlab=&quot;possibilities&quot;,ylab=&#39;relative probability (prob density)&#39;)</code></pre>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-26-1.png" width="672" /> #### Probability mass functions</p>
+<p>For discrete distributions, <strong>PMFs</strong> - Probability mass functions (e.g., ‘dpois’,‘dbinom’) – give you the exact probability of obtaining any particular value that could be sampled under this distribution.</p>
+<pre class="r"><code>## probability mass function example 
+
+x &lt;- barplot(sapply(0:10,function(t) dpois(t,2)),xlab=&quot;possibilities&quot;,ylab=&#39;probability&#39;)
+axis(1,at=x,labels=0:10)</code></pre>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+</div>
+<div id="cumulative-distribution-function" class="section level4">
+<h4>Cumulative distribution function</h4>
+<p>For continuous AND discrete probability distributions, <strong>CDFs</strong> - Cumulative distribution functions (e.g., ‘pnorm’,‘pt’,‘pchisq’,‘pbinom’,‘ppois’) give you the probability of obtaining a value less than or equal to any particular value that could be sampled under the distribution.</p>
+<pre class="r"><code>## cumulative density function  
+
+    # for continuous distribution
+curve(pt(x,df=8),-4,4,xlab=&quot;possibilities&quot;,ylab=&#39;cumulative probability&#39;)</code></pre>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<pre class="r"><code>    # for discrete distribution
+x &lt;- barplot(sapply(0:10,function(t) ppois(t,2)),xlab=&quot;possibilities&quot;,ylab=&#39;cumulative probability&#39;)
+axis(1,at=x,labels=0:10)</code></pre>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-28-2.png" width="672" /></p>
+</div>
+<div id="quantile-functions" class="section level4">
+<h4>Quantile functions</h4>
+<p><strong>Quantile functions</strong> - inverse of CDF- give you the values below which a specific percent of random samples should fall (e.g., ‘qnorm’,‘qt’,‘qpois’,‘qchisq’). The quantile function is the inverse of the cumulative distribution function.</p>
+<pre class="r"><code>## quantile function  
+
+    # for continuous distribution
+curve(qt(x,df=8),0,1,xlab=&quot;cumulative probability&quot;,ylab=&#39;quantile&#39;)</code></pre>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<pre class="r"><code>    # for discrete distribution
+curve(qpois(x,4),0,1,xlab=&quot;cumulative probability&quot;,ylab=&#39;quantile&#39;)</code></pre>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-29-2.png" width="672" /></p>
+</div>
+</div>
+<div id="moments" class="section level3">
+<h3>Moments</h3>
+<p><strong>Moments</strong> are important descriptors of a distribution. The collection of all the moments (of all orders, from 0 to infinity) uniquely determines the shape of the distribution.</p>
 <ul>
-<li><p>The zeroth central moment (<span class="math inline">\(\int \left ( x-\mu \right )^{0}Prob(x)\partial x\)</span>) is the total probability (i.e. one),<br />
-</p></li>
-<li><p>The first central moment (<span class="math inline">\(\int \left ( x-\mu \right )^{1}Prob(x)\partial x\)</span>) is <span class="math inline">\(\mu - \mu = 0\)</span>.<br />
-</p></li>
-<li><p>The second central moment (<span class="math inline">\(\int \left ( x-\mu \right )^{2}Prob(x)\partial x\)</span>) is the variance.<br />
-</p></li>
-<li><p>The third central moment (<span class="math inline">\(\int \left ( \left (x-\mu \right )/\sigma \right )^{3}Prob(x)\partial x\)</span>) is the skewness.</p></li>
-<li><p>The fourth central moment is the kurtosis.</p></li>
+<li>The zeroth central moment (<span class="math inline">\(\int \left ( x-\mu \right )^{0}Prob(x)\partial x\)</span>) is the total probability (i.e. one),<br />
+</li>
+<li>The first central moment (<span class="math inline">\(\int \left ( x-\mu \right )^{1}Prob(x)\partial x\)</span>) is <span class="math inline">\(\mu - \mu = 0\)</span>.<br />
+</li>
+<li>The second central moment (<span class="math inline">\(\int \left ( x-\mu \right )^{2}Prob(x)\partial x\)</span>) is the variance.<br />
+</li>
+<li>The third central moment (<span class="math inline">\(\int \left ( \left (x-\mu \right )/\sigma \right )^{3}Prob(x)\partial x\)</span>) is the skewness.<br />
+</li>
+<li>The fourth central moment is the kurtosis.</li>
 </ul>
-<p><strong>Parameters</strong> – the values in the probability distribution function, describing the exact shape and location of the distribution. <em>Parametric statistics</em> require assuming certain things about distributions &amp; parameters, while <em>nonparametric stats</em> do not require these assumptions.</p>
-<p><strong>PDF</strong> - Probability density function (e.g., ‘dnorm’)</p>
-<p><strong>CDF</strong> - Cumulative distribution function (e.g., ‘pnorm’)</p>
-<p><strong>Quantiles</strong> - inverse of CDF- the values below which x percent of the data lie (e.g., ‘qnorm’)</p>
 </div>
-</div>
-<div id="some-probability-distributions" class="section level3">
-<h3>Some probability distributions</h3>
+<div id="some-common-probability-distributions" class="section level3">
+<h3>Some common probability distributions</h3>
 <p>Here are some common probability distributions. Pay particular attention to the type of <em>process</em> described by each distribution. The key to using these distributions to represent random variables is to figure out which statistical process best matches the ecological process you’re studying, then use that distribution. e.g., am I counting independent, random events occurring in a fixed window of time or space (like sampling barnacles in quadrats on an intertidal bench)? Then the distribution of their occurrence is likely to follow a Poisson or Negative Binomial distribution.</p>
 <div id="binomial" class="section level4">
 <h4>Binomial</h4>
@@ -1177,15 +1234,15 @@ rbeta(10,shape1,shape2)</code></pre>
 size &lt;- 10
 prob &lt;- 0.3
 rbinom(10,size,prob)</code></pre>
-<pre><code>##  [1] 4 6 3 3 1 2 1 5 2 3</code></pre>
+<pre><code>##  [1] 2 2 3 2 4 4 2 3 2 3</code></pre>
 <pre class="r"><code>xvals &lt;- seq(0,size,1)
 probs &lt;- dbinom(xvals,size,prob)
 names(probs) &lt;- xvals
                
 barplot(probs,ylab=&quot;Probability&quot;,main=&quot;Binomial distribution&quot;)</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <pre class="r"><code>barplot(cumsum(probs),ylab=&quot;Cumulative Probability&quot;,main=&quot;Binomial distribution&quot;)   # cumulative distribution</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-30-2.png" width="672" /></p>
 <pre class="r"><code>sum(probs)   # just to make sure it sums to 1!  Does it???</code></pre>
 <pre><code>## [1] 1</code></pre>
 </div>
@@ -1198,12 +1255,12 @@ mean = 7.1
 stdev = 1.9
 
 rnorm(10,mean,stdev)</code></pre>
-<pre><code>##  [1] 3.475569 6.482166 7.311010 3.691324 7.177475 9.002097 7.605930 4.110654
-##  [9] 6.769958 8.333890</code></pre>
+<pre><code>##  [1]  9.489608  8.824596  5.995471  8.007040 10.077495  7.712058  5.309506
+##  [8]  6.130616  4.781138  4.498462</code></pre>
 <pre class="r"><code>curve(dnorm(x,mean,stdev),0,15)   # probability density</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <pre class="r"><code>curve(pnorm(x,mean,stdev),0,15)   # cumulative distribution</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-31-2.png" width="672" /></p>
 <pre class="r"><code>integrate(f=dnorm,lower=-Inf,upper=Inf,mean=mean,sd=stdev)    # just to make sure it integrates to 1!!</code></pre>
 <pre><code>## 1 with absolute error &lt; 1.1e-05</code></pre>
 </div>
@@ -1215,12 +1272,12 @@ rnorm(10,mean,stdev)</code></pre>
 df = 6
 
 rt(10,df)     # random numbers from the t distribution (not sure why you would ever want this!)</code></pre>
-<pre><code>##  [1]  2.08129208  0.77581980 -0.56303887  1.34677265 -0.40333110  0.74470069
-##  [7] -0.01191238 -1.85427918  0.41542367 -1.23090331</code></pre>
+<pre><code>##  [1]  0.0448390  1.9685639  0.1821819  0.4038735 -1.5472941  0.9221485
+##  [7] -0.8280074  0.1268286  0.4661603 -0.4790214</code></pre>
 <pre class="r"><code>curve(dt(x,df),-4,4)   # probability density</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
 <pre class="r"><code>curve(pt(x,df),-4,4)   # cumulative distribution</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-27-2.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-32-2.png" width="672" /></p>
 <pre class="r"><code>integrate(f=dt,lower=-Inf,upper=Inf,df=df)    # just to make sure it integrates to 1!!</code></pre>
 <pre><code>## 1 with absolute error &lt; 1.9e-05</code></pre>
 </div>
@@ -1232,12 +1289,12 @@ rt(10,df)     # random numbers from the t distribution (not sure why you would e
 df = 6
 
 rchisq(10,df)     # random numbers from the t distribution (not sure why you would ever want this!)</code></pre>
-<pre><code>##  [1]  0.8128037  5.1009255  3.0094739 14.1825489  7.2478778  5.5541595
-##  [7]  5.2636408  6.4238954  6.5538909  2.4683689</code></pre>
+<pre><code>##  [1]  3.7348148  8.0256341  5.5802538  3.5284083  7.3024196 13.7108539
+##  [7]  0.6067357 11.6874677  5.8024544  6.9670338</code></pre>
 <pre class="r"><code>curve(dchisq(x,df),0,15)   # probability density</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 <pre class="r"><code>curve(pchisq(x,df),0,15)   # cumulative distribution</code></pre>
-<p><img src="LECTURE1_files/figure-html/unnamed-chunk-28-2.png" width="672" /></p>
+<p><img src="LECTURE1_files/figure-html/unnamed-chunk-33-2.png" width="672" /></p>
 <pre class="r"><code>integrate(f=dchisq,lower=0,upper=Inf,df=df)    # just to make sure it integrates to 1!!</code></pre>
 <pre><code>## 1 with absolute error &lt; 2.3e-05</code></pre>
 </div>

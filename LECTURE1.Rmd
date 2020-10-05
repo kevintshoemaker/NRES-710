@@ -839,7 +839,7 @@ upper.bound
 
 ## Other statistics and sampling distributions
 
-Pretty much all of classical statistics works this way. We compute summary statistics from data that have well-described sampling distributions. We climb into the null universe and, using the known sampling distribution, inquire whether or not our summary statistic (computed from our data) could have been a result of random sampling error under the null hypothesis. If not (if $p\ge\alpha$) then we remain unconvinced that the null universe is indeed false. 
+Pretty much all of classical statistics works this way. We compute summary statistics from data that have well-described sampling distributions. We climb into the null universe and, using the known sampling distribution, inquire whether or not our summary statistic (computed from our sample data) could have been a result of random sampling error under the null hypothesis. If not (if $p\ge\alpha$) then we remain unconvinced that the null universe is indeed false. 
 
 ### Chi-square goodness-of-fit test.
 
@@ -980,33 +980,34 @@ We will get there in a couple weeks! Hang tight!
 
 
 
+
 ## Probability distributions- the basics (and how to use them in R)
 
 ### Discrete vs. continuous
-In *discrete distributions*, each outcome has a specific probability (like the probability of flipping a coin 10 times and getting 4 heads). For example, let's consider the Poisson distribution  
+In *discrete distributions*, each outcome (value that could be sampled under this probability distribution) has a specific *probability mass* (like the probability of flipping a coin 10 times and getting 4 heads). For example, let's consider the Poisson distribution:  
 
 ```{r}
 
 #################
-# Probability distributions
+# Discrete probability distributions
 
 mean <- 5
-rpois(10,mean)    # the random numbers have no decimal component
+rpois(10,mean)    # note: the random numbers sampled from this distribution have no decimal component
 
-             # plot a discrete distribution!
+             # plot discrete probabilities of getting particular outcomes!
 xvals <- seq(0,15,1)
 probs <- dpois(xvals,lambda=mean)
 names(probs) <- xvals
                
-barplot(probs,ylab="Probability",main="Poisson distribution (discrete)")
+barplot(probs,ylab="Probability Mass",main="Poisson distribution (discrete)")
 
 barplot(cumsum(probs),ylab="Cumulative Probability",main="Poisson distribution (discrete)")   # cumulative distribution
 
-sum(probs)   # just to make sure it sums to 1!  Does it??? 
+sum(probs)   # just to make sure it sums to 1!  Does it???
 
 ```
 
-In *continuous distributions*, the height of the curve corresponds to *probability density*, $f(x)$, not probability $Prob(x)$. This is because the probability of getting exactly one value in a continuous distribution is effectively zero. This arises from the problem of precision. The sum of the probability distribution must be 1 (there is only 100% of probability to go around). In a continuous distribution, there are an infinite number of possible values of x. So any individual probability is always divided by infinity, which makes it zero. Therefore we have to talk about probability density, unless we want to specify a particular range of values – we can’t calculate $Prob(x = 5)$, but we can calculate $Prob(4 < x < 6)$ or $Prob(x > 5)$. Let's consider the beta distribution: 
+In *continuous distributions*, each possible value/quantity that could be randomly sampled is associated with a *probability density*, $f(x)$, not probability mass $Prob(x)$. This is because the probability of getting any particular value in a continuous distribution is effectively zero. This arises from the problem of precision. The sum of the probability distribution must be 1 (there is only 100% of probability to go around). In a continuous distribution, there are an infinite number of possible values of x. So any individual probability is always divided by infinity, which makes it zero. Therefore we have to talk about probability density, unless we want to specify a particular range of values – we can’t calculate $Prob(x = 5)$, but we can calculate $Prob(4 < x < 6)$ or $Prob(x > 5)$. The probability density is defined as the probability of getting a value within an infinitesimally small range of a particular value, divided by that infinitessimally small interval. No worries if you don't understand that - you can just think of probability density as the relative likelihood of sampling one value versus another. Let's consider the beta distribution: 
 
 ```{r}
 
@@ -1016,37 +1017,106 @@ In *continuous distributions*, the height of the curve corresponds to *probabili
 shape1 = 0.5
 shape2 = 0.5
 
-rbeta(10,shape1,shape2)
+rbeta(10,shape1,shape2)   # generate 10 random numbers from a continuous distribution
 
-curve(dbeta(x,shape1,shape2))   # probability density
+curve(dbeta(x,shape1,shape2),ylab="probability density",xlab="possibilities")   # probability density function (PDF)
 
-curve(pbeta(x,shape1,shape2))   # cumulative distribution
+curve(pbeta(x,shape1,shape2),ylab="cumulative probability",xlab="possibilities")   # cumulative distribution
 
 integrate(f=dbeta,lower=0,upper=1,shape1=shape1,shape2=shape2)    # just to make sure it integrates to 1!!
 
 ```
 
 
-#### Some other probability distribution terms:
+### Parameters and parametric statistics
 
-**Moments** – descriptions of the distribution. For a bounded probability distribution, the collection of all the moments (of all orders, from 0 to infinity) uniquely determines the shape of the distribution.  
+**Parameters** are the arguments used to describe probability distributions - they describe the exact shape and location of the distribution. Different distribution families are associated with different parameters. For example, the normal distribution is described by 2 parameters: mean and stdev. The Poisson distribution has only one parameter (the mean). The binomial distribution is described by 2 parameters: size (number of trials) and prob (success probability for each trial).  
+
+*Parametric statistics* require assuming certain things about distributions & parameters, while *nonparametric stats* do not require these assumptions.
+
+### Probability distributions in R
+
+#### Random number generators
+
+**Random number generators** are functions for generating random values from a specified probability distribution (e.g., 'rnorm', 'rpois', 'rt')
+
+```{r}
+
+# random number generators
+
+rnorm(10)    # generate 10 random numbers from a standard normal distribution
+rnorm(5,25,5)  # generate 5 random numbers from a normal distribution with mean=25 and sd=5
+rpois(8,18)  # generate 8 random numbers from a poisson distribution with mean=18
+
+```
+
+#### Probability density functions
+
+Continuous distributions are associated with **PDFs**, or probability density functions (e.g., 'dnorm','dt','dgamma'). These functions give you the probability density (relative probability) of any particular value/quantity that could be randomly sampled under this distribution.  
+
+```{r}
+
+## probability density function example 
+
+curve(dt(x,8),-4,4,xlab="possibilities",ylab='relative probability (prob density)')
+
+```
+#### Probability mass functions
+
+For discrete distributions, **PMFs** - Probability mass functions (e.g., 'dpois','dbinom') -- give you the exact probability of obtaining any particular value that could be sampled under this distribution. 
+
+```{r}
+
+## probability mass function example 
+
+x <- barplot(sapply(0:10,function(t) dpois(t,2)),xlab="possibilities",ylab='probability')
+axis(1,at=x,labels=0:10)
+
+```
+
+#### Cumulative distribution function
+For continuous AND discrete probability distributions, **CDFs** - Cumulative distribution functions (e.g., 'pnorm','pt','pchisq','pbinom','ppois') give you the probability of obtaining a value less than or equal to any particular value that could be sampled under the distribution.
+
+```{r}
+
+## cumulative density function  
+
+    # for continuous distribution
+curve(pt(x,df=8),-4,4,xlab="possibilities",ylab='cumulative probability')
+
+    # for discrete distribution
+x <- barplot(sapply(0:10,function(t) ppois(t,2)),xlab="possibilities",ylab='cumulative probability')
+axis(1,at=x,labels=0:10)
+
+```
+
+#### Quantile functions
+
+**Quantile functions** - inverse of CDF- give you the values below which a specific percent of random samples should fall (e.g., 'qnorm','qt','qpois','qchisq'). The quantile function is the inverse of the cumulative distribution function.
+
+```{r}
+
+## quantile function  
+
+    # for continuous distribution
+curve(qt(x,df=8),0,1,xlab="cumulative probability",ylab='quantile')
+
+    # for discrete distribution
+curve(qpois(x,4),0,1,xlab="cumulative probability",ylab='quantile')
+
+```
+
+### Moments
+
+**Moments** are important descriptors of a distribution. The collection of all the moments (of all orders, from 0 to infinity) uniquely determines the shape of the distribution.  
 
 * The zeroth central moment ($\int \left ( x-\mu  \right )^{0}Prob(x)\partial x$) is the total probability (i.e. one),  
 * The first central moment ($\int \left ( x-\mu  \right )^{1}Prob(x)\partial x$) is $\mu - \mu = 0$.   
 * The second central moment ($\int \left ( x-\mu  \right )^{2}Prob(x)\partial x$) is the variance.    
 * The third central moment ($\int \left ( \left (x-\mu   \right )/\sigma  \right )^{3}Prob(x)\partial x$) is the skewness.     
-
 * The fourth central moment is the kurtosis. 
 
-**Parameters** – the values in the probability distribution function, describing the exact shape and location of the distribution. *Parametric statistics* require assuming certain things about distributions & parameters, while *nonparametric stats* do not require these assumptions.
-
-**PDF** - Probability density function (e.g., 'dnorm')
-
-**CDF** - Cumulative distribution function (e.g., 'pnorm')
-
-**Quantiles** - inverse of CDF- the values below which x percent of the data lie (e.g., 'qnorm') 
-
-### Some probability distributions  
+### Some common probability distributions  
 Here are some common probability distributions. Pay particular attention to the type of *process* described by each distribution. The key to using these distributions to represent random variables is to figure out which statistical process best matches the ecological process you’re studying, then use that distribution. e.g., am I counting independent, random events occurring in a fixed window of time or space (like sampling barnacles in quadrats on an intertidal bench)? Then the distribution of their occurrence is likely to follow a Poisson or Negative Binomial distribution.
 
 

@@ -290,21 +290,21 @@ pnorm(z.statistic)
 
 
 #################
-# Probability distributions
+# Discrete probability distributions
 
 mean <- 5
-rpois(10,mean)    # the random numbers have no decimal component
+rpois(10,mean)    # note: the random numbers sampled from this distribution have no decimal component
 
-             # plot a discrete distribution!
+             # plot discrete probabilities of getting particular outcomes!
 xvals <- seq(0,15,1)
 probs <- dpois(xvals,lambda=mean)
 names(probs) <- xvals
                
-barplot(probs,ylab="Probability",main="Poisson distribution (discrete)")
+barplot(probs,ylab="Probability Mass",main="Poisson distribution (discrete)")
 
 barplot(cumsum(probs),ylab="Cumulative Probability",main="Poisson distribution (discrete)")   # cumulative distribution
 
-sum(probs)   # just to make sure it sums to 1!  Does it??? 
+sum(probs)   # just to make sure it sums to 1!  Does it???
 
 
 #########
@@ -313,13 +313,50 @@ sum(probs)   # just to make sure it sums to 1!  Does it???
 shape1 = 0.5
 shape2 = 0.5
 
-rbeta(10,shape1,shape2)
+rbeta(10,shape1,shape2)   # generate 10 random numbers from a continuous distribution
 
-curve(dbeta(x,shape1,shape2))   # probability density
+curve(dbeta(x,shape1,shape2),ylab="probability density",xlab="possibilities")   # probability density function (PDF)
 
-curve(pbeta(x,shape1,shape2))   # cumulative distribution
+curve(pbeta(x,shape1,shape2),ylab="cumulative probability",xlab="possibilities")   # cumulative distribution
 
 integrate(f=dbeta,lower=0,upper=1,shape1=shape1,shape2=shape2)    # just to make sure it integrates to 1!!
+
+
+# random number generators
+
+rnorm(10)    # generate 10 random numbers from a standard normal distribution
+rnorm(5,25,5)  # generate 5 random numbers from a normal distribution with mean=25 and sd=5
+rpois(8,18)  # generate 8 random numbers from a poisson distribution with mean=18
+
+
+## probability density function example 
+
+curve(dt(x,8),-4,4,xlab="possibilities",ylab='relative probability (prob density)')
+
+
+## probability mass function example 
+
+x <- barplot(sapply(0:10,function(t) dpois(t,2)),xlab="possibilities",ylab='probability')
+axis(1,at=x,labels=0:10)
+
+
+## cumulative density function  
+
+    # for continuous distribution
+curve(pt(x,df=8),-4,4,xlab="possibilities",ylab='cumulative probability')
+
+    # for discrete distribution
+x <- barplot(sapply(0:10,function(t) ppois(t,2)),xlab="possibilities",ylab='cumulative probability')
+axis(1,at=x,labels=0:10)
+
+
+## quantile function  
+
+    # for continuous distribution
+curve(qt(x,df=8),0,1,xlab="cumulative probability",ylab='quantile')
+
+    # for discrete distribution
+curve(qpois(x,4),0,1,xlab="cumulative probability",ylab='quantile')
 
 
 ##########
