@@ -208,6 +208,30 @@ p    # this is the p value
 t.test(weightloss.data,alternative = "less")   # should get the same p=value!
 
 
+### confidence interval for weight loss data
+
+# summary(weightloss.data)
+# 
+# mean.weightloss    # mean weight loss
+# std.error          # standard error of weight loss
+
+curve(dt(x,sample.size),-4,4,xaxt="n",xlab="weight loss",ylab="probability density")
+axis(1,at=seq(-4,4,2),labels = round(mean.weightloss+std.error*seq(-4,4,2),1) )
+abline(v=0,col="blue",lwd=3)
+
+t.crit <- qt(0.975,sample.size-1)    # for 95% confidence interval
+
+abline(v=-1*t.crit,col="red",lty=2)
+abline(v=1*t.crit,col="red",lty=2)
+
+lower.bound <- mean.weightloss - t.crit*std.error
+upper.bound <- mean.weightloss + t.crit*std.error
+
+lower.bound
+
+upper.bound
+
+
 ## Chi squared example
 
 birthdays.bymonth <- c(40,23,33,39,28,29,45,31,22,34,44,20)
@@ -215,7 +239,7 @@ months <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","D
 names(birthdays.bymonth) <- months
 
 sample.size <- sum(birthdays.bymonth)
-k = length(birthdays.bymonth)   # number of categories
+k = length(birthdays.bymonth)   # number of categories (months)
 exp.birthdays.bymonth <- sample.size*rep(1/k,times=k)
 
 Chisq.stat <- sum((birthdays.bymonth-exp.birthdays.bymonth)^2/exp.birthdays.bymonth)

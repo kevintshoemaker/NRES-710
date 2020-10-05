@@ -694,7 +694,7 @@ abline(v=confint,col="blue",lty=2)
 
 The vertical blue lines indicate the *confidence interval* around the mean with the *confidence level* set at 95%. We will talk about confidence intervals a lot more, but just know that about 95% of such confidence intervals generated from random samples should include the true mean. The confidence interval helps us visualize what might happen if we repeated our sampling over and over and over- how might our summary statistic change?
 
-Note the use of the *t distribution* in the above code block. The t distribution represents the sampling variation that you would expect to observe around the sample mean (or an arbitrary hypothesized value) if you collected many many samples of the same size as yours (see more details below). The t distribution is expressed in units of standard error. 
+Note the use of the *t distribution* in the above code block. The t distribution here represents the sampling variation that you would expect to observe around the sample mean (or an arbitrary hypothesized value) if you collected many many samples of the same size as yours (see more details below) from an unknown population. The t distribution is expressed in units of standard errors (number of standard errors above or below your hypothetical true mean). 
 
 Just to cement this concept, let's compare the distribution above (based on a t distribution) with a brute-force simulation method!
 
@@ -732,11 +732,11 @@ abline(v=sample.mean,col="green",lwd=3)
 
 Not a bad match right? Obviously it's easier and faster (and more accurate) to use the t distribution to approximate the sampling distribution, but I hope this helps to cement the concept!! 
 
-NOTE: the t distribution accounts for uncertainty about the true population variance as well as the true population mean, which is why I did not just use the sample variance in the code block above (if I had, you would see that the t distribution had 'heavier tails' than the brute force distribution) 
+NOTE: the t distribution accounts for uncertainty about the true population variance as well as the true population mean, which is why I did not just use the sample variance in the code block above (if I had, you would see that the t distribution had 'heavier tails' than the brute force distribution because it accounts for uncertainty in the sample variance and the sample mean) 
 
 ## The t statistic: signal to noise ratio for comparing 1 or 2 means
 
-The *t statistic* (the t distribution is the theoretical sampling distribution for the t-statistic) is just another summary statistic that we can calculate from a sample. In this way it is no different from the sample mean or the standard deviation. But, since it has a simple, well described sampling variance, it helps us perform rigorous hypothesis tests and is therefore a very useful summary statistic!
+The *t statistic* (the t distribution is the theoretical sampling distribution for the t-statistic) is just another summary statistic that we can calculate from a sample. In this way it is no different from the sample mean or the standard deviation. But, since it has a simple, well described sampling variance and it involves sampling from a true population with unknown mean AND variance (which is usually the case!), it helps us to perform rigorous hypothesis tests and is therefore a very useful summary statistic!
 
 Mathematically, *t* is the ratio of the departure of the sample mean from its hypothesized value to its standard error:
 
@@ -785,7 +785,7 @@ t.test(weightloss.data,alternative = "less")   # should get the same p=value!
 
 ```
 
-**Q** Does a significant p value here mean that everyone who takes the drug will lose weight? If not, what does it mean?
+**Q** Does a significant p-value here mean that everyone who takes the drug will lose weight? If not, what does it mean?
 
 NOTE: as the df gets large, the t distribution approximates a *standard normal* distribution.
 
@@ -803,7 +803,37 @@ Remember that in classical, frequentist statistics, the population parameter of 
 
 [Whiteboard example: confidence intervals]
 
+![](confint1.png)
+
 [R demo: confidence interval for the weight loss example]
+
+```{r}
+
+### confidence interval for weight loss data
+
+# summary(weightloss.data)
+# 
+# mean.weightloss    # mean weight loss
+# std.error          # standard error of weight loss
+
+curve(dt(x,sample.size),-4,4,xaxt="n",xlab="weight loss",ylab="probability density")
+axis(1,at=seq(-4,4,2),labels = round(mean.weightloss+std.error*seq(-4,4,2),1) )
+abline(v=0,col="blue",lwd=3)
+
+t.crit <- qt(0.975,sample.size-1)    # for 95% confidence interval
+
+abline(v=-1*t.crit,col="red",lty=2)
+abline(v=1*t.crit,col="red",lty=2)
+
+lower.bound <- mean.weightloss - t.crit*std.error
+upper.bound <- mean.weightloss + t.crit*std.error
+
+lower.bound
+
+upper.bound
+
+```
+
 
 [quick discussion: define the confidence interval in the context of the weight loss example]
 
@@ -855,7 +885,7 @@ months <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","D
 names(birthdays.bymonth) <- months
 
 sample.size <- sum(birthdays.bymonth)
-k = length(birthdays.bymonth)   # number of categories
+k = length(birthdays.bymonth)   # number of categories (months)
 exp.birthdays.bymonth <- sample.size*rep(1/k,times=k)
 
 Chisq.stat <- sum((birthdays.bymonth-exp.birthdays.bymonth)^2/exp.birthdays.bymonth)
