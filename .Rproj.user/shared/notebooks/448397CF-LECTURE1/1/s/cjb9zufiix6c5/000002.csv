@@ -1,5 +1,0 @@
-"0",""
-"0","#### ALL FROGS IN CA"
-"0",""
-"0","allfrogs.bodysize <- rlnorm(10000,1.5,0.4)        # statistical 'population'"
-"0","hist(allfrogs.bodysize,main="""",xlab=""SVL (mm)"")   # plot out histogram"

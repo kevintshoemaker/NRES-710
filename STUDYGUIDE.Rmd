@@ -1,0 +1,66 @@
+---
+title: "Study Guide, Midterm Exam"
+author: "NRES 710"
+date: "Fall 2020"
+output: 
+  html_document: 
+    theme: yeti
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+```
+
+
+## Midterm exam
+
+### Overview
+
+The midterm exam will be a 'take home' style exam that is administered on Wed Oct 28. You will have our regular class period to work on the exam (9-10am). All exams will be due at 5pm. I don't expect you will need more than an hour to complete the exam. This is the only exam in this course- there is no final exam (just final projects!) 
+
+The midterm exam is designed to test your understanding of basic concepts of classical statistics and programming and data operations in R. The exam will cover everything in the 'basic concepts' series of lectures. You are also expected to know how to perform basic operations with data in R and to have some basic facility with programming in R. All exam questions will be intended to gauge understanding of high-level concepts- for this exam you will NOT be expected to perform analyses in R (that is what the mini-lab sessions are for) or know the correct syntax for built-in functions in R (you can always just look up the correct syntax!). To study for this exam, I recommend reading through the 'basic concepts' lecture, reviewing the recorded lectures, and looking over the 'base R' modules from the R bootcamp (1.1:working with data objects, 1.2:managing data, 1.3:data visualization/statistics, and 1.4:programming)   
+
+The exam will consist of a mixture of multiple-choice and short-answer questions. I will continue to update this as I write the exam so you know what to expect! 
+
+
+### Topics covered
+
+* Inference about a population from a sample
+* Classical null-hypothesis testing
+* Frequentist probability (frequencies of outcomes under repeated sampling)
+* Sampling distributions (sampling uncertainty)
+* Central limit theorem (CLT)
+* P-values: interpretation, correct usage and common mis-usage
+* Type I and Type II errors, statistical power
+* Replication and pseudoreplication
+* Assumption of independence of observations
+* Summary statistics: sample mean, sample variance, sample standard deviation
+* Standard error of the mean: computation and interpretation
+* Degrees of freedom
+* Confidence intervals: construction and interpretation
+* Fisher's exact test
+* Student's t test (for one sample) and the t-distribution
+* Normal distribution
+* Probability mass function, probability density function, cumulative distribution function
+* Quantiles
+* Parametric vs. non-parametric statistics
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

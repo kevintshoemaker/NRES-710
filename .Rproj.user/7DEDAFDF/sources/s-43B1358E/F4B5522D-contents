@@ -1,0 +1,62 @@
+---
+title: "Multivariate analysis"
+author: "NRES 710"
+date: "Fall 2020"
+output: 
+  html_document: 
+    theme: yeti
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+
+```
+
+```{r echo=FALSE}
+
+############################################################
+####                                                    ####  
+####  NRES 710, Lecture 6                               ####
+####                                                    ####
+####  Kevin Shoemaker and Ben Sullivan                  #### 
+####  University of Nevada, Reno                        ####
+####                                                    #### 
+############################################################
+
+
+############################################################
+####  Multivariate analysis                             ####
+############################################################
+
+
+```
+
+## Download the R code for this lecture!
+
+To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](LECTURE6.R)
+
+## Overview: Multivariate Analysis
+
+
+
+[--go to next lecture--](LECTURE7.html) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

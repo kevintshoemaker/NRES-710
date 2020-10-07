@@ -29,6 +29,8 @@ navbar:
       href: Links.html
     - text: Final Projects 
       href: FINALPROJ.html
+    - text: Study Guide 
+      href: STUDYGUIDE.html
 output:
   html_document:
     lib_dir: site_libs
