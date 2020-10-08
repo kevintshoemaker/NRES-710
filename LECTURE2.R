@@ -15,6 +15,59 @@
 
 
 
+### one sample t-test (paired t-test is a type of one sample t-test)
+
+sample.data <- rgamma(10,2,.1)
+null.mean <- 10
+
+sample.size <- length(sample.data)
+sample.mean <- mean(sample.data)
+sample.sd <- sd(sample.data)
+std.err <- sample.sd/sqrt(sample.size)
+t.stat <- (sample.mean-null.mean)/std.err
+
+t.crit <- abs(qt(0.025,sample.size-1))   # for 2-tailed test
+
+p.val <- (1-pt(abs(t.stat),sample.size-1))*2   # 
+
+
+### alternatively use the t.test function:
+
+t.test(sample.data,mu=null.mean)   # should get the same answer!
+
+
+
+### two sample t-test 
+
+sample.data.1 <- rnorm(15,55,10)
+sample.data.2 <- rnorm(10,45,10)
+
+sample.size.1 <- length(sample.data.1)
+sample.size.2 <- length(sample.data.2)
+sample.size.pooled <- length(sample.data.1) + length(sample.data.2)
+
+sample.mean1 <- mean(sample.data.1)
+sample.mean2 <- mean(sample.data.2)
+
+sample.sd1 <- sd(sample.data.1)
+sample.sd2 <- sd(sample.data.2)
+sample.sd.pooled <- sqrt(((sample.size.1-1)*sample.sd1^2 + (sample.size.2-1)*sample.sd2^2)/(sample.size.pooled-2))
+
+std.err.pooled <- sample.sd.pooled*sqrt(1/sample.size.1+1/sample.size.2)
+t.stat <- (sample.mean1-sample.mean2)/std.err.pooled
+
+t.crit <- abs(qt(0.025,sample.size-1))   # for 2-tailed test
+
+p.val <- (1-pt(abs(t.stat),sample.size.pooled-2))*2   # 
+
+
+
+### alternatively use the t.test function:
+
+t.test(sample.data.1,sample.data.2,var.equal = T)   # should get the same answer!
+
+
+
 ######
 # T test examples
 

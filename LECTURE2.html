@@ -16,7 +16,7 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -106,33 +106,33 @@ summary {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 51px;
+  padding-top: 45px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .dropdown-submenu {
   position: relative;
@@ -384,8 +384,23 @@ div.tocify {
     </li>
   </ul>
 </li>
-<li>
-  <a href="Links.html">Links</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    More Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Links.html">Links</a>
+    </li>
+    <li>
+      <a href="FINALPROJ.html">Final Projects</a>
+    </li>
+    <li>
+      <a href="STUDYGUIDE.html">Study Guide</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -406,10 +421,145 @@ div.tocify {
 </div>
 
 
-<p>T-tests are extremely flexible: They can be paired or unpaired. They can be a one-sample test (x1 = V (any value)) They can be a two-sample test (x1=x2) And they can be one tailed vs two- tailed - deals with directionality in the data.</p>
+<div id="download-the-r-code-for-this-lecture" class="section level2">
+<h2>Download the R code for this lecture!</h2>
+<p>To follow along with the R-based lessons and demos, <a href="LECTURE2.R">right (or command) click on this link and save the script to your working directory</a></p>
+</div>
+<div id="overview-of-statistical-methods" class="section level2">
+<h2>Overview of statistical methods</h2>
+<p>Okay before we delve into t-tests, let’s first give a broad overview of the analyses we will cover in this class (at least a tiny bit) and in which cases they are most appropriate:</p>
+<div id="continuous-response-variable" class="section level3">
+<h3>Continuous response variable</h3>
+<p>If your response variable is continuous (ratio, interval), common classical parametric statistical analyses include: t-tests, ANOVA, linear regression. Each of these tests is associated with non-parametric alternatives. In each case, we are interested in testing if the <em>population mean</em> of the continuous response variable is affected by the predictor variables (null hypothesis: nope, there is no effect!). Predictor variables, in turn, can be continuous or categorical (factor variables in R).</p>
+<div id="continuous-response-categorical-predictor" class="section level4">
+<h4>Continuous response, categorical predictor</h4>
+<p>If your categorical predictor is binary (two levels), you can use a <strong>two-sample t-test</strong>. The non-parametric alternative is the <strong>Mann-Whitney test</strong>.</p>
+<p>Example: Are females smaller than males? (null hypothesis: no difference)</p>
+<p>If your categorical predictor has more than two levels, you can use an <strong>ANalysis Of Variance (ANOVA)</strong> followed by <em>pairwise comparisons</em> to test which categories differ from one another. You can visualize these relationships with (e.g.) a boxplot. The non-parametric alternative is the <strong>Kruskal-Wallis test</strong>.</p>
+</div>
+<div id="continuous-response-continuous-predictor" class="section level4">
+<h4>Continuous response, continuous predictor</h4>
+<p>If your predictor variable is continuous, you can use <strong>linear regression</strong>. If you just want to know if two variables are correlated but you are not interested in modeling one (the response) as a function of another (the predictor) you can run a <strong>Pearson correlation test</strong>. The non-parametric alternative is a <strong>Spearman correlation test</strong>.</p>
+<p>Example: What is the relationship between tree diameter and age- can tree diameter be used to effectively predict the age of a tree?</p>
+</div>
+<div id="continuous-response-both-continuous-and-categorical-predictors" class="section level4">
+<h4>Continuous response, both continuous and categorical predictors</h4>
+<p>In this case you can use <strong>Analysis of Covariance (ANCOVA)</strong> or just use <strong>multiple linear regression</strong>. In truth, linear regression and ANOVA are two sides of the same coin. You can run both analyses using the workhorse of linear modeling in R, the ‘lm’ function. Basically, if you have a continuous response variable, you can use the ‘lm’ function! The non-parametric alternative might be something like a <strong>regression tree</strong> analysis.</p>
+</div>
+</div>
+<div id="discrete-count-response-variable" class="section level3">
+<h3>Discrete (count) response variable</h3>
+<p>With a discrete count response, you can use the same techniques as with a continuous response OR you can use <strong>generalized linear models</strong> with a Poisson error distribution (or other discrete probability distribution).</p>
+</div>
+<div id="categorical-response-variable" class="section level3">
+<h3>Categorical response variable</h3>
+<p>If your response variable is categorical (factor variable, ordinal variable, binary variable) then your choice of statistical methods changes:</p>
+<div id="categorical-response-variable-categorical-predictor" class="section level4">
+<h4>Categorical response variable, categorical predictor</h4>
+<p>If both your response variable and your predictor variable are categorical, then you can use a <strong>chi-squared test</strong> or a <strong>Fisher exact test</strong> to test for an association between the two variables. You may first summarize your data as a <em>contingency table</em> like we did with the ‘lady tasting tea’ example.</p>
+<p>Example: test for an association between salamander color morph (melanistic vs wild-type) and mating behavior (‘sneaker’, territory holder).</p>
+</div>
+<div id="categorical-response-variable-continuous-predictor" class="section level4">
+<h4>Categorical response variable, continuous predictor</h4>
+<p>If your response variable is binary (true/false, two levels) and your response variable is continuous, you can use <strong>logistic regression</strong> (which is a type of <em>generalized linear model</em>).</p>
+<p>If your categorical response variable has more than two levels, you can use <strong>multinomial logistic regression</strong> (for categorical responses) or <strong>ordinal logistic regression</strong> (for ordinal responses).</p>
+</div>
+</div>
+</div>
+<div id="overview-t-tests" class="section level2">
+<h2>Overview: t-tests</h2>
+<p>Okay, now let’s move to the main topic of this lecture: t-tests! Here we have a continuous response variable and either no predictor variable (one sample t-test) or a binary predictor variable (two-sample t-test).</p>
+<p>We have already performed simple versions of the t-test (one-sample t-tests). But t-tests are quite flexible and can be applied to a wide variety of null-hypothesis testing scenarios:</p>
+<div id="one-sample-t-test" class="section level3">
+<h3>One-sample t-test</h3>
+<p>A one-sample t-test tests the consistency of the sample data with the null hypothesis that the sample was generated from a population with known mean (often zero, but not necessarily). As we have seen before, the t-statistic in this case is expressed as:</p>
+<p><span class="math inline">\(t = \frac{(\bar{x}-\mu_0)}{s.e.}\)</span></p>
+<p>Where <span class="math inline">\(\bar{x}\)</span> is the sample mean, <span class="math inline">\(s.e.\)</span> is the standard error of the mean, and <span class="math inline">\(\mu_0\)</span> is the population mean under the null hypothesis.</p>
+<p>The t-statistic can be interpreted as the difference between the sample mean and the null population mean in units of standard errors.</p>
+<p>Under the null hypothesis, the sampling distribution of the t-statistic should follow a t distribution with n-1 degrees of freedom.</p>
+<pre class="r"><code>### one sample t-test (paired t-test is a type of one sample t-test)
+
+sample.data &lt;- rgamma(10,2,.1)
+null.mean &lt;- 10
+
+sample.size &lt;- length(sample.data)
+sample.mean &lt;- mean(sample.data)
+sample.sd &lt;- sd(sample.data)
+std.err &lt;- sample.sd/sqrt(sample.size)
+t.stat &lt;- (sample.mean-null.mean)/std.err
+
+t.crit &lt;- abs(qt(0.025,sample.size-1))   # for 2-tailed test
+
+p.val &lt;- (1-pt(abs(t.stat),sample.size-1))*2   # 
+
+
+### alternatively use the t.test function:
+
+t.test(sample.data,mu=null.mean)   # should get the same answer!</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  sample.data
+## t = 3.3424, df = 9, p-value = 0.008628
+## alternative hypothesis: true mean is not equal to 10
+## 95 percent confidence interval:
+##  13.13360 26.25834
+## sample estimates:
+## mean of x 
+##  19.69597</code></pre>
+<p>A common version of the one-sample t-test is the ‘paired t-test’, in which a measurement is taken on a single individual before and after a treatment is applied. An example of a paired t-test is the ‘weight loss drug’ example from the ‘basic concepts’ lecture.</p>
+</div>
+<div id="two-sample-t-test" class="section level3">
+<h3>Two-sample t-test</h3>
+<p>A two-sample t-test tests the consistency of the sample data with the null hypothesis that sample A was generated from the same underlying population as sample B. The t-statistic in this case is expressed as:</p>
+<p><span class="math inline">\(t = \frac{(\bar{x_A}-\bar{x_B})}{s.e._{pooled}}\)</span></p>
+<p>Where <span class="math inline">\(\bar{x}\)</span> is the sample mean, <span class="math inline">\(s.e._{pooled}\)</span> is the pooled standard error of the mean across both samples, and <span class="math inline">\(\mu_0\)</span> is the population mean under the null hypothesis.</p>
+<p>The t-statistic in the 2-sample case can be interpreted as the difference between the sample mean from population A and the sample mean from population B, in units of (pooled) standard errors.</p>
+<p>The formula for the pooled standard error depends on whether your sample size is equal in the two samples and whether you are able to assume that the standard deviation is the same in the two underlying populations.</p>
+<p>For the 2-sample t-test, the degrees of freedom is equal to the total sample size across both samples minus 2.</p>
+<pre class="r"><code>### two sample t-test 
+
+sample.data.1 &lt;- rnorm(15,55,10)
+sample.data.2 &lt;- rnorm(10,45,10)
+
+sample.size.1 &lt;- length(sample.data.1)
+sample.size.2 &lt;- length(sample.data.2)
+sample.size.pooled &lt;- length(sample.data.1) + length(sample.data.2)
+
+sample.mean1 &lt;- mean(sample.data.1)
+sample.mean2 &lt;- mean(sample.data.2)
+
+sample.sd1 &lt;- sd(sample.data.1)
+sample.sd2 &lt;- sd(sample.data.2)
+sample.sd.pooled &lt;- sqrt(((sample.size.1-1)*sample.sd1^2 + (sample.size.2-1)*sample.sd2^2)/(sample.size.pooled-2))
+
+std.err.pooled &lt;- sample.sd.pooled*sqrt(1/sample.size.1+1/sample.size.2)
+t.stat &lt;- (sample.mean1-sample.mean2)/std.err.pooled
+
+t.crit &lt;- abs(qt(0.025,sample.size-1))   # for 2-tailed test
+
+p.val &lt;- (1-pt(abs(t.stat),sample.size.pooled-2))*2   # 
+
+
+
+### alternatively use the t.test function:
+
+t.test(sample.data.1,sample.data.2,var.equal = T)   # should get the same answer!</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  sample.data.1 and sample.data.2
+## t = 0.93552, df = 23, p-value = 0.3592
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -4.03479 10.69700
+## sample estimates:
+## mean of x mean of y 
+##  55.40201  52.07090</code></pre>
+<p>And they can be one tailed vs two- tailed - deals with directionality in the data.</p>
 <p>In the simplest version of the t-test, there are equal sample size and equal variance.</p>
 <p>Here’s how we solve for a one-sample t-test.</p>
-<p>t= (x ̅-µ_0)/(s⁄√n) Degrees of freedom equal n-1. Here, we assume that Samples are independent of each other Data are continuous The dependent variable should be approximately normally distributed*</p>
+<p>Degrees of freedom equal n-1. Here, we assume that Samples are independent of each other Data are continuous The dependent variable should be approximately normally distributed*</p>
 <p>Null hypothesis is that the difference between the population mean and the value for comparison is 0.</p>
 <p>But that’s not all!</p>
 <p>Two sample t-test:</p>
@@ -451,7 +601,7 @@ t.test(Group0,alternative=&quot;greater&quot;) # This gets at directionality</co
 <pre class="r"><code>#Are my data different than zero? 
 Group0 &lt;- c(0.5, -0.03, 4, 2.5, 0.89, 2.2, 1.7, 1.125)
 hist(Group0)</code></pre>
-<p><img src="LECTURE2_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <pre class="r"><code>t.test(Group0) # Okay, that&#39;s to zero. What about if it&#39;s different than 1? </code></pre>
 <pre><code>## 
 ##  One Sample t-test
@@ -510,7 +660,15 @@ t.test(group1, group2) # T value does not change, but DF And p-value do! &quot;W
 ## mean of x mean of y 
 ##       6.9      11.0</code></pre>
 <pre class="r"><code># WELCH IS THE DEFAULT IN R</code></pre>
+</div>
+</div>
+<div id="t-test-sampling-distribution" class="section level2">
+<h2>t-test sampling distribution</h2>
+</div>
+<div id="power-analysis" class="section level2">
+<h2>Power analysis</h2>
 <p><a href="LECTURE3.html">–go to next lecture–</a></p>
+</div>
 
 
 
@@ -562,7 +720,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0
