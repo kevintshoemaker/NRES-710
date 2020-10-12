@@ -434,7 +434,7 @@ div.tocify {
 <div id="continuous-response-categorical-predictor" class="section level4">
 <h4>Continuous response, categorical predictor</h4>
 <p>If your categorical predictor is binary (two levels), you can use a <strong>two-sample t-test</strong>. The non-parametric alternative is the <strong>Mann-Whitney test</strong>.</p>
-<p>Example: Are females smaller than males? (null hypothesis: no difference)</p>
+<p>Example: Are females larger than males? (null hypothesis: no difference)</p>
 <p>If your categorical predictor has more than two levels, you can use an <strong>ANalysis Of Variance (ANOVA)</strong> followed by <em>pairwise comparisons</em> to test which categories differ from one another. You can visualize these relationships with (e.g.) a boxplot. The non-parametric alternative is the <strong>Kruskal-Wallis test</strong>.</p>
 </div>
 <div id="continuous-response-continuous-predictor" class="section level4">
@@ -457,11 +457,11 @@ div.tocify {
 <div id="categorical-response-variable-categorical-predictor" class="section level4">
 <h4>Categorical response variable, categorical predictor</h4>
 <p>If both your response variable and your predictor variable are categorical, then you can use a <strong>chi-squared test</strong> or a <strong>Fisher exact test</strong> to test for an association between the two variables. You may first summarize your data as a <em>contingency table</em> like we did with the ‘lady tasting tea’ example.</p>
-<p>Example: test for an association between salamander color morph (melanistic vs wild-type) and mating behavior (‘sneaker’, territory holder).</p>
+<p>Example: test for an association between salamander color morph (melanistic vs wild-type) and mating behavior (‘sneaker’ vs territory holder).</p>
 </div>
 <div id="categorical-response-variable-continuous-predictor" class="section level4">
 <h4>Categorical response variable, continuous predictor</h4>
-<p>If your response variable is binary (true/false, two levels) and your response variable is continuous, you can use <strong>logistic regression</strong> (which is a type of <em>generalized linear model</em>).</p>
+<p>If your response variable is binary (true/false, two levels) and your predictor variable is continuous, you can use <strong>logistic regression</strong> (which is a type of <em>generalized linear model</em>).</p>
 <p>If your categorical response variable has more than two levels, you can use <strong>multinomial logistic regression</strong> (for categorical responses) or <strong>ordinal logistic regression</strong> (for ordinal responses).</p>
 </div>
 </div>
@@ -472,7 +472,7 @@ div.tocify {
 <p>We have already performed simple versions of the t-test (one-sample t-tests). But t-tests are quite flexible and can be applied to a wide variety of null-hypothesis testing scenarios:</p>
 <div id="one-sample-t-test" class="section level3">
 <h3>One-sample t-test</h3>
-<p>A one-sample t-test tests the consistency of the sample data with the null hypothesis that the sample was generated from a population with known mean (often zero, but not necessarily). As we have seen before, the t-statistic in this case is expressed as:</p>
+<p>A one-sample t-test tests the consistency of the sample data with the null hypothesis that the sample was generated from a population with a specified mean (often zero, but not necessarily). As we have seen before, the t-statistic in this case is expressed as:</p>
 <p><span class="math inline">\(t = \frac{(\bar{x}-\mu_0)}{s.e.}\)</span></p>
 <p>Where <span class="math inline">\(\bar{x}\)</span> is the sample mean, <span class="math inline">\(s.e.\)</span> is the standard error of the mean, and <span class="math inline">\(\mu_0\)</span> is the population mean under the null hypothesis.</p>
 <p>The t-statistic can be interpreted as the difference between the sample mean and the null population mean in units of standard errors.</p>
@@ -556,17 +556,8 @@ t.test(sample.data.1,sample.data.2,var.equal = T)   # should get the same answer
 ## sample estimates:
 ## mean of x mean of y 
 ##  55.40201  52.07090</code></pre>
-<p>And they can be one tailed vs two- tailed - deals with directionality in the data.</p>
-<p>In the simplest version of the t-test, there are equal sample size and equal variance.</p>
-<p>Here’s how we solve for a one-sample t-test.</p>
-<p>Degrees of freedom equal n-1. Here, we assume that Samples are independent of each other Data are continuous The dependent variable should be approximately normally distributed*</p>
-<p>Null hypothesis is that the difference between the population mean and the value for comparison is 0.</p>
-<p>But that’s not all!</p>
-<p>Two sample t-test:</p>
-<p>t=(x ̅_1-x ̅_2)/√((s_1^2)/n_1 +(s_2^2)/n_1 ) Degrees of Freedom = (n1+ n2) – 2 Assumptions: Data are continuous Samples are independent Equal sample sizes Equal variance The data are approximately normally distributed*</p>
-<ul>
-<li>T-tests have been shown to be robust against violations of these assumptions. Also, consider the CLT: the CLT doesn’t want the data themselves to be normally distributed, it wants the mean and variance to be representative of the population. The CLT provides the basis for this… but that’s not good enough for most people.</li>
-</ul>
+<p><strong>Q</strong> What are the key assumptions of the 2-sample t-test?</p>
+<p><strong>Q</strong> What is the null hypothesis for the 2-sample t-test?</p>
 <p>Tails: if one tailed, 95 % of the distribution falls to the left or the right. If two tailed, 95 % of the distribution falls in the middle, with 2.5% of the distribution on each tail.</p>
 <p>Paired t-test: calculate differences. Then get the average, SD, SE. DF = differences – 1. Ho: µ=0</p>
 <p>t= (x_d ) ̅/〖SE〗_(x ̅d)</p>

@@ -52,7 +52,7 @@ If your response variable is continuous (ratio, interval), common classical para
 
 If your categorical predictor is binary (two levels), you can use a **two-sample t-test**. The non-parametric alternative is the **Mann-Whitney test**.
 
-Example: Are females smaller than males? (null hypothesis: no difference)
+Example: Are females larger than males? (null hypothesis: no difference)
 
 If your categorical predictor has more than two levels, you can use an **ANalysis Of Variance (ANOVA)** followed by *pairwise comparisons* to test which categories differ from one another. You can visualize these relationships with (e.g.) a boxplot. The non-parametric alternative is the **Kruskal-Wallis test**.   
 
@@ -78,11 +78,11 @@ If your response variable is categorical (factor variable, ordinal variable, bin
 
 If both your response variable and your predictor variable are categorical, then you can use a **chi-squared test** or a **Fisher exact test** to test for an association between the two variables. You may first summarize your data as a *contingency table* like we did with the 'lady tasting tea' example.
 
-Example: test for an association between salamander color morph (melanistic vs wild-type) and mating behavior ('sneaker', territory holder).  
+Example: test for an association between salamander color morph (melanistic vs wild-type) and mating behavior ('sneaker' vs territory holder).  
  
 #### Categorical response variable, continuous predictor 
 
-If your response variable is binary (true/false, two levels) and your response variable is continuous, you can use **logistic regression** (which is a type of *generalized linear model*). 
+If your response variable is binary (true/false, two levels) and your predictor variable is continuous, you can use **logistic regression** (which is a type of *generalized linear model*). 
 
 If your categorical response variable has more than two levels, you can use **multinomial logistic regression** (for categorical responses) or **ordinal logistic regression** (for ordinal responses). 
  
@@ -95,7 +95,7 @@ We have already performed simple versions of the t-test (one-sample t-tests). Bu
 
 ### One-sample t-test 
 
-A one-sample t-test tests the consistency of the sample data with the null hypothesis that the sample was generated from a population with known mean (often zero, but not necessarily). As we have seen before, the t-statistic in this case is expressed as:
+A one-sample t-test tests the consistency of the sample data with the null hypothesis that the sample was generated from a population with a specified mean (often zero, but not necessarily). As we have seen before, the t-statistic in this case is expressed as:
 
 $t = \frac{(\bar{x}-\mu_0)}{s.e.}$
 
@@ -185,46 +185,17 @@ t.test(sample.data.1,sample.data.2,var.equal = T)   # should get the same answer
 ```
 
 
+**Q** What are the key assumptions of the 2-sample t-test? 
+
+**Q** What is the null hypothesis for the 2-sample t-test?
 
 
-
-
-
-
-
-
-And they can be one tailed vs two- tailed -  deals with directionality in the data.
-
-In the simplest version of the t-test, there are equal sample size and equal variance. 
-
-Here’s how we solve for a one-sample t-test. 
-
-
-Degrees of freedom equal n-1. 
-Here, we assume that 
-	Samples are independent of each other
-	Data are continuous
-	The dependent variable should be approximately normally distributed*
-
-Null hypothesis is that the difference between the population mean and the value for comparison is 0. 
-
-But that’s not all! 
-
-Two sample t-test: 
-
-t=(x ̅_1-x ̅_2)/√((s_1^2)/n_1 +(s_2^2)/n_1 )
-Degrees of Freedom  = (n1+ n2) – 2
-Assumptions: 
-	Data are continuous
-	Samples are independent 
-	Equal sample sizes
-	Equal variance
-	The data are approximately normally distributed* 
-
-* T-tests have been shown to be robust against violations of these assumptions. Also, consider the CLT: the CLT doesn’t want the data themselves to be normally distributed, it wants the mean and variance to be representative of the population. The CLT provides the basis for this… but that’s not good enough for most people. 
 
 Tails: if one tailed, 95 % of the distribution falls to the left or the right. 
 If two tailed, 95 % of the distribution falls in the middle, with 2.5% of the distribution on each tail. 
+
+
+
 
 
 
@@ -292,7 +263,10 @@ t.test(group1, group2) # T value does not change, but DF And p-value do! "Welch 
 
 
 
+
 ## Power analysis
+
+
 
 
 
