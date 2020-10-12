@@ -1,0 +1,81 @@
+---
+title: "Final Project Overview"
+author: "NRES 710"
+date: "Fall 2020"
+output: 
+  html_document: 
+    theme: yeti
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+```
+
+
+## Final projects: expectations
+
+The final project is designed to test your ability to understand and apply the tools that you have developed during the semester using R. The project will involve conducting a rigorous data analysis using statistical approaches that we have learned during the semester (or other tools as approved by the instructor). You can choose whichever statistical methods are suitable to your project scope and questions, but they must be methods we covered in class (unless otherwise approved) and appropriate to your data. Please turn in your own work and assignment, but you may use as many resources as you wish (class material, online material, or the insight/experience of other students) to help generate the results and figures. 
+
+The write-up will loosely take the format of a scientific paper to be submitted to a professional journal. However, because of the nature of this course, the most important pieces of the write-up are the **methods** and **results** sections. Nonetheless, I expect at least a few paragraphs introducing the topic and why it's important, and a few paragraphs discussing the implications of the results. Be concise- include only enough text to convey the important information for each section! See below for details.
+
+
+## Picking a topic and data set
+
+I encourage you to talk with your advisor to see if there is a way you can make the final project directly part of your thesis project or at least relevant to your thesis/dissertation project. You will end up spending quite a bit of time on your final projects, so think about what types of analyses you want/need to get to know better as part of your graduate research. If you don't have a dataset to work with you can choose to work with a public dataset- there are lots of great datasets out there... see [links page](Links.html#Data_links)
+
+#### Project proposal (1 page)  (due Sep 23)
+
+Please provide a 1-page project description. Make sure you include:     
+
+* Project title    
+* Name of researcher      
+* Brief background (motivation for research question)     
+* Research question(s)      
+* Primary and ancillary data sources      
+* Anticipated analytical approach      
+
+
+## Draft manuscript
+
+Here is a more detailed description of expectations for the manuscript.
+
+**Introduction:** Provide enough description so that the reader understands why the research is important and (if appropriate) what research question(s) and/or hypotheses are being addressed. (approx. 2-3 paragraphs)
+
+**Methods:**      
+
+* Provide just enough details about the data collection to give the reader the context necessary to understand the data.     
+* Provide plenty of detail about the analytical approach- enough detail to replicate the analysis. Justify all decisions that were made and (where appropriate) discuss why you did not use alternative approaches.   
+* Discuss key assumptions.  
+
+**Results:** Present all relevant results completely yet concisely. Wherever possible, results should be presented via figures and tables. There is a limit of 4 figures and 2 tables, so choose carefully which figures and tables to present. Figures should be *publication quality*.   
+
+**Discussion:** Write at least two paragraphs that put the results in a larger context (returning to the key research questions) and discuss areas of uncertainty. Potential topics are possible violations of assumptions, and future work that your analysis suggests would be profitable.    
+
+**Supplement** Provide all code used to run the analyses presented in the paper as an R script.
+
+## Peer review
+
+With roughly a month left in the semester, first drafts of your final projects will be due. These first drafts will then be subjected to anonymous peer review. At this time, the assignment itself will not be “graded,” but the assignment will be reviewed by at least two other students, and the reviews will be graded. The reviews are designed to provide feedback on the statistical approach being used. For example, are the stats relevant to the data? Will the stats appropriate to the experimental design? The reviews will be due in
+
+## Final manuscript
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -839,22 +839,26 @@ upper.bound
 
 ## Other statistics and sampling distributions
 
-Pretty much all of classical statistics works this way. We compute summary statistics from data that have well-described sampling distributions. We climb into the null universe and, using the known sampling distribution, inquire whether or not our summary statistic (computed from our sample data) could have been a result of random sampling error under the null hypothesis. If not (if $p\ge\alpha$) then we remain unconvinced that the null universe is indeed false. 
+Pretty much all of classical null hypothesis testing works this way. We compute summary statistics from data that have well-described sampling distributions under the null hypothesis. We climb into the null universe and, using this known sampling distribution, we inquire whether or not our summary statistic (computed from our sample data) could have been a result of random sampling error in the null universe. If not (if $p\le\alpha$) then we are sufficiently surprised to reject the null hypothesis.
+
+For example, here is another common test:
 
 ### Chi-square goodness-of-fit test.
 
-This test asks the question “do the data sort into categories as you hypothesized?”
+This test asks the question “do the observations sort into categories according to your (usually null) hypothesis?”
 
-Karl Pearson – Founded the first statistics dept, was a socialist and social Darwinist… and became a eugenicist. 
+Karl Pearson – Founded the first statistics dept, was a socialist and social Darwinist… and became a eugenicist.    
+
 *Example*: Are grad students more likely to be born some months versus other months?
 
 **Q**: what is the statistical population? Parameter? Sample? Statistic? 
 
 #### Assumptions
-* Response variable must be *categorical* (actually number of observations in each of >1 categories)    
-* Samples must be independent     
-* Data must be randomly sampled from the population of interest    
-* There must be a sufficient sample size such that the *expected number of observations* in each categories is at least 5! 
+
+* Response variable and predictor variable must be *categorical* (data can be summarized as contingency table)         
+* Samples must be independent (this is almost always an assumption of our classical statistical tests)   
+* Sampled must be representative of the population of interest (again, this is always a key assumption)   
+* There must be a sufficient sample size such that the *expected number of observations* in each element of the contingency table is at least 5! 
 
 The Chi-squared statistic is computed from the data. The sampling distribution for the statistic is called the *Chi-squared distribution*. 
 
@@ -869,16 +873,18 @@ Why is the numerator squared? First, this makes all deviations positive- negativ
 
 #### The Chi-squared distribution
 
-The Chi-squared distribution is described (like the *t* distribution) by a certain degrees of freedom.
+The Chi-squared distribution is described (like the *t* distribution) by a certain degrees of freedom ('degrees of freedom' is the *parameter* needed to describe the distribution -- just like mean and standard deviation are parameters of the normal distribution). 
 
-The degrees of freedom for this test is one less than the number of categories. 
+If you are performing a goodness-of-fit test, the degrees of freedom for this test is one less than the number of categories.
+
+If you are performing a test for independence of two categorical variables, the degrees of freedom is computed as $(r-1)(c-1)$ where r and c are the number of categories in each of the two categorical variables, respectively.
 
 
 #### Example in R
 
 ```{r}
 
-## Chi squared example
+## Chi squared goodness-of-fit example
 
 birthdays.bymonth <- c(40,23,33,39,28,29,45,31,22,34,44,20)
 months <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
@@ -886,7 +892,7 @@ names(birthdays.bymonth) <- months
 
 sample.size <- sum(birthdays.bymonth)
 k = length(birthdays.bymonth)   # number of categories (months)
-exp.birthdays.bymonth <- sample.size*rep(1/k,times=k)
+exp.birthdays.bymonth <- sample.size*rep(1/k,times=k)   # compute the expected number under the null hypothesis.
 
 Chisq.stat <- sum((birthdays.bymonth-exp.birthdays.bymonth)^2/exp.birthdays.bymonth)
 Chisq.stat
@@ -911,27 +917,29 @@ chisq.test(birthdays.bymonth)     # should get the same p value!
 
 ### Z-tests
 
-The Z-test is a simpler version of the t-test for when sample size is large enough (n>50) or the population dispersion is known. 
+The Z-test is a simpler version of the t-test for when sample size is large enough so that we don't really need the t distribution anymore (n>50) or if the population dispersion is known (in which case we can assume the sample mean is normally distributed, following the CLT). 
 
 The Z statistic is:
 
 $Z = \frac{(\bar{X}-\mu_0)}{s.e.}$
 
-As you can see, this looks very much like the t statistic! Actually it is exactly the same. The difference is that we are now assuming that the sampling variation for this statistic is normally distributed instead of t-distributed!
+As you can see, this looks very much like the t statistic! Actually it is exactly the same! The difference is that we are now assuming that the sampling variation for this statistic is normally distributed instead of t-distributed, so we now call it the Z statistic! 
 
 #### Example z-test: Golden State Warriors height
 
-Tall basketball players are often successful. The Golden State Warriors are often successful. How tall are the Golden State Warriors relative to other basketball players in the NBA? 
+Tall basketball players are often successful. The Golden State Warriors are often successful. How tall are the Golden State Warriors relative to other basketball players in the NBA? We hypothesize that GSW players are taller than the NBA average! The null hypothesis is that they are essentially randomly sampled from the general pool of NBA players. 
+
+What is the Population? Parameter? Sample? Statistic? 
 
 The GSW are 15 players with an average height of 6’8” (80”). 
 A large survey of NBA players suggests they are, on average, 6’7” tall (79") with a standard deviation of 4 inches.
 
 NOTE: the z-test is only appropriate here because we know the population standard deviation. If this is the case, we know under the CLT that the sample means should follow a normal distribution. (the only reason the t-distribution differs from the normal distribution is that we also are estimating the sample standard deviation- it is not known with certainty!). 
 
-NOTE: B. Sullivan obtained those values from research into the height of NBA players.
+NOTE: B. Sullivan obtained those values from research into the height of NBA players. 
 
 
-Here, the mean (mu) and the standard deviation (q) are coming from the population (all NBA players) instead of the sample. There are situations where you can use the standard deviation of the sample, but those should be only when the sample size is very large.
+Here, the mean (mu) and the standard deviation (q) are coming from the population (all NBA players) instead of the sample. There are situations where you can use the sample standard deviation to compute standard error for a Z test, but those should be only when the sample size is very large. In general you should use a t-test when the population standard deviation is unknown. 
 
 
 Use this link to download the data for this example: [link to GSW data](GSW_height.csv)
@@ -950,9 +958,7 @@ mean.pop <- 79
 n <- length(GSWheight)
 s.e. <- sd.pop/sqrt(n)
 
-
-
-null.height <- mean.pop
+null.height <- mean.pop   # null: GSW are sampled randomly from the pool of all NBA players. They are not fundamentally different!
 
 z.statistic <- (mean.gsw-null.height)/s.e.
 z.statistic
@@ -974,10 +980,11 @@ Wrong- that means that 74% of samples of 15 players drawn randomly from the popu
 **Q** So can you reject the null hypothesis and say that the GSW team is taller than expected by random chance?
 
 
+[Group questions: (1) for any normal distribution (e.g., the standard normal or z distribution) what is the probability of obtaining a random number within 1 standard deviation of the mean?  (2) for any normal distribution (e.g., the standard normal or z distribution) what is the probability of obtaining a random number within 2 standard deviation2 of the mean?  (3) what is the 95% quantile of the standard normal distribution (z distribution)?
+
 ### F tests (ANOVA, regression)
 
-We will get there in a couple weeks! Hang tight!
-
+We will get there in a couple weeks! Hang tight! Just know that the F statistic is another test statistic you can compute from your sample, and the F distribution is another sampling distribution that has been worked out by our statistical forebears!
 
 
 
@@ -1032,7 +1039,7 @@ integrate(f=dbeta,lower=0,upper=1,shape1=shape1,shape2=shape2)    # just to make
 
 **Parameters** are the arguments used to describe probability distributions - they describe the exact shape and location of the distribution. Different distribution families are associated with different parameters. For example, the normal distribution is described by 2 parameters: mean and stdev. The Poisson distribution has only one parameter (the mean). The binomial distribution is described by 2 parameters: size (number of trials) and prob (success probability for each trial).  
 
-*Parametric statistics* require assuming certain things about distributions & parameters, while *nonparametric stats* do not require these assumptions. NOTE: nonparametric statistics still usually make the assumption that observations are independent!
+*Parametric statistics* require assuming certain things about distributions & parameters, while *nonparametric statistics* do not require these assumptions. NOTE: nonparametric statistics still usually make the assumption that observations are independent!
 
 ### Probability distributions in R
 

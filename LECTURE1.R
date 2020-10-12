@@ -232,7 +232,7 @@ lower.bound
 upper.bound
 
 
-## Chi squared example
+## Chi squared goodness-of-fit example
 
 birthdays.bymonth <- c(40,23,33,39,28,29,45,31,22,34,44,20)
 months <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
@@ -240,7 +240,7 @@ names(birthdays.bymonth) <- months
 
 sample.size <- sum(birthdays.bymonth)
 k = length(birthdays.bymonth)   # number of categories (months)
-exp.birthdays.bymonth <- sample.size*rep(1/k,times=k)
+exp.birthdays.bymonth <- sample.size*rep(1/k,times=k)   # compute the expected number under the null hypothesis.
 
 Chisq.stat <- sum((birthdays.bymonth-exp.birthdays.bymonth)^2/exp.birthdays.bymonth)
 Chisq.stat
@@ -273,9 +273,7 @@ mean.pop <- 79
 n <- length(GSWheight)
 s.e. <- sd.pop/sqrt(n)
 
-
-
-null.height <- mean.pop
+null.height <- mean.pop   # null: GSW are sampled randomly from the pool of all NBA players. They are not fundamentally different!
 
 z.statistic <- (mean.gsw-null.height)/s.e.
 z.statistic
