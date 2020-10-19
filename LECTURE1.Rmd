@@ -1182,7 +1182,7 @@ integrate(f=dnorm,lower=-Inf,upper=Inf,mean=mean,sd=stdev)    # just to make sur
 
 df = 6
 
-rt(10,df)     # random numbers from the t distribution (not sure why you would ever want this!)
+rt(10,df)     # random numbers from the t distribution
 
 curve(dt(x,df),-4,4)   # probability density
 

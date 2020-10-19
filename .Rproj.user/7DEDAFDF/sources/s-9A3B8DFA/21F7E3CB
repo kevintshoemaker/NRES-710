@@ -3,23 +3,23 @@
     "path": "~/GitHub/NRES-710/LECTURE1.Rmd",
     "project_path": "LECTURE1.Rmd",
     "type": "r_markdown",
-    "hash": "0",
+    "hash": "928880326",
     "contents": "",
     "dirty": false,
     "created": 1600069589592.0,
     "source_on_save": false,
     "relative_order": 5,
     "properties": {
-        "cursorPosition": "1207,68",
+        "cursorPosition": "1185,0",
         "last_setup_crc32": "",
-        "scrollLine": "1198"
+        "scrollLine": "1183"
     },
     "folds": "",
-    "lastKnownWriteTime": 1603118635,
+    "lastKnownWriteTime": 1603118779,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1603118635938,
+    "last_content_update": 1603118779111,
     "read_only": false,
     "read_only_alternatives": []
 }
