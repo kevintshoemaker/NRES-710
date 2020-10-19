@@ -1205,7 +1205,7 @@ integrate(f=dt,lower=-Inf,upper=Inf,df=df)    # just to make sure it integrates 
 
 df = 6
 
-rchisq(10,df)     # random numbers from the chi squared distribution (not sure why you would ever want this!)
+rchisq(10,df)     # random numbers from the chi squared distribution
 
 curve(dchisq(x,df),0,15)   # probability density
 
