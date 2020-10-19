@@ -1,0 +1,7 @@
+"0",""
+"0","### t-crit in one tailed vs two tailed test"
+"0",""
+"0","sample.size=7"
+"0",""
+"0","curve(dt(x,sample.size-1),-8,4, main=""2-tailed vs 1-tailed critical value"","
+"0","      xlab=""t-statistic"",ylab=""probability density"")"

@@ -1137,7 +1137,7 @@ barplot(probs,ylab=&quot;Probability Mass&quot;,main=&quot;Poisson distribution 
 <p><img src="LECTURE1_files/figure-html/unnamed-chunk-23-2.png" width="672" /></p>
 <pre class="r"><code>sum(probs)   # just to make sure it sums to 1!  Does it???</code></pre>
 <pre><code>## [1] 0.999931</code></pre>
-<p>In <em>continuous distributions</em>, each possible value/quantity that could be randomly sampled is associated with a <em>probability density</em>, <span class="math inline">\(f(x)\)</span>, not probability mass <span class="math inline">\(Prob(x)\)</span>. This is because the probability of getting any particular value in a continuous distribution is effectively zero. This arises from the problem of precision. The sum of the probability distribution must be 1 (there is only 100% of probability to go around). In a continuous distribution, there are an infinite number of possible values of x. So any individual probability is always divided by infinity, which makes it zero. Therefore we have to talk about probability density, unless we want to specify a particular range of values – we can’t calculate <span class="math inline">\(Prob(x = 5)\)</span>, but we can calculate <span class="math inline">\(Prob(4 &lt; x &lt; 6)\)</span> or <span class="math inline">\(Prob(x &gt; 5)\)</span>. The probability density is defined as the probability of getting a value within an infinitesimally small range of a particular value, divided by that infinitessimally small interval. No worries if you don’t understand that - you can just think of probability density as the relative likelihood of sampling one value versus another. Let’s consider the beta distribution:</p>
+<p>In <em>continuous distributions</em>, each possible value/quantity that could be randomly sampled is associated with a <em>probability density</em>, <span class="math inline">\(f(x)\)</span>, not probability mass <span class="math inline">\(Prob(x)\)</span>. This is because the probability of getting any particular value in a continuous distribution is effectively zero. This arises from the problem of precision. The sum of the probability distribution must be 1 (there is only 100% of probability to go around). In a continuous distribution, there are an infinite number of possible values of x. So any individual probability is always divided by infinity, which makes it zero. Therefore we have to talk about probability density, unless we want to specify a particular range of values – we can’t calculate <span class="math inline">\(Prob(x = 5)\)</span>, but we can calculate <span class="math inline">\(Prob(4 &lt; x &lt; 6)\)</span> or <span class="math inline">\(Prob(x &gt; 5)\)</span>. The probability density is defined as the probability of getting a value within an infinitesimally small range of a particular value, divided by that infinitesimally small interval. No worries if you don’t understand that - you can just think of probability density as the relative likelihood of sampling one value versus another. Let’s consider the beta distribution:</p>
 <pre class="r"><code>#########
 # continuous distributions
 
@@ -1158,6 +1158,7 @@ rbeta(10,shape1,shape2)   # generate 10 random numbers from a continuous distrib
 <h3>Parameters and parametric statistics</h3>
 <p><strong>Parameters</strong> are the arguments used to describe probability distributions - they describe the exact shape and location of the distribution. Different distribution families are associated with different parameters. For example, the normal distribution is described by 2 parameters: mean and stdev. The Poisson distribution has only one parameter (the mean). The binomial distribution is described by 2 parameters: size (number of trials) and prob (success probability for each trial).</p>
 <p><em>Parametric statistics</em> require assuming certain things about distributions &amp; parameters, while <em>nonparametric statistics</em> do not require these assumptions. NOTE: nonparametric statistics still usually make the assumption that observations are independent!</p>
+<p><strong>Q</strong> Given the CLT makes many classical tests robust to non-normal data distributions, why do we need non-parametric statistics?</p>
 </div>
 <div id="probability-distributions-in-r" class="section level3">
 <h3>Probability distributions in R</h3>
@@ -1191,7 +1192,7 @@ axis(1,at=x,labels=0:10)</code></pre>
 <div id="cumulative-distribution-function" class="section level4">
 <h4>Cumulative distribution function</h4>
 <p>For continuous AND discrete probability distributions, <strong>CDFs</strong> - Cumulative distribution functions (e.g., ‘pnorm’,‘pt’,‘pchisq’,‘pbinom’,‘ppois’) give you the probability of obtaining a value less than or equal to any particular value that could be sampled under the distribution.</p>
-<pre class="r"><code>## cumulative density function  
+<pre class="r"><code>## cumulative distribution function  
 
     # for continuous distribution
 curve(pt(x,df=8),-4,4,xlab=&quot;possibilities&quot;,ylab=&#39;cumulative probability&#39;)</code></pre>
@@ -1255,7 +1256,7 @@ barplot(probs,ylab=&quot;Probability&quot;,main=&quot;Binomial distribution&quot
 <div id="normal" class="section level4">
 <h4>Normal</h4>
 <pre class="r"><code>#########
-# Gaussian
+# Gaussian (normal)
 
 mean = 7.1
 stdev = 1.9
@@ -1294,7 +1295,7 @@ rt(10,df)     # random numbers from the t distribution (not sure why you would e
 
 df = 6
 
-rchisq(10,df)     # random numbers from the t distribution (not sure why you would ever want this!)</code></pre>
+rchisq(10,df)     # random numbers from the chi squared distribution (not sure why you would ever want this!)</code></pre>
 <pre><code>##  [1]  3.7348148  8.0256341  5.5802538  3.5284083  7.3024196 13.7108539
 ##  [7]  0.6067357 11.6874677  5.8024544  6.9670338</code></pre>
 <pre class="r"><code>curve(dchisq(x,df),0,15)   # probability density</code></pre>

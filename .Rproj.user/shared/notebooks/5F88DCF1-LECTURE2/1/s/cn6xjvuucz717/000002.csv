@@ -1,0 +1,5 @@
+"0",""
+"0","## testing for normality"
+"0",""
+"0","my.data.nonnorm <- rgamma(20,0.1,0.1)    # simulate some non-normal data"
+"0","hist(my.data.nonnorm,main=""non-normal"")     # visualize the data distribution"

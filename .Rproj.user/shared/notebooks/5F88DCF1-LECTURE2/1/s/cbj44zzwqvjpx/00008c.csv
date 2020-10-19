@@ -1,0 +1,4 @@
+"0",""
+"0","p.twosided <- pt(-abs(t.statistic),samp.n-1)*2     # two-tailed p-value"
+"0",""
+"0","text(-2,0.3,paste(""p ="",round(p.twosided,4)))"

@@ -338,7 +338,7 @@ x <- barplot(sapply(0:10,function(t) dpois(t,2)),xlab="possibilities",ylab='prob
 axis(1,at=x,labels=0:10)
 
 
-## cumulative density function  
+## cumulative distribution function  
 
     # for continuous distribution
 curve(pt(x,df=8),-4,4,xlab="possibilities",ylab='cumulative probability')
@@ -376,7 +376,7 @@ sum(probs)   # just to make sure it sums to 1!  Does it???
 
 
 #########
-# Gaussian
+# Gaussian (normal)
 
 mean = 7.1
 stdev = 1.9
@@ -411,7 +411,7 @@ integrate(f=dt,lower=-Inf,upper=Inf,df=df)    # just to make sure it integrates 
 
 df = 6
 
-rchisq(10,df)     # random numbers from the t distribution (not sure why you would ever want this!)
+rchisq(10,df)     # random numbers from the chi squared distribution (not sure why you would ever want this!)
 
 curve(dchisq(x,df),0,15)   # probability density
 

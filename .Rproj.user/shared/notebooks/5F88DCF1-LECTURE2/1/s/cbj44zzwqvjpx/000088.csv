@@ -1,0 +1,4 @@
+"0",""
+"0","xs <- seq(abs(t.statistic),10,0.05)                "
+"0","ys <- dt(xs,samp.n-1)"
+"0","polygon(x=c(xs,rev(xs)),y=c(ys,rep(0,times=length(ys))),col=""green"",border=NA)"

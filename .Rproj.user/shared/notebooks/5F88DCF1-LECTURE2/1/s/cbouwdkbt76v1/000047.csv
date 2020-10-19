@@ -1,0 +1,4 @@
+"0",""
+"0","t.crit.onesided <- qt(alpha,sample.size-1) "
+"0",""
+"0","abline(v=abs(t.crit.onesided),col=""green"",lwd=2)"

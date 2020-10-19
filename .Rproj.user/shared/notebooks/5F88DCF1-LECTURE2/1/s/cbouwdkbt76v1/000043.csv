@@ -1,0 +1,5 @@
+"0",""
+"0","alpha <- 0.1"
+"0","t.crit.twosided <- qt(alpha/2,sample.size-1) "
+"0",""
+"0","abline(v=c(t.crit.twosided,abs(t.crit.twosided)),col=""red"",lwd=2)"
