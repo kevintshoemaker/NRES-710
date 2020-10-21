@@ -1,24 +1,24 @@
 {
-    "id": "7FBE71C1",
-    "path": "~/GitHub/NRES-710/STUDYGUIDE.Rmd",
-    "project_path": "STUDYGUIDE.Rmd",
+    "id": "A746D2A5",
+    "path": "~/GitHub/NRES-710/index.Rmd",
+    "project_path": "index.Rmd",
     "type": "r_markdown",
     "hash": "0",
     "contents": "",
     "dirty": false,
-    "created": 1602047480182.0,
+    "created": 1593016701939.0,
     "source_on_save": false,
-    "relative_order": 8,
+    "relative_order": 2,
     "properties": {
-        "cursorPosition": "70,54",
+        "cursorPosition": "198,0",
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1603085472,
+    "lastKnownWriteTime": 1598420506,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1603085472957,
+    "last_content_update": 1603118695995,
     "read_only": false,
     "read_only_alternatives": []
 }
