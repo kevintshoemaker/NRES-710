@@ -26,6 +26,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -519,8 +530,8 @@ t.test(sample.data,mu=null.mean)   # should get the same answer!</code></pre>
 <p><span class="math inline">\(t = \frac{(\bar{x_A}-\bar{x_B})}{s.e._{pooled}}\)</span></p>
 <p>Where <span class="math inline">\(\bar{x}\)</span> is the sample mean, <span class="math inline">\(s.e._{pooled}\)</span> is the pooled standard error of the mean across both samples, and <span class="math inline">\(\mu_0\)</span> is the population mean under the null hypothesis.</p>
 <p>The t-statistic in the 2-sample case can be interpreted as the difference between the sample mean from population A and the sample mean from population B, in units of (pooled) standard errors.</p>
-<p>The formula for the pooled standard error depends on whether your sample size is equal in the two samples and whether you are able to assume that the standard deviation is the same in the two underlying populations.</p>
-<p>For example, the formula for the pooled standard error when we assume equal standard deviation in the two population but we have unequal sample size is:</p>
+<p>The formula for the pooled standard deviation depends on whether your sample size is equal in the two samples and whether you are able to assume that the standard deviation is the same or similar in the two underlying populations.</p>
+<p>For example, the formula for the pooled standard deviation when we assume equal standard deviation in the two population but we have unequal sample size is:</p>
 <p><span class="math inline">\(\sqrt{((N_1-1)*\sigma_1^2 + (N_2-1)*\sigma_2^2)/(N_{pooled}-2)}\)</span></p>
 <p>For the 2-sample t-test, the degrees of freedom is equal to the total sample size across both samples minus 2.</p>
 <pre class="r"><code>### two sample t-test 
@@ -997,7 +1008,7 @@ plot(power~sampsize)</code></pre>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

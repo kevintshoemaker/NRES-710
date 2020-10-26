@@ -147,9 +147,9 @@ Where $\bar{x}$ is the sample mean, $s.e._{pooled}$ is the pooled standard error
 
 The t-statistic in the 2-sample case can be interpreted as the difference between the sample mean from population A and the sample mean from population B, in units of (pooled) standard errors. 
 
-The formula for the pooled standard error depends on whether your sample size is equal in the two samples and whether you are able to assume that the standard deviation is the same in the two underlying populations.
+The formula for the pooled standard deviation depends on whether your sample size is equal in the two samples and whether you are able to assume that the standard deviation is the same or similar in the two underlying populations.
 
-For example, the formula for the pooled standard error when we assume equal standard deviation in the two population but we have unequal sample size is:
+For example, the formula for the pooled standard deviation when we assume equal standard deviation in the two population but we have unequal sample size is:
 
 $\sqrt{((N_1-1)*\sigma_1^2 + (N_2-1)*\sigma_2^2)/(N_{pooled}-2)}$
 
