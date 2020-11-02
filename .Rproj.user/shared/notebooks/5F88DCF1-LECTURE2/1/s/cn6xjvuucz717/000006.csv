@@ -1,4 +1,0 @@
-"0",""
-"0","# visualize q-q plot"
-"0",""
-"0","qqnorm(my.data.nonnorm,main=""non-normal"")   # visual test for normality"
