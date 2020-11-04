@@ -66,9 +66,9 @@ With roughly a month left in the semester, first drafts of your final projects w
 Given the nature of graduate classes, student participation is expected. 
 
 Grades will be assigned as follows (percentage is calculated as fraction of total semester score): 
-Midterm exam: 20%
+Midterm exam (and optional final): 20%
 Final project (including peer review): 40%
-Homework: 20%
+Homework/exercises: 20%
 Overall class participation: 20%
 
 ### Grading

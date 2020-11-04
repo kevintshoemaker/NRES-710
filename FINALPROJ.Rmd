@@ -37,7 +37,7 @@ Please provide a 1-page project description. Make sure you include:
 * Anticipated analytical approach      
 
 
-## Draft manuscript
+## Draft manuscript (due Nov 25 at 9pm)
 
 Here is a more detailed description of expectations for the manuscript.
 
@@ -49,17 +49,17 @@ Here is a more detailed description of expectations for the manuscript.
 * Provide plenty of detail about the analytical approach- enough detail to replicate the analysis. Justify all decisions that were made and (where appropriate) discuss why you did not use alternative approaches.   
 * Discuss key assumptions.  
 
-**Results:** Present all relevant results completely yet concisely. Wherever possible, results should be presented via figures and tables. There is a limit of 4 figures and 2 tables, so choose carefully which figures and tables to present. Figures should be *publication quality*.   
+**Results:** Present all relevant results completely yet concisely. Wherever possible, results should be presented via figures and tables. There is a limit of 4 figures and 2 tables, so choose carefully which figures and tables to present. Figures should be *publication quality*, with well-labeled, readable axes. Make sure figure captions have enough information for a reader to interpret the figure without reading the main manuscript!   
 
 **Discussion:** Write at least two paragraphs that put the results in a larger context (returning to the key research questions) and discuss areas of uncertainty. Potential topics are possible violations of assumptions, and future work that your analysis suggests would be profitable.    
 
 **Supplement** Provide all code used to run the analyses presented in the paper as an R script.
 
-## Peer review
+## Peer review (December 2)
 
-With roughly a month left in the semester, first drafts of your final projects will be due. These first drafts will then be subjected to anonymous peer review. At this time, the assignment itself will not be “graded,” but the assignment will be reviewed by at least two other students, and the reviews will be graded. The reviews are designed to provide feedback on the statistical approach being used. For example, are the stats relevant to the data? Will the stats appropriate to the experimental design? The reviews will be due in
+Your first drafts will be subjected to anonymous peer review. At this time, your assignment will be reviewed by two other students, and the reviews themselves will be graded (each student is expected to submit two peer reviews). The reviews are designed to provide feedback on all aspects of the paper- but for this class the most important aspect of the peer reviews is a critique of the statistical approach being used. For example, are the stats appropriate for the data and the experimental design? Do the results justify the conclusions? Are the assumptions of the analysis and any potential violations of the assumptions discussed in sufficient detail? 
 
-## Final manuscript
+## Final manuscript (due Dec 16 at 5pm)
 
 
 

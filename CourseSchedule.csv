@@ -1,21 +1,21 @@
 Week,Mon class meeting,Wed class meeting
-Aug. 24,"Intro, Overview, Data types ",Discussion: hot hand reading; face mask reading
-Aug. 31,"P-values, sampling",Discussion: p-value readings
-Sept. 7,No Class (labor day),Discussion: p-hacking readings
-Sept. 14,"Replication, sampling distributions",Discussion: pseudoreplication
-Sept. 21,"Central limit theorem, data simulation",Discussion: final projects
-Sept. 28,"Data independence, t distribution",Discussion: code and data sharing
-Oct. 5,"Confidence intervals, probability in R",R exercise: probability distributions
-Oct. 12,"T-tests, z-tests","R exercise: t-test, z-test"
-Oct. 19,Analyses: Linear Regression,Linear regression
-Oct. 26,Analyses: ANOVA and posthoc tests,Midterm Exam (10/28/20)
-Nov. 2,Analyses: mixed-effects models,Mixed-effects models
-Nov. 9,Goodness of fit and validation,Model validation
-Nov. 16,Analyses: Nonparametric tests #1,Rank tests
-Nov. 23,Intro to multivariate analysis,Ordination in R
-Nov. 30,"Intro to likelihood, Bayesian theory ",Bayesian regression in R
-Dec. 7,Where to go next?,NA
-Dec. 16,Final projects due 5pm,NA
+Aug. 24 (week 1),"Intro, Overview, Data types ",Discussion: hot hand reading; face mask reading
+Aug. 31 (week 2),"P-values, sampling",Discussion: p-value readings
+Sept. 7  (week 3),No Class (labor day),Discussion: p-hacking readings
+Sept. 14 (week 4),"Replication, sampling distributions",Discussion: pseudoreplication
+Sept. 21 (week 5),"Central limit theorem, data simulation",Discussion: final projects
+Sept. 28 (week 6),"Data independence, t distribution",Discussion: code and data sharing
+Oct. 5 (week 7),"Confidence intervals, probability in R",R exercise: probability distributions
+Oct. 12 (week 8),"T-tests, z-tests","R exercise: t-test, z-test"
+Oct. 19 (week 9),Overview of classical statistical tests,Midterm prep
+Oct. 26 (week 10),Exam review session ,Midterm exam
+Nov. 2 (week 11),"Exam recap, power analysis",R exercise: power analysis
+Nov. 9 (week 12),Chi-squared test,R exercise: chi-squared test
+Nov. 16 (week 13),Linear regression,R exercise: linear regression
+Nov. 23 (week 14),ANOVA,R exercise: ANOVA
+Nov. 30 (week 15),Mixed effects models,R exercise: mixed effects models
+Dec. 7 (week 16),"Next steps- multivariate, bayesian, etc.",Discussion: class recap and feedback
+Dec. 16 (week 17),Final projects due 5pm,NA
 ,,
 ,,
 ,,
