@@ -1,5 +1,5 @@
 ---
-title: "Linear Regression"
+title: "Linear Regression and ANOVA"
 author: "NRES 710"
 date: "Fall 2020"
 output: 
@@ -28,7 +28,7 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 
 ############################################################
-####  Linear Regression                                 ####
+####  Linear Regression and ANOVA                       ####
 ############################################################
 
 
@@ -40,24 +40,189 @@ To follow along with the R-based lessons and demos, [right (or command) click on
 
 ## Overview: Linear Regression
 
-T-tests roll us straight into linear regression. Why? 
+Classical linear regression involves testing for a relationship between a continuous response variable and a continuous predictor variable. 
 
-What is the hypothesis of a one-sample t-test? µ=0. 
+The null hypothesis is that there is no relationship between the response variable and the predictor variable in your population of interest. That is, observations with larger values for your predictor variable are not expected to be associated with larger or smaller values of the response variable on average. 
 
-What is the hypothesis of a linear regression? Slope = 0. 
+### Simple example
 
-We assume there is some true model out there (for simple linear regression): 
-y= β_0+β_1 x
+Imagine we are testing for a relationship between the brightness of artificial lighting at long stretch of beach (e.g., from hotels and other forms of development) and the total number of hatchling sea turtles per nest that successfully make it to the ocean. 
 
-But we can only approximate it: 
-y= b_0+b_1 x+ε
+*Population*: All nests in this particular stretch of beach        
+*Parameter(s)*: The mean number of hatchlings per nest that successfully travel from their nest to the ocean and how this changes as a function of the brightness of artificial lighting.   
+*Sample*: All monitored nests         
+*Statistic(s)*: Slope and intercept of the linear relationship between the measured response variable (number of successful ocean-arrivers per nest) and the predictor variable (brightness of artificial lighting)    
 
-ε= y-µ_y
-for each point. 
+### Some more specifics!
 
-So t is simply: 
-t=  |B ̂-B_0 |/〖SE〗_B 
-With df = n-2 (actually n-p-1, where p is the number of parameters)
+We assume there is some true model out there describing the expected (mean) value of our response variable *y* as a linear function of our predictor variable *x*: 
+
+$E(y)= \beta_0 + \beta_1\cdot x$ 
+
+To interpret this equation: the true mean of our response variable ($E(y)$) is computed by taking the true intercept ($\beta_0$) and adding the product of the true slope term ($\beta_1$) and our predictor variable. This is just another way of saying that the expected value of the response variable is computed as a linear function of the predictor variable. $\beta_0$ and $\beta_0$ are both *parameters* that we wish to estimate!
+
+To complete the thought, we also assume that there is some "noise" in the system. The "noise" term in regression and ANOVA is also known as the *residual error*. Specifically, we assume that the noise (residual error) is normally distributed with mean of zero and standard deviation of $\sigma$.  
+
+Mathematically, we are assuming that our data/sample was generated from this process:
+
+$y= \beta_0 + \beta_1\cdot x + \epsilon$    
+
+OR:
+
+$y= E(y) + \epsilon$  
+
+WHERE:
+
+$\epsilon \equiv Normal(0, \sigma)$
+
+This is actually the same assumption we made for a one-sample t-test! 
+
+For a t-test, we assume that there is a true population mean $\mu$ (equivalent to $E(y)$) and that the true "noise" is normally distributed with standard deviation of $\sigma$. 
+
+As with a t-test, where we can only approximate the true population mean by computing the sample mean, we can only approximate the linear relationship between our response and predictor variables:
+
+$\bar{y} = \hat{B_0} + \hat{B_0}\cdot x$
+
+Just like any other statistical test, we assume that our observed linear relationship (defined by test statistics $\hat{B_0}$ and $\hat{B_1}$) is just one of many such possible relationships that *could have been derived* from random sampling from our population of interest. If we collected a different sample, we would get a different linear relationship. 
+
+NOTE: in linear regression we are generally far more interested in the slope of the linear relationship ($\hat{B_1}$ rather than the intercept). So for now, we assume $\hat{B_1}$ (slope between response and predictor, computed from the sample) is the main test statistic of interest!
+
+So.. what is the sampling distribution for our test statistic $\hat{B_1}$ under the null hypothesis in this case? Well, the answer is that it (when converted to units of standard error) is t-distributed! Let's look into this a bit more.
+
+### Regression and t-tests- the link!
+
+Our discussion of t-tests actually rolls us straight into linear regression. Why? How?   
+
+In a one-sample t-test we are interested in estimating the true population mean, and we assume that our t-statistic (i.e., deviation of the sample mean from the null mean, in units of standard error) is t-distributed with degrees of freedom of one less than the sample size.
+
+What is the hypothesis of a typical one-sample t-test? ($\mu = 0$ - that is, the true mean is zero!) 
+
+What is the hypothesis of a linear regression? (Slope = 0 - that is, the true relationship is zero). 
+
+So already we are seeing a bit of a similarity. 
+
+#### t-test recap
+
+In a t-test we assume that the population mean is equal to the null mean and that the data are normally distributed. We could write this as (using regression notation):
+
+$y = \beta_0 + \epsilon$
+
+WHERE:
+
+$\epsilon \equiv Normal(0, \sigma)$
+
+In the above equation, $\beta_0$ represents the population mean under the null hypothesis. 
+
+We approximate our population mean using the sample mean $\bar{\beta_0}$ (formerly known as $\bar{x}$) and we use the CLT and other statistical theories to show that the t-statistic:
+
+$t = \frac{\bar{\beta_0}-\beta_0}{StdErr(\beta_0)}$
+
+Is t-distributed with df computed as the sample size minus the number of parameters estimated in the model (there is only one estimated parameter- the sample mean $\bar{\beta_0}$). 
+
+
+#### linear regression version
+
+In linear regression we assume that the mean of our response is determined by two parameters- the intercept and the slope (linear relationship with the predictor variable). The null hypothesis (usually) is that the true mean is defined only by the intercept term and there is no relationship with the predictor variable (slope term is equal to zero). 
+
+The slope term of the linear regression can be computed as: 
+
+$\hat{\beta_1} = \frac{\sum_{i=1}^{n}{(x_i-\bar{x})(y_i-\bar{y})}}{\sum_{i-1}^{n}{(x_i-\bar{x})^2}}$
+
+And the intercept term can be computed as:
+
+$\hat{\beta_0} = \bar{y} - \beta_1*\bar{x}$
+
+The standard error of the slope term (as opposed to the standard error of the mean) is computed as:
+
+$std.err_{\hat{\beta_1}} = \sqrt{\frac{\frac{1}{n-2}\sum_{i=1}^n{\hat\epsilon_i^2}}{\sum_{i=1}^n{(x_i-\bar{x})^2}}}$
+
+Where the $\hat\epsilon_i$ refers to the residual errors. 
+
+We can then compute a t-statistic for the slope term (difference from the sample slope term and the null slope term in units of standard error):
+
+$t=\frac{\hat{\beta_1}-\beta_{1null}}{std.err_{\hat{\beta_1}}}$
+
+Just like with the t-test, we assume that this t-statistic is t-distributed under the null hypothesis. This time the degrees of freedom is 2 less than the sample size (since computing the residual error requires computing two parameters: mean and slope). 
+
+
+## Simple linear regression: examples
+
+
+Okay let's consider the sea turtle example from the beginning of lecture:
+
+Imagine we are testing for a relationship between the brightness of artificial lighting at long stretch of beach (e.g., from hotels and other forms of development) and the total number of hatchling sea turtles per nest that successfully make it to the ocean. 
+
+*Population*: All nests in this particular stretch of beach        
+*Parameter(s)*: The mean number of hatchlings per nest that successfully travel from their nest to the ocean and how this changes as a function of the brightness of artificial lighting.   
+*Sample*: All monitored nests         
+*Statistic(s)*: Slope and intercept of the linear relationship between the measured response variable (number of successful ocean-arrivers per nest) and the predictor variable (brightness of artificial lighting)    
+
+First we will simulate some data under a known process model:
+
+```{r}
+
+eggs.per.nest <- 100
+n.nests <- 15
+light <- rnorm(n.nests,50,10)   # make up some light pollution values (predictor var)
+
+probsucc <- function(light){    # egg success as a function of light pollution
+  plogis(1.5-0.01*light)
+}
+
+hatchlings.successful <- rbinom(n.nests,eggs.per.nest,probsucc(light))   # determine number of successful eggs (response var)
+
+#curve(probsucc,0,100)
+
+plot(hatchlings.successful~light)  # plot the data
+
+
+```
+
+Now that we have data, let's run a linear regression!
+
+```{r}
+
+slope <- sum((light-mean(light))*(hatchlings.successful-mean(hatchlings.successful)))/sum((light-mean(light))^2)
+intercept <- mean(hatchlings.successful) - slope*mean(light)
+
+exp.successful <- intercept+slope*light # expected number of eggs for each observation
+residuals <- hatchlings.successful-exp.successful
+
+stderr <- sqrt(((1/(n.nests-2))*sum(residuals^2))/(sum((light-mean(light))^2)))    # standard error
+
+t.stat <- (slope-0)/stderr    # t statistic
+
+pval <- 2*pt(t.stat,n.nests-2)    # p value
+
+
+############
+# use lm function instead (easy way!)
+
+model <- lm(hatchlings.successful~light)
+
+summary(model)   # get the same t stat and p-value hopefully!
+
+
+############
+# plot regression line!
+
+plot(hatchlings.successful~light)  # plot the data
+abline(intercept,slope,col="blue")
+
+
+```
+
+
+
+```{r}
+
+mod <- lm(Volume~Girth,data=trees)
+summary(mod)
+
+```
+
+
+## Assumptions of simple linear regression
 
 We must assume: 
 Linear model – best model will have least square fit to the data. 
@@ -66,33 +231,22 @@ Equal variance (homoscedasticity, or lack of heteroscedasticity)
 Normal distribution
 x-values are correct – the error is associated with the y value, not x. 
 
+
+## Testing the assumptions!!
+
 The goal of linear regression is to model the relationship between some response variable (dependent) and an explanatory variable (independent). You can have multiple explanatory variables… hence you can have multiple linear regression. We will focus on simple linear regression here. 
 
 The model is unknown but parameters of the model are estimated from the data, plus error (as seen above). Models are fitted using “least squares” approach. The best fit model minimizes the sum of the squared residuals. DRAW THIS OUT
 
 In order to calculate a regression, we must know the slope and the intercept. 
 
-m=(∑_(i=1)^n▒(x_i-x ̅ )(y_i-y ̅ ) )/(∑_(i=1)^n▒(x_i-x ̅ )^2 )  
 
 
-b= y ̅-(x ̅m)
 
-However, these terms do not account for variability between the model and the data. We get that from the correlation coefficient (r). 
-r=  (∑_(i=1)^n▒(x_i-x ̅ )(y_i-y ̅ ) )/√(∑_(i=1)^n▒(x_i-x ̅ )^2 ×∑_(i=1)^n▒(y_i-y ̅ )^2 )
 
-X	Y 	xi-xbar	Yi-ybar	xi-xbar – yi-ybar	(xi-xbar)^2	(yi-ybar)^2
-4.1	2.2	-8.075	-7.85	63.38875	65.205625	61.6225
-6.5	4.5	-5.675	-5.55	31.49625	32.205625	30.8025
-12.6	10.4	0.425	0.35	0.14875	0.180625	0.1225
-25.5	23.1	13.325	13.05	173.89125	177.555625	170.3025
-				268.925	275.1475	262.85
-12.175	10.05					
 
-So m = 262.85/275.1475 = 0.977385
 
-B = 10.05-(12.175*0.977385) = -1.84966
 
-R = 0.999987
 
 
 

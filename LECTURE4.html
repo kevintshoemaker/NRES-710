@@ -12,11 +12,11 @@
 <meta name="author" content="NRES 710" />
 
 
-<title>Linear Regression</title>
+<title>Linear Regression and ANOVA</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -26,6 +26,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -106,33 +117,33 @@ summary {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 51px;
+  padding-top: 45px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .dropdown-submenu {
   position: relative;
@@ -364,10 +375,43 @@ div.tocify {
     <li>
       <a href="INTRO.html">Introduction to NRES 710</a>
     </li>
+    <li>
+      <a href="LECTURE1.html">Basic Concepts</a>
+    </li>
+    <li>
+      <a href="LECTURE2.html">Analysis- t test</a>
+    </li>
+    <li>
+      <a href="LECTURE3.html">Analysis- chi2 test</a>
+    </li>
+    <li>
+      <a href="LECTURE4.html">Analysis- linear regression</a>
+    </li>
+    <li>
+      <a href="LECTURE5.html">Analysis- ANOVA</a>
+    </li>
+    <li>
+      <a href="LECTURE6.html">Analysis- Multivariate</a>
+    </li>
   </ul>
 </li>
-<li>
-  <a href="Links.html">Links</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    More Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Links.html">Links</a>
+    </li>
+    <li>
+      <a href="FINALPROJ.html">Final Projects</a>
+    </li>
+    <li>
+      <a href="STUDYGUIDE.html">Study Guide</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -381,31 +425,180 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Linear Regression</h1>
+<h1 class="title toc-ignore">Linear Regression and ANOVA</h1>
 <h4 class="author">NRES 710</h4>
 <h4 class="date">Fall 2020</h4>
 
 </div>
 
 
-<p>T-tests roll us straight into linear regression. Why?</p>
-<p>What is the hypothesis of a one-sample t-test? µ=0.</p>
-<p>What is the hypothesis of a linear regression? Slope = 0.</p>
-<p>We assume there is some true model out there (for simple linear regression): y= β_0+β_1 x</p>
-<p>But we can only approximate it: y= b_0+b_1 x+ε</p>
-<p>ε= y-µ_y for each point.</p>
-<p>So t is simply: t= |B ̂-B_0 |/〖SE〗_B With df = n-2 (actually n-p-1, where p is the number of parameters)</p>
+<div id="download-the-r-code-for-this-lecture" class="section level2">
+<h2>Download the R code for this lecture!</h2>
+<p>To follow along with the R-based lessons and demos, <a href="LECTURE4.R">right (or command) click on this link and save the script to your working directory</a></p>
+</div>
+<div id="overview-linear-regression" class="section level2">
+<h2>Overview: Linear Regression</h2>
+<p>Classical linear regression involves testing for a relationship between a continuous response variable and a continuous predictor variable.</p>
+<p>The null hypothesis is that there is no relationship between the response variable and the predictor variable in your population of interest. That is, observations with larger values for your predictor variable are not expected to be associated with larger or smaller values of the response variable on average.</p>
+<div id="simple-example" class="section level3">
+<h3>Simple example</h3>
+<p>Imagine we are testing for a relationship between the brightness of artificial lighting at long stretch of beach (e.g., from hotels and other forms of development) and the total number of hatchling sea turtles per nest that successfully make it to the ocean.</p>
+<p><em>Population</em>: All nests in this particular stretch of beach<br />
+<em>Parameter(s)</em>: The mean number of hatchlings per nest that successfully travel from their nest to the ocean and how this changes as a function of the brightness of artificial lighting.<br />
+<em>Sample</em>: All monitored nests<br />
+<em>Statistic(s)</em>: Slope and intercept of the linear relationship between the measured response variable (number of successful ocean-arrivers per nest) and the predictor variable (brightness of artificial lighting)</p>
+</div>
+<div id="some-more-specifics" class="section level3">
+<h3>Some more specifics!</h3>
+<p>We assume there is some true model out there describing the expected (mean) value of our response variable <em>y</em> as a linear function of our predictor variable <em>x</em>:</p>
+<p><span class="math inline">\(E(y)= \beta_0 + \beta_1\cdot x\)</span></p>
+<p>To interpret this equation: the true mean of our response variable (<span class="math inline">\(E(y)\)</span>) is computed by taking the true intercept (<span class="math inline">\(\beta_0\)</span>) and adding the product of the true slope term (<span class="math inline">\(\beta_1\)</span>) and our predictor variable. This is just another way of saying that the expected value of the response variable is computed as a linear function of the predictor variable. <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_0\)</span> are both <em>parameters</em> that we wish to estimate!</p>
+<p>To complete the thought, we also assume that there is some “noise” in the system. The “noise” term in regression and ANOVA is also known as the <em>residual error</em>. Specifically, we assume that the noise (residual error) is normally distributed with mean of zero and standard deviation of <span class="math inline">\(\sigma\)</span>.</p>
+<p>Mathematically, we are assuming that our data/sample was generated from this process:</p>
+<p><span class="math inline">\(y= \beta_0 + \beta_1\cdot x + \epsilon\)</span></p>
+<p>OR:</p>
+<p><span class="math inline">\(y= E(y) + \epsilon\)</span></p>
+<p>WHERE:</p>
+<p><span class="math inline">\(\epsilon \equiv Normal(0, \sigma)\)</span></p>
+<p>This is actually the same assumption we made for a one-sample t-test!</p>
+<p>For a t-test, we assume that there is a true population mean <span class="math inline">\(\mu\)</span> (equivalent to <span class="math inline">\(E(y)\)</span>) and that the true “noise” is normally distributed with standard deviation of <span class="math inline">\(\sigma\)</span>.</p>
+<p>As with a t-test, where we can only approximate the true population mean by computing the sample mean, we can only approximate the linear relationship between our response and predictor variables:</p>
+<p><span class="math inline">\(\bar{y} = \hat{B_0} + \hat{B_0}\cdot x\)</span></p>
+<p>Just like any other statistical test, we assume that our observed linear relationship (defined by test statistics <span class="math inline">\(\hat{B_0}\)</span> and <span class="math inline">\(\hat{B_1}\)</span>) is just one of many such possible relationships that <em>could have been derived</em> from random sampling from our population of interest. If we collected a different sample, we would get a different linear relationship.</p>
+<p>NOTE: in linear regression we are generally far more interested in the slope of the linear relationship (<span class="math inline">\(\hat{B_1}\)</span> rather than the intercept). So for now, we assume <span class="math inline">\(\hat{B_1}\)</span> (slope between response and predictor, computed from the sample) is the main test statistic of interest!</p>
+<p>So.. what is the sampling distribution for our test statistic <span class="math inline">\(\hat{B_1}\)</span> under the null hypothesis in this case? Well, the answer is that it (when converted to units of standard error) is t-distributed! Let’s look into this a bit more.</p>
+</div>
+<div id="regression-and-t-tests--the-link" class="section level3">
+<h3>Regression and t-tests- the link!</h3>
+<p>Our discussion of t-tests actually rolls us straight into linear regression. Why? How?</p>
+<p>In a one-sample t-test we are interested in estimating the true population mean, and we assume that our t-statistic (i.e., deviation of the sample mean from the null mean, in units of standard error) is t-distributed with degrees of freedom of one less than the sample size.</p>
+<p>What is the hypothesis of a typical one-sample t-test? (<span class="math inline">\(\mu = 0\)</span> - that is, the true mean is zero!)</p>
+<p>What is the hypothesis of a linear regression? (Slope = 0 - that is, the true relationship is zero).</p>
+<p>So already we are seeing a bit of a similarity.</p>
+<div id="t-test-recap" class="section level4">
+<h4>t-test recap</h4>
+<p>In a t-test we assume that the population mean is equal to the null mean and that the data are normally distributed. We could write this as (using regression notation):</p>
+<p><span class="math inline">\(y = \beta_0 + \epsilon\)</span></p>
+<p>WHERE:</p>
+<p><span class="math inline">\(\epsilon \equiv Normal(0, \sigma)\)</span></p>
+<p>In the above equation, <span class="math inline">\(\beta_0\)</span> represents the population mean under the null hypothesis.</p>
+<p>We approximate our population mean using the sample mean <span class="math inline">\(\bar{\beta_0}\)</span> (formerly known as <span class="math inline">\(\bar{x}\)</span>) and we use the CLT and other statistical theories to show that the t-statistic:</p>
+<p><span class="math inline">\(t = \frac{\bar{\beta_0}-\beta_0}{StdErr(\beta_0)}\)</span></p>
+<p>Is t-distributed with df computed as the sample size minus the number of parameters estimated in the model (there is only one estimated parameter- the sample mean <span class="math inline">\(\bar{\beta_0}\)</span>).</p>
+</div>
+<div id="linear-regression-version" class="section level4">
+<h4>linear regression version</h4>
+<p>In linear regression we assume that the mean of our response is determined by two parameters- the intercept and the slope (linear relationship with the predictor variable). The null hypothesis (usually) is that the true mean is defined only by the intercept term and there is no relationship with the predictor variable (slope term is equal to zero).</p>
+<p>The slope term of the linear regression can be computed as:</p>
+<p><span class="math inline">\(\hat{\beta_1} = \frac{\sum_{i=1}^{n}{(x_i-\bar{x})(y_i-\bar{y})}}{\sum_{i-1}^{n}{(x_i-\bar{x})^2}}\)</span></p>
+<p>And the intercept term can be computed as:</p>
+<p><span class="math inline">\(\hat{\beta_0} = \bar{y} - \beta_1*\bar{x}\)</span></p>
+<p>The standard error of the slope term (as opposed to the standard error of the mean) is computed as:</p>
+<p><span class="math inline">\(std.err_{\hat{\beta_1}} = \sqrt{\frac{\frac{1}{n-2}\sum_{i=1}^n{\hat\epsilon_i^2}}{\sum_{i=1}^n{(x_i-\bar{x})^2}}}\)</span></p>
+<p>Where the <span class="math inline">\(\hat\epsilon_i\)</span> refers to the residual errors.</p>
+<p>We can then compute a t-statistic for the slope term (difference from the sample slope term and the null slope term in units of standard error):</p>
+<p><span class="math inline">\(t=\frac{\hat{\beta_1}-\beta_{1null}}{std.err_{\hat{\beta_1}}}\)</span></p>
+<p>Just like with the t-test, we assume that this t-statistic is t-distributed under the null hypothesis. This time the degrees of freedom is 2 less than the sample size (since computing the residual error requires computing two parameters: mean and slope).</p>
+</div>
+</div>
+</div>
+<div id="simple-linear-regression-examples" class="section level2">
+<h2>Simple linear regression: examples</h2>
+<p>Okay let’s consider the sea turtle example from the beginning of lecture:</p>
+<p>Imagine we are testing for a relationship between the brightness of artificial lighting at long stretch of beach (e.g., from hotels and other forms of development) and the total number of hatchling sea turtles per nest that successfully make it to the ocean.</p>
+<p><em>Population</em>: All nests in this particular stretch of beach<br />
+<em>Parameter(s)</em>: The mean number of hatchlings per nest that successfully travel from their nest to the ocean and how this changes as a function of the brightness of artificial lighting.<br />
+<em>Sample</em>: All monitored nests<br />
+<em>Statistic(s)</em>: Slope and intercept of the linear relationship between the measured response variable (number of successful ocean-arrivers per nest) and the predictor variable (brightness of artificial lighting)</p>
+<p>First we will simulate some data under a known process model:</p>
+<pre class="r"><code>eggs.per.nest &lt;- 100
+n.nests &lt;- 15
+light &lt;- rnorm(n.nests,50,10)   # make up some light pollution values (predictor var)
+
+probsucc &lt;- function(light){    # egg success as a function of light pollution
+  plogis(1.5-0.01*light)
+}
+
+hatchlings.successful &lt;- rbinom(n.nests,eggs.per.nest,probsucc(light))   # determine number of successful eggs (response var)
+
+#curve(probsucc,0,100)
+
+plot(hatchlings.successful~light)  # plot the data</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Now that we have data, let’s run a linear regression!</p>
+<pre class="r"><code>slope &lt;- sum((light-mean(light))*(hatchlings.successful-mean(hatchlings.successful)))/sum((light-mean(light))^2)
+intercept &lt;- mean(hatchlings.successful) - slope*mean(light)
+
+exp.successful &lt;- intercept+slope*light # expected number of eggs for each observation
+residuals &lt;- hatchlings.successful-exp.successful
+
+stderr &lt;- sqrt(((1/(n.nests-2))*sum(residuals^2))/(sum((light-mean(light))^2)))    # standard error
+
+t.stat &lt;- (slope-0)/stderr    # t statistic
+
+pval &lt;- 2*pt(t.stat,n.nests-2)    # p value
+
+
+############
+# use lm function instead (easy way!)
+
+model &lt;- lm(hatchlings.successful~light)
+
+summary(model)   # get the same t stat and p-value hopefully!</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = hatchlings.successful ~ light)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -11.1861  -1.9268  -0.3609   2.0089   7.7926 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  91.4235     9.0816  10.067 1.67e-07 ***
+## light        -0.3567     0.1839  -1.939   0.0745 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.147 on 13 degrees of freedom
+## Multiple R-squared:  0.2244, Adjusted R-squared:  0.1647 
+## F-statistic: 3.761 on 1 and 13 DF,  p-value: 0.07446</code></pre>
+<pre class="r"><code>############
+# plot regression line!
+
+plot(hatchlings.successful~light)  # plot the data
+abline(intercept,slope,col=&quot;blue&quot;)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>mod &lt;- lm(Volume~Girth,data=trees)
+summary(mod)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Volume ~ Girth, data = trees)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -8.065 -3.107  0.152  3.495  9.587 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -36.9435     3.3651  -10.98 7.62e-12 ***
+## Girth         5.0659     0.2474   20.48  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 4.252 on 29 degrees of freedom
+## Multiple R-squared:  0.9353, Adjusted R-squared:  0.9331 
+## F-statistic: 419.4 on 1 and 29 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="assumptions-of-simple-linear-regression" class="section level2">
+<h2>Assumptions of simple linear regression</h2>
 <p>We must assume: Linear model – best model will have least square fit to the data. Independence Equal variance (homoscedasticity, or lack of heteroscedasticity) Normal distribution x-values are correct – the error is associated with the y value, not x.</p>
+</div>
+<div id="testing-the-assumptions" class="section level2">
+<h2>Testing the assumptions!!</h2>
 <p>The goal of linear regression is to model the relationship between some response variable (dependent) and an explanatory variable (independent). You can have multiple explanatory variables… hence you can have multiple linear regression. We will focus on simple linear regression here.</p>
 <p>The model is unknown but parameters of the model are estimated from the data, plus error (as seen above). Models are fitted using “least squares” approach. The best fit model minimizes the sum of the squared residuals. DRAW THIS OUT</p>
 <p>In order to calculate a regression, we must know the slope and the intercept.</p>
-<p>m=(∑<em>(i=1)^n▒(x_i-x ̅ )(y_i-y ̅ ) )/(∑</em>(i=1)^n▒(x_i-x ̅ )^2 )</p>
-<p>b= y ̅-(x ̅m)</p>
-<p>However, these terms do not account for variability between the model and the data. We get that from the correlation coefficient (r). r= (∑<em>(i=1)^n▒(x_i-x ̅ )(y_i-y ̅ ) )/√(∑</em>(i=1)^n▒(x_i-x ̅ )^2 ×∑_(i=1)^n▒(y_i-y ̅ )^2 )</p>
-<p>X Y xi-xbar Yi-ybar xi-xbar – yi-ybar (xi-xbar)^2 (yi-ybar)^2 4.1 2.2 -8.075 -7.85 63.38875 65.205625 61.6225 6.5 4.5 -5.675 -5.55 31.49625 32.205625 30.8025 12.6 10.4 0.425 0.35 0.14875 0.180625 0.1225 25.5 23.1 13.325 13.05 173.89125 177.555625 170.3025 268.925 275.1475 262.85 12.175 10.05</p>
-<p>So m = 262.85/275.1475 = 0.977385</p>
-<p>B = 10.05-(12.175*0.977385) = -1.84966</p>
-<p>R = 0.999987</p>
 <p>Explore all four possible outcomes of linear regression: non-significant p/ high r, significant p/ low r, and significant p/high r and nonsignificant p/low r/.</p>
 <p>Show anscombe’s quartet. Use anscombe’s quartet as jumping off point to explore R output associated with regression.</p>
 <p>Plot your regression object. See what comes out:</p>
@@ -418,6 +611,7 @@ div.tocify {
 <p>Finally: Residuals vs Leverage. This tests if any data points are exhibiting a strong pull on the data. It includes an estimate of “Cook’s distance” - an indicator of outlier-ness. NOTE: Not all outliers actually exhibit a pull on your linear regression. It depends where it’s located. In this plot, pattern is not relevant – you need to look for data points that fall outside Cook’s distance.</p>
 <p>These four figures, in sum, should be a guide to interpreting how robust your regression is. You need to be the scientist. Analyze these plots and make decisions about what you’re willing to accept.</p>
 <p><a href="LECTURE5.html">–go to next lecture–</a></p>
+</div>
 
 
 
@@ -430,7 +624,7 @@ div.tocify {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -469,7 +663,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0
