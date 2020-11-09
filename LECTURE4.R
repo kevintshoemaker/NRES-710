@@ -63,3 +63,54 @@ abline(intercept,slope,col="blue")
 mod <- lm(Volume~Girth,data=trees)
 summary(mod)
 
+
+my.intercept <- model$coefficients["(Intercept)"]
+my.slope <- model$coefficients["light"]
+expected.vals <- my.intercept+my.slope*light 
+my.residuals <- hatchlings.successful-expected.vals
+my.residuals
+
+### alternative way of getting residuals (best way!)
+
+my.residuals2 <- model$residuals
+
+### alternative way using predict function
+
+my.residuals3 <- hatchlings.successful-predict(model)
+
+### histogram of residuals
+
+hist(my.residuals)
+
+### test for normality
+
+qqnorm(my.residuals)
+
+shapiro.test(my.residuals)
+
+
+
+layout(matrix(1:4,nrow=2,byrow = T))
+plot(anscombe$y1~anscombe$x1,ylab="response",xlab="predictor")
+plot(anscombe$y2~anscombe$x2,ylab="response",xlab="predictor")
+plot(anscombe$y3~anscombe$x3,ylab="response",xlab="predictor")
+plot(anscombe$y4~anscombe$x4,ylab="response",xlab="predictor")
+
+
+my.residuals <- model$residuals
+
+plot(my.residuals~light)
+
+plot(my.residuals~predict(model))
+
+
+layout(matrix(1:4,2,byrow = T))
+plot(model)
+
+
+layout(matrix(1:4,nrow=2,byrow = T))
+plot(anscombe$y1~anscombe$x1,ylab="response",xlab="predictor")
+plot(anscombe$y2~anscombe$x2,ylab="response",xlab="predictor")
+plot(anscombe$y3~anscombe$x3,ylab="response",xlab="predictor")
+plot(anscombe$y4~anscombe$x4,ylab="response",xlab="predictor")
+
