@@ -438,7 +438,8 @@ div.tocify {
 </div>
 <div id="overview-linear-regression" class="section level2">
 <h2>Overview: Linear Regression</h2>
-<p>Classical linear regression involves testing for a relationship between a continuous response variable and a continuous predictor variable.</p>
+<p>Classical linear regression involves testing for a relationship between a continuous response variable (dependent variable) and a continuous predictor variable (independent variable).</p>
+<p>You can have multiple explanatory variables… hence you can have multiple linear regression. We will focus on <em>simple linear regression</em> here.</p>
 <p>The null hypothesis is that there is no relationship between the response variable and the predictor variable in your population of interest. That is, observations with larger values for your predictor variable are not expected to be associated with larger or smaller values of the response variable on average.</p>
 <div id="simple-example" class="section level3">
 <h3>Simple example</h3>
@@ -493,6 +494,7 @@ div.tocify {
 <p><span class="math inline">\(\hat{\beta_1} = \frac{\sum_{i=1}^{n}{(x_i-\bar{x})(y_i-\bar{y})}}{\sum_{i-1}^{n}{(x_i-\bar{x})^2}}\)</span></p>
 <p>And the intercept term can be computed as:</p>
 <p><span class="math inline">\(\hat{\beta_0} = \bar{y} - \beta_1*\bar{x}\)</span></p>
+<p>Simple linear regression models (that is, the slope and intercept terms above) are fitted using “least squares”. The best fit model minimizes the sum of the squared residuals. DRAW THIS OUT.</p>
 <p>The standard error of the slope term (as opposed to the standard error of the mean) is computed as:</p>
 <p><span class="math inline">\(std.err_{\hat{\beta_1}} = \sqrt{\frac{\frac{1}{n-2}\sum_{i=1}^n{\hat\epsilon_i^2}}{\sum_{i=1}^n{(x_i-\bar{x})^2}}}\)</span></p>
 <p>Where the <span class="math inline">\(\hat\epsilon_i\)</span> refers to the residual errors.</p>
@@ -592,25 +594,120 @@ summary(mod)</code></pre>
 </div>
 <div id="assumptions-of-simple-linear-regression" class="section level2">
 <h2>Assumptions of simple linear regression</h2>
-<p>We must assume: Linear model – best model will have least square fit to the data. Independence Equal variance (homoscedasticity, or lack of heteroscedasticity) Normal distribution x-values are correct – the error is associated with the y value, not x.</p>
+<div id="normal-distribution" class="section level3">
+<h3>Normal distribution</h3>
+<p>Simple linear regression assumes that the model <strong>residuals</strong> are normally distributed.</p>
+<p>Let’s quickly review what residuals are (see whiteboard exercise)</p>
+<p>Let’s look at the residuals for our sea turtle example:</p>
+<pre class="r"><code>my.intercept &lt;- model$coefficients[&quot;(Intercept)&quot;]
+my.slope &lt;- model$coefficients[&quot;light&quot;]
+expected.vals &lt;- my.intercept+my.slope*light 
+my.residuals &lt;- hatchlings.successful-expected.vals
+my.residuals</code></pre>
+<pre><code>##  [1]   1.9184018  -1.3888319  -0.7763980   1.5561769  -2.4648016  -0.9236137
+##  [7]  -0.3608579   7.7925980   7.0735228   5.9462566 -11.1860902   2.0994176
+## [13]  -6.2096460  -3.7434128   0.6672784</code></pre>
+<pre class="r"><code>### alternative way of getting residuals (best way!)
+
+my.residuals2 &lt;- model$residuals
+
+### alternative way using predict function
+
+my.residuals3 &lt;- hatchlings.successful-predict(model)
+
+### histogram of residuals
+
+hist(my.residuals)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>### test for normality
+
+qqnorm(my.residuals)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<pre class="r"><code>shapiro.test(my.residuals)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  my.residuals
+## W = 0.95855, p-value = 0.6672</code></pre>
 </div>
-<div id="testing-the-assumptions" class="section level2">
-<h2>Testing the assumptions!!</h2>
-<p>The goal of linear regression is to model the relationship between some response variable (dependent) and an explanatory variable (independent). You can have multiple explanatory variables… hence you can have multiple linear regression. We will focus on simple linear regression here.</p>
-<p>The model is unknown but parameters of the model are estimated from the data, plus error (as seen above). Models are fitted using “least squares” approach. The best fit model minimizes the sum of the squared residuals. DRAW THIS OUT</p>
-<p>In order to calculate a regression, we must know the slope and the intercept.</p>
-<p>Explore all four possible outcomes of linear regression: non-significant p/ high r, significant p/ low r, and significant p/high r and nonsignificant p/low r/.</p>
-<p>Show anscombe’s quartet. Use anscombe’s quartet as jumping off point to explore R output associated with regression.</p>
-<p>Plot your regression object. See what comes out:</p>
-<blockquote>
-<p>plot(ellem) Hit <Return> to see next plot:</p>
-</blockquote>
-<p>First up, residuals vs fitted plot. What is a residual? It’s the yi-ybar above. Remember, this is always on the y. This figure tests the assumption of whether the relationship between your variables is linear - Is there equal variance along the regression line? It’s “good” if you have no real shape to the data, no clear outliers, and symmetrical around the dotted “0” line.</p>
-<p>Next up: Q-Q plot: plots your data relative to the normal distribution. The y-axis is the residuals. The x-axis is the percentile of your data. 0 is the 50th percentile of your data. The 95th percentile would be 1.64. It’s “good” if your data line up along the dotted line, without getting too far away. Your data would not be normally distributed if they got really far off. It’s subjective. There are tests for this, though!</p>
-<p>Next: Scale-Location plot: This also tests for homoscedasticity. Are the residuals spread evenly along the ranges of predictors (the x-axis)? If not, you’ll get a strong trend and generally see a cone-shaped pattern.</p>
-<p>Finally: Residuals vs Leverage. This tests if any data points are exhibiting a strong pull on the data. It includes an estimate of “Cook’s distance” - an indicator of outlier-ness. NOTE: Not all outliers actually exhibit a pull on your linear regression. It depends where it’s located. In this plot, pattern is not relevant – you need to look for data points that fall outside Cook’s distance.</p>
-<p>These four figures, in sum, should be a guide to interpreting how robust your regression is. You need to be the scientist. Analyze these plots and make decisions about what you’re willing to accept.</p>
+<div id="linear-model" class="section level3">
+<h3>Linear model</h3>
+<p>The true relationship between the response and predictor variables is linear!</p>
+<p>Which one of the following plots violates this assumption?</p>
+<pre class="r"><code>layout(matrix(1:4,nrow=2,byrow = T))
+plot(anscombe$y1~anscombe$x1,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y2~anscombe$x2,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y3~anscombe$x3,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y4~anscombe$x4,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="independence-of-observations" class="section level3">
+<h3>Independence of observations</h3>
+<p>Of course! All classical analyses make this assumption!</p>
+</div>
+<div id="equal-variance-homoscedasticity-or-lack-of-heteroscedasticity" class="section level3">
+<h3>Equal variance (homoscedasticity, or lack of heteroscedasticity)</h3>
+<p>In simple linear regression, we assume that the model residuals are normally distributed– and that the spread of that distribution does not change as your predictor variable or response variable goes from small to large. That is, the residuals are <strong>homoskedastic</strong> – which means they have equal variance across the range of the predictor and response variables.</p>
+<p>Let’s look at the sea turtle example:</p>
+<pre class="r"><code>my.residuals &lt;- model$residuals
+
+plot(my.residuals~light)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>plot(my.residuals~predict(model))</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<p>Do you see any evidence for <strong>heteroskedasticity</strong>? Heteroskedasticity means non-homogeneity of variance across the range of the predictor variable. Serious violations of the equal variance assumption may warrant a <strong>transformation</strong> of your data, or you may choose to use an alternative analysis like a <strong>generalized linear model</strong>.</p>
+</div>
+<div id="predictor-variable-is-known-with-certainty" class="section level3">
+<h3>Predictor variable is known with certainty</h3>
+<p>That is, the observed (e.g., measured) values for your predictor variable are correct and known with perfect precision. In regression, the randomness in linear regression is associated only with the response variable - and that randomness is normally distributed.</p>
+</div>
+<div id="diagnostic-plots" class="section level3">
+<h3>Diagnostic plots</h3>
+<p>Simple linear regression analyses are generally accompanied by ‘diagnostic plots’, which are intended to diagnose potential violations of key assumptions, or other potential pitfalls of regression.</p>
+<p>When you use the ‘plot’ function in R to evalate a model generated with the ‘lm’ function, R returns four diagnostic plots:</p>
+<pre class="r"><code>layout(matrix(1:4,2,byrow = T))
+plot(model)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>The first diagnostic plot (residuals vs fitted) lets you check for possible non-linear patterns. This plot should have no obvious pattern to it- it should look like random noise across the range of fitted values.</p>
+<p>The second diagnostic plot (normal Q-Q) lets you check for normality of residuals. You already know how to do this.</p>
+<p>The third diagnostic plot (scale-location) lets you check for homoskedascitiy. This plot should have no obvious pattern to it- it should look like random noise across the range of fitted values.</p>
+<p>The fourth diagnostic plot (residuals vs leverage) lets you check to make sure your regression model isn’t driven by a few <strong>influential points</strong>. Look for points that fall far to the right of the other points- these are high leverage points. Also look specifically at the upper and lower right hand side of this figure- points in these regions (with large values for “Cook’s distance”) have the property that if they were removed from the analysis the results would change substantially.</p>
+<p>These four figures, taken together, should be a guide to interpreting how robust your regression is. You need to be the scientist. Analyze these plots and make decisions about what you’re willing to accept.</p>
+</div>
+<div id="influential-points" class="section level3">
+<h3>Influential points</h3>
+<p>Which of the following plots has a highly influential point?</p>
+<pre class="r"><code>layout(matrix(1:4,nrow=2,byrow = T))
+plot(anscombe$y1~anscombe$x1,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y2~anscombe$x2,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y3~anscombe$x3,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y4~anscombe$x4,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Can you try to draw a regression line if this point was removed?</p>
+</div>
+</div>
+<div id="a-deeper-exploration" class="section level2">
+<h2>A deeper exploration</h2>
+<div id="r-squared" class="section level3">
+<h3>R-squared</h3>
+<p>The coefficient of determination, also known as R-squared, is a statistic that is commonly used to indicate the performance of a regression model. Specifically, R-squared tells you how much of the total variance in your response variable is explained by your predictor variable.</p>
+<p>R-squared can be computed as:</p>
+<p><span class="math inline">\(R_2 = 1-\frac{SS_{res}}{SS_{tot}}\)</span></p>
+<p>where <span class="math inline">\(SS_{tot} = \sum(y_i-\bar{y})^2\)</span> and <span class="math inline">\(SS_{res} = \sum(y_i-y_{pred})^2\)</span>.</p>
+<p>The maximum value for R-squared is 1- values close to 1 indicate a very “good” model!</p>
+</div>
+<div id="regression-outcomes" class="section level3">
+<h3>Regression outcomes</h3>
+<p>Let’s explore some possible outcomes of linear regression:</p>
+<p>Try to come up with scenarios (with plots) for each of the following:</p>
+<ol style="list-style-type: decimal">
+<li><p>Non-significant p, high R2</p></li>
+<li><p>Significant p/ low R2</p></li>
+<li><p>Significant p/high R2</p></li>
+<li><p>Non-significant p, low R2</p></li>
+</ol>
 <p><a href="LECTURE5.html">–go to next lecture–</a></p>
+</div>
 </div>
 
 
