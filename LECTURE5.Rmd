@@ -41,12 +41,21 @@ To follow along with the R-based lessons and demos, [right (or command) click on
 
 ## Overview: ANOVA
 
-Transition to ANOVAs and F statistic
+ANOVA is short for "ANalysis Of VAriance". An ANOVA test is designed to assess whether the mean value is the same across groups defined by one or more categorical predictor variables. Which is another way of saying that ANOVA is a regression model where the predictor variable(s) is categorical. 
 
+In a simple linear regression, we are testing whether the mean of our response variable changes linearly across the range of our (continuous/numeric) predictor variable.
 
-So if linear regression is based on a t-test, then why is the p value associated with an “F statistic?” and what is an F-statistic anyway? 
+In ANOVA, we are testing whether the mean of our response variable changes across the different levels of our categorical variable.
 
-The F distribution was developed by George Snedecor (founder of first US stats dept – at Iowa State. The “F” is in honor of Fisher. It’s a probability distribution of the null distribution of a test statistic. 
+In ANOVA, the test statistic is called the F statistic. This is analogous to the t-statistic and the Chi-squared statistic in that it is computed from the data, and that it has a known sampling distribution under the null hypothesis. 
+
+### The F Statistic
+
+The F statistic 
+
+### The F Distribution
+
+The F distribution was developed by George Snedecor (founder of first US statistics department – at Iowa State. The “F” is in honor of Ronald Fisher. It’s a probability distribution of the null distribution of a test statistic. 
 
 F=  (n(B ̂-B_0 )^2)/s^2 
 
@@ -87,7 +96,9 @@ Use related Anova tables in Excel to work along.
 
 Then go to F table for a = 0.05, DFn = 2, DFd = 5. Fcrit = 5.79
 
+## Pairwise comparisons
 
+emmeans function. 
 
 
 [--go to next lecture--](LECTURE6.html) 

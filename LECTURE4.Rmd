@@ -353,7 +353,7 @@ Can you try to draw a regression line if this point was removed?
 
 ### R-squared
 
-The coefficient of determination, also known as R-squared, is a statistic that is commonly used to indicate the performance of a regression model. Specifically, R-squared tells you how much of the total variance in your response variable is explained by your predictor variable. 
+The coefficient of determination, also known as R-squared, is a statistic that is commonly used to indicate the performance of a regression model. Specifically, R-squared tells you how much of the total variance in your response variable is explained by your predictor variable. The maximum value for R-squared is 1- values close to 1 indicate a very "good" model! An R-squared of zero indicates that the model with the predictor variable is no better than a model that simply predicts the overall mean of the response variable no matter what the predictor variable is. 
 
 R-squared can be computed as:
 
@@ -361,21 +361,171 @@ $R_2 = 1-\frac{SS_{res}}{SS_{tot}}$
 
 where $SS_{tot} = \sum(y_i-\bar{y})^2$ and $SS_{res} = \sum(y_i-y_{pred})^2$.  
  
-The maximum value for R-squared is 1- values close to 1 indicate a very "good" model!
+
 
 ### Regression outcomes
 
 Let's explore some possible outcomes of linear regression: 
 
-Try to come up with scenarios (with plots) for each of the following:
-
+Try to come up with scenarios (with plots) for each of the following:    
 1. Non-significant p, high R2 
-
-2. Significant p/ low R2
-
-3. Significant p/high R2
-
+2. Significant p, low R2
+3. Significant p, high R2
 4. Non-significant p, low R2
+
+
+## Multiple linear regression
+
+Multiple, or multi-variable, linear regression simply refers to the case where you have more than one predictor variable. 
+
+NOTE: avoid using the term 'multivariate' because that usually refers to the case where you have multiple **response** variables. 
+
+
+### Linear regression vs correlation
+
+When you run a simple linear regression you are assuming that one variable is your response variable and the other variable is a predictor variable. You are essentially modeling only one of these variables (the response) as a random variable and the other (the predictor variable) as a set of fixed values (a fixed effect). 
+
+
+### Assessing correlation in R
+
+In R you can use the 'cor' function (part of base R) to assess correlation. To run a correlation test (assess if the correlation is 'significant') you can use the 'cor.test' function. By default, the 'cor.test' function runs a Pearson correlation test, which is a parametric test that assumes both variables are normal, no outliers, etc. If you want you can run a nonparametric version- the Spearman correlation (or Kendall's tau). 
+
+```{r}
+
+## load the 'mtcars' data set
+
+data(mtcars)
+
+## define which variables to assess correlation for.
+
+myvars <- c("disp","hp","wt")
+
+## grab only the variables of interest
+
+mtcars.reduced <- mtcars[,myvars]
+
+## compute (pearson) correlations for all pairs of variables (correlation matrix)
+
+cor.mat <- cor(mtcars.reduced)
+
+cor.mat
+
+## visualize correlations with the 'pairs' function
+
+pairs(mtcars.reduced)
+
+```
+
+If we were running a multiple linear regression with these variables as predictor variables, we might be somewhat concerned about multicollinearity. What is that, you ask? 
+
+### Multicollinearity
+
+If you have multiple predictor variables, you should first check that your predictor variables are not too correlated with one another. If the correlation between all pairs of covariates is less than around 0.7 or 0.8 you should generally not have a big problem with multicollinearity (although you might still check your variance inflation factors!). If you have a major problem with multicollinearity, you should generally use only one variable out of every pair of highly correlated variables for your final model. 
+
+You might also consider "penalized regression" approaches like ridge regression. This, however, is outside the scope of this class!
+
+#### Variance Inflation Factors
+
+Variance Inflation Factors are a diagnostic tool to help you evaluate if you have a multicollinearity problem. In general VIFs less than 4 are considered okay. On the other hand, VIFs greater than 10 indicate serious problems!
+
+To compute variance inflation factors, you can use the 'vif' function in the 'car' package. Let's try this using the trees dataset!
+
+```{r}
+
+########
+# load the car package
+
+library(car)
+
+#######
+# load the trees dataset
+
+data(trees)
+
+######
+# visualize relationships among predictor vars
+
+pairs(trees[,c("Girth","Height")])
+
+
+######
+# check for correlation in predictor variables
+
+cor(trees[,c("Girth","Height")])   # predictor variabes not highly correlated
+
+# run a multiple regression model
+
+my.mod <- lm(Volume~Girth+Height,data=trees)
+
+
+# check variance inflation factors
+
+car::vif(my.mod)
+
+```
+Here it looks like we don't have to worry!
+
+What about if we use the 'mtcars' dataset? It seemed there were stronger correlations among predictor variables in that case!
+
+```{r}
+
+########
+## mtcars multicollinearity example
+
+mymod <- lm(mpg~disp+hp+wt,data=mtcars) 
+
+vif(mymod)
+
+```
+Now we are in the danger zone, and we might consider reducing our set of variables. First we might find our most highly correlated pair of variables and eliminate one of these!
+
+```{r}
+
+cor(mtcars.reduced)
+
+## let's remove the 'disp' variable and keep weight...
+
+mymod <- lm(mpg~hp+wt,data=mtcars) 
+
+vif(mymod)
+
+```
+Looks much better now!!!
+
+
+## Regression and ANOVA
+
+Before we move on to ANOVA, I just wanted to point out the essential similarity between regression and ANOVA. The only difference between regression and ANOVA is that in regression, the response variable is numeric/continuous and in ANOVA your response variable(s) is categorical. 
+
+How similar are regression and ANOVA? Well, we can fit regression and ANOVA models with the 'lm' functions, the assumptions are essentially the same, and the diagnostic plots are essentially the same. 
+
+There are differences- we will touch on this in the next lecture- but for now let's focus on the similarities. Let's run an ANOVA in R using the same approaches we have just learned for linear regression!
+
+In this example we will use the famous iris dataset.
+
+```{r}
+
+#### ANOVA as regression example
+
+data(iris)    # load the iris dataset
+
+plot(iris$Sepal.Length ~ iris$Species)   # r uses a boxplot by default for categorical predictor
+
+my.mod <- lm(Sepal.Length~Species,data=iris)    # run an ANOVA!
+summary(my.mod)    # look at the results
+
+anova(my.mod)     # produce an analysis of variance table
+
+####
+# alternative!
+
+my.mod <- aov(Sepal.Length~Species,data=iris)   # same model!!
+summary(my.mod)     # but produces an anova table by default
+
+
+
+```
+
 
 
 

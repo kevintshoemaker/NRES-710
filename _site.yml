@@ -21,7 +21,7 @@ navbar:
       href: LECTURE4.html
     - text: Analysis- ANOVA
       href: LECTURE5.html
-    - text: Analysis- Multivariate
+    - text: Analysis- GLM and GLMM
       href: LECTURE6.html
   - text: More Resources
     menu:
