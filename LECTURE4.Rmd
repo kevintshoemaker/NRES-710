@@ -313,7 +313,7 @@ That is, the observed (e.g., measured) values for your predictor variable are co
 
 Simple linear regression analyses are generally accompanied by 'diagnostic plots', which are intended to diagnose potential violations of key assumptions, or other potential pitfalls of regression. 
 
-When you use the 'plot' function in R to evalate a model generated with the 'lm' function, R returns four diagnostic plots:
+When you use the 'plot' function in R to evaluate a model generated with the 'lm' function, R returns four diagnostic plots:
 
 ```{r}
 
@@ -432,7 +432,7 @@ If we were running a multiple linear regression with these variables as predicto
 
 If you have multiple predictor variables, you should first check that your predictor variables are not too correlated with one another. If the correlation between all pairs of covariates is less than around 0.7 or 0.8 you should generally not have a big problem with multicollinearity (although you might still check your variance inflation factors!). If you have a major problem with multicollinearity, you should generally use only one variable out of every pair of highly correlated variables for your final model. 
 
-You might also consider "penalized regression" approaches like ridge regression. This, however, is outside the scope of this class!
+You might also consider "penalized regression" approaches like 'ridge regression'. This, however, is outside the scope of this class!
 
 #### Variance Inflation Factors
 
@@ -461,7 +461,7 @@ pairs(trees[,c("Girth","Height")])
 ######
 # check for correlation in predictor variables
 
-cor(trees[,c("Girth","Height")])   # predictor variabes not highly correlated
+cor(trees[,c("Girth","Height")])   # predictor variables not highly correlated
 
 # run a multiple regression model
 

@@ -379,13 +379,28 @@ text(xvals,c(6.4,6.4,6.4),labels = c("ab","a","b"),cex=1.5)
 ```
 
 
-In the above figure, we use the convention of adding letter codes to our plot to illustrate the results of the pairwise comparison. Pairs of treatments/groups with different labels are different according to the pairwise comparison test. Pairs that share a common label are not different. In the above figure, treatment 1 and treatment 2 are different from one another, but the control is not detectably different from either treatment. You can also see this visually based on the overlapping in the confidence intervals (trt1 and trt2 do not overlap, whereas both treatments overlap with the control). 
+In the above figure, we use the convention of adding letter codes to our plot to illustrate the results of the pairwise comparison. Pairs of treatments/groups with different labels are different according to the pairwise comparison test. Pairs that share a common label are not different. In the above figure, treatment 1 and treatment 2 are different from one another, but the control is not different from either treatment. You can also see this visually based on the overlapping in the confidence intervals (trt1 and trt2 do not overlap, whereas both treatments overlap with the control). 
 
 
 ## Two-way ANOVA
 
+When you have more than one categorical predictor variable in your ANOVA model, you are performing a *multiple factor ANOVA*. The simplest case is when you have two categorical variables (or factors)-- this is called two-factor ANOVA (or two-way ANOVA). Multiple factor ANOVA is analogous to multi-variable linear regression.
 
-## Non-parametric ANOVA
+In a two-way ANOVA, your global null hypothesis is that the mean of the response variable is not affected by either of the two factors. Secondarily, you can test the individual null hypotheses that the mean response does not vary across the levels of factor 1 or 2 separately.  
+
+### Interactions
+
+The concept of interactions is fundamental to both multiple linear regression and multiple factor ANOVA. 
+
+
+
+
+### Pairwise comparisons
+
+
+
+
+## Non-parametric ANOVA (Kruskal-Wallis)
 
 
 ## Power analysis?
