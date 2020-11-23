@@ -60,6 +60,23 @@ abline(intercept,slope,col="blue")
 
 
 
+######
+# add confidence interval on the regression line
+
+newdata <- data.frame(    # make a data frame containing the light values we want to make predictions for (spanning the range of light values in our data)
+  light = seq(20,80,1)
+)
+
+my.predict <- predict(model, newdata = newdata, interval = "confidence")  # 95% conf int by default
+
+plot(hatchlings.successful~light)  # plot the data
+abline(intercept,slope,col="blue")
+lines(newdata$light,my.predict[,"upr"],col="red",lty=2)   # add upper bound
+lines(newdata$light,my.predict[,"lwr"],col="red",lty=2)   # add lower bound
+
+
+#  use the lm function to regress tree volume on tree girth using the 'trees' dataset
+
 mod <- lm(Volume~Girth,data=trees)
 summary(mod)
 
@@ -167,7 +184,7 @@ pairs(trees[,c("Girth","Height")])
 ######
 # check for correlation in predictor variables
 
-cor(trees[,c("Girth","Height")])   # predictor variabes not highly correlated
+cor(trees[,c("Girth","Height")])   # predictor variables not highly correlated
 
 # run a multiple regression model
 

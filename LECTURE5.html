@@ -492,9 +492,9 @@ div.tocify {
 <h2>Examples</h2>
 <div id="one-way-anova-by-hand" class="section level3">
 <h3>One-way ANOVA ‘by hand’</h3>
-<p>Let’s look at the following example: we measure the height of some plants under the effect of 3 different fertilizers.</p>
+<p>Let’s look at the following example: we measure the height of some plants under the effect of 3 different fertilizer treatments.</p>
 <p>Here the individual observations (<span class="math inline">\(y_{ij}\)</span>) are a function of the average height of the plants (<span class="math inline">\(\mu\)</span>) plus the effect of the fertilizer (Ai) plus an error term (Eij)</p>
-<p>In comparison with linear regression, let’s write out this model as a linear equation!</p>
+<p>In comparison with linear regression (using the ‘language’ of linear regression), let’s write out this model as a linear equation!</p>
 <p><span class="math inline">\(height_i = \beta_0 + \beta_1\cdot fertilizer2 + \beta_2\cdot fertilizer3 + \epsilon_i\)</span></p>
 <p>Where i is the observation number, beta0 is the intercept, beta1 and beta2 are ‘regression’ coefficients, and fertilizer2 and fertilizer3 are <strong>dummy variables</strong> or <strong>indicator variables</strong> that take the value 0 or 1. For example, if observation 11 was treated with fertilizer #2, then the value for ‘fertilizer2’ would be 1 and the value for ‘fertilizer3’ would be zero.</p>
 <p>What happened to fertilizer #1 in this example? Well, if observation 5 was treated with fertilizer #1, then the value for ‘fertilizer2’ would be 0 and the value for ‘fertilizer3’ would also be zero. That is, the intercrept (beta0) represents the expected mean for observations treated with fertilizer 1!</p>
@@ -789,13 +789,174 @@ text(xvals,c(6.4,6.4,6.4),labels = c(&quot;ab&quot;,&quot;a&quot;,&quot;b&quot;)
 <div id="interactions" class="section level3">
 <h3>Interactions</h3>
 <p>The concept of interactions is fundamental to both multiple linear regression and multiple factor ANOVA.</p>
+<p>The basic idea is that the relationship between your response variable (e.g., fruit dry weight) and your first predictor variable (e.g., fertilizer type) varies depending on your second predictor variable (e.g., soil type). For example, maybe your plants tend to produce larger fruits when fertilized in soil type A, but do not respond to fertilization in soil type B.</p>
+<p>In regression terminology, interaction terms look similar to any other regression coefficient. Here’s an example, continuing with the fertilizer/soil example (3 fertilization treatments, 2 soil treatments):</p>
+<p><span class="math inline">\(height_i = \beta_0 + \beta_1\cdot fertilizer2 + \beta_2\cdot fertilizer3 + \beta_3\cdot soil2 + \beta_4\cdot fertilizer2\times soil2 + \beta_5\cdot fertilizer3\times soil2 + \epsilon_i\)</span></p>
+<p>In the above equation, <span class="math inline">\(\beta_0\)</span> is the intercept term, <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> are the <strong>main effect terms</strong> for the “fertilizer” factor variable (same as we saw above- recall that the intercept term represents fertilizer 1) – “fertilizer2” and “fertilizer3” are dummy variables (either zero or one) indicating whether or not observations belong to these respective treatments. Similarly, the <span class="math inline">\(\beta_3\)</span> term is the main effect of soil treatment 2 (the intercept now refers to fertilizer treatment 1, soil treatment 1).</p>
+<p>The <span class="math inline">\(\beta_4\)</span> and <span class="math inline">\(\beta_5\)</span> terms are <strong>interaction coefficients</strong>. <span class="math inline">\(\beta_4\)</span> represents the effect of fertilizer2 on plants growing in the soil2 treatment only. <span class="math inline">\(\beta_5\)</span> represents the effect of fertilizer3 on plants growing in the soil2 treatment only. Note that the term <span class="math inline">\(fertilizer2\times soil2\)</span> is essentially a dummy variable indicating whether or not an observation was treated with fertilizer2 AND grown in soil2. Multiplying two dummy variables together essentially results in a new, more specific dummy variable!</p>
+<div id="interaction-example" class="section level4">
+<h4>Interaction example</h4>
+<pre class="r"><code>## two way interaction example
+
+data(&quot;ToothGrowth&quot;)
+summary(ToothGrowth)</code></pre>
+<pre><code>##       len        supp         dose      
+##  Min.   : 4.20   OJ:30   Min.   :0.500  
+##  1st Qu.:13.07   VC:30   1st Qu.:0.500  
+##  Median :19.25           Median :1.000  
+##  Mean   :18.81           Mean   :1.167  
+##  3rd Qu.:25.27           3rd Qu.:2.000  
+##  Max.   :33.90           Max.   :2.000</code></pre>
+<pre class="r"><code>table(ToothGrowth$supp,ToothGrowth$dose)   # three doses, two types of supplements</code></pre>
+<pre><code>##     
+##      0.5  1  2
+##   OJ  10 10 10
+##   VC  10 10 10</code></pre>
+<pre class="r"><code>ToothGrowth$dose &lt;- ordered(ToothGrowth$dose)  # convert dose variable to factor (make it categorical)
+
+model &lt;- lm(len~supp+dose,data=ToothGrowth)  # two way anova with no interaction
+
+summary(model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = len ~ supp + dose, data = ToothGrowth)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -7.085 -2.751 -0.800  2.446  9.650 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  20.6633     0.6988  29.569  &lt; 2e-16 ***
+## suppVC       -3.7000     0.9883  -3.744 0.000429 ***
+## dose.L       10.9566     0.8559  12.802  &lt; 2e-16 ***
+## dose.Q       -1.1288     0.8559  -1.319 0.192573    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.828 on 56 degrees of freedom
+## Multiple R-squared:  0.7623, Adjusted R-squared:  0.7496 
+## F-statistic: 59.88 on 3 and 56 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>anova(model)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: len
+##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## supp       1  205.35  205.35  14.017 0.0004293 ***
+## dose       2 2426.43 1213.22  82.811 &lt; 2.2e-16 ***
+## Residuals 56  820.43   14.65                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>model_with_interaction &lt;- lm(len~supp*dose,data=ToothGrowth)  # now try again with interactions
+summary(model_with_interaction)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = len ~ supp * dose, data = ToothGrowth)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##  -8.20  -2.72  -0.27   2.65   8.27 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    20.6633     0.6630  31.166  &lt; 2e-16 ***
+## suppVC         -3.7000     0.9376  -3.946 0.000231 ***
+## dose.L          9.0722     1.1484   7.900 1.43e-10 ***
+## dose.Q         -2.4944     1.1484  -2.172 0.034254 *  
+## suppVC:dose.L   3.7689     1.6240   2.321 0.024108 *  
+## suppVC:dose.Q   2.7312     1.6240   1.682 0.098394 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.631 on 54 degrees of freedom
+## Multiple R-squared:  0.7937, Adjusted R-squared:  0.7746 
+## F-statistic: 41.56 on 5 and 54 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>anova(model_with_interaction)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: len
+##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## supp       1  205.35  205.35  15.572 0.0002312 ***
+## dose       2 2426.43 1213.22  92.000 &lt; 2.2e-16 ***
+## supp:dose  2  108.32   54.16   4.107 0.0218603 *  
+## Residuals 54  712.11   13.19                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Here the results suggest that there is a significant interaction between does and supplement type. As always, a plot can help. Let’s visualize this interaction!</p>
+<pre class="r"><code># visualize the interaction
+
+# ?interaction.plot     # this base R function can be used to visualize interactions
+
+with(ToothGrowth, {   # the &quot;with&quot; function allows you to only specify the name of the data frame once, and then refer to the columns of the data frame as if they were variables in your main environment
+  interaction.plot(dose, supp, len, fixed = TRUE, col = c(&quot;red&quot;,&quot;blue&quot;), leg.bty = &quot;o&quot;)
+})</code></pre>
+<p><img src="LECTURE5_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
 </div>
 <div id="pairwise-comparisons-1" class="section level3">
 <h3>Pairwise comparisons</h3>
+<p>Pairwise comparisons for two-way ANOVA are similar to in one-way ANOVA- you just have to specify which categorical predictor variable you want to run pairwise comparisons for! And if you want to look at interactions, you might consider using the ‘emmeans’ function in the ‘emmeans’ package</p>
+<pre class="r"><code>TukeyHSD(aov(model), &quot;dose&quot;)   # run tukey test for the &#39;dose&#39; variable in the ToothGrowth model</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = model)
+## 
+## $dose
+##         diff       lwr       upr p adj
+## 1-0.5  9.130  6.215909 12.044091 0e+00
+## 2-0.5 15.495 12.580909 18.409091 0e+00
+## 2-1    6.365  3.450909  9.279091 7e-06</code></pre>
+<pre class="r"><code>TukeyHSD(aov(model_with_interaction), &quot;dose&quot;)   # run tukey test for the &#39;dose&#39; variable in the ToothGrowth model</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = model_with_interaction)
+## 
+## $dose
+##         diff       lwr       upr   p adj
+## 1-0.5  9.130  6.362488 11.897512 0.0e+00
+## 2-0.5 15.495 12.727488 18.262512 0.0e+00
+## 2-1    6.365  3.597488  9.132512 2.7e-06</code></pre>
+<pre class="r"><code>library(emmeans)
+emm = emmeans(model_with_interaction,
+                      specs= pairwise ~ dose:supp)
+contrast(emm)</code></pre>
+<pre><code>## $emmeans
+##  contrast      estimate   SE df t.ratio p.value
+##  0.5 OJ effect    -5.58 1.05 54  -5.326 &lt;.0001 
+##  1 OJ effect       3.89 1.05 54   3.708 0.0006 
+##  2 OJ effect       7.25 1.05 54   6.913 &lt;.0001 
+##  0.5 VC effect   -10.83 1.05 54 -10.334 &lt;.0001 
+##  1 VC effect      -2.04 1.05 54  -1.949 0.0565 
+##  2 VC effect       7.33 1.05 54   6.989 &lt;.0001 
+## 
+## P value adjustment: fdr method for 6 tests 
+## 
+## $contrasts
+##  contrast                 estimate   SE df t.ratio p.value
+##  (0.5 OJ - 1 OJ) effect      -7.56 1.64 54  -4.603 &lt;.0001 
+##  (0.5 OJ - 2 OJ) effect     -10.92 1.53 54  -7.131 &lt;.0001 
+##  (0.5 OJ - 0.5 VC) effect     7.16 1.41 54   5.074 &lt;.0001 
+##  (0.5 OJ - 1 VC) effect      -1.63 1.28 54  -1.271 0.2414 
+##  (0.5 OJ - 2 VC) effect     -11.00 1.14 54  -9.685 &lt;.0001 
+##  (1 OJ - 2 OJ) effect        -1.45 1.64 54  -0.882 0.3818 
+##  (1 OJ - 0.5 VC) effect      16.63 1.53 54  10.863 &lt;.0001 
+##  (1 OJ - 1 VC) effect         7.84 1.41 54   5.555 &lt;.0001 
+##  (1 OJ - 2 VC) effect        -1.53 1.28 54  -1.193 0.2552 
+##  (2 OJ - 0.5 VC) effect      19.99 1.64 54  12.176 &lt;.0001 
+##  (2 OJ - 1 VC) effect        11.20 1.53 54   7.316 &lt;.0001 
+##  (2 OJ - 2 VC) effect         1.83 1.41 54   1.298 0.2414 
+##  (0.5 VC - 1 VC) effect      -6.88 1.64 54  -4.189 0.0001 
+##  (0.5 VC - 2 VC) effect     -16.25 1.53 54 -10.612 &lt;.0001 
+##  (1 VC - 2 VC) effect        -7.46 1.64 54  -4.542 &lt;.0001 
+## 
+## P value adjustment: fdr method for 15 tests</code></pre>
 </div>
 </div>
 <div id="non-parametric-anova-kruskal-wallis" class="section level2">
 <h2>Non-parametric ANOVA (Kruskal-Wallis)</h2>
+<p>The non-parametric</p>
 </div>
 <div id="power-analysis" class="section level2">
 <h2>Power analysis?</h2>

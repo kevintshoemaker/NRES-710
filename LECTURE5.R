@@ -201,3 +201,43 @@ arrows(xvals,toplot$lower.CL,xvals,toplot$upper.CL,angle=90,code=3)
 text(xvals,c(6.4,6.4,6.4),labels = c("ab","a","b"),cex=1.5)
 
 
+
+## two way interaction example
+
+data("ToothGrowth")
+summary(ToothGrowth)
+
+table(ToothGrowth$supp,ToothGrowth$dose)   # three doses, two types of supplements
+
+ToothGrowth$dose <- ordered(ToothGrowth$dose)  # convert dose variable to factor (make it categorical)
+
+model <- lm(len~supp+dose,data=ToothGrowth)  # two way anova with no interaction
+
+summary(model)
+anova(model)
+
+model_with_interaction <- lm(len~supp*dose,data=ToothGrowth)  # now try again with interactions
+summary(model_with_interaction)
+anova(model_with_interaction)
+
+
+
+# visualize the interaction
+
+# ?interaction.plot     # this base R function can be used to visualize interactions
+
+with(ToothGrowth, {   # the "with" function allows you to only specify the name of the data frame once, and then refer to the columns of the data frame as if they were variables in your main environment
+  interaction.plot(dose, supp, len, fixed = TRUE, col = c("red","blue"), leg.bty = "o")
+})
+
+
+
+
+TukeyHSD(aov(model), "dose")   # run tukey test for the 'dose' variable in the ToothGrowth model
+TukeyHSD(aov(model_with_interaction), "dose")   # run tukey test for the 'dose' variable in the ToothGrowth model
+
+library(emmeans)
+emm = emmeans(model_with_interaction,
+                      specs= pairwise ~ dose:supp)
+contrast(emm)
+

@@ -105,7 +105,7 @@ So already we are seeing a bit of a similarity.
 
 #### t-test recap
 
-In a t-test we assume that the population mean is equal to the null mean and that the data are normally distributed. We could write this as (using regression notation):
+In a t-test we assume that the population mean is equal to the null mean and that the data are normally distributed around the true mean. We could write this as (using regression notation):
 
 $y = \beta_0 + \epsilon$
 
@@ -217,8 +217,34 @@ abline(intercept,slope,col="blue")
 ```
 
 
+Of course, we can't end with a single regression line, since there is sampling error associated with our best-fit regression line. There is error associated with the intercept and there is error associated with the slope term. To do this in r, we can use the 'predict' function:
+
 
 ```{r}
+
+######
+# add confidence interval on the regression line
+
+newdata <- data.frame(    # make a data frame containing the light values we want to make predictions for (spanning the range of light values in our data)
+  light = seq(20,80,1)
+)
+
+my.predict <- predict(model, newdata = newdata, interval = "confidence")  # 95% conf int by default
+
+plot(hatchlings.successful~light)  # plot the data
+abline(intercept,slope,col="blue")
+lines(newdata$light,my.predict[,"upr"],col="red",lty=2)   # add upper bound
+lines(newdata$light,my.predict[,"lwr"],col="red",lty=2)   # add lower bound
+
+```
+
+This confidence interval loosely represents the range of plausible best-fit lines we could fit if we were to gather multiple alternative datasets. If some of the lines that fit within the upper and lower bounds of the confidence interval on the regression line have a positive slope and others have a negative slope, we might remain unconvinced that the relationship betwen the response and predictor variable is 'statistically significant'! 
+
+
+
+```{r}
+
+#  use the lm function to regress tree volume on tree girth using the 'trees' dataset
 
 mod <- lm(Volume~Girth,data=trees)
 summary(mod)
@@ -367,11 +393,12 @@ where $SS_{tot} = \sum(y_i-\bar{y})^2$ and $SS_{res} = \sum(y_i-y_{pred})^2$.
 
 Let's explore some possible outcomes of linear regression: 
 
-Try to come up with scenarios (with plots) for each of the following:    
-1. Non-significant p, high R2 
-2. Significant p, low R2
-3. Significant p, high R2
-4. Non-significant p, low R2
+Try to come up with scenarios (with plots) for each of the following:     
+
+1. Non-significant p, high R2      
+2. Significant p, low R2       
+3. Significant p, high R2     
+4. Non-significant p, low R2      
 
 
 ## Multiple linear regression
@@ -436,7 +463,7 @@ You might also consider "penalized regression" approaches like 'ridge regression
 
 #### Variance Inflation Factors
 
-Variance Inflation Factors are a diagnostic tool to help you evaluate if you have a multicollinearity problem. In general VIFs less than 4 are considered okay. On the other hand, VIFs greater than 10 indicate serious problems!
+Variance Inflation Factors are a diagnostic tool to help you evaluate if you have a multicollinearity problem. In general VIFs less than 4 are considered okay. On the other hand, VIFs greater than 5 or 10 indicate serious problems!
 
 To compute variance inflation factors, you can use the 'vif' function in the 'car' package. Let's try this using the trees dataset!
 
@@ -501,41 +528,6 @@ vif(mymod)
 
 ```
 Looks much better now!!!
-
-
-## Regression and ANOVA
-
-Before we move on to ANOVA, I just wanted to point out the essential similarity between regression and ANOVA. The only difference between regression and ANOVA is that in regression, the response variable is numeric/continuous and in ANOVA your response variable(s) is categorical. 
-
-How similar are regression and ANOVA? Well, we can fit regression and ANOVA models with the 'lm' functions, the assumptions are essentially the same, and the diagnostic plots are essentially the same. 
-
-There are differences- we will touch on this in the next lecture- but for now let's focus on the similarities. Let's run an ANOVA in R using the same approaches we have just learned for linear regression!
-
-In this example we will use the famous iris dataset.
-
-```{r}
-
-#### ANOVA as regression example
-
-data(iris)    # load the iris dataset
-
-plot(iris$Sepal.Length ~ iris$Species)   # r uses a boxplot by default for categorical predictor
-
-my.mod <- lm(Sepal.Length~Species,data=iris)    # run an ANOVA!
-summary(my.mod)    # look at the results
-
-anova(my.mod)     # produce an analysis of variance table
-
-####
-# alternative!
-
-my.mod <- aov(Sepal.Length~Species,data=iris)   # same model!!
-summary(my.mod)     # but produces an anova table by default
-
-
-
-```
-
 
 
 ## What if assumptions are violated?
@@ -652,6 +644,38 @@ But if your residuals are highly non-normal AND you can't seem to correct this u
 One such alternative is to run a non-parametric correlation analysis such as a Spearman rank correlation test. 
 
 
+## Regression and ANOVA
+
+Before we move on to ANOVA, I just wanted to point out the essential similarity between regression and ANOVA. The only difference between regression and ANOVA is that in regression, the response variable is numeric/continuous and in ANOVA your response variable(s) is categorical. 
+
+How similar are regression and ANOVA? Well, we can fit regression and ANOVA models with the 'lm' functions, the assumptions are essentially the same, and the diagnostic plots are essentially the same. 
+
+There are differences- we will touch on this in the next lecture- but for now let's focus on the similarities. Let's run an ANOVA in R using the same approaches we have just learned for linear regression!
+
+In this example we will use the famous iris dataset.
+
+```{r}
+
+#### ANOVA as regression example
+
+data(iris)    # load the iris dataset
+
+plot(iris$Sepal.Length ~ iris$Species)   # r uses a boxplot by default for categorical predictor
+
+my.mod <- lm(Sepal.Length~Species,data=iris)    # run an ANOVA!
+summary(my.mod)    # look at the results
+
+anova(my.mod)     # produce an analysis of variance table
+
+####
+# alternative!
+
+my.mod <- aov(Sepal.Length~Species,data=iris)   # same model!!
+summary(my.mod)     # but produces an anova table by default
+
+
+
+```
 
 
 

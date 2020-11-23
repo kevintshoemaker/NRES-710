@@ -571,7 +571,25 @@ summary(model)   # get the same t stat and p-value hopefully!</code></pre>
 plot(hatchlings.successful~light)  # plot the data
 abline(intercept,slope,col=&quot;blue&quot;)</code></pre>
 <p><img src="LECTURE4_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<pre class="r"><code>mod &lt;- lm(Volume~Girth,data=trees)
+<p>Of course, we can’t end with a single regression line, since there is sampling error associated with our best-fit regression line. There is error associated with the intercept and there is error associated with the slope term. To do this in r, we can use the ‘predict’ function:</p>
+<pre class="r"><code>######
+# add confidence interval on the regression line
+
+newdata &lt;- data.frame(    # make a data frame containing the light values we want to make predictions for (spanning the range of light values in our data)
+  light = seq(20,80,1)
+)
+
+my.predict &lt;- predict(model, newdata = newdata, interval = &quot;confidence&quot;)  # 95% conf int by default
+
+plot(hatchlings.successful~light)  # plot the data
+abline(intercept,slope,col=&quot;blue&quot;)
+lines(newdata$light,my.predict[,&quot;upr&quot;],col=&quot;red&quot;,lty=2)   # add upper bound
+lines(newdata$light,my.predict[,&quot;lwr&quot;],col=&quot;red&quot;,lty=2)   # add lower bound</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>This confidence interval loosely represents the range of plausible best-fit lines we could fit if we were to gather multiple alternative datasets.</p>
+<pre class="r"><code>#  use the lm function to regress tree volume on tree girth using the &#39;trees&#39; dataset
+
+mod &lt;- lm(Volume~Girth,data=trees)
 summary(mod)</code></pre>
 <pre><code>## 
 ## Call:
@@ -618,11 +636,11 @@ my.residuals3 &lt;- hatchlings.successful-predict(model)
 ### histogram of residuals
 
 hist(my.residuals)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre class="r"><code>### test for normality
 
 qqnorm(my.residuals)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
 <pre class="r"><code>shapiro.test(my.residuals)</code></pre>
 <pre><code>## 
 ##  Shapiro-Wilk normality test
@@ -639,7 +657,7 @@ plot(anscombe$y1~anscombe$x1,ylab=&quot;response&quot;,xlab=&quot;predictor&quot
 plot(anscombe$y2~anscombe$x2,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
 plot(anscombe$y3~anscombe$x3,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
 plot(anscombe$y4~anscombe$x4,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div id="independence-of-observations" class="section level3">
 <h3>Independence of observations</h3>
@@ -652,9 +670,9 @@ plot(anscombe$y4~anscombe$x4,ylab=&quot;response&quot;,xlab=&quot;predictor&quot
 <pre class="r"><code>my.residuals &lt;- model$residuals
 
 plot(my.residuals~light)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <pre class="r"><code>plot(my.residuals~predict(model))</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
 <p>Do you see any evidence for <strong>heteroskedasticity</strong>? Heteroskedasticity means non-homogeneity of variance across the range of the predictor variable. Serious violations of the equal variance assumption may warrant a <strong>transformation</strong> of your data, or you may choose to use an alternative analysis like a <strong>generalized linear model</strong>.</p>
 </div>
 <div id="predictor-variable-is-known-with-certainty" class="section level3">
@@ -664,10 +682,10 @@ plot(my.residuals~light)</code></pre>
 <div id="diagnostic-plots" class="section level3">
 <h3>Diagnostic plots</h3>
 <p>Simple linear regression analyses are generally accompanied by ‘diagnostic plots’, which are intended to diagnose potential violations of key assumptions, or other potential pitfalls of regression.</p>
-<p>When you use the ‘plot’ function in R to evalate a model generated with the ‘lm’ function, R returns four diagnostic plots:</p>
+<p>When you use the ‘plot’ function in R to evaluate a model generated with the ‘lm’ function, R returns four diagnostic plots:</p>
 <pre class="r"><code>layout(matrix(1:4,2,byrow = T))
 plot(model)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>The first diagnostic plot (residuals vs fitted) lets you check for possible non-linear patterns. This plot should have no obvious pattern to it- it should look like random noise across the range of fitted values.</p>
 <p>The second diagnostic plot (normal Q-Q) lets you check for normality of residuals. You already know how to do this.</p>
 <p>The third diagnostic plot (scale-location) lets you check for homoskedascitiy. This plot should have no obvious pattern to it- it should look like random noise across the range of fitted values.</p>
@@ -682,7 +700,7 @@ plot(anscombe$y1~anscombe$x1,ylab=&quot;response&quot;,xlab=&quot;predictor&quot
 plot(anscombe$y2~anscombe$x2,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
 plot(anscombe$y3~anscombe$x3,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
 plot(anscombe$y4~anscombe$x4,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>Can you try to draw a regression line if this point was removed?</p>
 </div>
 </div>
@@ -698,8 +716,16 @@ plot(anscombe$y4~anscombe$x4,ylab=&quot;response&quot;,xlab=&quot;predictor&quot
 <div id="regression-outcomes" class="section level3">
 <h3>Regression outcomes</h3>
 <p>Let’s explore some possible outcomes of linear regression:</p>
-<p>Try to come up with scenarios (with plots) for each of the following:<br />
-1. Non-significant p, high R2 2. Significant p, low R2 3. Significant p, high R2 4. Non-significant p, low R2</p>
+<p>Try to come up with scenarios (with plots) for each of the following:</p>
+<ol style="list-style-type: decimal">
+<li>Non-significant p, high R2<br />
+</li>
+<li>Significant p, low R2<br />
+</li>
+<li>Significant p, high R2<br />
+</li>
+<li>Non-significant p, low R2</li>
+</ol>
 </div>
 </div>
 <div id="multiple-linear-regression" class="section level2">
@@ -737,7 +763,7 @@ cor.mat</code></pre>
 <pre class="r"><code>## visualize correlations with the &#39;pairs&#39; function
 
 pairs(mtcars.reduced)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <pre class="r"><code>## run a correlation test- with 95% confidence interval
     # default is Pearson product-moment correlation.
 
@@ -772,7 +798,7 @@ cor.test(mtcars$disp,mtcars$wt, method = &quot;kendall&quot;) # or spearman</cod
 <div id="multicollinearity" class="section level3">
 <h3>Multicollinearity</h3>
 <p>If you have multiple predictor variables, you should first check that your predictor variables are not too correlated with one another. If the correlation between all pairs of covariates is less than around 0.7 or 0.8 you should generally not have a big problem with multicollinearity (although you might still check your variance inflation factors!). If you have a major problem with multicollinearity, you should generally use only one variable out of every pair of highly correlated variables for your final model.</p>
-<p>You might also consider “penalized regression” approaches like ridge regression. This, however, is outside the scope of this class!</p>
+<p>You might also consider “penalized regression” approaches like ‘ridge regression’. This, however, is outside the scope of this class!</p>
 <div id="variance-inflation-factors" class="section level4">
 <h4>Variance Inflation Factors</h4>
 <p>Variance Inflation Factors are a diagnostic tool to help you evaluate if you have a multicollinearity problem. In general VIFs less than 4 are considered okay. On the other hand, VIFs greater than 10 indicate serious problems!</p>
@@ -780,9 +806,9 @@ cor.test(mtcars$disp,mtcars$wt, method = &quot;kendall&quot;) # or spearman</cod
 <pre class="r"><code>########
 # load the car package
 
-library(car)</code></pre>
-<pre><code>## Loading required package: carData</code></pre>
-<pre class="r"><code>#######
+library(car)
+
+#######
 # load the trees dataset
 
 data(trees)
@@ -791,11 +817,11 @@ data(trees)
 # visualize relationships among predictor vars
 
 pairs(trees[,c(&quot;Girth&quot;,&quot;Height&quot;)])</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <pre class="r"><code>######
 # check for correlation in predictor variables
 
-cor(trees[,c(&quot;Girth&quot;,&quot;Height&quot;)])   # predictor variabes not highly correlated</code></pre>
+cor(trees[,c(&quot;Girth&quot;,&quot;Height&quot;)])   # predictor variables not highly correlated</code></pre>
 <pre><code>##            Girth    Height
 ## Girth  1.0000000 0.5192801
 ## Height 0.5192801 1.0000000</code></pre>
@@ -847,7 +873,7 @@ vif(mymod)</code></pre>
 data(iris)    # load the iris dataset
 
 plot(iris$Sepal.Length ~ iris$Species)   # r uses a boxplot by default for categorical predictor</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <pre class="r"><code>my.mod &lt;- lm(Sepal.Length~Species,data=iris)    # run an ANOVA!
 summary(my.mod)    # look at the results</code></pre>
 <pre><code>## 
@@ -901,7 +927,7 @@ summary(my.mod)     # but produces an anova table by default</code></pre>
 data(DNase)
 
 plot(DNase$density~DNase$conc)   # looks non-linear!</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <pre class="r"><code>### run linear regression model
 
 model1 &lt;- lm(density~conc,data=DNase)
@@ -910,11 +936,11 @@ model1 &lt;- lm(density~conc,data=DNase)
 
 par(mfrow=c(2,2))
 plot(model1)     # clear non-linearity (and non-normal residuals, and heteroskedasticity!)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
 <pre class="r"><code>par(mfrow=c(1,1))      # plot data with regression line - obvious issues!
 plot(DNase$density~DNase$conc)
 abline(model1)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-3.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-3.png" width="672" /></p>
 <pre class="r"><code>### run non-linear regression model - use saturation curve
 
 model2 &lt;- nls(density ~ (max*conc)/(K+conc),data=DNase,start=list(max=2,K=0.25))
@@ -965,7 +991,7 @@ lines(concs.toplot,densities.toplot,col=&quot;red&quot;)
 
 legend(&quot;topleft&quot;,lty=c(1,1,1),col=c(&quot;black&quot;,&quot;blue&quot;,&quot;red&quot;),legend=c(&quot;linear&quot;,
                   &quot;saturation&quot;,&quot;logistic&quot;))</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-4.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-4.png" width="672" /></p>
 </div>
 <div id="heteroskedasticity" class="section level3">
 <h3>Heteroskedasticity</h3>
@@ -981,19 +1007,19 @@ simulated.x &lt;- runif(100,0.1,5)
 simulated.y &lt;- exp(rnorm(100,1.1+0.3*simulated.x,0.7))
 
 plot(simulated.y~simulated.x)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <pre class="r"><code>### run linear model
 
 model1 &lt;- lm(simulated.y~simulated.x)
 par(mfrow=c(2,2))
 plot(model1)  # run diagnostic plots    heteroskedasticity issues</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
 <pre class="r"><code>### run linear model with log transformation of response variable
 
 model2 &lt;- lm(log(simulated.y)~simulated.x)
 par(mfrow=c(2,2))
 plot(model2)  # run diagnostic plots - no issues!  </code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-3.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-17-3.png" width="672" /></p>
 </div>
 <div id="non-independence-of-observations" class="section level3">
 <h3>Non-independence of observations</h3>

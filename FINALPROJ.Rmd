@@ -41,23 +41,60 @@ Please provide a 1-page project description. Make sure you include:
 
 Here is a more detailed description of expectations for the manuscript.
 
+**Title:** Choose a concise yet informative title. Puns are acceptable!
+
+**Author:** Although you will likely have more than one author if/when you publish this work, all submissions should have only one author: you!
+
+**Abstract:** Please include a short abstract (200 words max.) that summarizes your work (context, research questions, results, and conclusions). 
+
 **Introduction:** Provide enough description so that the reader understands why the research is important and (if appropriate) what research question(s) and/or hypotheses are being addressed. (approx. 2-3 paragraphs)
 
 **Methods:**      
 
 * Provide just enough details about the data collection to give the reader the context necessary to understand the data.     
-* Provide plenty of detail about the analytical approach- enough detail to replicate the analysis. Justify all decisions that were made and (where appropriate) discuss why you did not use alternative approaches.   
+* Provide plenty of detail about the analytical approach- enough detail to replicate the analysis. Justify all decisions that were made and (where appropriate) discuss why you did not use alternative approaches. For this project, err on the side of too much detail!     
 * Discuss key assumptions.  
 
-**Results:** Present all relevant results completely yet concisely. Wherever possible, results should be presented via figures and tables. There is a limit of 4 figures and 2 tables, so choose carefully which figures and tables to present. Figures should be *publication quality*, with well-labeled, readable axes. Make sure figure captions have enough information for a reader to interpret the figure without reading the main manuscript!   
+**Results:** Present all relevant results completely yet concisely. Wherever possible, results should be presented via figures and tables. There is a limit of 4 figures and 2 tables, so choose carefully which figures and tables to present. Figures should be *publication quality*, with well-labeled, readable axes. Make sure figure captions have enough information for a reader to interpret the figure without reading the main manuscript! Remember that each figure can contain multile *panels* so you should have no trouble fitting all your key results into 4 figures max.   
 
-**Discussion:** Write at least two paragraphs that put the results in a larger context (returning to the key research questions) and discuss areas of uncertainty. Potential topics are possible violations of assumptions, and future work that your analysis suggests would be profitable.    
+**Discussion:** Write at least two paragraphs that put the results in a larger context (returning to the key research questions) and discuss areas of uncertainty. Potential topics are possible violations of assumptions, and future work that your analysis suggests would be profitable.
+
+**Acknowledgements:** Please acknowledge key people and agencies that helped with data collection, funding, analysis, providing comments, etc.
+
+**Literature cited** Full references (exact format up to you, but be consistent!) for all citations in your main text. 
 
 **Supplement** Provide all code used to run the analyses presented in the paper as an R script.
 
+NOTE: please embed figures and tables within your main text- you do not need to put them in a separate section at the end of the manuscript. 
+
 ## Peer review (December 2)
 
-Your first drafts will be subjected to anonymous peer review. At this time, your assignment will be reviewed by two other students, and the reviews themselves will be graded (each student is expected to submit two peer reviews). The reviews are designed to provide feedback on all aspects of the paper- but for this class the most important aspect of the peer reviews is a critique of the statistical approach being used. For example, are the stats appropriate for the data and the experimental design? Do the results justify the conclusions? Are the assumptions of the analysis and any potential violations of the assumptions discussed in sufficient detail? 
+Your first drafts will be subjected to peer review. Unlike standard scientific peer-review practice, the peer-reviews in this class will be *not be anonymous*-- please sign your reviews (this is for practical purposes, since you will have zoom meetings with your peer reviewers!). Your manuscript will be reviewed by two other students, and the reviews themselves will be graded (each student is expected to submit two peer reviews; see below). The reviews are designed to provide feedback on all aspects of the paper- but for this class the most important aspect of the peer reviews is a critique of the statistical approach being used. Key questions for peer-reviewers to consider are (in no particular order):     
+
+1. Are the stats appropriate for the data and the experimental design? Can you recommend an approach that might be more appropriate?         
+2. Do the results justify the conclusions?     
+3. Are the assumptions of the analysis discussed?      
+4. Are potential violations of the assumptions discussed in sufficient detail?     
+5. Is the writing concise and with a clear logical flow?     
+6. Are there too many or too few figures and tables? Do the figures and tables convey information clearly?      
+7. Is the text for each section appropriate to that section (e.g., does some of the "methods" text belong in the "results"?)
+8. Anything else that occurs to you! (don't feel limited by this list!)  
+
+
+### Peer review submitted assignment
+
+Your peer review submissions (2 submissions per student) should follow the general format of an academic peer-review. Each submission should be approximately one page in length and should include:
+
+1. Title and author of the work under review    
+2. A brief summary of the work under review (just a couple sentences is okay)
+3. General comments. This is where you state your overall comments about the work under review. Your most important comments should come first, followed by less important comments. Pay attention to the list of points to consider (see above), but feel free to raise any issues that you feel could improve the paper. This should be 1-2 paragraphs in length.      
+4. Specific comments. This is where you can raise comments that are specific to particular sentences or paragraphs. Please refer to line numbers in the work under review- this makes it easier to convey this specific information!
+5. Your name (this is not a standard practice, but is necessary for this class!) 
+
+NOTE: keep your comments respectful and constructive (of course!). And you can point out things you really like about the paper as well!
+
+NOTE: you don't need to correct grammar and spelling here- just focus on the big stuff!
+
 
 ## Final manuscript (due Dec 16 at 5pm)
 

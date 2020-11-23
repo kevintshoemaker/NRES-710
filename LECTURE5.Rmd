@@ -120,11 +120,11 @@ All sample groups have the same variance. Note that this is equivalent to the ho
 
 ### One-way ANOVA 'by hand'
 
-Let's look at the following example: we measure the height of some plants under the effect of 3 different fertilizers.
+Let's look at the following example: we measure the height of some plants under the effect of 3 different fertilizer treatments.
 
 Here the individual observations ($y_{ij}$) are a function of the average height of the plants ($\mu$) plus the effect of the fertilizer (Ai) plus an error term (Eij)
 
-In comparison with linear regression, let's write out this model as a linear equation!
+In comparison with linear regression (using the 'language' of linear regression), let's write out this model as a linear equation!
 
 $height_i = \beta_0 + \beta_1\cdot fertilizer2 + \beta_2\cdot fertilizer3 + \epsilon_i$
 
@@ -392,15 +392,80 @@ In a two-way ANOVA, your global null hypothesis is that the mean of the response
 
 The concept of interactions is fundamental to both multiple linear regression and multiple factor ANOVA. 
 
+The basic idea is that the relationship between your response variable (e.g., fruit dry weight) and your first predictor variable (e.g., fertilizer type) varies depending on your second predictor variable (e.g., soil type). For example, maybe your plants tend to produce larger fruits when fertilized in soil type A, but do not respond to fertilization in soil type B. 
 
+In regression terminology, interaction terms look similar to any other regression coefficient. Here's an example, continuing with the fertilizer/soil example (3 fertilization treatments, 2 soil treatments):
+
+$height_i = \beta_0 + \beta_1\cdot fertilizer2 + \beta_2\cdot fertilizer3 + \beta_3\cdot soil2 + \beta_4\cdot  fertilizer2\times soil2 + \beta_5\cdot fertilizer3\times soil2 + \epsilon_i$
+
+In the above equation, $\beta_0$ is the intercept term, $\beta_1$ and $\beta_2$ are the **main effect terms** for the "fertilizer" factor variable (same as we saw above- recall that the intercept term represents fertilizer 1) -- "fertilizer2" and "fertilizer3" are dummy variables (either zero or one) indicating whether or not observations belong to these respective treatments. Similarly, the $\beta_3$ term is the main effect of soil treatment 2 (the intercept now refers to fertilizer treatment 1, soil treatment 1).
+
+The $\beta_4$ and $\beta_5$ terms are **interaction coefficients**. $\beta_4$ represents the effect of fertilizer2 on plants growing in the soil2 treatment only. $\beta_5$ represents the effect of fertilizer3 on plants growing in the soil2 treatment only. Note that the term $fertilizer2\times soil2$ is essentially a dummy variable indicating whether or not an observation was treated with fertilizer2 AND grown in soil2. Multiplying two dummy variables together essentially results in a new, more specific dummy variable!
+
+
+#### Interaction example
+
+```{r}
+
+## two way interaction example
+
+data("ToothGrowth")
+summary(ToothGrowth)
+
+table(ToothGrowth$supp,ToothGrowth$dose)   # three doses, two types of supplements
+
+ToothGrowth$dose <- ordered(ToothGrowth$dose)  # convert dose variable to factor (make it categorical)
+
+model <- lm(len~supp+dose,data=ToothGrowth)  # two way anova with no interaction
+
+summary(model)
+anova(model)
+
+model_with_interaction <- lm(len~supp*dose,data=ToothGrowth)  # now try again with interactions
+summary(model_with_interaction)
+anova(model_with_interaction)
+
+
+```
+
+Here the results suggest that there is a significant interaction between does and supplement type. As always, a plot can help. Let's visualize this interaction!
+
+```{r}
+
+# visualize the interaction
+
+# ?interaction.plot     # this base R function can be used to visualize interactions
+
+with(ToothGrowth, {   # the "with" function allows you to only specify the name of the data frame once, and then refer to the columns of the data frame as if they were variables in your main environment
+  interaction.plot(dose, supp, len, fixed = TRUE, col = c("red","blue"), leg.bty = "o")
+})
+
+
+
+```
 
 
 ### Pairwise comparisons
 
+Pairwise comparisons for two-way ANOVA are similar to in one-way ANOVA- you just have to specify which categorical predictor variable you want to run pairwise comparisons for! And if you want to look at interactions, you might consider using the 'emmeans' function in the 'emmeans' package
+
+```{r}
+
+TukeyHSD(aov(model), "dose")   # run tukey test for the 'dose' variable in the ToothGrowth model
+TukeyHSD(aov(model_with_interaction), "dose")   # run tukey test for the 'dose' variable in the ToothGrowth model
+
+library(emmeans)
+emm = emmeans(model_with_interaction,
+                      specs= pairwise ~ dose:supp)
+contrast(emm)
+
+```
 
 
 
 ## Non-parametric ANOVA (Kruskal-Wallis)
+
+The non-parametric 
 
 
 ## Power analysis?
