@@ -69,7 +69,7 @@ The explained variance is defined by:
 
 $\sum_{i=1}^{K}n_i\cdot (\bar{Y_i}-\bar{Y})^2/(K-1)$
 
-Where K is the number of groups, $n_i$ is the number of observations in the ith group, $\bar{Y_i}$ is the sample mean in the ith group, and $\bar{Y}$ is the overall mean. 
+Where K is the number of groups, $n_i$ is the number of observations in the ith group, $\bar{Y_i}$ is the sample mean in the *i*th group, and $\bar{Y}$ is the overall mean. 
 
 The unexplained variance is defined by:
 
@@ -84,15 +84,14 @@ The F distribution was developed by George Snedecor (founder of the first US sta
 
 Just like the t distribution and the Chi-squared distribution, the F distribution is the approximate sampling distribution of the F statistic under the null hypothesis. 
 
-Interesting fact: in the case where the categorical variable has only two levels, the F distribution is just the t distribution, squared! A t-test shows the areas to the left, right, or center (depending on one- or two-tailed tests), the F distribution (being the square of that) only shows the area to the left of the statistic. 
+Interesting fact: in the case where the categorical variable has only two levels, the F distribution is just the t distribution, squared!  
 
 The F distribution has two parameters: the numerator degrees of freedom (df1; also known as the 'treatment' degrees of freedom) and the denominator degrees of freedom (df2; also known as the residual degrees of freedom). The numerator degrees of freedom for a one-way ANOVA is K-1, and the denominator degrees of freedom is N-K.   
-
 
 #### Regression and the F distribution/statistic
 
 What is the F-distribution commonly associated with (besides ANOVA)? 
-That’s right – Linear Regression! 
+That’s right – Linear Regression!
 
 ANOVA is a special case of regression where the predictor variable is categorical -- there is one independent variable and one or more dependent variables that are categorical. 
 
@@ -115,6 +114,7 @@ Samples are independent of each other (as always!)
 
 All sample groups have the same variance. Note that this is equivalent to the homoskedasticity assumption from linear regression!
 
+NOTE: you don't really need to worry so much about 'high influence' points in ANOVA. However, ANOVA works best if there are similar numbers of observations in each group - this is a 'balanced' design.   
 
 ## Examples
 
@@ -131,6 +131,10 @@ $height_i = \beta_0 + \beta_1\cdot fertilizer2 + \beta_2\cdot fertilizer3 + \eps
 Where i is the observation number, beta0 is the intercept, beta1 and beta2 are 'regression' coefficients, and fertilizer2 and fertilizer3 are **dummy variables** or **indicator variables** that take the value 0 or 1. For example, if observation 11 was treated with fertilizer #2, then the value for 'fertilizer2' would be 1 and the value for 'fertilizer3' would be zero.  
 
 What happened to fertilizer #1 in this example? Well, if observation 5 was treated with fertilizer #1, then the value for 'fertilizer2' would be 0 and the value for 'fertilizer3' would also be zero. That is, the intercrept (beta0) represents the expected mean for observations treated with fertilizer 1! 
+
+[draw on whiteboard]
+
+[demonstration with 'model.matrix']
 
 Our goal here is to test if the regression coefficients beta1 and beta2 are zero- that is, that mean plant height is the same across all three treatments.
 
@@ -237,7 +241,7 @@ This is where *pairwise comparison* comes in. Pairwise comparisons allow you to 
 
 Remember that if we are unable to reject our null hypothesis, there is no point in performing pairwise comparisons- we already know that the variation in group means is consistent with the null hypothesis that the true population means are not actually different from one another. 
 
-There are several ways to perform pairwise comparisons in R. One of the most powerful and flexible functions for doing this is the 'emmeans' function. 
+There are several ways to perform pairwise comparisons in R. One of the most powerful and flexible functions for doing this is the 'emmeans' function (in the 'emmeans' package). 
 
 For classical ANOVA tests, the most common method for pairwise comparison is called 'Tukey's test'. This can be done using the 'TukeyHSD' function in R or the 'emmeans' function. 
 
@@ -251,7 +255,7 @@ The test statistic for Tukey's test is called *q*, and is computed as:
 
 $q = \frac{Y_A-Y_B}{SE}$, where Y sub A is the larger of the two means being compared. 
 
-Does this look like any other familiar test statistic? Yes, that's right- Tukey's test is essentially a t-test!
+Does this look like any other familiar test statistic? Yes, that's right- Tukey's test is essentially a t-test! The only difference is that it is maintaining an *experimentwise error rate* that matches the alpha level you set. So you *could* run multiple independent t-tests- one for each pair of factor levels. BUT if you did that, the more tests you ran, the higher your risk of committing a type-I error. If we use Tukey's test, we keep that risk equal to alpha regardless of how many tests we perform. 
 
 The standard error for Tukey's test is computed as:
 
@@ -447,7 +451,7 @@ with(ToothGrowth, {   # the "with" function allows you to only specify the name 
 
 ### Pairwise comparisons
 
-Pairwise comparisons for two-way ANOVA are similar to in one-way ANOVA- you just have to specify which categorical predictor variable you want to run pairwise comparisons for! And if you want to look at interactions, you might consider using the 'emmeans' function in the 'emmeans' package
+Pairwise comparisons for two-way ANOVA are similar to in one-way ANOVA- you just have to specify which categorical predictor variable you want to run pairwise comparisons for! Or you might want to run pairwise comparisons for all combinations of levels across both categorical predictors... If you want to do the latter (e.g., to examine which interactions are significant), you might consider using the 'emmeans' function in the 'emmeans' package
 
 ```{r}
 

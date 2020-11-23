@@ -453,7 +453,7 @@ div.tocify {
 <p><span class="math inline">\(F = \frac{between-group \space variability}{within-group \space variability}\)</span></p>
 <p>The explained variance is defined by:</p>
 <p><span class="math inline">\(\sum_{i=1}^{K}n_i\cdot (\bar{Y_i}-\bar{Y})^2/(K-1)\)</span></p>
-<p>Where K is the number of groups, <span class="math inline">\(n_i\)</span> is the number of observations in the ith group, <span class="math inline">\(\bar{Y_i}\)</span> is the sample mean in the ith group, and <span class="math inline">\(\bar{Y}\)</span> is the overall mean.</p>
+<p>Where K is the number of groups, <span class="math inline">\(n_i\)</span> is the number of observations in the ith group, <span class="math inline">\(\bar{Y_i}\)</span> is the sample mean in the <em>i</em>th group, and <span class="math inline">\(\bar{Y}\)</span> is the overall mean.</p>
 <p>The unexplained variance is defined by:</p>
 <p><span class="math inline">\(\sum_{i=1}^{K}\sum_{j=1}^{n_i}(Y_{ij}-\bar{Y_i})^2/(N-K)\)</span></p>
 <p>You won’t generally need to compute the F statistic yourself but it is useful to know how to do it! We will go though one example where we compute the F statistic ‘by hand’ (in R), but after that we will let R functions do the job for us!</p>
@@ -462,7 +462,7 @@ div.tocify {
 <h3>The F Distribution</h3>
 <p>The F distribution was developed by George Snedecor (founder of the first US statistics department – at Iowa State. The “F” is in honor of Ronald Fisher, who developed the ANOVA testing framework.</p>
 <p>Just like the t distribution and the Chi-squared distribution, the F distribution is the approximate sampling distribution of the F statistic under the null hypothesis.</p>
-<p>Interesting fact: in the case where the categorical variable has only two levels, the F distribution is just the t distribution, squared! A t-test shows the areas to the left, right, or center (depending on one- or two-tailed tests), the F distribution (being the square of that) only shows the area to the left of the statistic.</p>
+<p>Interesting fact: in the case where the categorical variable has only two levels, the F distribution is just the t distribution, squared!</p>
 <p>The F distribution has two parameters: the numerator degrees of freedom (df1; also known as the ‘treatment’ degrees of freedom) and the denominator degrees of freedom (df2; also known as the residual degrees of freedom). The numerator degrees of freedom for a one-way ANOVA is K-1, and the denominator degrees of freedom is N-K.</p>
 <div id="regression-and-the-f-distributionstatistic" class="section level4">
 <h4>Regression and the F distribution/statistic</h4>
@@ -485,6 +485,7 @@ div.tocify {
 <div id="equal-variance" class="section level4">
 <h4>Equal variance</h4>
 <p>All sample groups have the same variance. Note that this is equivalent to the homoskedasticity assumption from linear regression!</p>
+<p>NOTE: you don’t really need to worry so much about ‘high influence’ points in ANOVA. However, ANOVA works best if there are similar numbers of observations in each group - this is a ‘balanced’ design.</p>
 </div>
 </div>
 </div>
@@ -498,6 +499,8 @@ div.tocify {
 <p><span class="math inline">\(height_i = \beta_0 + \beta_1\cdot fertilizer2 + \beta_2\cdot fertilizer3 + \epsilon_i\)</span></p>
 <p>Where i is the observation number, beta0 is the intercept, beta1 and beta2 are ‘regression’ coefficients, and fertilizer2 and fertilizer3 are <strong>dummy variables</strong> or <strong>indicator variables</strong> that take the value 0 or 1. For example, if observation 11 was treated with fertilizer #2, then the value for ‘fertilizer2’ would be 1 and the value for ‘fertilizer3’ would be zero.</p>
 <p>What happened to fertilizer #1 in this example? Well, if observation 5 was treated with fertilizer #1, then the value for ‘fertilizer2’ would be 0 and the value for ‘fertilizer3’ would also be zero. That is, the intercrept (beta0) represents the expected mean for observations treated with fertilizer 1!</p>
+<p>[draw on whiteboard]</p>
+<p>[demonstration with ‘model.matrix’]</p>
 <p>Our goal here is to test if the regression coefficients beta1 and beta2 are zero- that is, that mean plant height is the same across all three treatments.</p>
 <pre class="r"><code>#######
 # Simple one-way ANOVA example
@@ -614,7 +617,7 @@ summary(model1)</code></pre>
 <p>The ANOVA test is a <em>global test</em>, meaning that if our p-value is less than our alpha level we are able to reject the null hypothesis that all of the group means are equal to one another. But if we reject our null hypothesis we can’t say <em>which</em> of the group means are different.</p>
 <p>This is where <em>pairwise comparison</em> comes in. Pairwise comparisons allow you to determine which pairs of means are different from one another.</p>
 <p>Remember that if we are unable to reject our null hypothesis, there is no point in performing pairwise comparisons- we already know that the variation in group means is consistent with the null hypothesis that the true population means are not actually different from one another.</p>
-<p>There are several ways to perform pairwise comparisons in R. One of the most powerful and flexible functions for doing this is the ‘emmeans’ function.</p>
+<p>There are several ways to perform pairwise comparisons in R. One of the most powerful and flexible functions for doing this is the ‘emmeans’ function (in the ‘emmeans’ package).</p>
 <p>For classical ANOVA tests, the most common method for pairwise comparison is called ‘Tukey’s test’. This can be done using the ‘TukeyHSD’ function in R or the ‘emmeans’ function.</p>
 <div id="tukeys-test" class="section level3">
 <h3>Tukey’s test</h3>
@@ -622,7 +625,7 @@ summary(model1)</code></pre>
 <p>Tukey’s test assumes that observations are normally distributed. In addition, Tukey’s test assumes independence of observations (of course!) and homogeneity of variance among groups.</p>
 <p>The test statistic for Tukey’s test is called <em>q</em>, and is computed as:</p>
 <p><span class="math inline">\(q = \frac{Y_A-Y_B}{SE}\)</span>, where Y sub A is the larger of the two means being compared.</p>
-<p>Does this look like any other familiar test statistic? Yes, that’s right- Tukey’s test is essentially a t-test!</p>
+<p>Does this look like any other familiar test statistic? Yes, that’s right- Tukey’s test is essentially a t-test! The only difference is that it is maintaining an <em>experimentwise error rate</em> that matches the alpha level you set. So you <em>could</em> run multiple independent t-tests- one for each pair of factor levels. BUT if you did that, the more tests you ran, the higher your risk of committing a type-I error. If we use Tukey’s test, we keep that risk equal to alpha regardless of how many tests we perform.</p>
 <p>The standard error for Tukey’s test is computed as:</p>
 <p><span class="math inline">\(\sqrt{(\frac{MSE}{2})(\frac{1}{n_i}+\frac{1}{n_j})}\)</span></p>
 <p>With unequal sample sizes, the test is called a <em>Tukey-Kramer test</em>.</p>
@@ -895,7 +898,7 @@ with(ToothGrowth, {   # the &quot;with&quot; function allows you to only specify
 </div>
 <div id="pairwise-comparisons-1" class="section level3">
 <h3>Pairwise comparisons</h3>
-<p>Pairwise comparisons for two-way ANOVA are similar to in one-way ANOVA- you just have to specify which categorical predictor variable you want to run pairwise comparisons for! And if you want to look at interactions, you might consider using the ‘emmeans’ function in the ‘emmeans’ package</p>
+<p>Pairwise comparisons for two-way ANOVA are similar to in one-way ANOVA- you just have to specify which categorical predictor variable you want to run pairwise comparisons for! Or you might want to run pairwise comparisons for all combinations of levels across both categorical predictors… If you want to do the latter (e.g., to examine which interactions are significant), you might consider using the ‘emmeans’ function in the ‘emmeans’ package</p>
 <pre class="r"><code>TukeyHSD(aov(model), &quot;dose&quot;)   # run tukey test for the &#39;dose&#39; variable in the ToothGrowth model</code></pre>
 <pre><code>##   Tukey multiple comparisons of means
 ##     95% family-wise confidence level
