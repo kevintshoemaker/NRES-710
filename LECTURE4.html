@@ -478,7 +478,7 @@ div.tocify {
 <p>So already we are seeing a bit of a similarity.</p>
 <div id="t-test-recap" class="section level4">
 <h4>t-test recap</h4>
-<p>In a t-test we assume that the population mean is equal to the null mean and that the data are normally distributed. We could write this as (using regression notation):</p>
+<p>In a t-test we assume that the population mean is equal to the null mean and that the data are normally distributed around the true mean. We could write this as (using regression notation):</p>
 <p><span class="math inline">\(y = \beta_0 + \epsilon\)</span></p>
 <p>WHERE:</p>
 <p><span class="math inline">\(\epsilon \equiv Normal(0, \sigma)\)</span></p>
@@ -586,7 +586,7 @@ abline(intercept,slope,col=&quot;blue&quot;)
 lines(newdata$light,my.predict[,&quot;upr&quot;],col=&quot;red&quot;,lty=2)   # add upper bound
 lines(newdata$light,my.predict[,&quot;lwr&quot;],col=&quot;red&quot;,lty=2)   # add lower bound</code></pre>
 <p><img src="LECTURE4_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>This confidence interval loosely represents the range of plausible best-fit lines we could fit if we were to gather multiple alternative datasets.</p>
+<p>This confidence interval loosely represents the range of plausible best-fit lines we could fit if we were to gather multiple alternative datasets. If some of the lines that fit within the upper and lower bounds of the confidence interval on the regression line have a positive slope and others have a negative slope, we might remain unconvinced that the relationship betwen the response and predictor variable is ‘statistically significant’!</p>
 <pre class="r"><code>#  use the lm function to regress tree volume on tree girth using the &#39;trees&#39; dataset
 
 mod &lt;- lm(Volume~Girth,data=trees)
@@ -801,7 +801,7 @@ cor.test(mtcars$disp,mtcars$wt, method = &quot;kendall&quot;) # or spearman</cod
 <p>You might also consider “penalized regression” approaches like ‘ridge regression’. This, however, is outside the scope of this class!</p>
 <div id="variance-inflation-factors" class="section level4">
 <h4>Variance Inflation Factors</h4>
-<p>Variance Inflation Factors are a diagnostic tool to help you evaluate if you have a multicollinearity problem. In general VIFs less than 4 are considered okay. On the other hand, VIFs greater than 10 indicate serious problems!</p>
+<p>Variance Inflation Factors are a diagnostic tool to help you evaluate if you have a multicollinearity problem. In general VIFs less than 4 are considered okay. On the other hand, VIFs greater than 5 or 10 indicate serious problems!</p>
 <p>To compute variance inflation factors, you can use the ‘vif’ function in the ‘car’ package. Let’s try this using the trees dataset!</p>
 <pre class="r"><code>########
 # load the car package
@@ -862,6 +862,186 @@ vif(mymod)</code></pre>
 </div>
 </div>
 </div>
+<div id="what-if-assumptions-are-violated" class="section level2">
+<h2>What if assumptions are violated?</h2>
+<p>Let’s look at what to do if some of the basic assumptions of linear regression are violated?</p>
+<div id="non-linearity" class="section level3">
+<h3>Non-linearity</h3>
+<p>If we suspect a non-linear functional relationship between our response and predictor variables, we might perform a <strong>non-linear regression</strong> analysis.</p>
+<p>We can perform a non-linear regression using the “nls” function in R (for non-linear least squares). Let’s use the “DNase” dataset in R to explore this.</p>
+<pre class="r"><code># ?nls
+
+data(DNase)
+
+plot(DNase$density~DNase$conc)   # looks non-linear!</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<pre class="r"><code>### run linear regression model
+
+model1 &lt;- lm(density~conc,data=DNase)
+
+### run diagnostic plots
+
+par(mfrow=c(2,2))
+plot(model1)     # clear non-linearity (and non-normal residuals, and heteroskedasticity!)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
+<pre class="r"><code>par(mfrow=c(1,1))      # plot data with regression line - obvious issues!
+plot(DNase$density~DNase$conc)
+abline(model1)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-3.png" width="672" /></p>
+<pre class="r"><code>### run non-linear regression model - use saturation curve
+
+model2 &lt;- nls(density ~ (max*conc)/(K+conc),data=DNase,start=list(max=2,K=1))
+summary(model2)</code></pre>
+<pre><code>## 
+## Formula: density ~ (max * conc)/(K + conc)
+## 
+## Parameters:
+##     Estimate Std. Error t value Pr(&gt;|t|)    
+## max  2.28032    0.02189  104.16   &lt;2e-16 ***
+## K    3.68241    0.08677   42.44   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.04909 on 174 degrees of freedom
+## 
+## Number of iterations to convergence: 6 
+## Achieved convergence tolerance: 2.373e-06</code></pre>
+<pre class="r"><code>### run non-linear regression model - use logistic function 
+
+model3 &lt;- nls(density ~ Asym/(1 + exp((xmid - log(conc))/scal)),
+                 data = DNase,
+                 start = list(Asym = 3, xmid = 0, scal = 1))
+
+summary(model3)</code></pre>
+<pre><code>## 
+## Formula: density ~ Asym/(1 + exp((xmid - log(conc))/scal))
+## 
+## Parameters:
+##      Estimate Std. Error t value Pr(&gt;|t|)    
+## Asym  2.48532    0.06287   39.53   &lt;2e-16 ***
+## xmid  1.51812    0.06397   23.73   &lt;2e-16 ***
+## scal  1.09831    0.02442   44.98   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.04687 on 173 degrees of freedom
+## 
+## Number of iterations to convergence: 6 
+## Achieved convergence tolerance: 4.739e-07</code></pre>
+<pre class="r"><code>plot(DNase$density~DNase$conc)
+abline(model1)
+concs.toplot &lt;- seq(0.01,14,0.1)
+densities.toplot &lt;- predict(model2,newdata=data.frame(conc=concs.toplot))
+lines(concs.toplot,densities.toplot,col=&quot;blue&quot;)
+densities.toplot &lt;- predict(model3,newdata=data.frame(conc=concs.toplot))
+lines(concs.toplot,densities.toplot,col=&quot;red&quot;)
+
+legend(&quot;topleft&quot;,lty=c(1,1,1),col=c(&quot;black&quot;,&quot;blue&quot;,&quot;red&quot;),legend=c(&quot;linear&quot;,
+                  &quot;saturation&quot;,&quot;logistic&quot;))</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-4.png" width="672" /> You can run residual plots with non-linear regression just like you can with ordinary linear regression:</p>
+<pre class="r"><code>## residual plots
+
+resids &lt;- DNase$density-predict(model3)
+
+residuals(model3)   # alternative method! This works for &#39;lm&#39; objects as well (and many other model objects)</code></pre>
+<pre><code>##   [1] -0.0222835640 -0.0212835640 -0.0124539463 -0.0094539463 -0.0335367172
+##   [6] -0.0245367172 -0.0380629138 -0.0410629138 -0.0662506055 -0.0712506055
+##  [11] -0.0115300720 -0.0295300720 -0.0853516109 -0.0553516109 -0.0458016613
+##  [16] -0.0658016613  0.0057164360  0.0107164360  0.0035460537 -0.0104539463
+##  [21] -0.0145367172 -0.0325367172 -0.0140629138 -0.0320629138 -0.0082506055
+##  [26]  0.0007493945  0.0854699280  0.0474699280  0.1346483891  0.1066483891
+##  [31]  0.1561983387  0.1381983387  0.0307164360  0.0287164360  0.0395460537
+##  [36]  0.0315460537  0.0374632828  0.0084632828  0.0189370862  0.0109370862
+##  [41]  0.0227493945  0.0087493945  0.0364699280  0.0464699280  0.2096483891
+##  [46]  0.0596483891  0.2271983387  0.1081983387 -0.0282835640 -0.0232835640
+##  [51] -0.0154539463 -0.0254539463 -0.0395367172 -0.0335367172 -0.0510629138
+##  [56] -0.0550629138 -0.0602506055 -0.0402506055 -0.0515300720 -0.0575300720
+##  [61]  0.0046483891 -0.0203516109 -0.0358016613 -0.0438016613 -0.0042835640
+##  [66] -0.0042835640 -0.0014539463  0.0015460537 -0.0155367172 -0.0195367172
+##  [71] -0.0300629138 -0.0250629138 -0.0222506055 -0.0332506055  0.0294699280
+##  [76]  0.0004699280  0.0056483891 -0.0103516109 -0.0258016613 -0.0378016613
+##  [81]  0.0467164360  0.0637164360  0.0575460537  0.0555460537  0.0324632828
+##  [86]  0.0374632828  0.0249370862  0.0109370862  0.0057493945 -0.0042506055
+##  [91]  0.0314699280  0.0414699280  0.0046483891  0.0396483891 -0.0078016613
+##  [96]  0.0301983387  0.0547164360  0.0527164360  0.0485460537  0.0485460537
+## [101]  0.0424632828  0.0334632828  0.0289370862  0.0239370862  0.0057493945
+## [106] -0.0122506055  0.0214699280  0.0044699280 -0.0103516109 -0.0273516109
+## [111] -0.0168016613 -0.0368016613  0.0147164360  0.0147164360  0.0185460537
+## [116]  0.0145460537 -0.0135367172 -0.0175367172 -0.0230629138 -0.0320629138
+## [121] -0.0222506055 -0.0362506055  0.0124699280 -0.0285300720  0.0466483891
+## [126] -0.0383516109 -0.0328016613 -0.0518016613 -0.0072835640  0.0037164360
+## [131]  0.0085460537  0.0215460537 -0.0005367172  0.0024632828  0.0049370862
+## [136] -0.0200629138 -0.0562506055  0.0247493945  0.0154699280 -0.0045300720
+## [141] -0.0213516109 -0.0143516109 -0.0828016613 -0.0468016613  0.0127164360
+## [146]  0.0547164360  0.0305460537  0.0325460537  0.0194632828  0.0164632828
+## [151]  0.0239370862  0.0239370862  0.0097493945  0.0207493945  0.0114699280
+## [156]  0.0444699280 -0.0793516109 -0.0133516109 -0.0768016613 -0.0678016613
+## [161]  0.0077164360  0.0177164360  0.0255460537  0.0215460537  0.0064632828
+## [166]  0.0124632828  0.0119370862 -0.0040629138  0.0237493945  0.0037493945
+## [171] -0.0365300720 -0.0505300720  0.0016483891 -0.0343516109 -0.0608016613
+## [176] -0.0548016613
+## attr(,&quot;label&quot;)
+## [1] &quot;Residuals&quot;</code></pre>
+<pre class="r"><code>## check for normality
+
+qqnorm(resids)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>shapiro.test(resids)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  resids
+## W = 0.90166, p-value = 1.978e-09</code></pre>
+<pre class="r"><code>## check for heteroskedasticity
+plot(resids~predict(model3))</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+</div>
+<div id="heteroskedasticity" class="section level3">
+<h3>Heteroskedasticity</h3>
+<p>If you have severely heteroskedastic residuals, you can sometimes run a <strong>transformation</strong> of your response variable that improves the situation.</p>
+<p>Alternatively, you might run a <strong>generalized linear model (GLM)</strong> that doesn’t assume homoskedasticity (e.g., run a model that assumes the residuals are gamma distributed, or Poisson distributed). In a gamma or Poisson distribution, the residuals are expected to get larger as the expected mean value gets larger!</p>
+<p>We will talk more about GLM in an upcoming lecture. But for now, let’s run an example with a transformed response variable:</p>
+<pre class="r"><code>##########
+# heteroskedasticity
+
+##### first, simulate data with heteroskedastic residuals
+
+simulated.x &lt;- runif(100,0.1,5)
+simulated.y &lt;- exp(rnorm(100,1.1+0.3*simulated.x,0.7))
+
+plot(simulated.y~simulated.x)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<pre class="r"><code>### run linear model
+
+model1 &lt;- lm(simulated.y~simulated.x)
+par(mfrow=c(2,2))
+plot(model1)  # run diagnostic plots    heteroskedasticity issues</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+<pre class="r"><code>### Take a minute to test for normality of residuals!
+
+### run linear model with log transformation of response variable
+
+model2 &lt;- lm(log(simulated.y)~simulated.x)
+par(mfrow=c(2,2))
+plot(model2)  # run diagnostic plots - no issues!  </code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-17-3.png" width="672" /></p>
+</div>
+<div id="non-independence-of-observations" class="section level3">
+<h3>Non-independence of observations</h3>
+<p>If you have a known source of non-independence in your observations, you can try to thin (rarefy) your data by throwing away non-independent observations (e.g., keeping only one out of every set of known non-independent observerations).</p>
+<p>There are also more advanced regression models that explicitly account for sources of non-independence:</p>
+<p><em>Regression with phylogenetic correction</em> – use this if phylogenetic relatedness among your sampling units is the main source of non-independence</p>
+<p><em>Autoregression (more generally, time series modeling)</em> – use this if the main source of non-independence is temporal- observations taken closer together in time are more likely to be related</p>
+<p><em>Spatial autoregression</em> (more generally, spatial regression models) – use this if the main source of non-independence is spatial – observations taken closer together in space are more correlated.</p>
+<p>These models are outside the scope of this class, but it’s useful to know they exist!</p>
+</div>
+<div id="non-normality-of-residuals" class="section level3">
+<h3>Non-normality of residuals</h3>
+<p>First of all, regression analysis is somewhat robust to non-normality of the residuals- due to the CLT!</p>
+<p>But if your residuals are highly non-normal AND you can’t seem to correct this using non-linear regression, transformations, or GLM, you might need to use a non-parametric alternative.</p>
+<p>One such alternative is to run a non-parametric correlation analysis such as a Spearman rank correlation test.</p>
+</div>
+</div>
 <div id="regression-and-anova" class="section level2">
 <h2>Regression and ANOVA</h2>
 <p>Before we move on to ANOVA, I just wanted to point out the essential similarity between regression and ANOVA. The only difference between regression and ANOVA is that in regression, the response variable is numeric/continuous and in ANOVA your response variable(s) is categorical.</p>
@@ -873,7 +1053,7 @@ vif(mymod)</code></pre>
 data(iris)    # load the iris dataset
 
 plot(iris$Sepal.Length ~ iris$Species)   # r uses a boxplot by default for categorical predictor</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <pre class="r"><code>my.mod &lt;- lm(Sepal.Length~Species,data=iris)    # run an ANOVA!
 summary(my.mod)    # look at the results</code></pre>
 <pre><code>## 
@@ -914,128 +1094,7 @@ summary(my.mod)     # but produces an anova table by default</code></pre>
 ## Residuals   147  38.96   0.265                   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-</div>
-<div id="what-if-assumptions-are-violated" class="section level2">
-<h2>What if assumptions are violated?</h2>
-<p>Let’s look at what to do if some of the basic assumptions of linear regression are violated?</p>
-<div id="non-linearity" class="section level3">
-<h3>Non-linearity</h3>
-<p>If we suspect a non-linear functional relationship between our response and predictor variables, we might perform a <strong>non-linear regression</strong> analysis.</p>
-<p>We can perform a non-linear regression using the “nls” function in R (for non-linear least squares). Let’s use the “DNase” dataset in R to explore this.</p>
-<pre class="r"><code># ?nls
-
-data(DNase)
-
-plot(DNase$density~DNase$conc)   # looks non-linear!</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
-<pre class="r"><code>### run linear regression model
-
-model1 &lt;- lm(density~conc,data=DNase)
-
-### run diagnostic plots
-
-par(mfrow=c(2,2))
-plot(model1)     # clear non-linearity (and non-normal residuals, and heteroskedasticity!)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
-<pre class="r"><code>par(mfrow=c(1,1))      # plot data with regression line - obvious issues!
-plot(DNase$density~DNase$conc)
-abline(model1)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-3.png" width="672" /></p>
-<pre class="r"><code>### run non-linear regression model - use saturation curve
-
-model2 &lt;- nls(density ~ (max*conc)/(K+conc),data=DNase,start=list(max=2,K=0.25))
-summary(model2)</code></pre>
-<pre><code>## 
-## Formula: density ~ (max * conc)/(K + conc)
-## 
-## Parameters:
-##     Estimate Std. Error t value Pr(&gt;|t|)    
-## max  2.28032    0.02189  104.16   &lt;2e-16 ***
-## K    3.68241    0.08677   42.44   &lt;2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.04909 on 174 degrees of freedom
-## 
-## Number of iterations to convergence: 7 
-## Achieved convergence tolerance: 6.813e-06</code></pre>
-<pre class="r"><code>### run non-linear regression model - use logistic function 
-
-model3 &lt;- nls(density ~ Asym/(1 + exp((xmid - log(conc))/scal)),
-                 data = DNase,
-                 start = list(Asym = 3, xmid = 0, scal = 1))
-
-summary(model3)</code></pre>
-<pre><code>## 
-## Formula: density ~ Asym/(1 + exp((xmid - log(conc))/scal))
-## 
-## Parameters:
-##      Estimate Std. Error t value Pr(&gt;|t|)    
-## Asym  2.48532    0.06287   39.53   &lt;2e-16 ***
-## xmid  1.51812    0.06397   23.73   &lt;2e-16 ***
-## scal  1.09831    0.02442   44.98   &lt;2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.04687 on 173 degrees of freedom
-## 
-## Number of iterations to convergence: 6 
-## Achieved convergence tolerance: 4.739e-07</code></pre>
-<pre class="r"><code>plot(DNase$density~DNase$conc)
-abline(model1)
-concs.toplot &lt;- seq(0.01,14,0.1)
-densities.toplot &lt;- predict(model2,newdata=data.frame(conc=concs.toplot))
-lines(concs.toplot,densities.toplot,col=&quot;blue&quot;)
-densities.toplot &lt;- predict(model3,newdata=data.frame(conc=concs.toplot))
-lines(concs.toplot,densities.toplot,col=&quot;red&quot;)
-
-legend(&quot;topleft&quot;,lty=c(1,1,1),col=c(&quot;black&quot;,&quot;blue&quot;,&quot;red&quot;),legend=c(&quot;linear&quot;,
-                  &quot;saturation&quot;,&quot;logistic&quot;))</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-4.png" width="672" /></p>
-</div>
-<div id="heteroskedasticity" class="section level3">
-<h3>Heteroskedasticity</h3>
-<p>If you have severely heteroskedastic residuals, you can sometimes run a <strong>transformation</strong> of your response variable that improves the situation.</p>
-<p>Alternatively, you might run a <strong>generalized linear model (GLM)</strong> that doesn’t assume homoskedasticity (e.g., run a model that assumes the residuals are gamma distributed, or Poisson distributed).</p>
-<p>We will talk more about GLM in an upcoming lecture. But for now, let’s run an example with a transformed response variable:</p>
-<pre class="r"><code>##########
-# heteroskedasticity
-
-##### first, simulate data with heteroskedastic residuals
-
-simulated.x &lt;- runif(100,0.1,5)
-simulated.y &lt;- exp(rnorm(100,1.1+0.3*simulated.x,0.7))
-
-plot(simulated.y~simulated.x)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-<pre class="r"><code>### run linear model
-
-model1 &lt;- lm(simulated.y~simulated.x)
-par(mfrow=c(2,2))
-plot(model1)  # run diagnostic plots    heteroskedasticity issues</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
-<pre class="r"><code>### run linear model with log transformation of response variable
-
-model2 &lt;- lm(log(simulated.y)~simulated.x)
-par(mfrow=c(2,2))
-plot(model2)  # run diagnostic plots - no issues!  </code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-17-3.png" width="672" /></p>
-</div>
-<div id="non-independence-of-observations" class="section level3">
-<h3>Non-independence of observations</h3>
-<p>If you have a known source of non-independence in your observations, you can try to thin (rarefy) your data by throwing away non-independent observations (e.g., keeping only one out of every set of known non-independent observerations).</p>
-<p>There are also more advanced regression models that explicitly account for sources of non-independence:</p>
-<p><em>Regression with phylogenetic correction</em> – use this if phylogenetic relatedness among your sampling units is the main source of non-independence</p>
-<p><em>Autoregression (more generally, time series modeling)</em> – use this if the main source of non-independence is temporal- observations taken closer together in time are more likely to be related</p>
-<p><em>Spatial autoregression</em> (more generally, spatial regression models) – use this if the main source of non-independence is spatial – observations taken closer together in space are more correlated.</p>
-</div>
-<div id="non-normality-of-residuals" class="section level3">
-<h3>Non-normality of residuals</h3>
-<p>First of all, regression analysis is somewhat robust to non-normality of the residuals- due to the CLT!</p>
-<p>But if your residuals are highly non-normal AND you can’t seem to correct this using non-linear regression, transformations, or GLM, you might need to use a non-parametric alternative.</p>
-<p>One such alternative is to run a non-parametric correlation analysis such as a Spearman rank correlation test.</p>
 <p><a href="LECTURE5.html">–go to next lecture–</a></p>
-</div>
 </div>
 
 

@@ -213,26 +213,6 @@ mymod <- lm(mpg~hp+wt,data=mtcars)
 vif(mymod)
 
 
-#### ANOVA as regression example
-
-data(iris)    # load the iris dataset
-
-plot(iris$Sepal.Length ~ iris$Species)   # r uses a boxplot by default for categorical predictor
-
-my.mod <- lm(Sepal.Length~Species,data=iris)    # run an ANOVA!
-summary(my.mod)    # look at the results
-
-anova(my.mod)     # produce an analysis of variance table
-
-####
-# alternative!
-
-my.mod <- aov(Sepal.Length~Species,data=iris)   # same model!!
-summary(my.mod)     # but produces an anova table by default
-
-
-
-
 # ?nls
 
 data(DNase)
@@ -254,7 +234,7 @@ abline(model1)
 
 ### run non-linear regression model - use saturation curve
 
-model2 <- nls(density ~ (max*conc)/(K+conc),data=DNase,start=list(max=2,K=0.25))
+model2 <- nls(density ~ (max*conc)/(K+conc),data=DNase,start=list(max=2,K=1))
 summary(model2)
 
 ### run non-linear regression model - use logistic function 
@@ -277,6 +257,22 @@ legend("topleft",lty=c(1,1,1),col=c("black","blue","red"),legend=c("linear",
                   "saturation","logistic"))
 
 
+
+## residual plots
+
+resids <- DNase$density-predict(model3)
+
+residuals(model3)   # alternative method! This works for 'lm' objects as well (and many other model objects)
+
+## check for normality
+
+qqnorm(resids)
+shapiro.test(resids)
+
+
+## check for heteroskedasticity
+plot(resids~predict(model3))
+
 ##########
 # heteroskedasticity
 
@@ -293,9 +289,32 @@ model1 <- lm(simulated.y~simulated.x)
 par(mfrow=c(2,2))
 plot(model1)  # run diagnostic plots    heteroskedasticity issues
 
+
+### Take a minute to test for normality of residuals!
+
 ### run linear model with log transformation of response variable
 
 model2 <- lm(log(simulated.y)~simulated.x)
 par(mfrow=c(2,2))
 plot(model2)  # run diagnostic plots - no issues!  
+
+
+#### ANOVA as regression example
+
+data(iris)    # load the iris dataset
+
+plot(iris$Sepal.Length ~ iris$Species)   # r uses a boxplot by default for categorical predictor
+
+my.mod <- lm(Sepal.Length~Species,data=iris)    # run an ANOVA!
+summary(my.mod)    # look at the results
+
+anova(my.mod)     # produce an analysis of variance table
+
+####
+# alternative!
+
+my.mod <- aov(Sepal.Length~Species,data=iris)   # same model!!
+summary(my.mod)     # but produces an anova table by default
+
+
 

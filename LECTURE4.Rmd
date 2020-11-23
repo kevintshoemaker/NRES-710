@@ -563,7 +563,7 @@ abline(model1)
 
 ### run non-linear regression model - use saturation curve
 
-model2 <- nls(density ~ (max*conc)/(K+conc),data=DNase,start=list(max=2,K=0.25))
+model2 <- nls(density ~ (max*conc)/(K+conc),data=DNase,start=list(max=2,K=1))
 summary(model2)
 
 ### run non-linear regression model - use logistic function 
@@ -587,13 +587,33 @@ legend("topleft",lty=c(1,1,1),col=c("black","blue","red"),legend=c("linear",
 
 
 ```
+You can run residual plots with non-linear regression just like you can with ordinary linear regression:
+
+```{r}
+
+## residual plots
+
+resids <- DNase$density-predict(model3)
+
+residuals(model3)   # alternative method! This works for 'lm' objects as well (and many other model objects)
+
+## check for normality
+
+qqnorm(resids)
+shapiro.test(resids)
+
+
+## check for heteroskedasticity
+plot(resids~predict(model3))
+
+```
 
 
 ### Heteroskedasticity
 
 If you have severely heteroskedastic residuals, you can sometimes run a **transformation** of your response variable that improves the situation.
 
-Alternatively, you might run a **generalized linear model (GLM)** that doesn't assume homoskedasticity (e.g., run a model that assumes the residuals are gamma distributed, or Poisson distributed).
+Alternatively, you might run a **generalized linear model (GLM)** that doesn't assume homoskedasticity (e.g., run a model that assumes the residuals are gamma distributed, or Poisson distributed). In a gamma or Poisson distribution, the residuals are expected to get larger as the expected mean value gets larger!
 
 We will talk more about GLM in an upcoming lecture. But for now, let's run an example with a transformed response variable:
 
@@ -614,6 +634,9 @@ model1 <- lm(simulated.y~simulated.x)
 par(mfrow=c(2,2))
 plot(model1)  # run diagnostic plots    heteroskedasticity issues
 
+
+### Take a minute to test for normality of residuals!
+
 ### run linear model with log transformation of response variable
 
 model2 <- lm(log(simulated.y)~simulated.x)
@@ -633,6 +656,8 @@ There are also more advanced regression models that explicitly account for sourc
 *Autoregression (more generally, time series modeling)* -- use this if the main source of non-independence is temporal- observations taken closer together in time are more likely to be related
 
 *Spatial autoregression* (more generally, spatial regression models) -- use this if the main source of non-independence is spatial -- observations taken closer together in space are more correlated.  
+
+These models are outside the scope of this class, but it's useful to know they exist!
 
 
 ### Non-normality of residuals
