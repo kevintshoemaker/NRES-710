@@ -337,10 +337,12 @@ pairs(emm)    # run tukey test!
 ```
 Note that the last method ('emmeans') is the most flexible, since you can use this function for all kinds of models, including mixed models!
 
+The 'general' way to think about pairwise comparisons is that you are using the model to make predictions under different "what if" scenarios (e.g., what is the expected response if treatment is A, temperature is 25C, soil type is "X") and then testing to see if those differences are consistent with the null hypothesis of zero differences. If you think about it this way, performing pairwise comparisons can make sense even for complex models with multiple continuous and categorical predictor variables!
+
 
 ## Another simple example
 
-Here we run another example (drawn from [this site](https://aaronschlegel.me/tukeys-test-post-hoc-analysis.html)), just using R's built in functions (no more 'by hand' calculations!):
+Here we run another simple example of a one-way ANOVA followed by Tukey's pairwise comparison tests (drawn from [this site](https://aaronschlegel.me/tukeys-test-post-hoc-analysis.html)), just using R's built in functions (no more 'by hand' calculations!):
 
 ```{r}
 

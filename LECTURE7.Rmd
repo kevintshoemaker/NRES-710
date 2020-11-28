@@ -1,5 +1,5 @@
 ---
-title: "Generalized Linear Mixed Models (GLMM)"
+title: "Next Steps"
 author: "NRES 710"
 date: "Fall 2020"
 output: 
@@ -28,7 +28,7 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 
 ############################################################
-####  Multivariate analysis                             ####
+####  Next Steps                                        ####
 ############################################################
 
 
@@ -36,7 +36,7 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ## Download the R code for this lecture!
 
-To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](LECTURE6.R)
+To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](LECTURE7.R)
 
 ## Overview: Generalized Linear Models
 
@@ -44,7 +44,7 @@ Generalized Linear Models (GLM) are not generally covered in intro stats classes
 
 
 
-[--go to next lecture--](LECTURE7.html) 
+--End of lectures--
 
 
 

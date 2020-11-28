@@ -69,7 +69,7 @@ NOTE: please embed figures and tables within your main text- you do not need to 
 
 ## Peer review (December 2)
 
-Your first drafts will be subjected to peer review. Unlike standard scientific peer-review practice, the peer-reviews in this class will be *not be anonymous*-- please sign your reviews (this is for practical purposes, since you will have zoom meetings with your peer reviewers!). Your manuscript will be reviewed by two other students, and the reviews themselves will be graded (each student is expected to submit two peer reviews; see below). The reviews are designed to provide feedback on all aspects of the paper- but for this class the most important aspect of the peer reviews is a critique of the statistical approach being used. Key questions for peer-reviewers to consider are (in no particular order):     
+Your first drafts will be subjected to peer review. Unlike standard scientific peer-review practice, the peer-reviews in this class will be *not be anonymous*-- please sign your reviews with the names of all members of your peer-review group. Your manuscript will be reviewed by two other students, and the reviews themselves will be graded as group assignments (see below; one peer review document should be turned in per peer-review group). The reviews are designed to provide feedback on all aspects of the paper- but for this class the most important aspect of the peer reviews is a critique of the statistical approach being used. Key questions for peer-reviewers to consider are (in no particular order):     
 
 1. Are the stats appropriate for the data and the experimental design? Can you recommend an approach that might be more appropriate?         
 2. Do the results justify the conclusions?     
@@ -83,17 +83,23 @@ Your first drafts will be subjected to peer review. Unlike standard scientific p
 
 ### Peer review submitted assignment
 
-Your peer review submissions (2 submissions per student) should follow the general format of an academic peer-review. Each submission should be approximately one page in length and should include:
+T he peer review assignment is a group assignment, with only one submission due per peer-review group (group of 2-3 students assigned to review a particular paper). The person listed as "Peer Reviewer #1" on our Google Sheets (peer review tab) should be the one to submit the peer review assignment on behalf of their peer-review group.
+
+Each submission should be approximately one page in length and should include:
 
 1. Title and author of the work under review    
 2. A brief summary of the work under review (just a couple sentences is okay)
 3. General comments. This is where you state your overall comments about the work under review. Your most important comments should come first, followed by less important comments. Pay attention to the list of points to consider (see above), but feel free to raise any issues that you feel could improve the paper. This should be 1-2 paragraphs in length.      
 4. Specific comments. This is where you can raise comments that are specific to particular sentences or paragraphs. Please refer to line numbers in the work under review- this makes it easier to convey this specific information!
-5. Your name (this is not a standard practice, but is necessary for this class!) 
+5. Names of reviewers (this is not a standard practice, but is necessary for this class!) 
 
 NOTE: keep your comments respectful and constructive (of course!). And you can point out things you really like about the paper as well!
 
 NOTE: you don't need to correct grammar and spelling here- just focus on the big stuff!
+
+### In-class peer-review conferences
+
+In class on Wed Dec 2, you will have a chance to confer with your peer-review group about the key strengths and weaknesses of the draft paper you are reviewing. I will color code the spreadsheet so that the first portion of the class, the green-colored groups will confer, and in the second portion of class the blue colored groups will confer, and the purple colored groups will confer last. I'll provide more details in class on Monday. In the meantime, you should be able to get started with the peer reviews. The person listed as "Peer Reviewer #1" should also set up the zoom links for Wednesday's meetings- there is a column for the zoom links in the Google Sheets (see below; peer review tab), I tried to make it so everyone only served as "Peer Reviewer #1" once, but one of you is listed twice (sorry Tara!).Your peer review submissions (group submission) should follow the general format of an academic peer-review. 
 
 
 ## Final manuscript (due Dec 16 at 5pm)
