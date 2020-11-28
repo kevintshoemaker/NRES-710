@@ -434,6 +434,8 @@ anova(model_with_interaction)
 
 ```
 
+NOTE: if an interaction term is 'significant' but the main effects terms are not significant, the standard practice is to include the main effects terms anyway! That is, it is not common practice to fit regression/ANOVA models with only interaction terms (although this is appropriate in some rare cases). 
+
 Here the results suggest that there is a significant interaction between does and supplement type. As always, a plot can help. Let's visualize this interaction!
 
 ```{r}
@@ -453,7 +455,7 @@ with(ToothGrowth, {   # the "with" function allows you to only specify the name 
 
 ### Pairwise comparisons
 
-Pairwise comparisons for two-way ANOVA are similar to in one-way ANOVA- you just have to specify which categorical predictor variable you want to run pairwise comparisons for! Or you might want to run pairwise comparisons for all combinations of levels across both categorical predictors... If you want to do the latter (e.g., to examine which interactions are significant), you might consider using the 'emmeans' function in the 'emmeans' package
+Pairwise comparisons for two-way ANOVA are similar to in one-way ANOVA- you just have to specify which categorical predictor variable(s) you want to run pairwise comparisons for! Or you might want to run pairwise comparisons for all combinations of levels across both categorical predictors... If you want to do the latter (e.g., to examine which interactions are significant), you might consider using the 'emmeans' function in the 'emmeans' package
 
 ```{r}
 
@@ -469,12 +471,159 @@ contrast(emm)
 
 
 
-## Non-parametric ANOVA (Kruskal-Wallis)
+## Non-parametric ANOVA (Kruskal-Wallis test)
 
-The non-parametric 
+If your residuals are highly non-normal and heteroskedastic (or you have severe outliers) and transformations don't seem to help, you might want to try a non-parametric test.  
 
+The most common non-parametric version of the classical one-way ANOVA test is the Kruskal-Wallis test (K-W). Similar to a one-way ANOVA, the null hypothesis here is that all samples (regardless of group) come from the same underlying distribution. The difference is that we don't assume that distribution is Gaussian (normally distributed)! If we reject our null hypothesis in the K-W test, we can conclude that the median value for at least one group differs from the others. 
+
+The test statistic for the K-W test is called H, and like other common non-parametric tests, it involves *ranking* the observations. The distribution of the H statistic is often approximated by a chi-squared distribution!
+
+The following example comes from [this site](https://rcompanion.org/rcompanion/d_06.html):
+
+```{r}
+
+### Kruskal-Wallis example
+
+
+## read in data:
+
+Input =("
+Group      Value
+Group.1      1
+Group.1      2
+Group.1      3
+Group.1      4
+Group.1      5
+Group.1      6
+Group.1      7
+Group.1      8
+Group.1      9
+Group.1     46
+Group.1     47
+Group.1     48
+Group.1     49
+Group.1     50
+Group.1     51
+Group.1     52
+Group.1     53
+Group.1    342
+Group.2     10
+Group.2     11
+Group.2     12
+Group.2     13
+Group.2     14
+Group.2     15
+Group.2     16
+Group.2     17
+Group.2     18
+Group.2     37
+Group.2     58
+Group.2     59
+Group.2     60
+Group.2     61
+Group.2     62
+Group.2     63
+Group.2     64
+Group.2    193
+Group.3     19
+Group.3     20
+Group.3     21
+Group.3     22
+Group.3     23
+Group.3     24
+Group.3     25
+Group.3     26
+Group.3     27
+Group.3     28
+Group.3     65
+Group.3     66
+Group.3     67
+Group.3     68
+Group.3     69
+Group.3     70
+Group.3     71
+Group.3     72
+")
+
+Data = read.table(textConnection(Input),header=TRUE)
+
+Data$Group = factor(Data$Group,levels=unique(Data$Group))    # transform predictor variable to factor
+
+#summarize values by group
+
+groups <- unique(Data$Group)
+ngroups <- length(groups)
+sumry <- sapply(1:ngroups,function(i){temp <- subset(Data,Group==groups[i]); summary(temp$Value)}  )
+colnames(sumry) <- groups
+sumry
+
+
+# histograms by group
+
+library(ggplot2)
+
+ggplot(Data, aes(x=Value)) +
+  geom_histogram(bins=10,aes(color=Group,fill=Group)) +
+  facet_grid(~Group)
+
+# ## first install required packages if needed
+# 
+# if(!require(dplyr)){install.packages("dplyr")}
+# if(!require(FSA)){install.packages("FSA")}
+# if(!require(DescTools)){install.packages("DescTools")}
+# if(!require(multcompView)){install.packages("multcompView")}
+
+```
+
+Note that the equal variance assumption seems to be violated here as well as the normality assumption.
+
+Let's first try a one-way ANOVA and verify these assumption violations. 
+
+```{r}
+
+model <- lm(Value~Group,data=Data)
+
+summary(model)   # no treatment effects
+anova(model)   # looks a little weird
+
+layout(matrix(1:4,nrow=2,byrow=T))
+plot(model)   # notice the outliers! And violation of normality
+
+shapiro.test(residuals(model))
+
+
+```
+
+Okay let's run a K-W test then!
+
+```{r}
+
+# K-W test
+
+kruskal.test(Value ~ Group, data = Data)   # now there is a significant group effect!
+
+```
+
+Of course, now you'd want to know which groups differ from which other groups. For this we need pairwise comparisons. The most common pairwise comparison test to accompany the K-W test is the **Dunn test**.  
+
+```{r}
+
+library(FSA)  # make sure you have this package installed!
+
+dt = dunnTest(Value ~ Group,data=Data,method="bh")
+dt
+
+```
+Now we could add our compact letter display- in which case we would want to indicate that group 3 differs from group 1. So group 1 could get an "a", group 2 could get an "ab", and group 3 could get a "b". 
+
+An alternative to the Dunn test is to use pairwise Mann-Whitney U (MWU) tests and then to use a Bonferroni correction (or another similar correction) to control the experimentwise error rate.
+
+In the above example, we would run three MWU tests- one for each pairwise comparison- and would reject the null if any of the p-values was less than $\frac{\alpha}{3}$ (applying the Bonferroni correction).
 
 ## Power analysis?
+
+Perhaps we can run a power analysis example in a future iteration of this class. In the meantime let's move on to generalized linear models and mixed-effects models. 
 
 
 

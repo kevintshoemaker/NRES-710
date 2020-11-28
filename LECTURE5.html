@@ -720,11 +720,12 @@ pairs(emm)    # run tukey test!</code></pre>
 ## 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 <p>Note that the last method (‘emmeans’) is the most flexible, since you can use this function for all kinds of models, including mixed models!</p>
+<p>The ‘general’ way to think about pairwise comparisons is that you are using the model to make predictions under different “what if” scenarios (e.g., what is the expected response if treatment is A, temperature is 25C, soil type is “X”) and then testing to see if those differences are consistent with the null hypothesis of zero differences. If you think about it this way, performing pairwise comparisons can make sense even for complex models with multiple continuous and categorical predictor variables!</p>
 </div>
 </div>
 <div id="another-simple-example" class="section level2">
 <h2>Another simple example</h2>
-<p>Here we run another example (drawn from <a href="https://aaronschlegel.me/tukeys-test-post-hoc-analysis.html">this site</a>), just using R’s built in functions (no more ‘by hand’ calculations!):</p>
+<p>Here we run another simple example of a one-way ANOVA followed by Tukey’s pairwise comparison tests (drawn from <a href="https://aaronschlegel.me/tukeys-test-post-hoc-analysis.html">this site</a>), just using R’s built in functions (no more ‘by hand’ calculations!):</p>
 <pre class="r"><code>library(agricolae)</code></pre>
 <pre><code>## Warning: package &#39;agricolae&#39; was built under R version 4.0.3</code></pre>
 <pre class="r"><code>data(&quot;PlantGrowth&quot;)
@@ -885,6 +886,7 @@ summary(model_with_interaction)</code></pre>
 ## Residuals 54  712.11   13.19                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>NOTE: if an interaction term is ‘significant’ but the main effects terms are not significant, the standard practice is to include the main effects terms anyway! That is, it is not common practice to fit regression/ANOVA models with only interaction terms (although this is appropriate in some rare cases).</p>
 <p>Here the results suggest that there is a significant interaction between does and supplement type. As always, a plot can help. Let’s visualize this interaction!</p>
 <pre class="r"><code># visualize the interaction
 
@@ -898,7 +900,7 @@ with(ToothGrowth, {   # the &quot;with&quot; function allows you to only specify
 </div>
 <div id="pairwise-comparisons-1" class="section level3">
 <h3>Pairwise comparisons</h3>
-<p>Pairwise comparisons for two-way ANOVA are similar to in one-way ANOVA- you just have to specify which categorical predictor variable you want to run pairwise comparisons for! Or you might want to run pairwise comparisons for all combinations of levels across both categorical predictors… If you want to do the latter (e.g., to examine which interactions are significant), you might consider using the ‘emmeans’ function in the ‘emmeans’ package</p>
+<p>Pairwise comparisons for two-way ANOVA are similar to in one-way ANOVA- you just have to specify which categorical predictor variable(s) you want to run pairwise comparisons for! Or you might want to run pairwise comparisons for all combinations of levels across both categorical predictors… If you want to do the latter (e.g., to examine which interactions are significant), you might consider using the ‘emmeans’ function in the ‘emmeans’ package</p>
 <pre class="r"><code>TukeyHSD(aov(model), &quot;dose&quot;)   # run tukey test for the &#39;dose&#39; variable in the ToothGrowth model</code></pre>
 <pre><code>##   Tukey multiple comparisons of means
 ##     95% family-wise confidence level
@@ -957,12 +959,176 @@ contrast(emm)</code></pre>
 ## P value adjustment: fdr method for 15 tests</code></pre>
 </div>
 </div>
-<div id="non-parametric-anova-kruskal-wallis" class="section level2">
-<h2>Non-parametric ANOVA (Kruskal-Wallis)</h2>
-<p>The non-parametric</p>
+<div id="non-parametric-anova-kruskal-wallis-test" class="section level2">
+<h2>Non-parametric ANOVA (Kruskal-Wallis test)</h2>
+<p>If your residuals are highly non-normal and heteroskedastic (or you have severe outliers) and transformations don’t seem to help, you might want to try a non-parametric test.</p>
+<p>The most common non-parametric version of the classical one-way ANOVA test is the Kruskal-Wallis test (K-W). Similar to a one-way ANOVA, the null hypothesis here is that all samples (regardless of group) come from the same underlying distribution. The difference is that we don’t assume that distribution is Gaussian (normally distributed)! If we reject our null hypothesis in the K-W test, we can conclude that the median value for at least one group differs from the others.</p>
+<p>The test statistic for the K-W test is called H, and like other common non-parametric tests, it involves <em>ranking</em> the observations. The distribution of the H statistic is often approximated by a chi-squared distribution!</p>
+<p>The following example comes from <a href="https://rcompanion.org/rcompanion/d_06.html">this site</a>:</p>
+<pre class="r"><code>### Kruskal-Wallis example
+
+
+## read in data:
+
+Input =(&quot;
+Group      Value
+Group.1      1
+Group.1      2
+Group.1      3
+Group.1      4
+Group.1      5
+Group.1      6
+Group.1      7
+Group.1      8
+Group.1      9
+Group.1     46
+Group.1     47
+Group.1     48
+Group.1     49
+Group.1     50
+Group.1     51
+Group.1     52
+Group.1     53
+Group.1    342
+Group.2     10
+Group.2     11
+Group.2     12
+Group.2     13
+Group.2     14
+Group.2     15
+Group.2     16
+Group.2     17
+Group.2     18
+Group.2     37
+Group.2     58
+Group.2     59
+Group.2     60
+Group.2     61
+Group.2     62
+Group.2     63
+Group.2     64
+Group.2    193
+Group.3     19
+Group.3     20
+Group.3     21
+Group.3     22
+Group.3     23
+Group.3     24
+Group.3     25
+Group.3     26
+Group.3     27
+Group.3     28
+Group.3     65
+Group.3     66
+Group.3     67
+Group.3     68
+Group.3     69
+Group.3     70
+Group.3     71
+Group.3     72
+&quot;)
+
+Data = read.table(textConnection(Input),header=TRUE)
+
+Data$Group = factor(Data$Group,levels=unique(Data$Group))    # transform predictor variable to factor
+
+#summarize values by group
+
+groups &lt;- unique(Data$Group)
+ngroups &lt;- length(groups)
+sumry &lt;- sapply(1:ngroups,function(i){temp &lt;- subset(Data,Group==groups[i]); summary(temp$Value)}  )
+colnames(sumry) &lt;- groups
+sumry</code></pre>
+<pre><code>##         Group.1 Group.2 Group.3
+## Min.       1.00   10.00   19.00
+## 1st Qu.    5.25   14.25   23.25
+## Median    27.50   27.50   27.50
+## Mean      43.50   43.50   43.50
+## 3rd Qu.   49.75   60.75   67.75
+## Max.     342.00  193.00   72.00</code></pre>
+<pre class="r"><code># histograms by group
+
+library(ggplot2)
+
+ggplot(Data, aes(x=Value)) +
+  geom_histogram(bins=10,aes(color=Group,fill=Group)) +
+  facet_grid(~Group)</code></pre>
+<p><img src="LECTURE5_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code># ## first install required packages if needed
+# 
+# if(!require(dplyr)){install.packages(&quot;dplyr&quot;)}
+# if(!require(FSA)){install.packages(&quot;FSA&quot;)}
+# if(!require(DescTools)){install.packages(&quot;DescTools&quot;)}
+# if(!require(multcompView)){install.packages(&quot;multcompView&quot;)}</code></pre>
+<p>Note that the equal variance assumption seems to be violated here as well as the normality assumption.</p>
+<p>Let’s first try a one-way ANOVA and verify these assumption violations.</p>
+<pre class="r"><code>model &lt;- lm(Value~Group,data=Data)
+
+summary(model)   # no treatment effects</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Value ~ Group, data = Data)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -42.50 -29.25 -16.00  17.25 298.50 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)  4.350e+01  1.254e+01   3.468  0.00107 **
+## GroupGroup.2 3.553e-15  1.774e+01   0.000  1.00000   
+## GroupGroup.3 7.105e-15  1.774e+01   0.000  1.00000   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 53.21 on 51 degrees of freedom
+## Multiple R-squared:  1.017e-31,  Adjusted R-squared:  -0.03922 
+## F-statistic: 2.594e-30 on 2 and 51 DF,  p-value: 1</code></pre>
+<pre class="r"><code>anova(model)   # looks a little weird</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Value
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Group      2      0     0.0       0      1
+## Residuals 51 144413  2831.6</code></pre>
+<pre class="r"><code>layout(matrix(1:4,nrow=2,byrow=T))
+plot(model)   # notice the outliers! And violation of normality</code></pre>
+<p><img src="LECTURE5_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>shapiro.test(residuals(model))</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuals(model)
+## W = 0.59012, p-value = 4.93e-11</code></pre>
+<p>Okay let’s run a K-W test then!</p>
+<pre class="r"><code># K-W test
+
+kruskal.test(Value ~ Group, data = Data)   # now there is a significant group effect!</code></pre>
+<pre><code>## 
+##  Kruskal-Wallis rank sum test
+## 
+## data:  Value by Group
+## Kruskal-Wallis chi-squared = 7.3553, df = 2, p-value = 0.02528</code></pre>
+<p>Of course, now you’d want to know which groups differ from which other groups. For this we need pairwise comparisons. The most common pairwise comparison test to accompany the K-W test is the <strong>Dunn test</strong>.</p>
+<pre class="r"><code>library(FSA)  # make sure you have this package installed!</code></pre>
+<pre><code>## Warning: package &#39;FSA&#39; was built under R version 4.0.3</code></pre>
+<pre><code>## ## FSA v0.8.31. See citation(&#39;FSA&#39;) if used in publication.
+## ## Run fishR() for related website and fishR(&#39;IFAR&#39;) for related book.</code></pre>
+<pre class="r"><code>dt = dunnTest(Value ~ Group,data=Data,method=&quot;bh&quot;)
+dt</code></pre>
+<pre><code>## Dunn (1964) Kruskal-Wallis multiple comparison</code></pre>
+<pre><code>##   p-values adjusted with the Benjamini-Hochberg method.</code></pre>
+<pre><code>##          Comparison         Z    P.unadj      P.adj
+## 1 Group.1 - Group.2 -1.356036 0.17508782 0.17508782
+## 2 Group.1 - Group.3 -2.712071 0.00668642 0.02005926
+## 3 Group.2 - Group.3 -1.356036 0.17508782 0.26263172</code></pre>
+<p>Now we could add our compact letter display- in which case we would want to indicate that group 3 differs from group 1. So group 1 could get an “a”, group 2 could get an “ab”, and group 3 could get a “b”.</p>
+<p>An alternative to the Dunn test is to use pairwise Mann-Whitney U (MWU) tests and then to use a Bonferroni correction (or another similar correction) to control the experimentwise error rate.</p>
+<p>In the above example, we would run three MWU tests- one for each pairwise comparison- and would reject the null if any of the p-values was less than <span class="math inline">\(\frac{\alpha}{3}\)</span> (applying the Bonferroni correction).</p>
 </div>
 <div id="power-analysis" class="section level2">
 <h2>Power analysis?</h2>
+<p>Perhaps we can run a power analysis example in a future iteration of this class. In the meantime let’s move on to generalized linear models and mixed-effects models.</p>
 <p><a href="LECTURE6.html">–go to next lecture–</a></p>
 </div>
 

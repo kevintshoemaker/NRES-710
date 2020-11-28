@@ -241,3 +241,118 @@ emm = emmeans(model_with_interaction,
                       specs= pairwise ~ dose:supp)
 contrast(emm)
 
+
+### Kruskal-Wallis example
+
+
+## read in data:
+
+Input =("
+Group      Value
+Group.1      1
+Group.1      2
+Group.1      3
+Group.1      4
+Group.1      5
+Group.1      6
+Group.1      7
+Group.1      8
+Group.1      9
+Group.1     46
+Group.1     47
+Group.1     48
+Group.1     49
+Group.1     50
+Group.1     51
+Group.1     52
+Group.1     53
+Group.1    342
+Group.2     10
+Group.2     11
+Group.2     12
+Group.2     13
+Group.2     14
+Group.2     15
+Group.2     16
+Group.2     17
+Group.2     18
+Group.2     37
+Group.2     58
+Group.2     59
+Group.2     60
+Group.2     61
+Group.2     62
+Group.2     63
+Group.2     64
+Group.2    193
+Group.3     19
+Group.3     20
+Group.3     21
+Group.3     22
+Group.3     23
+Group.3     24
+Group.3     25
+Group.3     26
+Group.3     27
+Group.3     28
+Group.3     65
+Group.3     66
+Group.3     67
+Group.3     68
+Group.3     69
+Group.3     70
+Group.3     71
+Group.3     72
+")
+
+Data = read.table(textConnection(Input),header=TRUE)
+
+Data$Group = factor(Data$Group,levels=unique(Data$Group))    # transform predictor variable to factor
+
+#summarize values by group
+
+groups <- unique(Data$Group)
+ngroups <- length(groups)
+sumry <- sapply(1:ngroups,function(i){temp <- subset(Data,Group==groups[i]); summary(temp$Value)}  )
+colnames(sumry) <- groups
+sumry
+
+
+# histograms by group
+
+library(ggplot2)
+
+ggplot(Data, aes(x=Value)) +
+  geom_histogram(bins=10,aes(color=Group,fill=Group)) +
+  facet_grid(~Group)
+
+# ## first install required packages if needed
+# 
+# if(!require(dplyr)){install.packages("dplyr")}
+# if(!require(FSA)){install.packages("FSA")}
+# if(!require(DescTools)){install.packages("DescTools")}
+# if(!require(multcompView)){install.packages("multcompView")}
+
+
+model <- lm(Value~Group,data=Data)
+
+summary(model)   # no treatment effects
+anova(model)   # looks a little weird
+
+layout(matrix(1:4,nrow=2,byrow=T))
+plot(model)   # notice the outliers! And violation of normality
+
+shapiro.test(residuals(model))
+
+
+
+# K-W test
+
+kruskal.test(Value ~ Group, data = Data)   # now there is a significant group effect!
+
+
+library(FSA)  # make sure you have this package installed!
+
+dt = dunnTest(Value ~ Group,data=Data,method="bh")
+dt
+
