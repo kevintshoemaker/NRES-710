@@ -12,11 +12,11 @@
 <meta name="author" content="NRES 710" />
 
 
-<title>Multivariate analysis</title>
+<title>Generalized Linear Mixed Models (GLMM)</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -26,6 +26,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -106,33 +117,33 @@ summary {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 51px;
+  padding-top: 45px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .dropdown-submenu {
   position: relative;
@@ -364,10 +375,43 @@ div.tocify {
     <li>
       <a href="INTRO.html">Introduction to NRES 710</a>
     </li>
+    <li>
+      <a href="LECTURE1.html">Basic Concepts</a>
+    </li>
+    <li>
+      <a href="LECTURE2.html">Analysis- t test</a>
+    </li>
+    <li>
+      <a href="LECTURE3.html">Analysis- chi2 test</a>
+    </li>
+    <li>
+      <a href="LECTURE4.html">Analysis- linear regression</a>
+    </li>
+    <li>
+      <a href="LECTURE5.html">Analysis- ANOVA</a>
+    </li>
+    <li>
+      <a href="LECTURE6.html">Analysis- GLM and GLMM</a>
+    </li>
   </ul>
 </li>
-<li>
-  <a href="Links.html">Links</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    More Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Links.html">Links</a>
+    </li>
+    <li>
+      <a href="FINALPROJ.html">Final Projects</a>
+    </li>
+    <li>
+      <a href="STUDYGUIDE.html">Study Guide</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -381,14 +425,462 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Multivariate analysis</h1>
+<h1 class="title toc-ignore">Generalized Linear Mixed Models (GLMM)</h1>
 <h4 class="author">NRES 710</h4>
 <h4 class="date">Fall 2020</h4>
 
 </div>
 
 
+<div id="download-the-r-code-for-this-lecture" class="section level2">
+<h2>Download the R code for this lecture!</h2>
+<p>To follow along with the R-based lessons and demos, <a href="LECTURE6.R">right (or command) click on this link and save the script to your working directory</a></p>
+</div>
+<div id="overview-generalized-linear-models" class="section level2">
+<h2>Overview: Generalized Linear Models</h2>
+<p>Generalized Linear Models (GLM) are not generally covered in intro stats classes, but they are so flexible and so common in ecology and environmental science that you really need to at least know that these models exist!</p>
+<p>The real data sets that we deal with as ecologists and environmental scientists tend to violate some key assumptions of classical linear regression and ANOVA. In particular, residuals are often decidedly non-normal and variance is decidedly non-equal (heteroskedastic) across the range of predictions.</p>
+<p>Generalized linear models allow us to model response variables that are not amenable to classical linear regression – but allows us to use a model structure that closely resembles linear regression. Pretty much everything about running a GLM is akin to linear regression. The primary function for running GLM models (‘glm’) even looks very similar to the regression function ‘lm’.</p>
+<p>GLMs are parametric analyses – it’s just that (1) we don’t need to assume our response variable is normally distributed and (2) we don’t need to assume the relationship between the response variable and the predictor variable(s) is linear on the scale of the untransformed response variable. Let’s look into each of these in more detail:</p>
+<div id="alternative-distributions" class="section level3">
+<h3>Alternative distributions</h3>
+<p>So we don’t need to assume the response variable is normally distributed – but we do need to assume it is distributed according to some known probability distribution – and we need to specify what distribution we ARE assuming. We can assume that the response process is Poisson distributed, or gamma distributed, or beta distributed, or any of a host of other distributions. But again, we have to specify which distribution!</p>
+</div>
+<div id="link-functions" class="section level3">
+<h3>Link functions</h3>
+<p>So we don’t need to assume the relationship between the mean of the response variable and the predictor variable(s) is linear on the scale of the untransformed response variable – but the hypothesized relationship must be linear on some transformation of the response variable – and we need to specify what transformed version of the response process we wish to assume linearity for. This is called the ‘link function’.</p>
+</div>
+<div id="a-simple-example-logistic-regression" class="section level3">
+<h3>A simple example (logistic regression)</h3>
+<p>For example, we might have a binary response variable and a continuous predictor variable. Making the assumption of linearity would not necessarily make sense in this case.</p>
+<p>Let’s first make up an example:</p>
+<pre class="r"><code>## made up data for glm #1 (logistic regression)
+
+predictor &lt;- runif(100,0,50)
+response &lt;- rbinom(100,1, plogis(-5 + 0.26*predictor) )
+
+plot(response~predictor,ylim=c(-2,2))
+abline(lm(response~predictor),col=&quot;red&quot;)   # overlay regression line</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>layout(matrix(1:4,nrow=2,byrow=2))
+plot(lm(response~predictor))</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-2-2.png" width="672" /> Note that the predicted mean response at high values of the predictor exceed 1- which is impossible for a binary response. Clearly we can’t make the assumption of linearity on the untransformed binary response. Furthermore, the other diagnostic plots also do not look great…</p>
+<p>One transformation that makes sense for a regression with a binary response is the <strong>logit transformation</strong>. The logit transformation is commonly used to take probabilities (which are constrained between 0 and 1) and transform them to values that can vary between -Inf and Inf.</p>
+<p>For example, take the following probabilities:</p>
+<pre class="r"><code>probs &lt;- runif(10)
+probs</code></pre>
+<pre><code>##  [1] 0.2932703 0.2762224 0.2110966 0.8579968 0.4781018 0.5652622 0.3387000
+##  [8] 0.3628480 0.8153420 0.7444351</code></pre>
+<p>Here’s what happens if we apply the logit transformation:</p>
+<p><span class="math inline">\(logit(p) = log(\frac{p}{(1-p)})\)</span></p>
+<pre class="r"><code>data.frame(
+  p = probs,
+  logit.p=log(probs/(1-probs))
+)</code></pre>
+<pre><code>##            p     logit.p
+## 1  0.2932703 -0.87955345
+## 2  0.2762224 -0.96327777
+## 3  0.2110966 -1.31832775
+## 4  0.8579968  1.79875055
+## 5  0.4781018 -0.08764869
+## 6  0.5652622  0.26254673
+## 7  0.3387000 -0.66909266
+## 8  0.3628480 -0.56302438
+## 9  0.8153420  1.48510217
+## 10 0.7444351  1.06914925</code></pre>
+<p>If our response variable is binary and we want to assume that the mean response (on some transformed scale) is linearly dependent on our predictor variable, the logit transformation is a good candidate for our link function, because this way the mean response will never go below zero or above one.</p>
+<p>So instead of:</p>
+<p><span class="math inline">\(\bar{y} = \beta_0 + \beta_1\cdot x\)</span></p>
+<p>We can use the <strong>logit link</strong> and assume instead that:</p>
+<p><span class="math inline">\(logit(\bar{y}) = \beta_0 + \beta_1\cdot x\)</span></p>
+<p>If we solve for y, this equation becomes:</p>
+<p><span class="math inline">\(\bar{y} = \frac{e^{\beta_0 + \beta_1\cdot x}}{1+e^{\beta_0 + \beta_1\cdot x}}\)</span></p>
+<p>This is essentially what we do when we conduct a <em>logistic regression</em>! Specifically, in a logistic regression we assume the following:</p>
+<p><strong>Response distribution</strong>: binomial with size=1 (can only be zero or 1; also known as a Bernoulli distribution)</p>
+<p><strong>Link function</strong>: logit.</p>
+<p>We use a binomial response distribution because our response variable is discrete, just like a binomial distribution. If you flip one coin you can get only a zero or a one, just like the response variable. The binomial distribution matches the response variable, so it is an appropriate distribution to assume!</p>
+<pre class="r"><code>  ## conduct logistic regression:
+
+model &lt;- glm(response~predictor,family=binomial(link=&quot;logit&quot;))    # logistic regression in R
+summary(model)   # summary looks similar to ordinary linear regression!</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = response ~ predictor, family = binomial(link = &quot;logit&quot;))
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -3.3119  -0.3701   0.0710   0.2598   2.1498  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -4.35746    0.93991  -4.636 3.55e-06 ***
+## predictor    0.23741    0.04976   4.771 1.83e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 130.684  on 99  degrees of freedom
+## Residual deviance:  53.208  on 98  degrees of freedom
+## AIC: 57.208
+## 
+## Number of Fisher Scoring iterations: 7</code></pre>
+<pre class="r"><code>newdat &lt;- data.frame(        # make predictions for plotting regression line and approx conf bounds
+  predictor = seq(0,50,1)
+)
+
+mypred &lt;- predict(model,type=&quot;response&quot;,se.fit=T,newdata = newdat)
+
+plot(response~predictor)
+lines(newdat$predictor,mypred$fit,col=&quot;blue&quot;)
+lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
+lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Note that the relationship between the reponse and predictor looks non-linear. But this is not the same thing as non-linear regression. GLM is a type of linear model for a reason. It’s just that the relationship is assumed to be linear on the logit scale. Here is another visualization of the same exact model:</p>
+<pre class="r"><code>par(mfcol=c(1,2))
+
+mypred &lt;- predict(model,type=&quot;link&quot;,se.fit=T,newdata = newdat)
+
+plot(newdat$predictor,mypred$fit,col=&quot;blue&quot;,type=&quot;l&quot;,ylab=&quot;mean response(logit scale)&quot;,xlab=&quot;predictor&quot;)
+lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
+lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
+
+
+mypred &lt;- predict(model,type=&quot;response&quot;,se.fit=T,newdata = newdat)
+
+plot(newdat$predictor,mypred$fit,col=&quot;blue&quot;,type=&quot;l&quot;,ylab=&quot;mean response&quot;,xlab=&quot;predictor&quot;)
+lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
+lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="another-simple-example-poisson-count-regression" class="section level3">
+<h3>Another simple example (Poisson count regression)</h3>
+<p>Sometimes our measured response is a <em>count</em> of something (e.g., number of stems in a plot). In such cases, our response variable cannot go below zero- and the response variable should ideally come from a discrete distribution that only allows integers. The simplest way to model this is:</p>
+<p><strong>Response distribution:</strong> Poisson<br />
+<strong>Link function:</strong> Natural logarithm</p>
+<p>The Poisson distribution (with only one parameter) is the simplest discrete probability distribution, and the (natural) log is the simplest link function that maps a quantity with a lower bound of zero to a quantity with a lower bound of -Inf.</p>
+<p>Let’s make up some count data:</p>
+<pre class="r"><code># Count regression example
+
+predictor = runif(30,-2,2)
+response = rnbinom(30,mu=exp(3-0.5*predictor),size=2)
+
+plot(response~predictor)
+abline(lm(response~predictor))</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>par(mfrow=c(2,2))
+plot(lm(response~predictor))</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<p>Here we see some potential issues with ordinary linear regression and we might consider Poisson count regression instead!</p>
+<pre class="r"><code>## try Poisson count regression model!
+
+model &lt;- glm(response~predictor,family=poisson(link=&quot;log&quot;))
+summary(model)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = response ~ predictor, family = poisson(link = &quot;log&quot;))
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -4.5186  -2.3991  -0.4442   1.7086   5.7962  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)  2.96237    0.04340   68.25   &lt;2e-16 ***
+## predictor   -0.37438    0.03729  -10.04   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for poisson family taken to be 1)
+## 
+##     Null deviance: 326.28  on 29  degrees of freedom
+## Residual deviance: 214.70  on 28  degrees of freedom
+## AIC: 357.06
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+<pre class="r"><code>plot(response~predictor)
+
+newdat &lt;- data.frame(
+  predictor = seq(-3,3,0.1)
+)
+
+mypred &lt;- predict(model,type=&quot;response&quot;,se.fit = T,newdata=newdat)
+
+lines(newdat$predictor,mypred$fit,col=&quot;blue&quot;)
+lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
+lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+</div>
+<div id="diagnostic-testing-with-glm" class="section level2">
+<h2>Diagnostic testing with GLM</h2>
+<p>Obviously, the standard diagnostic plots don’t make much sense for GLM– after all, they are testing assumptions that we are no longer making! We don’t need to test for normality of residuals if we are assuming our response variable is binomially distributed! We don’t need to test for homogeneity of variance if our assumed probability distribution is heteroskedastic!</p>
+<p>The Poisson distribution, for example, does not have homogeneous variance- in fact, the variance of the Poisson distribution is equal to the mean. So the larger the expected value, the larger the variance!</p>
+<p>However, we need some way of testing whether the distribution we selected is a reasonable fit to our data. We could use so-called deviance residuals here (which is the default in r) but I prefer to use the DHARMa package in R.</p>
+<pre class="r"><code>residuals(model)  # compute the deviance residuals for the poisson regression model</code></pre>
+<pre><code>##           1           2           3           4           5           6 
+## -2.42978608 -2.50052900 -1.65007105 -3.05661566  2.48675116  2.00642043 
+##           7           8           9          10          11          12 
+## -2.24376499  1.20446543  5.79618066 -3.44455501  0.63339176  0.02407597 
+##          13          14          15          16          17          18 
+## -1.45936015  1.73130667  1.64065607 -2.55764308  2.19660667  0.79822060 
+##          19          20          21          22          23          24 
+## -4.51857418 -4.41659884 -2.30685647  5.38416382 -3.01904933  2.37912388 
+##          25          26          27          28          29          30 
+##  0.47458305  3.27017286 -1.61064806  0.27575427 -0.91243271 -2.16081383</code></pre>
+<pre class="r"><code>summary(residuals(model))   # median should be near zero</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+## -4.5186 -2.3991 -0.4442 -0.2662  1.7086  5.7962</code></pre>
+<pre class="r"><code>paste0(c(&quot;Null deviance: &quot;, &quot;Residual deviance: &quot;),     # null deviance should be much higher than residual deviance
+       round(c(model$null.deviance, deviance(model)), 2))</code></pre>
+<pre><code>## [1] &quot;Null deviance: 326.28&quot;    &quot;Residual deviance: 214.7&quot;</code></pre>
+<pre class="r"><code>paste0(c(&quot;model df: &quot;, &quot;Residual deviance: &quot;),     # resid deviance should be close to residual df
+       round(c(model$df.residual, deviance(model)), 2))</code></pre>
+<pre><code>## [1] &quot;model df: 28&quot;             &quot;Residual deviance: 214.7&quot;</code></pre>
+<p>So using the deviance residuals we’re starting to get a picture that the Poisson distribution may not be a great fit. Let’s use the DHARMa package now…</p>
+<pre class="r"><code>library(DHARMa)</code></pre>
+<pre><code>## This is DHARMa 0.3.3.0. For overview type &#39;?DHARMa&#39;. For recent changes, type news(package = &#39;DHARMa&#39;) Note: Syntax of plotResiduals has changed in 0.3.0, see ?plotResiduals for details</code></pre>
+<pre class="r"><code>simresids &lt;- simulateResiduals(model,n=250,plot=T)   # clearly this is a bad fit!</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>plotResiduals(simresids,predictor)   # look for patterns across a predictor variable</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+<pre class="r"><code>testResiduals(simresids)  # run tests on the residuals!</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-10-3.png" width="672" /><img src="LECTURE6_files/figure-html/unnamed-chunk-10-4.png" width="672" /></p>
+<pre><code>## $uniformity
+## 
+##  One-sample Kolmogorov-Smirnov test
+## 
+## data:  simulationOutput$scaledResiduals
+## D = 0.40017, p-value = 0.0001343
+## alternative hypothesis: two-sided
+## 
+## 
+## $dispersion
+## 
+##  DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+##  simulated
+## 
+## data:  simulationOutput
+## ratioObsSim = 2.9138, p-value &lt; 2.2e-16
+## alternative hypothesis: two.sided
+## 
+## 
+## $outliers
+## 
+##  DHARMa bootstrapped outlier test
+## 
+## data:  simulationOutput
+## outliers at both margin(s) = 6, observations = 30, p-value &lt; 2.2e-16
+## alternative hypothesis: two.sided
+##  percent confidence interval:
+##  0.00000000 0.06666667
+## sample estimates:
+## outlier frequency (expected: 0.008 ) 
+##                                  0.2</code></pre>
+<pre><code>## $uniformity
+## 
+##  One-sample Kolmogorov-Smirnov test
+## 
+## data:  simulationOutput$scaledResiduals
+## D = 0.40017, p-value = 0.0001343
+## alternative hypothesis: two-sided
+## 
+## 
+## $dispersion
+## 
+##  DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+##  simulated
+## 
+## data:  simulationOutput
+## ratioObsSim = 2.9138, p-value &lt; 2.2e-16
+## alternative hypothesis: two.sided
+## 
+## 
+## $outliers
+## 
+##  DHARMa bootstrapped outlier test
+## 
+## data:  simulationOutput
+## outliers at both margin(s) = 6, observations = 30, p-value &lt; 2.2e-16
+## alternative hypothesis: two.sided
+##  percent confidence interval:
+##  0.00000000 0.06666667
+## sample estimates:
+## outlier frequency (expected: 0.008 ) 
+##                                  0.2</code></pre>
+<p>Okay so the DHARMa package diagnostics seem to indicate that the Poisson regression was a poor fit to the data (you will find this is usually true with Poisson regression). Let’s try running a negative binomial regression instead!</p>
+<pre class="r"><code>## try NegBinom count regression model!
+
+library(MASS)
+
+## NOTE: in reality you should use glm.nb because you don&#39;t know the additional parameter theta!
+model &lt;- glm(response~predictor,family=negative.binomial(link=&quot;log&quot;,theta = 2))
+summary(model)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = response ~ predictor, family = negative.binomial(link = &quot;log&quot;, 
+##     theta = 2))
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.3720  -0.8412  -0.1491   0.3567   1.4563  
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  2.95740    0.11424  25.887  &lt; 2e-16 ***
+## predictor   -0.39653    0.09609  -4.127 0.000299 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for Negative Binomial(2) family taken to be 0.7018831)
+## 
+##     Null deviance: 30.812  on 29  degrees of freedom
+## Residual deviance: 19.895  on 28  degrees of freedom
+## AIC: 230.94
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+<pre class="r"><code>model &lt;- glm.nb(response~predictor)
+
+plot(response~predictor)
+
+newdat &lt;- data.frame(
+  predictor = seq(-3,3,0.1)
+)
+
+mypred &lt;- predict(model,type=&quot;response&quot;,se.fit = T,newdata=newdat)
+
+lines(newdat$predictor,mypred$fit,col=&quot;blue&quot;)
+lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
+lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Now let’s check the model fit!</p>
+<pre class="r"><code>simresids &lt;- simulateResiduals(model,n=250,plot=T)   # looks a lot better!</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code>testResiduals(simresids)  # run tests on the residuals!</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-12-2.png" width="672" /><img src="LECTURE6_files/figure-html/unnamed-chunk-12-3.png" width="672" /></p>
+<pre><code>## $uniformity
+## 
+##  One-sample Kolmogorov-Smirnov test
+## 
+## data:  simulationOutput$scaledResiduals
+## D = 0.12595, p-value = 0.6816
+## alternative hypothesis: two-sided
+## 
+## 
+## $dispersion
+## 
+##  DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+##  simulated
+## 
+## data:  simulationOutput
+## ratioObsSim = 1.0025, p-value = 0.96
+## alternative hypothesis: two.sided
+## 
+## 
+## $outliers
+## 
+##  DHARMa bootstrapped outlier test
+## 
+## data:  simulationOutput
+## outliers at both margin(s) = 0, observations = 30, p-value = 1
+## alternative hypothesis: two.sided
+##  percent confidence interval:
+##  0.00000000 0.06666667
+## sample estimates:
+## outlier frequency (expected: 0.00933333333333333 ) 
+##                                                  0</code></pre>
+<pre><code>## $uniformity
+## 
+##  One-sample Kolmogorov-Smirnov test
+## 
+## data:  simulationOutput$scaledResiduals
+## D = 0.12595, p-value = 0.6816
+## alternative hypothesis: two-sided
+## 
+## 
+## $dispersion
+## 
+##  DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+##  simulated
+## 
+## data:  simulationOutput
+## ratioObsSim = 1.0025, p-value = 0.96
+## alternative hypothesis: two.sided
+## 
+## 
+## $outliers
+## 
+##  DHARMa bootstrapped outlier test
+## 
+## data:  simulationOutput
+## outliers at both margin(s) = 0, observations = 30, p-value = 1
+## alternative hypothesis: two.sided
+##  percent confidence interval:
+##  0.00000000 0.06666667
+## sample estimates:
+## outlier frequency (expected: 0.00933333333333333 ) 
+##                                                  0</code></pre>
+</div>
+<div id="model-selection-with-aic" class="section level2">
+<h2>Model selection with AIC</h2>
+<p>Often we have multiple <strong>candidate models</strong> for describing how our response variable relates to one or more of our predictor variables. This is true for multiple linear regression and GLM models, and mixed-effects models (see below) and non-linear regression models.</p>
+<p>Information-theoretic criteria like <strong>Akaike’s Information Criterion</strong> provide a common currency that allows us to compare and rank multiple models.</p>
+<p>In general, the models with the lowest AIC are better than models with higher AIC.</p>
+<p>AIC is defined as:</p>
+<p><span class="math inline">\(AIC = -2\cdot ln(Likelihood + 2k\)</span></p>
+<p>Where <em>k</em> is the number of fitted parameters in the model and <em>Likelihood</em> is the maximum likelihood of the data (probability of the observed data set under the fitted model).</p>
+<p>There is a commonly used correction for small sample size called <em>AICc</em>.</p>
+<p>Comparing multiple GLM models using AIC is relatively simple!</p>
+<pre class="r"><code>######
+# Make up data!
+
+predictor1 = runif(30,-2,2)
+predictor2 &lt;- runif(30,-100,100)
+predictor3 &lt;- rnorm(30)   # useless predictor
+response = rnbinom(30,mu=exp(3-0.5*predictor1+0.01*predictor2),size=2)
+
+
+###
+# fit a bunch of candidate models
+
+model.pois.all &lt;- glm(response~predictor1+predictor2+predictor3,family=&quot;poisson&quot;)
+model.nb.all &lt;- glm.nb(response~predictor1+predictor2+predictor3)
+model.nb.1 &lt;- glm.nb(response~predictor1)
+model.nb.12 &lt;- glm.nb(response~predictor1+predictor2)
+model.nb.2 &lt;- glm.nb(response~predictor2)
+
+cand.set &lt;- list(
+  Poisson=model.pois.all,
+  NegBin_allvars = model.nb.all,
+  NegBin_pred1 = model.nb.2,
+  NegBin_preds1and2 = model.nb.12,
+  NegBin_pred2 = model.nb.2
+)
+
+### Make AIC table
+
+AICtab &lt;- data.frame(
+  ModelName = names(cand.set),
+  LogLikelihood = sapply(cand.set,logLik),
+  AIC = sapply(cand.set,AIC)
+)
+
+AICtab$DeltaAIC &lt;- abs(AICtab$AIC-min(AICtab$AIC))
+
+AICtab[order(AICtab$DeltaAIC,decreasing = F),]</code></pre>
+<pre><code>##                           ModelName LogLikelihood      AIC   DeltaAIC
+## NegBin_preds1and2 NegBin_preds1and2     -111.4196 230.8392   0.000000
+## NegBin_allvars       NegBin_allvars     -111.2916 232.5831   1.743961
+## NegBin_pred1           NegBin_pred1     -118.0889 242.1777  11.338580
+## NegBin_pred2           NegBin_pred2     -118.0889 242.1777  11.338580
+## Poisson                     Poisson     -173.5860 355.1720 124.332889</code></pre>
+</div>
+<div id="overview-mixed-effects-models" class="section level2">
+<h2>Overview: Mixed-effects models</h2>
+<p>Remember the assumption of independent observations? All of the analyses we have considered so far make that assumption. If that assumption is violated, we are committing pseudoreplication.</p>
+<p>Mixed models allow us to build more realistic models that incorporate some known potential sources of non-independence in our data.</p>
 <p><a href="LECTURE7.html">–go to next lecture–</a></p>
+</div>
 
 
 
@@ -401,7 +893,7 @@ div.tocify {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -440,7 +932,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

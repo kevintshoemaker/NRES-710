@@ -40,7 +40,333 @@ To follow along with the R-based lessons and demos, [right (or command) click on
 
 ## Overview: Generalized Linear Models
 
-Generalized Linear Models (GLM) are not generally covered in intro stats classes, but they are so common in ecology and environmental science that you really need to at least know that these models exist!
+Generalized Linear Models (GLM) are not generally covered in intro stats classes, but they are so flexible and so common in ecology and environmental science that you really need to at least know that these models exist!
+
+The real data sets that we deal with as ecologists and environmental scientists tend to violate some key assumptions of classical linear regression and ANOVA. In particular, residuals are often decidedly non-normal and variance is decidedly non-equal (heteroskedastic) across the range of predictions. 
+
+Generalized linear models allow us to model response variables that are not amenable to classical linear regression -- but allows us to use a model structure that closely resembles linear regression. Pretty much everything about running a GLM is akin to linear regression. The primary function for running GLM models ('glm') even looks very similar to the regression function 'lm'. 
+
+GLMs are parametric analyses -- it's just that (1) we don't need to assume our response variable is normally distributed and (2) we don't need to assume the relationship between the response variable and the predictor variable(s) is linear on the scale of the untransformed response variable. Let's look into each of these in more detail:
+
+### Alternative distributions
+
+So we don't need to assume the response variable is normally distributed -- but we do need to assume it is distributed according to some known probability distribution -- and we need to specify what distribution we ARE assuming. We can assume that the response process is Poisson distributed, or gamma distributed, or beta distributed, or any of a host of other distributions. But again, we have to specify which distribution!
+
+### Link functions
+
+So we don't need to assume the relationship between the mean of the response variable and the predictor variable(s) is linear on the scale of the untransformed response variable -- but the hypothesized relationship must be linear on some transformation of the response variable -- and we need to specify what transformed version of the response process we wish to assume linearity for. This is called the 'link function'. 
+
+### A simple example (logistic regression)
+
+For example, we might have a binary response variable and a continuous predictor variable. Making the assumption of linearity would not necessarily make sense in this case. 
+
+Let's first make up an example:
+
+```{r}
+
+## made up data for glm #1 (logistic regression)
+
+predictor <- runif(100,0,50)
+response <- rbinom(100,1, plogis(-5 + 0.26*predictor) )
+
+plot(response~predictor,ylim=c(-2,2))
+abline(lm(response~predictor),col="red")   # overlay regression line
+
+layout(matrix(1:4,nrow=2,byrow=2))
+plot(lm(response~predictor))
+
+
+```
+Note that the predicted mean response at high values of the predictor exceed 1- which is impossible for a binary response. Clearly we can't make the assumption of linearity on the untransformed binary response. Furthermore, the other diagnostic plots also do not look great...
+
+One transformation that makes sense for a regression with a binary response is the **logit transformation**. The logit transformation is commonly used to take probabilities (which are constrained between 0 and 1) and transform them to values that can vary between -Inf and Inf. 
+
+For example, take the following probabilities:
+
+```{r}
+
+probs <- runif(10)
+probs
+
+```
+
+Here's what happens if we apply the logit transformation:
+
+$logit(p) = log(\frac{p}{(1-p)})$
+
+```{r}
+
+data.frame(
+  p = probs,
+  logit.p=log(probs/(1-probs))
+)
+
+```
+
+If our response variable is binary and we want to assume that the mean response (on some transformed scale) is linearly dependent on our predictor variable, the logit transformation is a good candidate for our link function, because this way the mean response will never go below zero or above one.
+
+So instead of:
+
+$\bar{y} = \beta_0 + \beta_1\cdot x$ 
+
+We can use the **logit link** and assume instead that:
+
+$logit(\bar{y}) = \beta_0 + \beta_1\cdot x$
+
+If we solve for y, this equation becomes:
+
+$\bar{y} = \frac{e^{\beta_0 + \beta_1\cdot x}}{1+e^{\beta_0 + \beta_1\cdot x}}$
+
+This is essentially what we do when we conduct a *logistic regression*! Specifically, in a logistic regression we assume the following:
+
+**Response distribution**: binomial with size=1 (can only be zero or 1; also known as a Bernoulli distribution)     
+
+**Link function**: logit. 
+
+We use a binomial response distribution because our response variable is discrete, just like a binomial distribution. If you flip one coin you can get only a zero or a one, just like the response variable. The binomial distribution matches the response variable, so it is an appropriate distribution to assume!
+
+```{r}
+
+  ## conduct logistic regression:
+
+model <- glm(response~predictor,family=binomial(link="logit"))    # logistic regression in R
+summary(model)   # summary looks similar to ordinary linear regression!
+
+newdat <- data.frame(        # make predictions for plotting regression line and approx conf bounds
+  predictor = seq(0,50,1)
+)
+
+mypred <- predict(model,type="response",se.fit=T,newdata = newdat)
+
+plot(response~predictor)
+lines(newdat$predictor,mypred$fit,col="blue")
+lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col="blue",lty=2)
+lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col="blue",lty=2)
+
+```
+
+Note that the relationship between the reponse and predictor looks non-linear. But this is not the same thing as non-linear regression. GLM is a type of linear model for a reason. It's just that the relationship is assumed to be linear on the logit scale. Here is another visualization of the same exact model:
+
+```{r}
+
+par(mfcol=c(1,2))
+
+mypred <- predict(model,type="link",se.fit=T,newdata = newdat)
+
+plot(newdat$predictor,mypred$fit,col="blue",type="l",ylab="mean response(logit scale)",xlab="predictor")
+lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col="blue",lty=2)
+lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col="blue",lty=2)
+
+
+mypred <- predict(model,type="response",se.fit=T,newdata = newdat)
+
+plot(newdat$predictor,mypred$fit,col="blue",type="l",ylab="mean response",xlab="predictor")
+lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col="blue",lty=2)
+lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col="blue",lty=2)
+
+
+```
+
+
+### Another simple example (Poisson count regression)
+
+Sometimes our measured response is a *count* of something (e.g., number of stems in a plot). In such cases, our response variable cannot go below zero- and the response variable should ideally come from a discrete distribution that only allows integers. The simplest way to model this is:
+
+**Response distribution:** Poisson      
+**Link function:** Natural logarithm    
+
+The Poisson distribution (with only one parameter) is the simplest discrete probability distribution, and the (natural) log is the simplest link function that maps a quantity with a lower bound of zero to a quantity with a lower bound of -Inf. 
+
+Let's make up some count data:
+
+```{r}
+
+# Count regression example
+
+predictor = runif(30,-2,2)
+response = rnbinom(30,mu=exp(3-0.5*predictor),size=2)
+
+plot(response~predictor)
+abline(lm(response~predictor))
+
+par(mfrow=c(2,2))
+plot(lm(response~predictor))
+
+```
+
+Here we see some potential issues with ordinary linear regression and we might consider Poisson count regression instead!
+
+```{r}
+
+## try Poisson count regression model!
+
+model <- glm(response~predictor,family=poisson(link="log"))
+summary(model)
+
+plot(response~predictor)
+
+newdat <- data.frame(
+  predictor = seq(-3,3,0.1)
+)
+
+mypred <- predict(model,type="response",se.fit = T,newdata=newdat)
+
+lines(newdat$predictor,mypred$fit,col="blue")
+lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col="blue",lty=2)
+lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col="blue",lty=2)
+
+```
+
+
+## Diagnostic testing with GLM
+
+Obviously, the standard diagnostic plots don't make much sense for GLM-- after all, they are testing assumptions that we are no longer making! We don't need to test for normality of residuals if we are assuming our response variable is binomially distributed! We don't need to test for homogeneity of variance if our assumed probability distribution is heteroskedastic!
+
+The Poisson distribution, for example, does not have homogeneous variance- in fact, the variance of the Poisson distribution is equal to the mean. So the larger the expected value, the larger the variance!
+
+However, we need some way of testing whether the distribution we selected is a reasonable fit to our data. We could use so-called deviance residuals here (which is the default in r)  but I prefer to use the DHARMa package in R. 
+
+
+```{r}
+
+residuals(model)  # compute the deviance residuals for the poisson regression model
+
+summary(residuals(model))   # median should be near zero
+
+paste0(c("Null deviance: ", "Residual deviance: "),     # null deviance should be much higher than residual deviance
+       round(c(model$null.deviance, deviance(model)), 2))
+
+paste0(c("model df: ", "Residual deviance: "),     # resid deviance should be close to residual df
+       round(c(model$df.residual, deviance(model)), 2))
+
+```
+
+So using the deviance residuals we're starting to get a picture that the Poisson distribution may not be a great fit. Let's use the DHARMa package now... 
+
+
+```{r}
+
+library(DHARMa)
+
+simresids <- simulateResiduals(model,n=250,plot=T)   # clearly this is a bad fit!
+
+plotResiduals(simresids,predictor)   # look for patterns across a predictor variable
+
+testResiduals(simresids)  # run tests on the residuals!
+
+```
+
+
+Okay so the DHARMa package diagnostics seem to indicate that the Poisson regression was a poor fit to the data (you will find this is usually true with Poisson regression). Let's try running a negative binomial regression instead!
+
+
+
+```{r}
+
+## try NegBinom count regression model!
+
+library(MASS)
+
+## NOTE: in reality you should use glm.nb because you don't know the additional parameter theta!
+model <- glm(response~predictor,family=negative.binomial(link="log",theta = 2))
+summary(model)
+
+model <- glm.nb(response~predictor)
+
+plot(response~predictor)
+
+newdat <- data.frame(
+  predictor = seq(-3,3,0.1)
+)
+
+mypred <- predict(model,type="response",se.fit = T,newdata=newdat)
+
+lines(newdat$predictor,mypred$fit,col="blue")
+lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col="blue",lty=2)
+lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col="blue",lty=2)
+
+```
+
+Now let's check the model fit!
+
+
+```{r}
+
+simresids <- simulateResiduals(model,n=250,plot=T)   # looks a lot better!
+
+testResiduals(simresids)  # run tests on the residuals!
+
+```
+
+## Model selection with AIC
+
+Often we have multiple **candidate models** for describing how our response variable relates to one or more of our predictor variables. This is true for multiple linear regression and GLM models, and mixed-effects models (see below) and non-linear regression models. 
+
+Information-theoretic criteria like **Akaike's Information Criterion** provide a common currency that allows us to compare and rank multiple models. 
+
+In general, the models with the lowest AIC are better than models with higher AIC. 
+
+AIC is defined as:
+
+$AIC = -2\cdot ln(Likelihood + 2k$
+
+Where *k* is the number of fitted parameters in the model and *Likelihood* is the maximum likelihood of the data (probability of the observed data set under the fitted model). 
+
+There is a commonly used correction for small sample size called *AICc*.
+
+Comparing multiple GLM models using AIC is relatively simple! 
+
+```{r}
+
+######
+# Make up data!
+
+predictor1 = runif(30,-2,2)
+predictor2 <- runif(30,-100,100)
+predictor3 <- rnorm(30)   # useless predictor
+response = rnbinom(30,mu=exp(3-0.5*predictor1+0.01*predictor2),size=2)
+
+
+###
+# fit a bunch of candidate models
+
+model.pois.all <- glm(response~predictor1+predictor2+predictor3,family="poisson")
+model.nb.all <- glm.nb(response~predictor1+predictor2+predictor3)
+model.nb.1 <- glm.nb(response~predictor1)
+model.nb.12 <- glm.nb(response~predictor1+predictor2)
+model.nb.2 <- glm.nb(response~predictor2)
+
+cand.set <- list(
+  Poisson=model.pois.all,
+  NegBin_allvars = model.nb.all,
+  NegBin_pred1 = model.nb.2,
+  NegBin_preds1and2 = model.nb.12,
+  NegBin_pred2 = model.nb.2
+)
+
+### Make AIC table
+
+AICtab <- data.frame(
+  ModelName = names(cand.set),
+  LogLikelihood = sapply(cand.set,logLik),
+  AIC = sapply(cand.set,AIC)
+)
+
+AICtab$DeltaAIC <- abs(AICtab$AIC-min(AICtab$AIC))
+
+AICtab[order(AICtab$DeltaAIC,decreasing = F),]
+
+```
+
+
+
+## Overview: Mixed-effects models
+
+Remember the assumption of independent observations? All of the analyses we have considered so far make that assumption. If that assumption is violated, we are committing pseudoreplication. 
+
+Mixed models allow us to build more realistic models that incorporate some known potential sources of non-independence in our data. 
+
+
 
 
 
