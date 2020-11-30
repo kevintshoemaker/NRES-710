@@ -201,21 +201,8 @@ rmd2rscript("LECTURE4.Rmd")
 rmd2rscript("LECTURE5.Rmd")
 rmd2rscript("LECTURE6.Rmd")
 rmd2rscript("LECTURE7.Rmd")  ##
-rmd2rscript("LECTURE8.Rmd")
-rmd2rscript("LECTURE9.Rmd")
-rmd2rscript("LECTURE10.Rmd")
-rmd2rscript("FigureDemo.Rmd")
 
 
-rmd2rscript("SDM_v5.Rmd")
-rmd2rscript("TimeSeries.Rmd")
-rmd2rscript("SEM.Rmd")
-rmd2rscript("SpatialAutocorrelation.Rmd")
-rmd2rscript("BayesianNetworks.Rmd")
-rmd2rscript("MixedEffects.Rmd")
-rmd2rscript("QuantileRegression.Rmd")
-rmd2rscript("ordination_lecture.Rmd")
-rmd2rscript("RSFs.Rmd")
 
 ```
 
