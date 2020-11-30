@@ -130,7 +130,7 @@ $height_i = \beta_0 + \beta_1\cdot fertilizer2 + \beta_2\cdot fertilizer3 + \eps
 
 Where i is the observation number, beta0 is the intercept, beta1 and beta2 are 'regression' coefficients, and fertilizer2 and fertilizer3 are **dummy variables** or **indicator variables** that take the value 0 or 1. For example, if observation 11 was treated with fertilizer #2, then the value for 'fertilizer2' would be 1 and the value for 'fertilizer3' would be zero.  
 
-What happened to fertilizer #1 in this example? Well, if observation 5 was treated with fertilizer #1, then the value for 'fertilizer2' would be 0 and the value for 'fertilizer3' would also be zero. That is, the intercrept (beta0) represents the expected mean for observations treated with fertilizer 1! 
+What happened to fertilizer #1 in this example? Well, if observation 5 was treated with fertilizer #1, then the value for 'fertilizer2' would be 0 and the value for 'fertilizer3' would also be zero. That is, the intercept (beta0) represents the expected mean for observations treated with fertilizer 1! 
 
 [draw on whiteboard]
 
@@ -436,7 +436,7 @@ anova(model_with_interaction)
 
 NOTE: if an interaction term is 'significant' but the main effects terms are not significant, the standard practice is to include the main effects terms anyway! That is, it is not common practice to fit regression/ANOVA models with only interaction terms (although this is appropriate in some rare cases). 
 
-Here the results suggest that there is a significant interaction between does and supplement type. As always, a plot can help. Let's visualize this interaction!
+Here the results suggest that there is a significant interaction between dose and supplement type. As always, a plot can help. Let's visualize this interaction!
 
 ```{r}
 

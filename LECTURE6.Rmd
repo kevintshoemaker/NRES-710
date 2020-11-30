@@ -308,7 +308,6 @@ In general, the models with the lowest AIC are better than models with higher AI
 
 AIC is defined as:
 
-$AIC = -2\cdot ln(Likelihood + 2k$
 
 Where *k* is the number of fitted parameters in the model and *Likelihood* is the maximum likelihood of the data (probability of the observed data set under the fitted model). 
 
