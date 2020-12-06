@@ -47,7 +47,7 @@ Here is a more detailed description of expectations for the manuscript.
 
 **Abstract:** Please include a short abstract (200 words max.) that summarizes your work (context, research questions, results, and conclusions). 
 
-**Introduction:** Provide enough description so that the reader understands why the research is important and (if appropriate) what research question(s) and/or hypotheses are being addressed. (approx. 2-3 paragraphs)
+**Introduction:** Provide enough description so that the reader understands why the research is important and (if appropriate) what research question(s) and/or hypotheses are being addressed. (approx. 2-3 paragraphs). Always keep the big picture in mind! 
 
 **Methods:**      
 
@@ -59,13 +59,15 @@ Here is a more detailed description of expectations for the manuscript.
 
 **Discussion:** Write at least two paragraphs that put the results in a larger context (returning to the key research questions) and discuss areas of uncertainty. Potential topics are possible violations of assumptions, and future work that your analysis suggests would be profitable.
 
-**Acknowledgements:** Please acknowledge key people and agencies that helped with data collection, funding, analysis, providing comments, etc.
+**Acknowledgments:** Please acknowledge key people and agencies that helped with data collection, funding, analysis, providing comments, etc.
 
-**Literature cited** Full references (exact format up to you, but be consistent!) for all citations in your main text. 
+**Literature cited** Full references (exact format up to you, but be consistent!) for all citations in your main text. Make sure you cite key R packages that you use- and make sure to cite R. The 'citation()' function in R makes it easy to know how to cite R and R packages. 
 
-**Supplement** Provide all code used to run the analyses presented in the paper as an R script.
+**Supplement** Provide all code used to run the analyses presented in the paper as an R script. Only present the code for running the analyses you present in the paper- you don't need to include all side tangents and alternative visualizations, analyses you did not present, etc. 
 
 NOTE: please embed figures and tables within your main text- you do not need to put them in a separate section at the end of the manuscript. 
+
+NOTE: you may also choose to include additional (supplemental) tables and figures at the end of your document. But such figures and tables will not affect your final project grade. 
 
 ## Peer review (December 2)
 
@@ -99,10 +101,12 @@ NOTE: you don't need to correct grammar and spelling here- just focus on the big
 
 ### In-class peer-review conferences
 
-In class on Wed Dec 2, you will have a chance to confer with your peer-review group about the key strengths and weaknesses of the draft paper you are reviewing. I will color code the spreadsheet so that the first portion of the class, the green-colored groups will confer, and in the second portion of class the blue colored groups will confer, and the purple colored groups will confer last. I'll provide more details in class on Monday. In the meantime, you should be able to get started with the peer reviews. The person listed as "Peer Reviewer #1" should also set up the zoom links for Wednesday's meetings- there is a column for the zoom links in the Google Sheets (see below; peer review tab), I tried to make it so everyone only served as "Peer Reviewer #1" once, but one of you is listed twice (sorry Tara!).Your peer review submissions (group submission) should follow the general format of an academic peer-review. 
+In class on Wed Dec 2, you will have a chance to confer with your peer-review group about the key strengths and weaknesses of the draft paper you are reviewing. I will color code the spreadsheet so that the first portion of the class, the green-colored groups will confer, and in the second portion of class the blue colored groups will confer, and the purple colored groups will confer last. I'll provide more details in class on Monday. In the meantime, you should be able to get started with the peer reviews. The person listed as "Peer Reviewer #1" should also set up the zoom links for Wednesday's meetings- there is a column for the zoom links in the Google Sheets (see below; peer review tab), I tried to make it so everyone only served as "Peer Reviewer #1" once, but one of you is listed twice (sorry!). Your peer review submissions (group submission) should follow the general format of an academic peer-review. 
 
 
 ## Final manuscript (due Dec 16 at 5pm)
+
+I look forward to reading your final projects. Final grades will be posted by Monday Dec 21. 
 
 
 

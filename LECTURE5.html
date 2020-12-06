@@ -12,7 +12,7 @@
 <meta name="author" content="NRES 710" />
 
 
-<title>ANOVA: more advanced</title>
+<title>ANOVA (and regression)</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -393,6 +393,9 @@ div.tocify {
     <li>
       <a href="LECTURE6.html">Analysis- GLM and GLMM</a>
     </li>
+    <li>
+      <a href="LECTURE7.html">Next steps</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -425,7 +428,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">ANOVA: more advanced</h1>
+<h1 class="title toc-ignore">ANOVA (and regression)</h1>
 <h4 class="author">NRES 710</h4>
 <h4 class="date">Fall 2020</h4>
 
@@ -1129,6 +1132,13 @@ dt</code></pre>
 <div id="power-analysis" class="section level2">
 <h2>Power analysis?</h2>
 <p>Perhaps we can run a power analysis example in a future iteration of this class. In the meantime let’s move on to generalized linear models and mixed-effects models.</p>
+</div>
+<div id="final-note-design-based-vs-model-based-inference" class="section level2">
+<h2>FINAL NOTE: design-based vs model-based inference</h2>
+<p>In this class I have emphasized the equivalence between ANOVA and regression. This is because I lean on the side of ‘model-based inference’ vs ‘design-based inference’.</p>
+<p>ANOVA is closely linked with experimental design. If you control for all confounding variables so that your categorical “treatment” is the only factor that could influence your response process, you can run an ANOVA and you are home free- there is nothing left to do- you have your answer in hand. This is called <strong>design-based inference</strong> because you designed your experiment to control for nuisance variables that could limit your inference. This makes the statistical analyses easy! <em>Design based inference uses careful experimental design to control for nuisance factors.</em></p>
+<p>However, in observational studies we often can’t control for nuisance factors using experimental design. Instead we often need to control for nuisance factors within our model. This process is called <strong>model-based inference</strong>. Model based inference is often not as satisfying, much more difficult, and often much less powerful, and prone to subtle and pernicious errors, and requiring more complex statistics, etc., BUT it is often the best we can do!! Because this class is for ecologists and environmental scietists, I tend to emphasize model-based inference over design-based inference. And this is why I de-emphasize ANOVA and instead emphasize linear regression, glm, and mixed models (lmer, glmm).</p>
+<p>This is the subject of the next lecture.</p>
 <p><a href="LECTURE6.html">–go to next lecture–</a></p>
 </div>
 

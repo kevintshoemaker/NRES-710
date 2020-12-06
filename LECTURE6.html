@@ -393,6 +393,9 @@ div.tocify {
     <li>
       <a href="LECTURE6.html">Analysis- GLM and GLMM</a>
     </li>
+    <li>
+      <a href="LECTURE7.html">Next steps</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -440,7 +443,7 @@ div.tocify {
 <h2>Overview: Generalized Linear Models</h2>
 <p>Generalized Linear Models (GLM) are not generally covered in intro stats classes, but they are so flexible and so common in ecology and environmental science that you really need to at least know that these models exist!</p>
 <p>The real data sets that we deal with as ecologists and environmental scientists tend to violate some key assumptions of classical linear regression and ANOVA. In particular, residuals are often decidedly non-normal and variance is decidedly non-equal (heteroskedastic) across the range of predictions.</p>
-<p>Generalized linear models allow us to model response variables that are not amenable to classical linear regression – but allows us to use a model structure that closely resembles linear regression. Pretty much everything about running a GLM is akin to linear regression. The primary function for running GLM models (‘glm’) even looks very similar to the regression function ‘lm’.</p>
+<p>Generalized linear models allow us to model response variables that are not amenable to classical linear regression – but allows us to use a model structure that closely resembles linear regression. Pretty much everything about running a GLM is like linear regression. The primary function for running GLM models (‘glm’) even looks very similar to the regression function ‘lm’.</p>
 <p>GLMs are parametric analyses – it’s just that (1) we don’t need to assume our response variable is normally distributed and (2) we don’t need to assume the relationship between the response variable and the predictor variable(s) is linear on the scale of the untransformed response variable. Let’s look into each of these in more detail:</p>
 <div id="alternative-distributions" class="section level3">
 <h3>Alternative distributions</h3>
@@ -449,6 +452,12 @@ div.tocify {
 <div id="link-functions" class="section level3">
 <h3>Link functions</h3>
 <p>So we don’t need to assume the relationship between the mean of the response variable and the predictor variable(s) is linear on the scale of the untransformed response variable – but the hypothesized relationship must be linear on some transformation of the response variable – and we need to specify what transformed version of the response process we wish to assume linearity for. This is called the ‘link function’.</p>
+<p>In the general case, a GLM can be described by the following pseudo-equations:</p>
+<p><span class="math inline">\(f(\bar{y})=\beta_0+\beta_1\cdot x_1+\beta_2 \cdot x_2 \ldots\)</span></p>
+<p>The left side of this equation is the mean of the response variable, transformed according to the specified link function. The right side of this equation is called the <strong>linear predictor</strong> and describes how the (transformed) mean response varies as a function of the predictor variable(s).</p>
+<p>To complete the picture, we need to represent the error/variability. To do this we represent the raw response as being distributed according to a distribution we specify:</p>
+<p><span class="math inline">\(y \sim My.Dist(\ldots)\)</span></p>
+<p>My.Dist can be the binomial distribution, Poisson distribution, or a number of other possibilities. The mean of the distribution is described by the covariates (preditor variables) as described in the top equation.</p>
 </div>
 <div id="a-simple-example-logistic-regression" class="section level3">
 <h3>A simple example (logistic regression)</h3>
@@ -464,8 +473,11 @@ abline(lm(response~predictor),col=&quot;red&quot;)   # overlay regression line</
 <p><img src="LECTURE6_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <pre class="r"><code>layout(matrix(1:4,nrow=2,byrow=2))
 plot(lm(response~predictor))</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-2-2.png" width="672" /> Note that the predicted mean response at high values of the predictor exceed 1- which is impossible for a binary response. Clearly we can’t make the assumption of linearity on the untransformed binary response. Furthermore, the other diagnostic plots also do not look great…</p>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<p>Note that the predicted mean response at high values of the predictor exceed 1- which is impossible for a binary response. Clearly we can’t make the assumption of linearity on the untransformed binary response. Furthermore, the other diagnostic plots also do not look great…</p>
+<p>Another way of saying this is that a binary response cannot go below zero or above 1, whereas a linear function of predictor variables (linear predictor) can do both!</p>
 <p>One transformation that makes sense for a regression with a binary response is the <strong>logit transformation</strong>. The logit transformation is commonly used to take probabilities (which are constrained between 0 and 1) and transform them to values that can vary between -Inf and Inf.</p>
+<p>That way, the linear predictor (which is not constrained and can therefore vary between -Inf and Inf) will always be interpretable as a probability!</p>
 <p>For example, take the following probabilities:</p>
 <pre class="r"><code>probs &lt;- runif(10)
 probs</code></pre>
@@ -495,10 +507,11 @@ probs</code></pre>
 <p><span class="math inline">\(logit(\bar{y}) = \beta_0 + \beta_1\cdot x\)</span></p>
 <p>If we solve for y, this equation becomes:</p>
 <p><span class="math inline">\(\bar{y} = \frac{e^{\beta_0 + \beta_1\cdot x}}{1+e^{\beta_0 + \beta_1\cdot x}}\)</span></p>
-<p>This is essentially what we do when we conduct a <em>logistic regression</em>! Specifically, in a logistic regression we assume the following:</p>
+<p>This is what we do when we conduct a <em>logistic regression</em>! Specifically, in a logistic regression we assume the following:</p>
 <p><strong>Response distribution</strong>: binomial with size=1 (can only be zero or 1; also known as a Bernoulli distribution)</p>
-<p><strong>Link function</strong>: logit.</p>
+<p><strong>Link function</strong>: logit (mean of the response is a linear function of the predictor variable(s), on the logit scale)</p>
 <p>We use a binomial response distribution because our response variable is discrete, just like a binomial distribution. If you flip one coin you can get only a zero or a one, just like the response variable. The binomial distribution matches the response variable, so it is an appropriate distribution to assume!</p>
+<p>NOTE: it may not seem obvious, but the mean of a binary random variable is the probability of success (probability of getting a one). That is, if you repeatedly sampled from a random binary process many many times, the expected mean of those numbers (fraction of the total number of samples that are equal to one) is the same thing as the probability of success.</p>
 <pre class="r"><code>  ## conduct logistic regression:
 
 model &lt;- glm(response~predictor,family=binomial(link=&quot;logit&quot;))    # logistic regression in R
@@ -536,7 +549,7 @@ lines(newdat$predictor,mypred$fit,col=&quot;blue&quot;)
 lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
 lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</code></pre>
 <p><img src="LECTURE6_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>Note that the relationship between the reponse and predictor looks non-linear. But this is not the same thing as non-linear regression. GLM is a type of linear model for a reason. It’s just that the relationship is assumed to be linear on the logit scale. Here is another visualization of the same exact model:</p>
+<p>Note that the relationship between the response and predictor looks non-linear. But this is not the same thing as non-linear regression. GLM is a type of linear model for a reason. It’s just that the relationship is assumed to be linear on the logit scale. Here is another visualization of the same exact model:</p>
 <pre class="r"><code>par(mfcol=c(1,2))
 
 mypred &lt;- predict(model,type=&quot;link&quot;,se.fit=T,newdata = newdat)
@@ -558,12 +571,12 @@ lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</c
 <p>Sometimes our measured response is a <em>count</em> of something (e.g., number of stems in a plot). In such cases, our response variable cannot go below zero- and the response variable should ideally come from a discrete distribution that only allows integers. The simplest way to model this is:</p>
 <p><strong>Response distribution:</strong> Poisson<br />
 <strong>Link function:</strong> Natural logarithm</p>
-<p>The Poisson distribution (with only one parameter) is the simplest discrete probability distribution, and the (natural) log is the simplest link function that maps a quantity with a lower bound of zero to a quantity with a lower bound of -Inf.</p>
+<p>The Poisson distribution (with only one parameter) is the simplest discrete probability distribution, and the (natural) log is the simplest link function that maps a quantity with a lower bound of zero to a quantity with a lower bound of -Inf. After all, a count cannot go below zero, whereas a linear function of predictor variables can!</p>
 <p>Let’s make up some count data:</p>
 <pre class="r"><code># Count regression example
 
 predictor = runif(30,-2,2)
-response = rnbinom(30,mu=exp(3-0.5*predictor),size=2)
+response = rnbinom(30,mu=exp(3-0.5*predictor),size=2)     # make up data!
 
 plot(response~predictor)
 abline(lm(response~predictor))</code></pre>
@@ -820,6 +833,8 @@ lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</c
 ## sample estimates:
 ## outlier frequency (expected: 0.00933333333333333 ) 
 ##                                                  0</code></pre>
+<p>And this time our count regression model fits the data well, and we can report the results of this model with confidence!</p>
+<p>NOTE: you should always run goodness-of-fit tests for any model you fit to data. But it is especially important in the case of Poisson regression, because in general most count data has much more variance that a Poisson distribution allows. This can lead to inflated type 1 error and can be a huge problem. You should always be wary of reported Poisson regression results with no goodness of fit checks!</p>
 </div>
 <div id="model-selection-with-aic" class="section level2">
 <h2>Model selection with AIC</h2>
@@ -827,8 +842,10 @@ lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</c
 <p>Information-theoretic criteria like <strong>Akaike’s Information Criterion</strong> provide a common currency that allows us to compare and rank multiple models.</p>
 <p>In general, the models with the lowest AIC are better than models with higher AIC.</p>
 <p>AIC is defined as:</p>
+<p><span class="math inline">\(AIC = -2\cdot ln(Likelihood) + 2\cdot k\)</span></p>
 <p>Where <em>k</em> is the number of fitted parameters in the model and <em>Likelihood</em> is the maximum likelihood of the data (probability of the observed data set under the fitted model).</p>
-<p>There is a commonly used correction for small sample size called <em>AICc</em>.</p>
+<p>There is a commonly used correction for small sample size called <em>AICc</em>:</p>
+<p><span class="math inline">\(AICc = AIC + \frac{2k^2+2k}{n-k-1}\)</span></p>
 <p>Comparing multiple GLM models using AIC is relatively simple!</p>
 <pre class="r"><code>######
 # Make up data!
@@ -876,12 +893,12 @@ AICtab[order(AICtab$DeltaAIC,decreasing = F),]</code></pre>
 </div>
 <div id="overview-mixed-effects-models" class="section level2">
 <h2>Overview: Mixed-effects models</h2>
-<p>Remember the assumption of independent observations? All of the analyses we have considered so far make that assumption. If that assumption is violated, we are committing pseudoreplication.</p>
+<p>Remember the assumption of independent observations? Every single one of the models we have considered so far makes that assumption. If that assumption is violated, we are committing pseudoreplication. If pseudoreplication is relatively minor we may be able to ignore it for modeling (but still reporting the potential issue). But in many cases the issue is too large to ignore.</p>
 <p>Mixed models allow us to build more realistic models that incorporate some known potential sources of non-independence in our data.</p>
-<p>The term <strong>mixed-effects models</strong> refers to the fact that these models have two kinds of predictor variables: <em>fixed effects</em> and <em>random effects</em>.</p>
+<p>The term <strong>mixed-effects models</strong> refers to the fact that these models have two kinds of predictor variables: <em>fixed effects</em> and <em>random effects</em>. The random effects are what allow us to incorporate potential inter-dependencies among our observations.</p>
 <div id="is-it-a-fixed-effect-or-a-random-effect" class="section level3">
 <h3>Is it a fixed effect or a random effect?</h3>
-<p>One point of confusion that quickly bubbles up around mixed-effects models is the question of whether you should include a predictor variable in the model as a random or a fixed effect.</p>
+<p>One point of confusion that quickly bubbles up around mixed-effects models is the question of whether you should include a predictor variable as a random or a fixed effect.</p>
 <p>It might help to consider some typical random effects and some typical fixed effects:</p>
 <div id="fixed-effects" class="section level4">
 <h4>Fixed effects</h4>
@@ -891,8 +908,9 @@ AICtab[order(AICtab$DeltaAIC,decreasing = F),]</code></pre>
 <li>Treatment (categorical fixed effect- e.g., ANOVA)</li>
 <li>Interaction between temperature and treatment (interaction fixed effect)</li>
 </ul>
-<p>Fixed effects are what we have been calling ‘predictor variables’ in this class. They usually represent the variables that we truly wish to relate to our response variable. Ideally, our observations span the full range of our fixed effects (predictor variables) such that we can use our data to make inference about the relationship between our response and predictor variables across the range of values that we might encounter in our entire population of interest.</p>
-<p>For example, if we want to make inference about the relationship between tree diameter and volume, we would like to take measurements of trees that vary from the smallest-diameter trees we wish to make inference about to the largest-diameter trees that we’d like to make inference about. To ensure that our sample includes the full range of diameters, we might specifically select trees that cover the entire range of interest. That is, we could <strong>fix</strong> the set of trees in our samples to include the full range of our predictor variable.</p>
+<p>Fixed effects are what we have been calling ‘predictor variables’ in this class. They usually represent the variables that we want to relate to our response variable. Ideally, our observations span the full range of our fixed effects (predictor variables) such that we can use our data to make inference about the relationship between our response and predictor variables across the range of values that we might encounter in our entire population of interest.</p>
+<p>There is no assumption that our predictor variables are normally distributed- in fact, the only assumption we make about the predictor variables (usually) are that (1) they are measured with certainty and (2) we ideally want them to be distributed evenly across the range of values across which we want to make inference about our response process.</p>
+<p>For example, if we want to make inference about the relationship between tree diameter and volume, we would like to take measurements of trees that vary from the smallest-diameter trees we wish to make inference about to the largest-diameter trees that we’d like to make inference about. To ensure that our sample includes the full range of diameters, we might specifically select trees that cover the entire range of interest. That is, we could <strong>fix</strong> the set of trees in our samples to include the full range of our predictor variable. There is no rule stating that we have to select our predictor variable levels from a random process. In fact, experimental design is all about pre-determining our predictor variable levels!</p>
 <p>The term <strong>fixed effect</strong> comes from experimental design, where we literally arrange (fix) our observations into specific treatment and control groups. For example, we might take 100 otherwise interchangeable sapling trees and subject them randomly to different treatments of <strong>fixed</strong> levels of some factor that might influence growth (say nitrogen concentrations)- and then we can make inference about the effect of nitrogen across the range of concentrations that we determined.</p>
 <p><strong>SIDE NOTE</strong>: we can (and often do) make inferences about our response variable for levels of our predictor variables that are outside the range of values in our data set. This is called <strong>extrapolation</strong> and can be a dangerous practice because we lack empirical support for this type of inference, especially when the predictions are far outside the bounds of our data set.</p>
 </div>

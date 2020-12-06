@@ -1,5 +1,5 @@
 ---
-title: "ANOVA: more advanced"
+title: "ANOVA (and regression)"
 author: "NRES 710"
 date: "Fall 2020"
 output: 
@@ -625,7 +625,15 @@ In the above example, we would run three MWU tests- one for each pairwise compar
 
 Perhaps we can run a power analysis example in a future iteration of this class. In the meantime let's move on to generalized linear models and mixed-effects models. 
 
+## FINAL NOTE: design-based vs model-based inference
 
+In this class I have emphasized the equivalence between ANOVA and regression. This is because I lean on the side of 'model-based inference' vs 'design-based inference'. 
+
+ANOVA is closely linked with experimental design. If you control for all confounding variables so that your categorical "treatment" is the only factor that could influence your response process, you can run an ANOVA and you are home free- there is nothing left to do- you have your answer in hand. This is called **design-based inference** because you designed your experiment to control for nuisance variables that could limit your inference. This makes the statistical analyses easy! *Design based inference uses careful experimental design to control for nuisance factors.* 
+
+However, in observational studies we often can't control for nuisance factors using experimental design. Instead we often need to control for nuisance factors within our model. This process is called **model-based inference**. Model based inference is often not as satisfying, much more difficult, and often much less powerful, and prone to subtle and pernicious errors, and requiring more complex statistics, etc., BUT it is often the best we can do!! Because this class is for ecologists and environmental scietists, I tend to emphasize model-based inference over design-based inference. And this is why I de-emphasize ANOVA and instead emphasize linear regression, glm, and mixed models (lmer, glmm).   
+
+This is the subject of the next lecture.
 
 [--go to next lecture--](LECTURE6.html) 
 

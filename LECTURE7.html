@@ -12,7 +12,7 @@
 <meta name="author" content="NRES 710" />
 
 
-<title>Study Guide, Midterm Exam</title>
+<title>Next Steps</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -428,68 +428,68 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Study Guide, Midterm Exam</h1>
+<h1 class="title toc-ignore">Next Steps</h1>
 <h4 class="author">NRES 710</h4>
 <h4 class="date">Fall 2020</h4>
 
 </div>
 
 
-<div id="midterm-exam" class="section level2">
-<h2>Midterm exam</h2>
-<div id="overview" class="section level3">
-<h3>Overview</h3>
-<p>The midterm exam will be a ‘take home’ style exam that is administered on Wed Oct 28. You will have our regular class period to work on the exam (9-10am). All exams will be due at 5pm. I don’t expect you will need more than an hour to complete the exam. This is the only exam in this course- there is no final exam (just final projects!)</p>
-<p>The midterm exam is designed to test your understanding of basic concepts of classical statistics and programming and data operations in R. The exam will cover everything in the ‘basic concepts’ series of lectures. You are also expected to know how to perform basic operations with data in R and to have some basic facility with programming in R. All exam questions will be intended to gauge understanding of high-level concepts- for this exam you will NOT be expected to perform analyses in R (that is what the mini-lab sessions are for) or know the correct syntax for built-in functions in R (you can always just look up the correct syntax!). To study for this exam, I recommend reading through the ‘basic concepts’ lecture, reviewing the recorded lectures, and looking over the ‘base R’ modules from the R bootcamp (1.1:working with data objects, 1.2:managing data, 1.3:data visualization/statistics, and 1.4:programming)</p>
-<p>The exam will consist of short-answer questions. I will continue to update this as I write the exam so you know what to expect!</p>
-<p>This is meant to be an individual exam, so please complete the exam by yourself without consulting your classmates. In a normal year this exam would be closed book, although you would be allowed to bring one page of notes (‘cheat sheet’). I don’t want to subject you to an online-proctored exam. So… I can’t stop you from consulting the web and with classmates, but please study as you would for a regular in-class closed-book exam, and if possible try to make a cheat sheet for yourself- the act of making the cheat sheet is a great way to study (at least it works well for me)!</p>
-</div>
-<div id="topics-covered" class="section level3">
-<h3>Topics covered</h3>
-<p>NOTE: this is not necessarily an exhaustive list – any topic covered in the ‘basic concepts’ website is fair game</p>
-<div id="basic-statistics" class="section level4">
-<h4>Basic Statistics</h4>
+<p>We’ve reached the end of the course, congratulations!!</p>
+<p>But this is not the end of your statistical training - learning statistics and modeling (informally or formally) is an ongoing part of your growth as a scientist!</p>
+<p>The types of analytical approaches you decide to learn (informally or formally) depends on a lot of factors:</p>
 <ul>
-<li>Inference about a population from a sample</li>
-<li>Classical null-hypothesis testing</li>
-<li>Frequentist probability (frequencies of outcomes under repeated sampling)</li>
-<li>Sampling distributions (sampling uncertainty)</li>
-<li>Central limit theorem (CLT)</li>
-<li>P-values: interpretation, correct usage and common mis-usage</li>
-<li>Type I and Type II errors, statistical power</li>
-<li>Replication and pseudoreplication</li>
-<li>The ‘independence’ assumption: what it is and why it’s important</li>
-<li>Summary statistics: sample mean, sample variance, sample standard deviation</li>
-<li>Standard error of the mean: computation and interpretation</li>
-<li>Degrees of freedom</li>
-<li>Confidence intervals: construction and interpretation</li>
-<li>Fisher’s exact test</li>
-<li>Student’s t test (for one sample) and the t-distribution</li>
-<li>z-test (test statistic follows a standard normal distribution)</li>
-<li>Chi-squared test</li>
-<li>One-tailed vs two-tailed tests (t-test and z-test)</li>
-<li>Normal distribution</li>
-<li>Probability mass function, probability density function, cumulative distribution function</li>
-<li>Quantiles</li>
-<li>Parametric vs. non-parametric statistics</li>
+<li>the type of data you will be analyzing (both responses and predictors)</li>
+<li>whether your data are primarily coming from controlled experiments or uncontrolled field-based studies</li>
+<li>whether you are interested in understanding mechanisms or making predictions (or both)</li>
+<li>whether you have one predictor variable or multiple predictor variables.</li>
+<li>whether you have one response variable or multiple response variables.</li>
+<li>whether you are testing hypotheses or generating hypotheses</li>
+<li>whether you have key sources of non-independence like phylogenetic dependencies or spatiotemporal dependencies.</li>
+<li>whether you align philosophically more with Bayesian or frequentist inference</li>
 </ul>
+<p>Here are some final thoughts to help you think through your next steps as a data analyst!</p>
+<div id="bayesian-vs-frequentist" class="section level2">
+<h2>Bayesian vs frequentist</h2>
+<p>This course has been entirely grounded in frequentist inference- which is a bit strange for me, as someone who tends to gravitate toward Bayesian inference!</p>
+<p>In both Bayesian inference and frequentist inference, the truth is unknown. But the two approaches differ in how they treat probability and uncertainty.</p>
+<p>In frequentist inference, the truth is fixed but unknown, and incomplete sampling prevents us from knowing the full truth. Sampling variance is the only source of uncertainty. Therefore there is uncertainty associated with sample statistics- but no uncertainty associated with population parameters. It is not appropriate to think of the truth itself (the population parameter) as uncertain.</p>
+<p>In Bayesian inference, probability is treated as a <em>degree of belief</em>, and not as a reflection of sampling uncertainty. In this way, we treat the population parameters themselves as uncertain, which reflects incomplete knowledge of the truth. We can therefore assign probability distributions to the population parameters- more “peaked” distributions represent more precise knowledge and flatter, spread-out distributions represent less precise knowledge (often due to insufficient data).</p>
+<p>Many of you are likely to find Bayesian statistics more intuitive than frequentist statistics- I certainly do!</p>
+<p>For example, you can interpret confidence intervals as (e.g.) “I am 95 confident that the true value is between this lower bound and this upper bound”. This is the way most of us WISH we could interpret confidence intervals.</p>
+<p>NOTE: in Bayesian inference, confidence intervals are often called ‘credible intervals’ to differentiate them from frequentist confidence intervals.</p>
 </div>
-<div id="basic-r" class="section level4">
-<h4>Basic R</h4>
-<ul>
-<li>For loops: basic syntax and application</li>
-<li>If-then-else: basic syntax and application. [vectorized alternative: the ‘ifelse()’ function]</li>
-<li>Custom functions: basic syntax for making your own custom function</li>
-<li>Using existing functions in base R: sum, mean, sd, rnorm, dt, etc. [note: you don’t have to memorize details like the names of the arguments or even the names of the functions themselves! All you need to know is how to call and use these functions! For example, I may ask you to write out an R command that computes the 99% quantile of a standard normal distribution, given the correct function name is either ‘pnorm’, ‘dnorm’, or ‘qnorm’]<br />
-</li>
-<li>Subsetting data objects (vectors, matrices, data frames) using square brackets, dollar signs, etc.<br />
-</li>
-<li>Basic use of Boolean operators (less than, equal to, greater than)</li>
-<li>Subsetting data objects using Boolean operators (e.g., ’my.data[which(my.data$col1&lt;10),])</li>
-</ul>
-<p>NOTE: I will not test you on data visualization in R.</p>
+<div id="parametric-vs-nonparametric-tests" class="section level2">
+<h2>Parametric vs nonparametric tests</h2>
+<p>If you are running statistical tests and you want to be sure your results are not compromised by a failure to meet parametric assumptions, then you might want to dive deeper into nonparametric statistics. The most powerful and flexible family of nonparametric tests are called <strong>permutation tests</strong>. These tests rely on dissociating your response and predictor variables by “scrambling” the information, repeating this procedure hundreds of times, and seeing if your observed level of signal exceeds the expected level of signal from these “scrambled” datasets. If so, you can reject your null!</p>
+</div>
+<div id="learning-to-bootstrap" class="section level2">
+<h2>Learning to bootstrap</h2>
+<p><strong>Bootstrap</strong> methods allow you to generate confidence intervals and sampling distributions for pretty much any test statistic you’d like, without relying on known distributions like the t-distribution, F-distribution, Chi-square distribution, etc. The bootstrap techniques simply involve repeatedly running the analysis on datasets sampled with replacement from your actual dataset. Learning to bootstrap is well worth the time for almost any aspiring data analyst.</p>
+</div>
+<div id="machine-learning" class="section level2">
+<h2>Machine learning</h2>
+<p>Machine learning techniques are very diverse approaches for detecting signals in datasets. Machine learning methods tend to impose far fewer assumptions about the data than classical statistical and modeling approaches. For example, <strong>random forest</strong> methods enable detection of non-linear responses and complex interactions without having to specify these non-linear functions and interactions in advance. We just provide the algorithm with a response variable and a bunch of predictor variables and let the random forest algorithm find the signals. In addition, supervised machine learning methods like random forest allow you to rank your predictor variables in order of their importance (degree of useful predictive power).</p>
+<p>Machine learning methods are often useful for performing variable selection (identifying a small set of important predictor variables), and for identifying important non-linear responses or interactions.</p>
+<p>Supervised machine learning (e.g., random forest) involves giving the algorithm a bunch of observations with known response and known predictor variables and letting the algorithm find the relationships between the response and predictor – just like multiple linear regression.</p>
+<p>Unsupervised machine learning (e.g., clustering algorithms) involve giving the algorithm a bunch of observations, each associated with a bunch of measurements, and allowing the algorithm to identify key differences and similarities (patterns) in the data. For example, the algorithm my divide the observations into groups that share certain similarities. These groups (clusters) can then enable researchers to identify key ‘hidden’ similarities between observations.</p>
+</div>
+<div id="multivariate-statistics" class="section level2">
+<h2>Multivariate statistics</h2>
+<p>Multivariate statistics involves trying to interpret multiple response processes at the same time. For example, community ecologists often want to understand the presence/absence and population dynamics of multiple species in a single ecological community. These researchers therefore are dealing with muliple response variables at the same time - for example, they may wish to model the presence or absence of species A, B, C, and D as a function of three environmental covariates (x1, x2 and x3) and inter-species competitive exclusion. Such an analysis would be called a <strong>multivariate analysis</strong>.</p>
+<p>I will try to post more on multivariate statistics later - and definitely in the next iteration of this class!</p>
+<div id="dimensionality-reduction" class="section level3">
+<h3>Dimensionality reduction</h3>
+<p>Often classified as a type of multivariate statistical analysis, <strong>principal components analysis (PCA)</strong> and other dimensionality reduction methods (e.g., non-metric multidimensional scaling, or NMDA) are useful for taking a large set of variables and trying to summarize the variation among observations according to a smaller set of derived variables (often known as “axes” – for example, “PCA axis 1”). This can enable visualization of similarities and differences among observations – eg., by plotting PC1 vs PC2.</p>
+<p>Some analysts will run a PCA on all their observations (e.g., all 100 predictor variables) in order to reduce their set of inter-correlated predictor variables from a very large number to a set of just a few (often 2 or 3) uncorrelated predictor variables. This is one way of dealing with <strong>multicollinearity</strong>. However, it introduces a new problem- how to interpret your new variables!</p>
 </div>
 </div>
+<div id="last-words" class="section level2">
+<h2>Last words</h2>
+<p>I will try to add to this ‘next steps’ lecture in the future. In the meantime, I wish you all the best as you continue your journey as creative, effective data analysts.</p>
+<p>As always, your feedback is very much appreciated.</p>
+<p>Thanks for bearing with me this semester!!!</p>
+<p>–End of lectures–</p>
 </div>
 
 

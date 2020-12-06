@@ -23,6 +23,8 @@ navbar:
       href: LECTURE5.html
     - text: Analysis- GLM and GLMM
       href: LECTURE6.html
+    - text: Next steps
+      href: LECTURE7.html
   - text: More Resources
     menu:
     - text: Links 

@@ -1,5 +1,5 @@
 ---
-title: "Linear Regression and ANOVA"
+title: "Linear Regression (and ANOVA)"
 author: "NRES 710"
 date: "Fall 2020"
 output: 
