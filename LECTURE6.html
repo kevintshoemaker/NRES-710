@@ -630,6 +630,7 @@ lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</c
 <p>Obviously, the standard diagnostic plots don’t make much sense for GLM– after all, they are testing assumptions that we are no longer making! We don’t need to test for normality of residuals if we are assuming our response variable is binomially distributed! We don’t need to test for homogeneity of variance if our assumed probability distribution is heteroskedastic!</p>
 <p>The Poisson distribution, for example, does not have homogeneous variance- in fact, the variance of the Poisson distribution is equal to the mean. So the larger the expected value, the larger the variance!</p>
 <p>However, we need some way of testing whether the distribution we selected is a reasonable fit to our data. We could use so-called deviance residuals here (which is the default in r) but I prefer to use the DHARMa package in R.</p>
+<p>NOTE: the DHARMa package also works for GLMM models (generalized linear mixed-effects models- see below!)</p>
 <pre class="r"><code>residuals(model)  # compute the deviance residuals for the poisson regression model</code></pre>
 <pre><code>##           1           2           3           4           5           6 
 ## -2.42978608 -2.50052900 -1.65007105 -3.05661566  2.48675116  2.00642043 
@@ -890,6 +891,7 @@ AICtab[order(AICtab$DeltaAIC,decreasing = F),]</code></pre>
 ## NegBin_pred1           NegBin_pred1     -118.0889 242.1777  11.338580
 ## NegBin_pred2           NegBin_pred2     -118.0889 242.1777  11.338580
 ## Poisson                     Poisson     -173.5860 355.1720 124.332889</code></pre>
+<p>NOTE: for AIC model comparison to make sense, the response variable must be exactly the same (note: you can’t compare different transformations of the response variable) and the number of observations must be exactly the same. Careful with missing data here!</p>
 </div>
 <div id="overview-mixed-effects-models" class="section level2">
 <h2>Overview: Mixed-effects models</h2>

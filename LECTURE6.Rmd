@@ -247,6 +247,8 @@ The Poisson distribution, for example, does not have homogeneous variance- in fa
 
 However, we need some way of testing whether the distribution we selected is a reasonable fit to our data. We could use so-called deviance residuals here (which is the default in r)  but I prefer to use the DHARMa package in R. 
 
+NOTE: the DHARMa package also works for GLMM models (generalized linear mixed-effects models- see below!)
+
 
 ```{r}
 
@@ -386,7 +388,7 @@ AICtab[order(AICtab$DeltaAIC,decreasing = F),]
 
 ```
 
-
+NOTE: for AIC model comparison to make sense, the response variable must be exactly the same (note: you can't compare different transformations of the response variable) and the number of observations must be exactly the same. Careful with missing data here!
 
 ## Overview: Mixed-effects models
 
