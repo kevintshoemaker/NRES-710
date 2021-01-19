@@ -154,9 +154,9 @@ rmarkdown::render('LECTURE4.Rmd',rmarkdown::pdf_document())
 rmarkdown::render('LECTURE5.Rmd',rmarkdown::pdf_document())
 rmarkdown::render('LECTURE6.Rmd',rmarkdown::pdf_document())
 rmarkdown::render('LECTURE7.Rmd',rmarkdown::pdf_document())
-rmarkdown::render('LECTURE8.Rmd',rmarkdown::pdf_document())
-rmarkdown::render('LECTURE9.Rmd',rmarkdown::pdf_document())
-rmarkdown::render('LECTURE10.Rmd',rmarkdown::pdf_document())
+# rmarkdown::render('LECTURE8.Rmd',rmarkdown::pdf_document())
+# rmarkdown::render('LECTURE9.Rmd',rmarkdown::pdf_document())
+# rmarkdown::render('LECTURE10.Rmd',rmarkdown::pdf_document())
 
 
 ```
