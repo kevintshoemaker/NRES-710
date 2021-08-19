@@ -23,6 +23,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -304,12 +315,30 @@ $(document).ready(function () {
       <a href="LECTURE5.html">Analysis- ANOVA</a>
     </li>
     <li>
-      <a href="LECTURE6.html">Analysis- Multivariate</a>
+      <a href="LECTURE6.html">Analysis- GLM and GLMM</a>
+    </li>
+    <li>
+      <a href="LECTURE7.html">Next steps</a>
     </li>
   </ul>
 </li>
-<li>
-  <a href="Links.html">Links</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    More Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Links.html">Links</a>
+    </li>
+    <li>
+      <a href="FINALPROJ.html">Final Projects</a>
+    </li>
+    <li>
+      <a href="STUDYGUIDE.html">Study Guide</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -335,9 +364,9 @@ $(document).ready(function () {
 <p>Note: this schedule is subject to change. Please check for updates frequently!</p>
 <table>
 <colgroup>
-<col width="9%" />
+<col width="16%" />
 <col width="38%" />
-<col width="51%" />
+<col width="44%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -348,89 +377,149 @@ $(document).ready(function () {
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Aug. 24</td>
-<td align="left">Basics of probability and statistics</td>
-<td align="left">Base R demo; hot hand reading; face mask reading</td>
+<td align="left">Aug. 24 (week 1)</td>
+<td align="left">Intro, Overview, Data types</td>
+<td align="left">Discussion: hot hand reading; face mask reading</td>
 </tr>
 <tr class="even">
-<td align="left">Aug. 31</td>
-<td align="left">Basics of probability and statistics</td>
-<td align="left">Central limit theorem demo; p-value reading</td>
+<td align="left">Aug. 31 (week 2)</td>
+<td align="left">P-values, sampling</td>
+<td align="left">Discussion: p-value readings</td>
 </tr>
 <tr class="odd">
-<td align="left">Sept. 7</td>
+<td align="left">Sept. 7 (week 3)</td>
 <td align="left">No Class (labor day)</td>
-<td align="left">T-test and Z-test demo; New Yorker reading</td>
+<td align="left">Discussion: p-hacking readings</td>
 </tr>
 <tr class="even">
-<td align="left">Sept. 14</td>
-<td align="left">Analyses: T-test, Chi-squared</td>
-<td align="left">Chi-squared test demo;</td>
+<td align="left">Sept. 14 (week 4)</td>
+<td align="left">Replication, sampling distributions</td>
+<td align="left">Discussion: pseudoreplication</td>
 </tr>
 <tr class="odd">
-<td align="left">Sept. 21</td>
-<td align="left">Analyses: Linear Regression</td>
+<td align="left">Sept. 21 (week 5)</td>
+<td align="left">Central limit theorem, data simulation</td>
+<td align="left">Discussion: final projects</td>
+</tr>
+<tr class="even">
+<td align="left">Sept. 28 (week 6)</td>
+<td align="left">Data independence, t distribution</td>
+<td align="left">Discussion: code and data sharing</td>
+</tr>
+<tr class="odd">
+<td align="left">Oct. 5 (week 7)</td>
+<td align="left">Confidence intervals, probability in R</td>
+<td align="left">R exercise: probability distributions</td>
+</tr>
+<tr class="even">
+<td align="left">Oct. 12 (week 8)</td>
+<td align="left">T-tests, z-tests</td>
+<td align="left">R exercise: t-test, z-test</td>
+</tr>
+<tr class="odd">
+<td align="left">Oct. 19 (week 9)</td>
+<td align="left">Overview of classical statistical tests</td>
+<td align="left">Midterm prep</td>
+</tr>
+<tr class="even">
+<td align="left">Oct. 26 (week 10)</td>
+<td align="left">Exam review session</td>
+<td align="left">Midterm exam</td>
+</tr>
+<tr class="odd">
+<td align="left">Nov. 2 (week 11)</td>
+<td align="left">Exam recap, power analysis</td>
+<td align="left">R exercise: power analysis</td>
+</tr>
+<tr class="even">
+<td align="left">Nov. 9 (week 12)</td>
+<td align="left">Chi-squared test</td>
+<td align="left">No class (Veteran’s Day)</td>
+</tr>
+<tr class="odd">
+<td align="left">Nov. 16 (week 13)</td>
 <td align="left">Linear regression</td>
+<td align="left">Linear regression lecture (continued)</td>
 </tr>
 <tr class="even">
-<td align="left">Sept. 28</td>
-<td align="left">Analyses: ANOVA and posthoc tests</td>
+<td align="left">Nov. 23 (week 14)</td>
 <td align="left">ANOVA</td>
+<td align="left">ANOVA lecture (condinued)</td>
 </tr>
 <tr class="odd">
-<td align="left">Oct. 5</td>
-<td align="left">Goodness of fit and validation</td>
-<td align="left">Model validation</td>
+<td align="left">Nov. 30 (week 15)</td>
+<td align="left">Mixed effects models</td>
+<td align="left">GLMM lecture (continued)</td>
 </tr>
 <tr class="even">
-<td align="left">Oct. 12</td>
-<td align="left">REVIEW SESSION</td>
-<td align="left">Midterm Exam (10/14/20)</td>
+<td align="left">Dec. 7 (week 16)</td>
+<td align="left">Next steps- multivariate, bayesian, etc.</td>
+<td align="left">No class</td>
 </tr>
 <tr class="odd">
-<td align="left">Oct. 19</td>
-<td align="left">Common data ‘problems’ and solutions</td>
-<td align="left">Data checking</td>
-</tr>
-<tr class="even">
-<td align="left">Oct. 26</td>
-<td align="left">Data solutions: Transformations</td>
-<td align="left">Data ‘wrangling’</td>
-</tr>
-<tr class="odd">
-<td align="left">Nov. 2</td>
-<td align="left">Analyses: Nonparametric tests #1</td>
-<td align="left">Rank tests</td>
-</tr>
-<tr class="even">
-<td align="left">Nov. 9</td>
-<td align="left">Analyses: Nonparametric tests #2</td>
-<td align="left">Other nonparametric analyses</td>
-</tr>
-<tr class="odd">
-<td align="left">Nov. 16</td>
-<td align="left">Intro to multivariate analysis</td>
-<td align="left">Ordination in R</td>
-</tr>
-<tr class="even">
-<td align="left">Nov. 23</td>
-<td align="left">Post-ordination statistics</td>
-<td align="left">post-ordination in R</td>
-</tr>
-<tr class="odd">
-<td align="left">Nov. 30</td>
-<td align="left">Intro to likelihood, Bayesian theory</td>
-<td align="left">Bayesian regression in R</td>
-</tr>
-<tr class="even">
-<td align="left">Dec. 7</td>
-<td align="left">Where to go next?</td>
-<td align="left">NA</td>
-</tr>
-<tr class="odd">
-<td align="left">Dec. 16</td>
+<td align="left">Dec. 16 (week 17)</td>
 <td align="left">Final projects due 5pm</td>
-<td align="left">NA</td>
+<td align="left">Review session (optional)</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">REVIEW SESSION</td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
@@ -445,7 +534,7 @@ $(document).ready(function () {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

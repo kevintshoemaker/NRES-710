@@ -1,0 +1,5 @@
+"0",""
+"0","## quantile function  "
+"0",""
+"0","    # for continuous distribution"
+"0","curve(qt(x,df=8),0,1,xlab=""cumulative probability"",ylab='quantile')"

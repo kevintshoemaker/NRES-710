@@ -26,6 +26,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -380,12 +391,30 @@ div.tocify {
       <a href="LECTURE5.html">Analysis- ANOVA</a>
     </li>
     <li>
-      <a href="LECTURE6.html">Analysis- Multivariate</a>
+      <a href="LECTURE6.html">Analysis- GLM and GLMM</a>
+    </li>
+    <li>
+      <a href="LECTURE7.html">Next steps</a>
     </li>
   </ul>
 </li>
-<li>
-  <a href="Links.html">Links</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    More Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Links.html">Links</a>
+    </li>
+    <li>
+      <a href="FINALPROJ.html">Final Projects</a>
+    </li>
+    <li>
+      <a href="STUDYGUIDE.html">Study Guide</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -466,7 +495,7 @@ Office hours: Wednesdays from 1 to 230pm via Zoom (and by appointment)</p>
 <p>The final project is designed to test your ability to understand and apply the tools that you have developed during the semester using R. The project will involve conducting a rigorous data analysis using statistical approaches that we have learned during the semester (or other tools as approved by the instructor). You can choose whichever statistical methods are suitable to your project scope and questions, but they must be methods we covered in class and appropriate to your data. Please turn in your own work and assignment, but you may use as many resources as you wish (class material, online material, or the insight/experience of other students) to generate the material presented. More specific instructions will come during the semester.</p>
 <p>With roughly a month left in the semester, first drafts of your final projects will be due. These first drafts will then be subjected to anonymous peer review. At this time, the assignment itself will not be “graded,” but the assignment will be reviewed by at least two other students, and the reviews will be graded. The reviews are designed to provide feedback on the statistical approach being used. For example, are the stats relevant to the data? Will the stats appropriate to the experimental design? The reviews will be due in one week and will be provided to the author for their consideration and assistance in their final project.</p>
 <p>Given the nature of graduate classes, student participation is expected.</p>
-<p>Grades will be assigned as follows (percentage is calculated as fraction of total semester score): Midterm exam: 20% Final project (including peer review): 40% Homework: 20% Overall class participation: 20%</p>
+<p>Grades will be assigned as follows (percentage is calculated as fraction of total semester score): Midterm exam (and optional final): 20% Final project (including peer review): 40% Homework/exercises: 20% Overall class participation: 20%</p>
 </div>
 <div id="grading" class="section level3">
 <h3>Grading</h3>
@@ -595,7 +624,7 @@ Office hours: Wednesdays from 1 to 230pm via Zoom (and by appointment)</p>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

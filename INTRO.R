@@ -26,7 +26,7 @@ five<-four+1      # you can use variables to define new ones
 
 
 
-iris                   # this is a data frame- the basic data storage type in R
+#iris                   # this is a data frame- the basic data storage type in R
 head(iris)             # [add your own comment here!]
 tail(iris)
 

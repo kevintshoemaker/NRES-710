@@ -16,7 +16,7 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -26,6 +26,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -106,33 +117,33 @@ summary {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 51px;
+  padding-top: 45px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .dropdown-submenu {
   position: relative;
@@ -364,10 +375,46 @@ div.tocify {
     <li>
       <a href="INTRO.html">Introduction to NRES 710</a>
     </li>
+    <li>
+      <a href="LECTURE1.html">Basic Concepts</a>
+    </li>
+    <li>
+      <a href="LECTURE2.html">Analysis- t test</a>
+    </li>
+    <li>
+      <a href="LECTURE3.html">Analysis- chi2 test</a>
+    </li>
+    <li>
+      <a href="LECTURE4.html">Analysis- linear regression</a>
+    </li>
+    <li>
+      <a href="LECTURE5.html">Analysis- ANOVA</a>
+    </li>
+    <li>
+      <a href="LECTURE6.html">Analysis- GLM and GLMM</a>
+    </li>
+    <li>
+      <a href="LECTURE7.html">Next steps</a>
+    </li>
   </ul>
 </li>
-<li>
-  <a href="Links.html">Links</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    More Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Links.html">Links</a>
+    </li>
+    <li>
+      <a href="FINALPROJ.html">Final Projects</a>
+    </li>
+    <li>
+      <a href="STUDYGUIDE.html">Study Guide</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -388,7 +435,320 @@ div.tocify {
 </div>
 
 
+<div id="download-the-r-code-for-this-lecture" class="section level2">
+<h2>Download the R code for this lecture!</h2>
+<p>To follow along with the R-based lessons and demos, <a href="LECTURE3.R">right (or command) click on this link and save the script to your working directory</a></p>
+</div>
+<div id="overview-chi-squared-tests" class="section level2">
+<h2>Overview: Chi-squared-tests</h2>
+<div id="chi-square-goodness-of-fit-test." class="section level3">
+<h3>Chi-square goodness-of-fit test.</h3>
+<p>As you recall from the ‘basic concepts’ lecture, this test asks the question “do the observations sort into categories according to your (null) hypothesis?” In a Chi-square goodness-of-fit test, the response variable of interest is categorical. Like the one-sample t-test, there is no predictor variable.</p>
+<p><em>Example</em>: Are graduate students more likely to be born some months versus other months?</p>
+<p>In this example, the response variable of interest is the birth month- which is best considered a categorical variable. You can run this test on non-categorical variables (e.g., continuous numeric), but you have to turn your variable into a categorical variable (e.g., by “binning”) prior to conducting this analysis.</p>
+</div>
+<div id="chi-square-test-for-independence" class="section level3">
+<h3>Chi-square test for independence</h3>
+<p>In the chi-square test for independence, we are testing for a relationship between two categorical variables. That is, both your response variable and predictor variables are categorical. For example, we might test if rabbit ear type (floppy, pointy, mixed) is associated with rabbit coat color (white, brown, mixed) (e.g., are floppy eared rabbits more likely to be white than bunnies with pointy ears).</p>
+</div>
+</div>
+<div id="assumptions-of-chi-squared-tests" class="section level2">
+<h2>Assumptions of Chi-squared tests</h2>
+<ul>
+<li>Response variable (and predictor variable, for test for independence) must be <em>categorical</em> (data can be summarized as <strong>contingency table</strong>)<br />
+</li>
+<li>Samples must be independent (this is almost always an assumption of our classical statistical tests)<br />
+</li>
+<li>Samples must be representative of the population of interest (again, this is always a key assumption)<br />
+</li>
+<li>There must be a sufficient sample size such that the <em>expected number of observations</em> in each element of the contingency table is at least 5!</li>
+</ul>
+<p>The Chi-squared statistic is computed from the data. The sampling distribution for the statistic is called the <em>Chi-squared distribution</em>.</p>
+</div>
+<div id="the-chi-squared-statistic" class="section level2">
+<h2>The Chi-squared statistic:</h2>
+<p><span class="math inline">\(\chi^2 = \sum_{i=1}^k\frac{(x_i-exp_i)^2}{exp_i}\)</span></p>
+<p>Here, <span class="math inline">\(exp_i\)</span> is the expected number of observations in category i under the null hypothesis. <span class="math inline">\(x_i\)</span> is the observed number in category i. So the Chi-squared statistic basically summarizes the extent to which the count of observations in each category disagrees with the expected (null) count across all categories.</p>
+<p>Why is the numerator squared? First, this makes all deviations positive- negatives and positives can’t cancel each other out. Second (and trust the statisticians here), by computing our test statistic this way it allows us to use the well-described Chi-squared distribution to approximate our sampling distribution (for assessing the inconsistency of the observed data with the null hypothesis)!</p>
+</div>
+<div id="the-chi-squared-distribution" class="section level2">
+<h2>The Chi-squared distribution</h2>
+<p>The Chi-squared distribution is described (like the <em>t</em> distribution) by a certain degrees of freedom (‘degrees of freedom’ is the <em>parameter</em> needed to describe the distribution – just like mean and standard deviation are parameters of the normal distribution).</p>
+<p>If you are performing a goodness-of-fit test, the degrees of freedom for this test is one less than the number of categories.</p>
+<p><strong>Q</strong> Can you state why the degrees of freedom for this test is one less than the number of categories?</p>
+<p>If you are performing a test for independence of two categorical variables, the degrees of freedom is computed as <span class="math inline">\((r-1)(c-1)\)</span> where r and c are the number of categories in each of the two categorical variables, respectively.</p>
+</div>
+<div id="examples-in-r" class="section level2">
+<h2>Examples in R</h2>
+<div id="chi-squared-goodness-of-fit-example" class="section level3">
+<h3>Chi squared goodness-of-fit example</h3>
+<pre class="r"><code>## Chi squared goodness-of-fit example
+
+birthdays.bymonth &lt;- c(40,23,33,39,28,29,45,31,22,34,44,20)
+months &lt;- c(&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;,&quot;Sep&quot;,&quot;Oct&quot;,&quot;Nov&quot;,&quot;Dec&quot;)
+names(birthdays.bymonth) &lt;- months
+
+sample.size &lt;- sum(birthdays.bymonth)
+k = length(birthdays.bymonth)   # number of categories (months)
+exp.birthdays.bymonth &lt;- sample.size*rep(1/k,times=k)   # compute the expected number under the null hypothesis.
+
+Chisq.stat &lt;- sum((birthdays.bymonth-exp.birthdays.bymonth)^2/exp.birthdays.bymonth)
+Chisq.stat</code></pre>
+<pre><code>## [1] 24.14433</code></pre>
+<pre class="r"><code>## View the summary statistic along with its sampling distribution under the null hypothesis
+
+curve(dchisq(x,k-1),0,75)
+abline(v=Chisq.stat,col=&quot;green&quot;,lwd=3)</code></pre>
+<p><img src="LECTURE3_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>p &lt;- 1-pchisq(Chisq.stat,k-1)
+p</code></pre>
+<pre><code>## [1] 0.01213825</code></pre>
+<pre class="r"><code>### use R&#39;s built in chi squared function
+
+chisq.test(birthdays.bymonth)     # should get the same p value!</code></pre>
+<pre><code>## 
+##  Chi-squared test for given probabilities
+## 
+## data:  birthdays.bymonth
+## X-squared = 24.144, df = 11, p-value = 0.01214</code></pre>
+</div>
+<div id="chi-squared-test-for-independence-example" class="section level3">
+<h3>Chi squared test for independence example</h3>
+<p>Here we are testing if bunnies ear type is related to coat color. First we summarize the number of bunnies with each possible combination of coat color and ear type (this is our contingency table). Then we determine what number would be expected in each category if the null hypothesis were true. Finally we can compute the chi-squared statistic and compare with the null sampling distribution (chi squared distribution). Here is the code:</p>
+<pre class="r"><code>n.bunnies &lt;- 112
+
+    # sample assuming null hypothesis is true
+all.bunnies &lt;- data.frame(
+  ear_type = sample(c(&quot;floppy&quot;,&quot;pointy&quot;,&quot;mixed&quot;),n.bunnies,replace = T),
+  coat_color = sample(c(&quot;white&quot;,&quot;brown&quot;,&quot;mixed&quot;),n.bunnies,replace = T)
+)
+
+head(all.bunnies)</code></pre>
+<pre><code>##   ear_type coat_color
+## 1   floppy      brown
+## 2    mixed      mixed
+## 3    mixed      white
+## 4   pointy      white
+## 5    mixed      mixed
+## 6   floppy      white</code></pre>
+<pre class="r"><code>######
+# make contingency table
+
+con_table &lt;- table(all.bunnies$ear_type,all.bunnies$coat_color)
+
+######
+# generate expected values
+
+prop.ears &lt;- rowSums(con_table)/n.bunnies
+sum.coats &lt;- colSums(con_table)
+exp_table &lt;- sapply(1:ncol(con_table),function(t) sum.coats[t]*prop.ears)
+colnames(exp_table) &lt;- colnames(con_table)
+
+#####
+# compute chi-squared statistic
+
+Chisq.stat &lt;- sum((con_table-exp_table)^2/exp_table)
+
+
+#####
+# Compare chi squared statistic with null sampling distribution
+
+curve(dchisq(x,4),0,10)
+abline(v=Chisq.stat,col=&quot;blue&quot;,lwd=2)
+
+p.value &lt;- 1-pchisq(Chisq.stat,4)
+p.value</code></pre>
+<pre><code>## [1] 0.3802384</code></pre>
+<pre class="r"><code>text(7,0.15,paste0(&quot;p = &quot;,round(p.value,3)))</code></pre>
+<p><img src="LECTURE3_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>######
+# Compare with R&#39;s built in chi squared function
+
+chisq.test(con_table)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  con_table
+## X-squared = 4.1952, df = 4, p-value = 0.3802</code></pre>
+<p>Here is another example- this time we use a Chi-squared goodness of fit test to assess normality of a continuous variable. This example is meant to enhance understanding of the chi-squared goodness of fit test– I don’t suggest running this test to assess normality, since the shipiro-wilks test is a much better test!</p>
+<pre class="r"><code>######
+# Chi-squared test for normality
+
+normal.data &lt;- rnorm(250,4,1.5)  # generate normal data
+nonnormal.data &lt;-  runif(250,2,6)  # generate non-normal data
+
+hist(normal.data)</code></pre>
+<p><img src="LECTURE3_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>hist(nonnormal.data)</code></pre>
+<p><img src="LECTURE3_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre class="r"><code>#####
+# First bin the data (chi squared test must be on categorical data!)
+
+breaks &lt;- c(-Inf,1,2,3,3.5,4,4.5,5,6,7,Inf)
+
+normal.data.binned &lt;- cut(normal.data,breaks,labels=breaks[-1])
+nonnormal.data.binned &lt;- cut(nonnormal.data,breaks,labels=breaks[-1])
+
+obs_table_norm &lt;- table(normal.data.binned)
+obs_table_nonnorm &lt;- table(nonnormal.data.binned)
+
+#####
+# Determine expected values in each cell if the underlying distribution were normal
+
+normal.probs &lt;- sapply(2:length(breaks), function(t) pnorm(breaks[t],mean(normal.data),sd(normal.data))-pnorm(breaks[t-1],mean(normal.data),sd(normal.data))  )
+exp_table_norm &lt;- length(normal.data)*normal.probs  # check that expected vals are greater than 5
+
+normal.probs &lt;- sapply(2:length(breaks), function(t) pnorm(breaks[t],mean(nonnormal.data),sd(nonnormal.data))-pnorm(breaks[t-1],mean(nonnormal.data),sd(nonnormal.data))  )
+exp_table_nonnorm &lt;- length(normal.data)*normal.probs  # check that expected vals are greater than 5
+
+######
+# Chi squared stat for normality test on normal data
+
+chistat_norm &lt;- sum((obs_table_norm-exp_table_norm)^2/exp_table_norm)
+pval_norm &lt;- 1-pchisq(chistat_norm,length(exp_table_norm)-1)
+pval_norm</code></pre>
+<pre><code>## [1] 0.8455114</code></pre>
+<pre class="r"><code>chistat_nonnorm &lt;- sum((obs_table_nonnorm-exp_table_nonnorm)^2/exp_table_nonnorm)
+pval_nonnorm &lt;- 1-pchisq(chistat_nonnorm,length(exp_table_nonnorm)-1)
+pval_nonnorm</code></pre>
+<pre><code>## [1] 2.253956e-06</code></pre>
+<pre class="r"><code>####
+# Compare with shapiro wilk test (which is a MUCH better test!)
+
+shapiro.test(normal.data)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  normal.data
+## W = 0.99779, p-value = 0.9834</code></pre>
+<pre class="r"><code>shapiro.test(nonnormal.data)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  nonnormal.data
+## W = 0.96314, p-value = 4.928e-06</code></pre>
+</div>
+</div>
+<div id="g-test" class="section level2">
+<h2>G test</h2>
+<p>Many statistical tests recommend the G test as an alternative to the Pearson Chi-squared test. The test is very similar to the Chi Squared test, and has the same number of degrees of freedom. The G statistic is computed as:</p>
+<p><span class="math inline">\(G = 2\cdot \sum{O_i\cdot ln(\frac{O_i}{E_i})}\)</span></p>
+<p>The sampling distribution for the G statistic is, for large sample sizes, approximately Chi-squared distributed with the same number of degrees of freedom as for the corresponding Chi-squared test.</p>
+<p>Let’s repeat the bunny example above, this time using both the Chi-squared test and the G test.</p>
+<pre class="r"><code>n.bunnies &lt;- 112
+
+    # sample assuming null hypothesis is true
+all.bunnies &lt;- data.frame(
+  ear_type = sample(c(&quot;floppy&quot;,&quot;pointy&quot;,&quot;mixed&quot;),n.bunnies,replace = T),
+  coat_color = sample(c(&quot;white&quot;,&quot;brown&quot;,&quot;mixed&quot;),n.bunnies,replace = T)
+)
+
+head(all.bunnies)</code></pre>
+<pre><code>##   ear_type coat_color
+## 1   pointy      mixed
+## 2   floppy      white
+## 3   pointy      white
+## 4   pointy      white
+## 5   floppy      white
+## 6    mixed      brown</code></pre>
+<pre class="r"><code>######
+# make contingency table
+
+con_table &lt;- table(all.bunnies$ear_type,all.bunnies$coat_color)
+
+######
+# generate expected values
+
+prop.ears &lt;- rowSums(con_table)/n.bunnies
+sum.coats &lt;- colSums(con_table)
+exp_table &lt;- sapply(1:ncol(con_table),function(t) sum.coats[t]*prop.ears)
+colnames(exp_table) &lt;- colnames(con_table)
+
+#####
+# compute chi-squared and G statistics
+
+Chisq.stat &lt;- sum((con_table-exp_table)^2/exp_table)
+G.stat &lt;- 2*sum(con_table*log(con_table/exp_table))   # slightly different!
+
+
+#####
+# Compare chi squared and G statistics with null sampling distribution
+
+curve(dchisq(x,4),0,10)
+abline(v=Chisq.stat,col=&quot;blue&quot;,lwd=1)
+abline(v=G.stat,col=&quot;red&quot;,lwd=1)
+legend(&quot;topright&quot;,lty=c(1,1),lwd=c(1,1),col=c(&quot;blue&quot;,&quot;red&quot;),legend=c(&quot;Chi-squared&quot;,&quot;G stat&quot;),bty=&quot;n&quot;)
+
+p.value.Chi &lt;- 1-pchisq(Chisq.stat,4)
+p.value.G &lt;- 1-pchisq(G.stat,4)
+
+text(7,0.12,paste0(&quot;p.Chi = &quot;,round(p.value.Chi,3)))
+text(7,0.1,paste0(&quot;p.G = &quot;,round(p.value.G,3)))</code></pre>
+<p><img src="LECTURE3_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>As you can see, in practice it won’t usually matter whether you use the Chi-squared or G statistic! But some reviewers may ask you to use the G statistic because most statisticians agree that it does a slightly better job than the classical Chi-squared statistic.</p>
+</div>
+<div id="non-parametric-alternatives" class="section level2">
+<h2>Non-parametric alternatives</h2>
+<p>The Chi-squared test is sometimes considered a non-parametric test because it does not assume anything about the underlying distribution of the data or the residuals. The Chi-squared tests simply makes the assumption that the observations are independent. Given the independence of observations AND large enough sample size, the sampling distribution for the chi-squared statistic (and G statistic) should be distributed according to a chi-squared distribution with the appropriate degrees of freedom.</p>
+<p>BUT… the Fisher exact test makes fewer assumptions than the Chi-squared test– namely that the sample size is ‘large enough’ and should be used in place of the Chi-squared test when you have small sample size. Here is the bunny example again, this time with small sample size:</p>
+<pre class="r"><code>n.bunnies &lt;- 20
+
+    # sample assuming null hypothesis is true
+all.bunnies &lt;- data.frame(
+  ear_type = sample(c(&quot;floppy&quot;,&quot;pointy&quot;,&quot;mixed&quot;),n.bunnies,replace = T),
+  coat_color = sample(c(&quot;white&quot;,&quot;brown&quot;,&quot;mixed&quot;),n.bunnies,replace = T)
+)
+
+head(all.bunnies)</code></pre>
+<pre><code>##   ear_type coat_color
+## 1   pointy      brown
+## 2    mixed      mixed
+## 3    mixed      white
+## 4   pointy      mixed
+## 5    mixed      white
+## 6    mixed      mixed</code></pre>
+<pre class="r"><code>######
+# make contingency table
+
+con_table &lt;- table(all.bunnies$ear_type,all.bunnies$coat_color)
+
+######
+# generate expected values
+
+prop.ears &lt;- rowSums(con_table)/n.bunnies
+sum.coats &lt;- colSums(con_table)
+exp_table &lt;- sapply(1:ncol(con_table),function(t) sum.coats[t]*prop.ears)
+colnames(exp_table) &lt;- colnames(con_table)
+
+#####
+# run fisher exact test
+
+#?fisher.test
+
+chisq.test(con_table)</code></pre>
+<pre><code>## Warning in chisq.test(con_table): Chi-squared approximation may be incorrect</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  con_table
+## X-squared = 6.6296, df = 4, p-value = 0.1568</code></pre>
+<pre class="r"><code>fisher.test(con_table)   # better test</code></pre>
+<pre><code>## 
+##  Fisher&#39;s Exact Test for Count Data
+## 
+## data:  con_table
+## p-value = 0.1644
+## alternative hypothesis: two.sided</code></pre>
+<pre class="r"><code>fisher.test(con_table,simulate.p.value = T,B=5000)   # use simulated p-value - usually very similar answer</code></pre>
+<pre><code>## 
+##  Fisher&#39;s Exact Test for Count Data with simulated p-value (based on
+##  5000 replicates)
+## 
+## data:  con_table
+## p-value = 0.1622
+## alternative hypothesis: two.sided</code></pre>
 <p><a href="LECTURE4.html">–go to next lecture–</a></p>
+</div>
 
 
 
@@ -401,7 +761,7 @@ div.tocify {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -440,7 +800,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

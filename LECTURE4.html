@@ -12,11 +12,11 @@
 <meta name="author" content="NRES 710" />
 
 
-<title>Linear Regression</title>
+<title>Linear Regression (and ANOVA)</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -26,6 +26,17 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -106,33 +117,33 @@ summary {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 51px;
+  padding-top: 45px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .dropdown-submenu {
   position: relative;
@@ -364,10 +375,46 @@ div.tocify {
     <li>
       <a href="INTRO.html">Introduction to NRES 710</a>
     </li>
+    <li>
+      <a href="LECTURE1.html">Basic Concepts</a>
+    </li>
+    <li>
+      <a href="LECTURE2.html">Analysis- t test</a>
+    </li>
+    <li>
+      <a href="LECTURE3.html">Analysis- chi2 test</a>
+    </li>
+    <li>
+      <a href="LECTURE4.html">Analysis- linear regression</a>
+    </li>
+    <li>
+      <a href="LECTURE5.html">Analysis- ANOVA</a>
+    </li>
+    <li>
+      <a href="LECTURE6.html">Analysis- GLM and GLMM</a>
+    </li>
+    <li>
+      <a href="LECTURE7.html">Next steps</a>
+    </li>
   </ul>
 </li>
-<li>
-  <a href="Links.html">Links</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    More Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Links.html">Links</a>
+    </li>
+    <li>
+      <a href="FINALPROJ.html">Final Projects</a>
+    </li>
+    <li>
+      <a href="STUDYGUIDE.html">Study Guide</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -381,43 +428,677 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Linear Regression</h1>
+<h1 class="title toc-ignore">Linear Regression (and ANOVA)</h1>
 <h4 class="author">NRES 710</h4>
 <h4 class="date">Fall 2020</h4>
 
 </div>
 
 
-<p>T-tests roll us straight into linear regression. Why?</p>
-<p>What is the hypothesis of a one-sample t-test? µ=0.</p>
-<p>What is the hypothesis of a linear regression? Slope = 0.</p>
-<p>We assume there is some true model out there (for simple linear regression): y= β_0+β_1 x</p>
-<p>But we can only approximate it: y= b_0+b_1 x+ε</p>
-<p>ε= y-µ_y for each point.</p>
-<p>So t is simply: t= |B ̂-B_0 |/〖SE〗_B With df = n-2 (actually n-p-1, where p is the number of parameters)</p>
-<p>We must assume: Linear model – best model will have least square fit to the data. Independence Equal variance (homoscedasticity, or lack of heteroscedasticity) Normal distribution x-values are correct – the error is associated with the y value, not x.</p>
-<p>The goal of linear regression is to model the relationship between some response variable (dependent) and an explanatory variable (independent). You can have multiple explanatory variables… hence you can have multiple linear regression. We will focus on simple linear regression here.</p>
-<p>The model is unknown but parameters of the model are estimated from the data, plus error (as seen above). Models are fitted using “least squares” approach. The best fit model minimizes the sum of the squared residuals. DRAW THIS OUT</p>
-<p>In order to calculate a regression, we must know the slope and the intercept.</p>
-<p>m=(∑<em>(i=1)^n▒(x_i-x ̅ )(y_i-y ̅ ) )/(∑</em>(i=1)^n▒(x_i-x ̅ )^2 )</p>
-<p>b= y ̅-(x ̅m)</p>
-<p>However, these terms do not account for variability between the model and the data. We get that from the correlation coefficient (r). r= (∑<em>(i=1)^n▒(x_i-x ̅ )(y_i-y ̅ ) )/√(∑</em>(i=1)^n▒(x_i-x ̅ )^2 ×∑_(i=1)^n▒(y_i-y ̅ )^2 )</p>
-<p>X Y xi-xbar Yi-ybar xi-xbar – yi-ybar (xi-xbar)^2 (yi-ybar)^2 4.1 2.2 -8.075 -7.85 63.38875 65.205625 61.6225 6.5 4.5 -5.675 -5.55 31.49625 32.205625 30.8025 12.6 10.4 0.425 0.35 0.14875 0.180625 0.1225 25.5 23.1 13.325 13.05 173.89125 177.555625 170.3025 268.925 275.1475 262.85 12.175 10.05</p>
-<p>So m = 262.85/275.1475 = 0.977385</p>
-<p>B = 10.05-(12.175*0.977385) = -1.84966</p>
-<p>R = 0.999987</p>
-<p>Explore all four possible outcomes of linear regression: non-significant p/ high r, significant p/ low r, and significant p/high r and nonsignificant p/low r/.</p>
-<p>Show anscombe’s quartet. Use anscombe’s quartet as jumping off point to explore R output associated with regression.</p>
-<p>Plot your regression object. See what comes out:</p>
-<blockquote>
-<p>plot(ellem) Hit <Return> to see next plot:</p>
-</blockquote>
-<p>First up, residuals vs fitted plot. What is a residual? It’s the yi-ybar above. Remember, this is always on the y. This figure tests the assumption of whether the relationship between your variables is linear - Is there equal variance along the regression line? It’s “good” if you have no real shape to the data, no clear outliers, and symmetrical around the dotted “0” line.</p>
-<p>Next up: Q-Q plot: plots your data relative to the normal distribution. The y-axis is the residuals. The x-axis is the percentile of your data. 0 is the 50th percentile of your data. The 95th percentile would be 1.64. It’s “good” if your data line up along the dotted line, without getting too far away. Your data would not be normally distributed if they got really far off. It’s subjective. There are tests for this, though!</p>
-<p>Next: Scale-Location plot: This also tests for homoscedasticity. Are the residuals spread evenly along the ranges of predictors (the x-axis)? If not, you’ll get a strong trend and generally see a cone-shaped pattern.</p>
-<p>Finally: Residuals vs Leverage. This tests if any data points are exhibiting a strong pull on the data. It includes an estimate of “Cook’s distance” - an indicator of outlier-ness. NOTE: Not all outliers actually exhibit a pull on your linear regression. It depends where it’s located. In this plot, pattern is not relevant – you need to look for data points that fall outside Cook’s distance.</p>
-<p>These four figures, in sum, should be a guide to interpreting how robust your regression is. You need to be the scientist. Analyze these plots and make decisions about what you’re willing to accept.</p>
+<div id="download-the-r-code-for-this-lecture" class="section level2">
+<h2>Download the R code for this lecture!</h2>
+<p>To follow along with the R-based lessons and demos, <a href="LECTURE4.R">right (or command) click on this link and save the script to your working directory</a></p>
+</div>
+<div id="overview-linear-regression" class="section level2">
+<h2>Overview: Linear Regression</h2>
+<p>Classical linear regression involves testing for a relationship between a continuous response variable (dependent variable) and a continuous predictor variable (independent variable).</p>
+<p>You can have multiple explanatory variables… hence you can have multiple linear regression. We will focus on <em>simple linear regression</em> here.</p>
+<p>The null hypothesis is that there is no relationship between the response variable and the predictor variable in your population of interest. That is, observations with larger values for your predictor variable are not expected to be associated with larger or smaller values of the response variable on average.</p>
+<div id="simple-example" class="section level3">
+<h3>Simple example</h3>
+<p>Imagine we are testing for a relationship between the brightness of artificial lighting at long stretch of beach (e.g., from hotels and other forms of development) and the total number of hatchling sea turtles per nest that successfully make it to the ocean.</p>
+<p><em>Population</em>: All nests in this particular stretch of beach<br />
+<em>Parameter(s)</em>: The mean number of hatchlings per nest that successfully travel from their nest to the ocean and how this changes as a function of the brightness of artificial lighting.<br />
+<em>Sample</em>: All monitored nests<br />
+<em>Statistic(s)</em>: Slope and intercept of the linear relationship between the measured response variable (number of successful ocean-arrivers per nest) and the predictor variable (brightness of artificial lighting)</p>
+</div>
+<div id="some-more-specifics" class="section level3">
+<h3>Some more specifics!</h3>
+<p>We assume there is some true model out there describing the expected (mean) value of our response variable <em>y</em> as a linear function of our predictor variable <em>x</em>:</p>
+<p><span class="math inline">\(E(y)= \beta_0 + \beta_1\cdot x\)</span></p>
+<p>To interpret this equation: the true mean of our response variable (<span class="math inline">\(E(y)\)</span>) is computed by taking the true intercept (<span class="math inline">\(\beta_0\)</span>) and adding the product of the true slope term (<span class="math inline">\(\beta_1\)</span>) and our predictor variable. This is just another way of saying that the expected value of the response variable is computed as a linear function of the predictor variable. <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_0\)</span> are both <em>parameters</em> that we wish to estimate!</p>
+<p>To complete the thought, we also assume that there is some “noise” in the system. The “noise” term in regression and ANOVA is also known as the <em>residual error</em>. Specifically, we assume that the noise (residual error) is normally distributed with mean of zero and standard deviation of <span class="math inline">\(\sigma\)</span>.</p>
+<p>Mathematically, we are assuming that our data/sample was generated from this process:</p>
+<p><span class="math inline">\(y= \beta_0 + \beta_1\cdot x + \epsilon\)</span></p>
+<p>OR:</p>
+<p><span class="math inline">\(y= E(y) + \epsilon\)</span></p>
+<p>WHERE:</p>
+<p><span class="math inline">\(\epsilon \equiv Normal(0, \sigma)\)</span></p>
+<p>This is actually the same assumption we made for a one-sample t-test!</p>
+<p>For a t-test, we assume that there is a true population mean <span class="math inline">\(\mu\)</span> (equivalent to <span class="math inline">\(E(y)\)</span>) and that the true “noise” is normally distributed with standard deviation of <span class="math inline">\(\sigma\)</span>.</p>
+<p>As with a t-test, where we can only approximate the true population mean by computing the sample mean, we can only approximate the linear relationship between our response and predictor variables:</p>
+<p><span class="math inline">\(\bar{y} = \hat{B_0} + \hat{B_0}\cdot x\)</span></p>
+<p>Just like any other statistical test, we assume that our observed linear relationship (defined by test statistics <span class="math inline">\(\hat{B_0}\)</span> and <span class="math inline">\(\hat{B_1}\)</span>) is just one of many such possible relationships that <em>could have been derived</em> from random sampling from our population of interest. If we collected a different sample, we would get a different linear relationship.</p>
+<p>NOTE: in linear regression we are generally far more interested in the slope of the linear relationship (<span class="math inline">\(\hat{B_1}\)</span> rather than the intercept). So for now, we assume <span class="math inline">\(\hat{B_1}\)</span> (slope between response and predictor, computed from the sample) is the main test statistic of interest!</p>
+<p>So.. what is the sampling distribution for our test statistic <span class="math inline">\(\hat{B_1}\)</span> under the null hypothesis in this case? Well, the answer is that it (when converted to units of standard error) is t-distributed! Let’s look into this a bit more.</p>
+</div>
+<div id="regression-and-t-tests--the-link" class="section level3">
+<h3>Regression and t-tests- the link!</h3>
+<p>Our discussion of t-tests actually rolls us straight into linear regression. Why? How?</p>
+<p>In a one-sample t-test we are interested in estimating the true population mean, and we assume that our t-statistic (i.e., deviation of the sample mean from the null mean, in units of standard error) is t-distributed with degrees of freedom of one less than the sample size.</p>
+<p>What is the hypothesis of a typical one-sample t-test? (<span class="math inline">\(\mu = 0\)</span> - that is, the true mean is zero!)</p>
+<p>What is the hypothesis of a linear regression? (Slope = 0 - that is, the true relationship is zero).</p>
+<p>So already we are seeing a bit of a similarity.</p>
+<div id="t-test-recap" class="section level4">
+<h4>t-test recap</h4>
+<p>In a t-test we assume that the population mean is equal to the null mean and that the data are normally distributed around the true mean. We could write this as (using regression notation):</p>
+<p><span class="math inline">\(y = \beta_0 + \epsilon\)</span></p>
+<p>WHERE:</p>
+<p><span class="math inline">\(\epsilon \equiv Normal(0, \sigma)\)</span></p>
+<p>In the above equation, <span class="math inline">\(\beta_0\)</span> represents the population mean under the null hypothesis.</p>
+<p>We approximate our population mean using the sample mean <span class="math inline">\(\bar{\beta_0}\)</span> (formerly known as <span class="math inline">\(\bar{x}\)</span>) and we use the CLT and other statistical theories to show that the t-statistic:</p>
+<p><span class="math inline">\(t = \frac{\bar{\beta_0}-\beta_0}{StdErr(\beta_0)}\)</span></p>
+<p>Is t-distributed with df computed as the sample size minus the number of parameters estimated in the model (there is only one estimated parameter- the sample mean <span class="math inline">\(\bar{\beta_0}\)</span>).</p>
+</div>
+<div id="linear-regression-version" class="section level4">
+<h4>linear regression version</h4>
+<p>In linear regression we assume that the mean of our response is determined by two parameters- the intercept and the slope (linear relationship with the predictor variable). The null hypothesis (usually) is that the true mean is defined only by the intercept term and there is no relationship with the predictor variable (slope term is equal to zero).</p>
+<p>The slope term of the linear regression can be computed as:</p>
+<p><span class="math inline">\(\hat{\beta_1} = \frac{\sum_{i=1}^{n}{(x_i-\bar{x})(y_i-\bar{y})}}{\sum_{i-1}^{n}{(x_i-\bar{x})^2}}\)</span></p>
+<p>And the intercept term can be computed as:</p>
+<p><span class="math inline">\(\hat{\beta_0} = \bar{y} - \beta_1*\bar{x}\)</span></p>
+<p>Simple linear regression models (that is, the slope and intercept terms above) are fitted using “least squares”. The best fit model minimizes the sum of the squared residuals. DRAW THIS OUT.</p>
+<p>The standard error of the slope term (as opposed to the standard error of the mean) is computed as:</p>
+<p><span class="math inline">\(std.err_{\hat{\beta_1}} = \sqrt{\frac{\frac{1}{n-2}\sum_{i=1}^n{\hat\epsilon_i^2}}{\sum_{i=1}^n{(x_i-\bar{x})^2}}}\)</span></p>
+<p>Where the <span class="math inline">\(\hat\epsilon_i\)</span> refers to the residual errors.</p>
+<p>We can then compute a t-statistic for the slope term (difference from the sample slope term and the null slope term in units of standard error):</p>
+<p><span class="math inline">\(t=\frac{\hat{\beta_1}-\beta_{1null}}{std.err_{\hat{\beta_1}}}\)</span></p>
+<p>Just like with the t-test, we assume that this t-statistic is t-distributed under the null hypothesis. This time the degrees of freedom is 2 less than the sample size (since computing the residual error requires computing two parameters: mean and slope).</p>
+</div>
+</div>
+</div>
+<div id="simple-linear-regression-examples" class="section level2">
+<h2>Simple linear regression: examples</h2>
+<p>Okay let’s consider the sea turtle example from the beginning of lecture:</p>
+<p>Imagine we are testing for a relationship between the brightness of artificial lighting at long stretch of beach (e.g., from hotels and other forms of development) and the total number of hatchling sea turtles per nest that successfully make it to the ocean.</p>
+<p><em>Population</em>: All nests in this particular stretch of beach<br />
+<em>Parameter(s)</em>: The mean number of hatchlings per nest that successfully travel from their nest to the ocean and how this changes as a function of the brightness of artificial lighting.<br />
+<em>Sample</em>: All monitored nests<br />
+<em>Statistic(s)</em>: Slope and intercept of the linear relationship between the measured response variable (number of successful ocean-arrivers per nest) and the predictor variable (brightness of artificial lighting)</p>
+<p>First we will simulate some data under a known process model:</p>
+<pre class="r"><code>eggs.per.nest &lt;- 100
+n.nests &lt;- 15
+light &lt;- rnorm(n.nests,50,10)   # make up some light pollution values (predictor var)
+
+probsucc &lt;- function(light){    # egg success as a function of light pollution
+  plogis(1.5-0.01*light)
+}
+
+hatchlings.successful &lt;- rbinom(n.nests,eggs.per.nest,probsucc(light))   # determine number of successful eggs (response var)
+
+#curve(probsucc,0,100)
+
+plot(hatchlings.successful~light)  # plot the data</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Now that we have data, let’s run a linear regression!</p>
+<pre class="r"><code>slope &lt;- sum((light-mean(light))*(hatchlings.successful-mean(hatchlings.successful)))/sum((light-mean(light))^2)
+intercept &lt;- mean(hatchlings.successful) - slope*mean(light)
+
+exp.successful &lt;- intercept+slope*light # expected number of eggs for each observation
+residuals &lt;- hatchlings.successful-exp.successful
+
+stderr &lt;- sqrt(((1/(n.nests-2))*sum(residuals^2))/(sum((light-mean(light))^2)))    # standard error
+
+t.stat &lt;- (slope-0)/stderr    # t statistic
+
+pval &lt;- 2*pt(t.stat,n.nests-2)    # p value
+
+
+############
+# use lm function instead (easy way!)
+
+model &lt;- lm(hatchlings.successful~light)
+
+summary(model)   # get the same t stat and p-value hopefully!</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = hatchlings.successful ~ light)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -11.1861  -1.9268  -0.3609   2.0089   7.7926 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  91.4235     9.0816  10.067 1.67e-07 ***
+## light        -0.3567     0.1839  -1.939   0.0745 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.147 on 13 degrees of freedom
+## Multiple R-squared:  0.2244, Adjusted R-squared:  0.1647 
+## F-statistic: 3.761 on 1 and 13 DF,  p-value: 0.07446</code></pre>
+<pre class="r"><code>############
+# plot regression line!
+
+plot(hatchlings.successful~light)  # plot the data
+abline(intercept,slope,col=&quot;blue&quot;)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Of course, we can’t end with a single regression line, since there is sampling error associated with our best-fit regression line. There is error associated with the intercept and there is error associated with the slope term. To do this in r, we can use the ‘predict’ function:</p>
+<pre class="r"><code>######
+# add confidence interval on the regression line
+
+newdata &lt;- data.frame(    # make a data frame containing the light values we want to make predictions for (spanning the range of light values in our data)
+  light = seq(20,80,1)
+)
+
+my.predict &lt;- predict(model, newdata = newdata, interval = &quot;confidence&quot;)  # 95% conf int by default
+
+plot(hatchlings.successful~light)  # plot the data
+abline(intercept,slope,col=&quot;blue&quot;)
+lines(newdata$light,my.predict[,&quot;upr&quot;],col=&quot;red&quot;,lty=2)   # add upper bound
+lines(newdata$light,my.predict[,&quot;lwr&quot;],col=&quot;red&quot;,lty=2)   # add lower bound</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>This confidence interval loosely represents the range of plausible best-fit lines we could fit if we were to gather multiple alternative datasets. If some of the lines that fit within the upper and lower bounds of the confidence interval on the regression line have a positive slope and others have a negative slope, we might remain unconvinced that the relationship betwen the response and predictor variable is ‘statistically significant’!</p>
+<pre class="r"><code>#  use the lm function to regress tree volume on tree girth using the &#39;trees&#39; dataset
+
+mod &lt;- lm(Volume~Girth,data=trees)
+summary(mod)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Volume ~ Girth, data = trees)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -8.065 -3.107  0.152  3.495  9.587 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -36.9435     3.3651  -10.98 7.62e-12 ***
+## Girth         5.0659     0.2474   20.48  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 4.252 on 29 degrees of freedom
+## Multiple R-squared:  0.9353, Adjusted R-squared:  0.9331 
+## F-statistic: 419.4 on 1 and 29 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="assumptions-of-simple-linear-regression" class="section level2">
+<h2>Assumptions of simple linear regression</h2>
+<div id="normal-distribution" class="section level3">
+<h3>Normal distribution</h3>
+<p>Simple linear regression assumes that the model <strong>residuals</strong> are normally distributed.</p>
+<p>Let’s quickly review what residuals are (see whiteboard exercise)</p>
+<p>Let’s look at the residuals for our sea turtle example:</p>
+<pre class="r"><code>my.intercept &lt;- model$coefficients[&quot;(Intercept)&quot;]
+my.slope &lt;- model$coefficients[&quot;light&quot;]
+expected.vals &lt;- my.intercept+my.slope*light 
+my.residuals &lt;- hatchlings.successful-expected.vals
+my.residuals</code></pre>
+<pre><code>##  [1]   1.9184018  -1.3888319  -0.7763980   1.5561769  -2.4648016  -0.9236137
+##  [7]  -0.3608579   7.7925980   7.0735228   5.9462566 -11.1860902   2.0994176
+## [13]  -6.2096460  -3.7434128   0.6672784</code></pre>
+<pre class="r"><code>### alternative way of getting residuals (best way!)
+
+my.residuals2 &lt;- model$residuals
+
+### alternative way using predict function
+
+my.residuals3 &lt;- hatchlings.successful-predict(model)
+
+### histogram of residuals
+
+hist(my.residuals)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>### test for normality
+
+qqnorm(my.residuals)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<pre class="r"><code>shapiro.test(my.residuals)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  my.residuals
+## W = 0.95855, p-value = 0.6672</code></pre>
+</div>
+<div id="linear-model" class="section level3">
+<h3>Linear model</h3>
+<p>The true relationship between the response and predictor variables is linear!</p>
+<p>Which one of the following plots violates this assumption?</p>
+<pre class="r"><code>layout(matrix(1:4,nrow=2,byrow = T))
+plot(anscombe$y1~anscombe$x1,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y2~anscombe$x2,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y3~anscombe$x3,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y4~anscombe$x4,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="independence-of-observations" class="section level3">
+<h3>Independence of observations</h3>
+<p>Of course! All classical analyses make this assumption!</p>
+</div>
+<div id="equal-variance-homoscedasticity-or-lack-of-heteroscedasticity" class="section level3">
+<h3>Equal variance (homoscedasticity, or lack of heteroscedasticity)</h3>
+<p>In simple linear regression, we assume that the model residuals are normally distributed– and that the spread of that distribution does not change as your predictor variable or response variable goes from small to large. That is, the residuals are <strong>homoskedastic</strong> – which means they have equal variance across the range of the predictor and response variables.</p>
+<p>Let’s look at the sea turtle example:</p>
+<pre class="r"><code>my.residuals &lt;- model$residuals
+
+plot(my.residuals~light)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>plot(my.residuals~predict(model))</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<p>Do you see any evidence for <strong>heteroskedasticity</strong>? Heteroskedasticity means non-homogeneity of variance across the range of the predictor variable. Serious violations of the equal variance assumption may warrant a <strong>transformation</strong> of your data, or you may choose to use an alternative analysis like a <strong>generalized linear model</strong>.</p>
+</div>
+<div id="predictor-variable-is-known-with-certainty" class="section level3">
+<h3>Predictor variable is known with certainty</h3>
+<p>That is, the observed (e.g., measured) values for your predictor variable are correct and known with perfect precision. In regression, the randomness in linear regression is associated only with the response variable - and that randomness is normally distributed.</p>
+</div>
+<div id="diagnostic-plots" class="section level3">
+<h3>Diagnostic plots</h3>
+<p>Simple linear regression analyses are generally accompanied by ‘diagnostic plots’, which are intended to diagnose potential violations of key assumptions, or other potential pitfalls of regression.</p>
+<p>When you use the ‘plot’ function in R to evaluate a model generated with the ‘lm’ function, R returns four diagnostic plots:</p>
+<pre class="r"><code>layout(matrix(1:4,2,byrow = T))
+plot(model)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>The first diagnostic plot (residuals vs fitted) lets you check for possible non-linear patterns. This plot should have no obvious pattern to it- it should look like random noise across the range of fitted values.</p>
+<p>The second diagnostic plot (normal Q-Q) lets you check for normality of residuals. You already know how to do this.</p>
+<p>The third diagnostic plot (scale-location) lets you check for homoskedascitiy. This plot should have no obvious pattern to it- it should look like random noise across the range of fitted values.</p>
+<p>The fourth diagnostic plot (residuals vs leverage) lets you check to make sure your regression model isn’t driven by a few <strong>influential points</strong>. Look for points that fall far to the right of the other points- these are high leverage points. Also look specifically at the upper and lower right hand side of this figure- points in these regions (with large values for “Cook’s distance”) have the property that if they were removed from the analysis the results would change substantially.</p>
+<p>These four figures, taken together, should be a guide to interpreting how robust your regression is. You need to be the scientist. Analyze these plots and make decisions about what you’re willing to accept.</p>
+</div>
+<div id="influential-points" class="section level3">
+<h3>Influential points</h3>
+<p>Which of the following plots has a highly influential point?</p>
+<pre class="r"><code>layout(matrix(1:4,nrow=2,byrow = T))
+plot(anscombe$y1~anscombe$x1,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y2~anscombe$x2,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y3~anscombe$x3,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y4~anscombe$x4,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Can you try to draw a regression line if this point was removed?</p>
+</div>
+</div>
+<div id="a-deeper-exploration" class="section level2">
+<h2>A deeper exploration</h2>
+<div id="r-squared" class="section level3">
+<h3>R-squared</h3>
+<p>The coefficient of determination, also known as R-squared, is a statistic that is commonly used to indicate the performance of a regression model. Specifically, R-squared tells you how much of the total variance in your response variable is explained by your predictor variable. The maximum value for R-squared is 1- values close to 1 indicate a very “good” model! An R-squared of zero indicates that the model with the predictor variable is no better than a model that simply predicts the overall mean of the response variable no matter what the predictor variable is.</p>
+<p>R-squared can be computed as:</p>
+<p><span class="math inline">\(R_2 = 1-\frac{SS_{res}}{SS_{tot}}\)</span></p>
+<p>where <span class="math inline">\(SS_{tot} = \sum(y_i-\bar{y})^2\)</span> and <span class="math inline">\(SS_{res} = \sum(y_i-y_{pred})^2\)</span>.</p>
+</div>
+<div id="regression-outcomes" class="section level3">
+<h3>Regression outcomes</h3>
+<p>Let’s explore some possible outcomes of linear regression:</p>
+<p>Try to come up with scenarios (with plots) for each of the following:</p>
+<ol style="list-style-type: decimal">
+<li>Non-significant p, high R2<br />
+</li>
+<li>Significant p, low R2<br />
+</li>
+<li>Significant p, high R2<br />
+</li>
+<li>Non-significant p, low R2</li>
+</ol>
+</div>
+</div>
+<div id="multiple-linear-regression" class="section level2">
+<h2>Multiple linear regression</h2>
+<p>Multiple, or multi-variable, linear regression simply refers to the case where you have more than one predictor variable.</p>
+<p>NOTE: avoid using the term ‘multivariate’ because that usually refers to the case where you have multiple <strong>response</strong> variables.</p>
+<div id="linear-regression-vs-correlation" class="section level3">
+<h3>Linear regression vs correlation</h3>
+<p>When you run a simple linear regression you are assuming that one variable is your response variable and the other variable is a predictor variable. You are essentially modeling only one of these variables (the response) as a random variable and the other (the predictor variable) as a set of fixed values (a fixed effect).</p>
+</div>
+<div id="assessing-correlation-in-r" class="section level3">
+<h3>Assessing correlation in R</h3>
+<p>In R you can use the ‘cor’ function (part of base R) to assess correlation. To run a correlation test (assess if the correlation is ‘significant’) you can use the ‘cor.test’ function. By default, the ‘cor.test’ function runs a Pearson correlation test, which is a parametric test that assumes both variables are normal, no outliers, etc. If you want you can run a non-parametric version- the Spearman correlation (or Kendall’s tau).</p>
+<pre class="r"><code>## load the &#39;mtcars&#39; data set
+
+data(mtcars)
+
+## define which variables to assess correlation for.
+
+myvars &lt;- c(&quot;disp&quot;,&quot;hp&quot;,&quot;wt&quot;)
+
+## grab only the variables of interest
+
+mtcars.reduced &lt;- mtcars[,myvars]
+
+## compute (pearson) correlations for all pairs of variables (correlation matrix)
+
+cor.mat &lt;- cor(mtcars.reduced)
+
+cor.mat</code></pre>
+<pre><code>##           disp        hp        wt
+## disp 1.0000000 0.7909486 0.8879799
+## hp   0.7909486 1.0000000 0.6587479
+## wt   0.8879799 0.6587479 1.0000000</code></pre>
+<pre class="r"><code>## visualize correlations with the &#39;pairs&#39; function
+
+pairs(mtcars.reduced)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code>## run a correlation test- with 95% confidence interval
+    # default is Pearson product-moment correlation.
+
+cor.test(mtcars$disp,mtcars$wt)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  mtcars$disp and mtcars$wt
+## t = 10.576, df = 30, p-value = 1.222e-11
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.7811586 0.9442902
+## sample estimates:
+##       cor 
+## 0.8879799</code></pre>
+<pre class="r"><code>## now try a non-parametric version
+
+cor.test(mtcars$disp,mtcars$wt, method = &quot;kendall&quot;) # or spearman</code></pre>
+<pre><code>## Warning in cor.test.default(mtcars$disp, mtcars$wt, method = &quot;kendall&quot;): Cannot
+## compute exact p-value with ties</code></pre>
+<pre><code>## 
+##  Kendall&#39;s rank correlation tau
+## 
+## data:  mtcars$disp and mtcars$wt
+## z = 5.9278, p-value = 3.07e-09
+## alternative hypothesis: true tau is not equal to 0
+## sample estimates:
+##       tau 
+## 0.7433824</code></pre>
+<p>If we were running a multiple linear regression with these variables as predictor variables, we might be somewhat concerned about multicollinearity. What is that, you ask?</p>
+</div>
+<div id="multicollinearity" class="section level3">
+<h3>Multicollinearity</h3>
+<p>If you have multiple predictor variables, you should first check that your predictor variables are not too correlated with one another. If the correlation between all pairs of covariates is less than around 0.7 or 0.8 you should generally not have a big problem with multicollinearity (although you might still check your variance inflation factors!). If you have a major problem with multicollinearity, you should generally use only one variable out of every pair of highly correlated variables for your final model.</p>
+<p>You might also consider “penalized regression” approaches like ‘ridge regression’. This, however, is outside the scope of this class!</p>
+<div id="variance-inflation-factors" class="section level4">
+<h4>Variance Inflation Factors</h4>
+<p>Variance Inflation Factors are a diagnostic tool to help you evaluate if you have a multicollinearity problem. In general VIFs less than 4 are considered okay. On the other hand, VIFs greater than 5 or 10 indicate serious problems!</p>
+<p>To compute variance inflation factors, you can use the ‘vif’ function in the ‘car’ package. Let’s try this using the trees dataset!</p>
+<pre class="r"><code>########
+# load the car package
+
+library(car)
+
+#######
+# load the trees dataset
+
+data(trees)
+
+######
+# visualize relationships among predictor vars
+
+pairs(trees[,c(&quot;Girth&quot;,&quot;Height&quot;)])</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code>######
+# check for correlation in predictor variables
+
+cor(trees[,c(&quot;Girth&quot;,&quot;Height&quot;)])   # predictor variables not highly correlated</code></pre>
+<pre><code>##            Girth    Height
+## Girth  1.0000000 0.5192801
+## Height 0.5192801 1.0000000</code></pre>
+<pre class="r"><code># run a multiple regression model
+
+my.mod &lt;- lm(Volume~Girth+Height,data=trees)
+
+
+# check variance inflation factors
+
+car::vif(my.mod)</code></pre>
+<pre><code>##   Girth  Height 
+## 1.36921 1.36921</code></pre>
+<p>Here it looks like we don’t have to worry!</p>
+<p>What about if we use the ‘mtcars’ dataset? It seemed there were stronger correlations among predictor variables in that case!</p>
+<pre class="r"><code>########
+## mtcars multicollinearity example
+
+mymod &lt;- lm(mpg~disp+hp+wt,data=mtcars) 
+
+vif(mymod)</code></pre>
+<pre><code>##     disp       hp       wt 
+## 7.324517 2.736633 4.844618</code></pre>
+<p>Now we are in the danger zone, and we might consider reducing our set of variables. First we might find our most highly correlated pair of variables and eliminate one of these!</p>
+<pre class="r"><code>cor(mtcars.reduced)</code></pre>
+<pre><code>##           disp        hp        wt
+## disp 1.0000000 0.7909486 0.8879799
+## hp   0.7909486 1.0000000 0.6587479
+## wt   0.8879799 0.6587479 1.0000000</code></pre>
+<pre class="r"><code>## let&#39;s remove the &#39;disp&#39; variable and keep weight...
+
+mymod &lt;- lm(mpg~hp+wt,data=mtcars) 
+
+vif(mymod)</code></pre>
+<pre><code>##       hp       wt 
+## 1.766625 1.766625</code></pre>
+<p>Looks much better now!!!</p>
+</div>
+</div>
+</div>
+<div id="what-if-assumptions-are-violated" class="section level2">
+<h2>What if assumptions are violated?</h2>
+<p>Let’s look at what to do if some of the basic assumptions of linear regression are violated?</p>
+<div id="non-linearity" class="section level3">
+<h3>Non-linearity</h3>
+<p>If we suspect a non-linear functional relationship between our response and predictor variables, we might perform a <strong>non-linear regression</strong> analysis.</p>
+<p>We can perform a non-linear regression using the “nls” function in R (for non-linear least squares). Let’s use the “DNase” dataset in R to explore this.</p>
+<pre class="r"><code># ?nls
+
+data(DNase)
+
+plot(DNase$density~DNase$conc)   # looks non-linear!</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<pre class="r"><code>### run linear regression model
+
+model1 &lt;- lm(density~conc,data=DNase)
+
+### run diagnostic plots
+
+par(mfrow=c(2,2))
+plot(model1)     # clear non-linearity (and non-normal residuals, and heteroskedasticity!)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
+<pre class="r"><code>par(mfrow=c(1,1))      # plot data with regression line - obvious issues!
+plot(DNase$density~DNase$conc)
+abline(model1)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-3.png" width="672" /></p>
+<pre class="r"><code>### run non-linear regression model - use saturation curve
+
+model2 &lt;- nls(density ~ (max*conc)/(K+conc),data=DNase,start=list(max=2,K=1))
+summary(model2)</code></pre>
+<pre><code>## 
+## Formula: density ~ (max * conc)/(K + conc)
+## 
+## Parameters:
+##     Estimate Std. Error t value Pr(&gt;|t|)    
+## max  2.28032    0.02189  104.16   &lt;2e-16 ***
+## K    3.68241    0.08677   42.44   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.04909 on 174 degrees of freedom
+## 
+## Number of iterations to convergence: 6 
+## Achieved convergence tolerance: 2.373e-06</code></pre>
+<pre class="r"><code>### run non-linear regression model - use logistic function 
+
+model3 &lt;- nls(density ~ Asym/(1 + exp((xmid - log(conc))/scal)),
+                 data = DNase,
+                 start = list(Asym = 3, xmid = 0, scal = 1))
+
+summary(model3)</code></pre>
+<pre><code>## 
+## Formula: density ~ Asym/(1 + exp((xmid - log(conc))/scal))
+## 
+## Parameters:
+##      Estimate Std. Error t value Pr(&gt;|t|)    
+## Asym  2.48532    0.06287   39.53   &lt;2e-16 ***
+## xmid  1.51812    0.06397   23.73   &lt;2e-16 ***
+## scal  1.09831    0.02442   44.98   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.04687 on 173 degrees of freedom
+## 
+## Number of iterations to convergence: 6 
+## Achieved convergence tolerance: 4.739e-07</code></pre>
+<pre class="r"><code>plot(DNase$density~DNase$conc)
+abline(model1)
+concs.toplot &lt;- seq(0.01,14,0.1)
+densities.toplot &lt;- predict(model2,newdata=data.frame(conc=concs.toplot))
+lines(concs.toplot,densities.toplot,col=&quot;blue&quot;)
+densities.toplot &lt;- predict(model3,newdata=data.frame(conc=concs.toplot))
+lines(concs.toplot,densities.toplot,col=&quot;red&quot;)
+
+legend(&quot;topleft&quot;,lty=c(1,1,1),col=c(&quot;black&quot;,&quot;blue&quot;,&quot;red&quot;),legend=c(&quot;linear&quot;,
+                  &quot;saturation&quot;,&quot;logistic&quot;))</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-4.png" width="672" /> You can run residual plots with non-linear regression just like you can with ordinary linear regression:</p>
+<pre class="r"><code>## residual plots
+
+resids &lt;- DNase$density-predict(model3)
+
+residuals(model3)   # alternative method! This works for &#39;lm&#39; objects as well (and many other model objects)</code></pre>
+<pre><code>##   [1] -0.0222835640 -0.0212835640 -0.0124539463 -0.0094539463 -0.0335367172
+##   [6] -0.0245367172 -0.0380629138 -0.0410629138 -0.0662506055 -0.0712506055
+##  [11] -0.0115300720 -0.0295300720 -0.0853516109 -0.0553516109 -0.0458016613
+##  [16] -0.0658016613  0.0057164360  0.0107164360  0.0035460537 -0.0104539463
+##  [21] -0.0145367172 -0.0325367172 -0.0140629138 -0.0320629138 -0.0082506055
+##  [26]  0.0007493945  0.0854699280  0.0474699280  0.1346483891  0.1066483891
+##  [31]  0.1561983387  0.1381983387  0.0307164360  0.0287164360  0.0395460537
+##  [36]  0.0315460537  0.0374632828  0.0084632828  0.0189370862  0.0109370862
+##  [41]  0.0227493945  0.0087493945  0.0364699280  0.0464699280  0.2096483891
+##  [46]  0.0596483891  0.2271983387  0.1081983387 -0.0282835640 -0.0232835640
+##  [51] -0.0154539463 -0.0254539463 -0.0395367172 -0.0335367172 -0.0510629138
+##  [56] -0.0550629138 -0.0602506055 -0.0402506055 -0.0515300720 -0.0575300720
+##  [61]  0.0046483891 -0.0203516109 -0.0358016613 -0.0438016613 -0.0042835640
+##  [66] -0.0042835640 -0.0014539463  0.0015460537 -0.0155367172 -0.0195367172
+##  [71] -0.0300629138 -0.0250629138 -0.0222506055 -0.0332506055  0.0294699280
+##  [76]  0.0004699280  0.0056483891 -0.0103516109 -0.0258016613 -0.0378016613
+##  [81]  0.0467164360  0.0637164360  0.0575460537  0.0555460537  0.0324632828
+##  [86]  0.0374632828  0.0249370862  0.0109370862  0.0057493945 -0.0042506055
+##  [91]  0.0314699280  0.0414699280  0.0046483891  0.0396483891 -0.0078016613
+##  [96]  0.0301983387  0.0547164360  0.0527164360  0.0485460537  0.0485460537
+## [101]  0.0424632828  0.0334632828  0.0289370862  0.0239370862  0.0057493945
+## [106] -0.0122506055  0.0214699280  0.0044699280 -0.0103516109 -0.0273516109
+## [111] -0.0168016613 -0.0368016613  0.0147164360  0.0147164360  0.0185460537
+## [116]  0.0145460537 -0.0135367172 -0.0175367172 -0.0230629138 -0.0320629138
+## [121] -0.0222506055 -0.0362506055  0.0124699280 -0.0285300720  0.0466483891
+## [126] -0.0383516109 -0.0328016613 -0.0518016613 -0.0072835640  0.0037164360
+## [131]  0.0085460537  0.0215460537 -0.0005367172  0.0024632828  0.0049370862
+## [136] -0.0200629138 -0.0562506055  0.0247493945  0.0154699280 -0.0045300720
+## [141] -0.0213516109 -0.0143516109 -0.0828016613 -0.0468016613  0.0127164360
+## [146]  0.0547164360  0.0305460537  0.0325460537  0.0194632828  0.0164632828
+## [151]  0.0239370862  0.0239370862  0.0097493945  0.0207493945  0.0114699280
+## [156]  0.0444699280 -0.0793516109 -0.0133516109 -0.0768016613 -0.0678016613
+## [161]  0.0077164360  0.0177164360  0.0255460537  0.0215460537  0.0064632828
+## [166]  0.0124632828  0.0119370862 -0.0040629138  0.0237493945  0.0037493945
+## [171] -0.0365300720 -0.0505300720  0.0016483891 -0.0343516109 -0.0608016613
+## [176] -0.0548016613
+## attr(,&quot;label&quot;)
+## [1] &quot;Residuals&quot;</code></pre>
+<pre class="r"><code>## check for normality
+
+qqnorm(resids)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>shapiro.test(resids)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  resids
+## W = 0.90166, p-value = 1.978e-09</code></pre>
+<pre class="r"><code>## check for heteroskedasticity
+plot(resids~predict(model3))</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+</div>
+<div id="heteroskedasticity" class="section level3">
+<h3>Heteroskedasticity</h3>
+<p>If you have severely heteroskedastic residuals, you can sometimes run a <strong>transformation</strong> of your response variable that improves the situation.</p>
+<p>Alternatively, you might run a <strong>generalized linear model (GLM)</strong> that doesn’t assume homoskedasticity (e.g., run a model that assumes the residuals are gamma distributed, or Poisson distributed). In a gamma or Poisson distribution, the residuals are expected to get larger as the expected mean value gets larger!</p>
+<p>We will talk more about GLM in an upcoming lecture. But for now, let’s run an example with a transformed response variable:</p>
+<pre class="r"><code>##########
+# heteroskedasticity
+
+##### first, simulate data with heteroskedastic residuals
+
+simulated.x &lt;- runif(100,0.1,5)
+simulated.y &lt;- exp(rnorm(100,1.1+0.3*simulated.x,0.7))
+
+plot(simulated.y~simulated.x)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<pre class="r"><code>### run linear model
+
+model1 &lt;- lm(simulated.y~simulated.x)
+par(mfrow=c(2,2))
+plot(model1)  # run diagnostic plots    heteroskedasticity issues</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+<pre class="r"><code>### Take a minute to test for normality of residuals!
+
+### run linear model with log transformation of response variable
+
+model2 &lt;- lm(log(simulated.y)~simulated.x)
+par(mfrow=c(2,2))
+plot(model2)  # run diagnostic plots - no issues!  </code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-17-3.png" width="672" /></p>
+</div>
+<div id="non-independence-of-observations" class="section level3">
+<h3>Non-independence of observations</h3>
+<p>If you have a known source of non-independence in your observations, you can try to thin (rarefy) your data by throwing away non-independent observations (e.g., keeping only one out of every set of known non-independent observerations).</p>
+<p>There are also more advanced regression models that explicitly account for sources of non-independence:</p>
+<p><em>Regression with phylogenetic correction</em> – use this if phylogenetic relatedness among your sampling units is the main source of non-independence</p>
+<p><em>Autoregression (more generally, time series modeling)</em> – use this if the main source of non-independence is temporal- observations taken closer together in time are more likely to be related</p>
+<p><em>Spatial autoregression</em> (more generally, spatial regression models) – use this if the main source of non-independence is spatial – observations taken closer together in space are more correlated.</p>
+<p>These models are outside the scope of this class, but it’s useful to know they exist!</p>
+</div>
+<div id="non-normality-of-residuals" class="section level3">
+<h3>Non-normality of residuals</h3>
+<p>First of all, regression analysis is somewhat robust to non-normality of the residuals- due to the CLT!</p>
+<p>But if your residuals are highly non-normal AND you can’t seem to correct this using non-linear regression, transformations, or GLM, you might need to use a non-parametric alternative.</p>
+<p>One such alternative is to run a non-parametric correlation analysis such as a Spearman rank correlation test.</p>
+</div>
+</div>
+<div id="regression-and-anova" class="section level2">
+<h2>Regression and ANOVA</h2>
+<p>Before we move on to ANOVA, I just wanted to point out the essential similarity between regression and ANOVA. The only difference between regression and ANOVA is that in regression, the response variable is numeric/continuous and in ANOVA your response variable(s) is categorical.</p>
+<p>How similar are regression and ANOVA? Well, we can fit regression and ANOVA models with the ‘lm’ functions, the assumptions are essentially the same, and the diagnostic plots are essentially the same.</p>
+<p>There are differences- we will touch on this in the next lecture- but for now let’s focus on the similarities. Let’s run an ANOVA in R using the same approaches we have just learned for linear regression!</p>
+<p>In this example we will use the famous iris dataset.</p>
+<pre class="r"><code>#### ANOVA as regression example
+
+data(iris)    # load the iris dataset
+
+plot(iris$Sepal.Length ~ iris$Species)   # r uses a boxplot by default for categorical predictor</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<pre class="r"><code>my.mod &lt;- lm(Sepal.Length~Species,data=iris)    # run an ANOVA!
+summary(my.mod)    # look at the results</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Sepal.Length ~ Species, data = iris)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.6880 -0.3285 -0.0060  0.3120  1.3120 
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)         5.0060     0.0728  68.762  &lt; 2e-16 ***
+## Speciesversicolor   0.9300     0.1030   9.033 8.77e-16 ***
+## Speciesvirginica    1.5820     0.1030  15.366  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.5148 on 147 degrees of freedom
+## Multiple R-squared:  0.6187, Adjusted R-squared:  0.6135 
+## F-statistic: 119.3 on 2 and 147 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>anova(my.mod)     # produce an analysis of variance table</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Sepal.Length
+##            Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## Species     2 63.212  31.606  119.26 &lt; 2.2e-16 ***
+## Residuals 147 38.956   0.265                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>####
+# alternative!
+
+my.mod &lt;- aov(Sepal.Length~Species,data=iris)   # same model!!
+summary(my.mod)     # but produces an anova table by default</code></pre>
+<pre><code>##              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+## Species       2  63.21  31.606   119.3 &lt;2e-16 ***
+## Residuals   147  38.96   0.265                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p><a href="LECTURE5.html">–go to next lecture–</a></p>
+</div>
 
 
 
@@ -430,7 +1111,7 @@ div.tocify {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -469,7 +1150,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

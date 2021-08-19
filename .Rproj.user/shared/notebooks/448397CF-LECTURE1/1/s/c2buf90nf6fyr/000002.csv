@@ -2,6 +2,6 @@
 "0","mysample <- sample(allfrogs.bodysize,10)    # take sample of size 10 (10 frogs measured)"
 "0","mean(mysample)   # compute the sample mean"
 "1","[1]"
-"1"," 6.263018"
+"1"," 4.627115"
 "1","
 "

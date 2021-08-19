@@ -1,0 +1,2 @@
+"0",""
+"0","barplot(cumsum(probs),ylab=""Cumulative Probability"",main=""Binomial distribution"")   # cumulative distribution"

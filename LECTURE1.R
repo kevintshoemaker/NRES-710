@@ -52,13 +52,88 @@ hist(samplemeans,xlab="mean body size (n=30)")
 
 hist(rbinom(10000,1,.5),xlab="N heads out of 1")
 
-par(mfrow=c(4,3))
-for(i in 2:12){
+par(mfrow=c(3,2))
+for(i in seq(2,12,2)){
    hist(rbinom(10000,i,.5),main=paste0("sample size = ",i),xlab=sprintf("N heads out of %s",i)) 
 }
 
 
 hist(rbinom(10000,1000,.5),xlab="N heads out of 1")
+
+
+# pseudoreplication demonstration
+
+meansize.allfrogs <- 1.5    # population mean 
+sdsize.allfrogs <- 0.5     # population sd
+sdsize.amongpond <- 0.44   # standard deviation among ponds 
+
+nponds <- 5000   # total number of ponds in the population
+nfrogs.perpond <- 1000    # 1000 frogs in each pond
+
+
+
+pondmeans <- rnorm(nponds,meansize.allfrogs,sdsize.amongpond)
+ # hist(pondmeans)
+allfrogs <- sapply(pondmeans, function(t) rnorm(nfrogs.perpond,t,sqrt(sdsize.allfrogs^2-sdsize.amongpond^2)) )
+rownames(allfrogs) <- paste0("frog",1:(nfrogs.perpond))
+colnames(allfrogs) <- paste0("pond",1:nponds)
+
+  # confirm that population mean and standard deviation are as specified
+sd(allfrogs)
+mean(allfrogs)
+
+
+nponds.sampled <- 2
+nsamp.perpond <- 50 
+
+ponds.sampled <- sample(1:nponds,nponds.sampled)
+frogs.sampled <- replicate(nponds.sampled,sample(1:nfrogs.perpond,nsamp.perpond))
+
+thissamp <- sapply(1:nponds.sampled,function(t) allfrogs[frogs.sampled[,t],ponds.sampled[t]])
+rownames(thissamp) <- paste0("frog",1:(nsamp.perpond))
+colnames(thissamp) <- paste0("pond",1:nponds.sampled)
+
+head(thissamp)
+
+
+test <- t.test(as.vector(thissamp),mu=1.5,alternative="greater")
+test
+
+
+means <- numeric(1000)
+means.ind <- numeric(1000)
+
+ttest <- numeric(1000)
+ttest.ind <- numeric(1000)
+
+for(scenario in 1:1000){
+  ponds.sampled <- sample(1:nponds,nponds.sampled)
+  frogs.sampled <- replicate(nponds.sampled,sample(1:nfrogs.perpond,nsamp.perpond))
+  
+  thissamp <- sapply(1:nponds.sampled,function(t) allfrogs[frogs.sampled[,t],ponds.sampled[t]])
+  thissamp.ind <- matrix(sample(allfrogs,nsamp.perpond*nponds.sampled),ncol=nponds.sampled)
+  
+  means[scenario] <- mean(thissamp)
+  means.ind[scenario] <- mean(thissamp.ind)
+  
+  test <- t.test(as.vector(thissamp),mu=1.5,alternative="greater")
+  test.ind <- t.test(as.vector(thissamp.ind),mu=1.5,alternative="greater")
+  
+  ttest[scenario] <- test$p.value
+  ttest.ind[scenario] <- test.ind$p.value
+  
+}
+
+
+
+
+layout(matrix(1:2,nrow=1))
+hist(means,xlim=c(0,3))
+hist(means.ind,xlim=c(0,3))
+
+length(which(ttest<0.05))/1000
+
+length(which(ttest.ind<0.05))/1000
 
 
 #######
@@ -122,7 +197,9 @@ t.statistic
 curve(dt(x,sample.size-1),-5.5,2)
 abline(v=t.statistic,col="green",lwd=3)
 
-p=pt(t.statistic,sample.size-1)
+t.crit <- qt(0.05,sample.size-1)    # 'critical value' of the t statistic- you can reject the null if your value is more extreme than this!
+
+p=pt(t.statistic,sample.size-1)    # p value
 p    # this is the p value
 
 
@@ -131,15 +208,39 @@ p    # this is the p value
 t.test(weightloss.data,alternative = "less")   # should get the same p=value!
 
 
-## Chi squared example
+### confidence interval for weight loss data
+
+# summary(weightloss.data)
+# 
+# mean.weightloss    # mean weight loss
+# std.error          # standard error of weight loss
+
+curve(dt(x,sample.size),-4,4,xaxt="n",xlab="weight loss",ylab="probability density")
+axis(1,at=seq(-4,4,2),labels = round(mean.weightloss+std.error*seq(-4,4,2),1) )
+abline(v=0,col="blue",lwd=3)
+
+t.crit <- qt(0.975,sample.size-1)    # for 95% confidence interval
+
+abline(v=-1*t.crit,col="red",lty=2)
+abline(v=1*t.crit,col="red",lty=2)
+
+lower.bound <- mean.weightloss - t.crit*std.error
+upper.bound <- mean.weightloss + t.crit*std.error
+
+lower.bound
+
+upper.bound
+
+
+## Chi squared goodness-of-fit example
 
 birthdays.bymonth <- c(40,23,33,39,28,29,45,31,22,34,44,20)
 months <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
 names(birthdays.bymonth) <- months
 
 sample.size <- sum(birthdays.bymonth)
-k = length(birthdays.bymonth)   # number of categories
-exp.birthdays.bymonth <- sample.size*rep(1/k,times=k)
+k = length(birthdays.bymonth)   # number of categories (months)
+exp.birthdays.bymonth <- sample.size*rep(1/k,times=k)   # compute the expected number under the null hypothesis.
 
 Chisq.stat <- sum((birthdays.bymonth-exp.birthdays.bymonth)^2/exp.birthdays.bymonth)
 Chisq.stat
@@ -168,17 +269,16 @@ GSWheight
 mean.gsw <- mean(GSWheight)
 sd.gsw <- sd(GSWheight) 
 sd.pop <- 4
+mean.pop <- 79
 n <- length(GSWheight)
 s.e. <- sd.pop/sqrt(n)
 
-
-
-null.height <- 79
+null.height <- mean.pop   # null: GSW are sampled randomly from the pool of all NBA players. They are not fundamentally different!
 
 z.statistic <- (mean.gsw-null.height)/s.e.
 z.statistic
 
-curve(dnorm(x),-3,3)
+curve(dnorm(x),-3,3)    # we assume that the z statistic is normally distributed- standard normal!
 abline(v=z.statistic,col="green",lwd=3)
 
 p <- 1-pnorm(z.statistic)    # is the p value enough evidence to tell you that GSW players are taller than the NBA average??
@@ -188,21 +288,21 @@ pnorm(z.statistic)
 
 
 #################
-# Probability distributions
+# Discrete probability distributions
 
 mean <- 5
-rpois(10,mean)    # the random numbers have no decimal component
+rpois(10,mean)    # note: the random numbers sampled from this distribution have no decimal component
 
-             # plot a discrete distribution!
+             # plot discrete probabilities of getting particular outcomes!
 xvals <- seq(0,15,1)
 probs <- dpois(xvals,lambda=mean)
 names(probs) <- xvals
                
-barplot(probs,ylab="Probability",main="Poisson distribution (discrete)")
+barplot(probs,ylab="Probability Mass",main="Poisson distribution (discrete)")
 
 barplot(cumsum(probs),ylab="Cumulative Probability",main="Poisson distribution (discrete)")   # cumulative distribution
 
-sum(probs)   # just to make sure it sums to 1!  Does it??? 
+sum(probs)   # just to make sure it sums to 1!  Does it???
 
 
 #########
@@ -211,13 +311,50 @@ sum(probs)   # just to make sure it sums to 1!  Does it???
 shape1 = 0.5
 shape2 = 0.5
 
-rbeta(10,shape1,shape2)
+rbeta(10,shape1,shape2)   # generate 10 random numbers from a continuous distribution
 
-curve(dbeta(x,shape1,shape2))   # probability density
+curve(dbeta(x,shape1,shape2),ylab="probability density",xlab="possibilities")   # probability density function (PDF)
 
-curve(pbeta(x,shape1,shape2))   # cumulative distribution
+curve(pbeta(x,shape1,shape2),ylab="cumulative probability",xlab="possibilities")   # cumulative distribution
 
 integrate(f=dbeta,lower=0,upper=1,shape1=shape1,shape2=shape2)    # just to make sure it integrates to 1!!
+
+
+# random number generators
+
+rnorm(10)    # generate 10 random numbers from a standard normal distribution
+rnorm(5,25,5)  # generate 5 random numbers from a normal distribution with mean=25 and sd=5
+rpois(8,18)  # generate 8 random numbers from a poisson distribution with mean=18
+
+
+## probability density function example 
+
+curve(dt(x,8),-4,4,xlab="possibilities",ylab='relative probability (prob density)')
+
+
+## probability mass function example 
+
+x <- barplot(sapply(0:10,function(t) dpois(t,2)),xlab="possibilities",ylab='probability')
+axis(1,at=x,labels=0:10)
+
+
+## cumulative distribution function  
+
+    # for continuous distribution
+curve(pt(x,df=8),-4,4,xlab="possibilities",ylab='cumulative probability')
+
+    # for discrete distribution
+x <- barplot(sapply(0:10,function(t) ppois(t,2)),xlab="possibilities",ylab='cumulative probability')
+axis(1,at=x,labels=0:10)
+
+
+## quantile function  
+
+    # for continuous distribution
+curve(qt(x,df=8),0,1,xlab="cumulative probability",ylab='quantile')
+
+    # for discrete distribution
+curve(qpois(x,4),0,1,xlab="cumulative probability",ylab='quantile')
 
 
 ##########
@@ -239,7 +376,7 @@ sum(probs)   # just to make sure it sums to 1!  Does it???
 
 
 #########
-# Gaussian
+# Gaussian (normal)
 
 mean = 7.1
 stdev = 1.9
@@ -259,7 +396,7 @@ integrate(f=dnorm,lower=-Inf,upper=Inf,mean=mean,sd=stdev)    # just to make sur
 
 df = 6
 
-rt(10,df)     # random numbers from the t distribution (not sure why you would ever want this!)
+rt(10,df)     # random numbers from the t distribution
 
 curve(dt(x,df),-4,4)   # probability density
 
@@ -274,7 +411,7 @@ integrate(f=dt,lower=-Inf,upper=Inf,df=df)    # just to make sure it integrates 
 
 df = 6
 
-rchisq(10,df)     # random numbers from the t distribution (not sure why you would ever want this!)
+rchisq(10,df)     # random numbers from the chi squared distribution
 
 curve(dchisq(x,df),0,15)   # probability density
 

@@ -2,8 +2,8 @@
     "path": "~/GitHub/NRES-710",
     "sortOrder": [
         {
-            "ascending": true,
-            "columnIndex": 2
+            "columnIndex": 2,
+            "ascending": true
         }
     ]
 }
