@@ -14,17 +14,25 @@
 
 <title>Schedule</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -36,11 +44,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -53,32 +56,8 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
+
 
 
 
@@ -88,10 +67,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -108,40 +83,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 45px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h2 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h3 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h4 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h5 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h6 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -169,7 +120,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -181,7 +132,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -192,10 +143,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -207,7 +171,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -274,7 +237,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -290,7 +253,7 @@ $(document).ready(function () {
   <a href="schedule.html">Schedule</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Lectures
      
     <span class="caret"></span>
@@ -323,7 +286,7 @@ $(document).ready(function () {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     More Resources
      
     <span class="caret"></span>
@@ -340,6 +303,18 @@ $(document).ready(function () {
     </li>
   </ul>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Datasets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Links.html">Links</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -348,177 +323,157 @@ $(document).ready(function () {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
 <h1 class="title toc-ignore">Schedule</h1>
 <h4 class="author">NRES 710</h4>
-<h4 class="date">Fall 2020</h4>
+<h4 class="date">Fall 2022</h4>
 
 </div>
 
 
 <div id="schedule" class="section level2">
 <h2>Schedule</h2>
-<p>Note: this schedule is subject to change. Please check for updates frequently!</p>
+<p>Note: this schedule is subject to change. Please check for updates
+frequently!</p>
 <table>
 <colgroup>
-<col width="16%" />
+<col width="11%" />
+<col width="24%" />
 <col width="38%" />
-<col width="44%" />
+<col width="10%" />
+<col width="13%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="left">Week</th>
 <th align="left">Mon. meeting</th>
 <th align="left">Wed. meeting (R mini-lab)</th>
+<th align="left">Homework</th>
+<th align="left">Readings</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Aug. 24 (week 1)</td>
+<td align="left">Aug. 29 (week 1)</td>
 <td align="left">Intro, Overview, Data types</td>
-<td align="left">Discussion: hot hand reading; face mask reading</td>
-</tr>
-<tr class="even">
-<td align="left">Aug. 31 (week 2)</td>
 <td align="left">P-values, sampling</td>
-<td align="left">Discussion: p-value readings</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
-<tr class="odd">
-<td align="left">Sept. 7 (week 3)</td>
+<tr class="even">
+<td align="left">Sept. 5 (week 2)</td>
 <td align="left">No Class (labor day)</td>
-<td align="left">Discussion: p-hacking readings</td>
-</tr>
-<tr class="even">
-<td align="left">Sept. 14 (week 4)</td>
-<td align="left">Replication, sampling distributions</td>
-<td align="left">Discussion: pseudoreplication</td>
+<td align="left">Sampling distributions; overview of classical
+statistical tests</td>
+<td align="left"></td>
+<td align="left">Hot hand</td>
 </tr>
 <tr class="odd">
-<td align="left">Sept. 21 (week 5)</td>
+<td align="left">Sept. 12 (week 3)</td>
 <td align="left">Central limit theorem, data simulation</td>
-<td align="left">Discussion: final projects</td>
+<td align="left">R exercise: t-test, z-test</td>
+<td align="left">CLT and z-tests</td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">Sept. 28 (week 6)</td>
-<td align="left">Data independence, t distribution</td>
-<td align="left">Discussion: code and data sharing</td>
-</tr>
-<tr class="odd">
-<td align="left">Oct. 5 (week 7)</td>
+<td align="left">Sept. 19 (week 4)</td>
 <td align="left">Confidence intervals, probability in R</td>
 <td align="left">R exercise: probability distributions</td>
-</tr>
-<tr class="even">
-<td align="left">Oct. 12 (week 8)</td>
-<td align="left">T-tests, z-tests</td>
-<td align="left">R exercise: t-test, z-test</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">Oct. 19 (week 9)</td>
-<td align="left">Overview of classical statistical tests</td>
-<td align="left">Midterm prep</td>
+<td align="left">Sept. 26 (week 5)</td>
+<td align="left">Non-parametric analysis</td>
+<td align="left">R exercise: non-parametrics</td>
+<td align="left">permutation test</td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">Oct. 26 (week 10)</td>
-<td align="left">Exam review session</td>
-<td align="left">Midterm exam</td>
-</tr>
-<tr class="odd">
-<td align="left">Nov. 2 (week 11)</td>
-<td align="left">Exam recap, power analysis</td>
-<td align="left">R exercise: power analysis</td>
-</tr>
-<tr class="even">
-<td align="left">Nov. 9 (week 12)</td>
+<td align="left">Oct. 3 (week 6)</td>
 <td align="left">Chi-squared test</td>
-<td align="left">No class (Veteran’s Day)</td>
+<td align="left">No class (Kevin at tortoise summit)</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">Nov. 16 (week 13)</td>
+<td align="left">Oct. 10 (week 7)</td>
 <td align="left">Linear regression</td>
-<td align="left">Linear regression lecture (continued)</td>
+<td align="left">R exercise: linear regression</td>
+<td align="left">Linear regression</td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">Nov. 23 (week 14)</td>
+<td align="left">Oct. 17 (week 8)</td>
 <td align="left">ANOVA</td>
-<td align="left">ANOVA lecture (condinued)</td>
+<td align="left">R exercise: ANOVA</td>
+<td align="left"></td>
+<td align="left">p-values and p-hacking</td>
 </tr>
 <tr class="odd">
-<td align="left">Nov. 30 (week 15)</td>
-<td align="left">Mixed effects models</td>
-<td align="left">GLMM lecture (continued)</td>
+<td align="left">Oct. 24 (week 9)</td>
+<td align="left">Discussion: p-values</td>
+<td align="left">Discussion: p-hacking</td>
+<td align="left">ANOVA</td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">Dec. 7 (week 16)</td>
-<td align="left">Next steps- multivariate, bayesian, etc.</td>
-<td align="left">No class</td>
+<td align="left">Oct. 31 (week 10)</td>
+<td align="left">More advanced ANOVA</td>
+<td align="left">R exercise:</td>
+<td align="left"></td>
+<td align="left">pseudoreplication</td>
 </tr>
 <tr class="odd">
-<td align="left">Dec. 16 (week 17)</td>
+<td align="left">Nov. 7 (week 11)</td>
+<td align="left">Discussion: pseudoreplication</td>
+<td align="left">R exercise: power analysis</td>
+<td align="left">GLM</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Nov. 14 (week 12)</td>
+<td align="left">GLM</td>
+<td align="left">R exercise: GLM</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Nov. 21 (week 13)</td>
+<td align="left">GLMM</td>
+<td align="left">R exercise: GLMM</td>
+<td align="left">GLMM</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Nov. 28 (week 14)</td>
+<td align="left">More advanced GLMM</td>
+<td align="left">Final project peer review</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Dec. 5 (week 15)</td>
+<td align="left">Random Forest</td>
+<td align="left">R exercise: Random forest</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Dec. 12 (week 16)</td>
+<td align="left">Next steps- multivariate, bayesian, etc.</td>
+<td align="left">Discussion: code and data sharing</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Dec. 19 (week 17)</td>
 <td align="left">Final projects due 5pm</td>
 <td align="left">Review session (optional)</td>
-</tr>
-<tr class="even">
 <td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left">REVIEW SESSION</td>
 <td align="left"></td>
 </tr>
 </tbody>
@@ -552,7 +507,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>

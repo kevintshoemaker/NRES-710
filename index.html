@@ -14,20 +14,28 @@
 
 <title>Welcome to NRES 710</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -39,11 +47,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -56,32 +59,8 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
+
 
 
 
@@ -91,10 +70,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -111,40 +86,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 45px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h2 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h3 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h4 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h5 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h6 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -172,7 +123,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -184,7 +135,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -195,10 +146,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -210,7 +174,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -336,7 +299,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -350,7 +313,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -366,7 +329,7 @@ div.tocify {
   <a href="schedule.html">Schedule</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Lectures
      
     <span class="caret"></span>
@@ -399,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     More Resources
      
     <span class="caret"></span>
@@ -416,6 +379,18 @@ div.tocify {
     </li>
   </ul>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Datasets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Links.html">Links</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -424,13 +399,13 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
 <h1 class="title toc-ignore">Welcome to NRES 710</h1>
 <h4 class="author">Graduate Environmental Statistics</h4>
-<h4 class="date">Fall 2020</h4>
+<h4 class="date">Fall 2022</h4>
 
 </div>
 
@@ -440,66 +415,134 @@ div.tocify {
 <p>Kevin Shoemaker<br />
 Office: FA 220E<br />
 Phone: (775)682-7449<br />
-Email: <a href="kevinshoemaker@unr.edu">kevinshoemaker@unr.edu</a><br />
-Office hours: Wednesdays from 1 to 230pm via Zoom (and by appointment)</p>
+Email: <a href="kevinshoemaker@unr.edu">kevinshoemaker@unr.edu</a></p>
+<p>I have no pre-scheduled office hours for this class. Please email me
+to set up a meeting. Also note that when I am in my office and my door
+is propped open, as will usually be the case when I am not in a meeting
+or struggling to meet a deadline, you are welcome to pop in for a chat.
+When my office door is closed, I am not available.</p>
 </div>
 <div id="course-meeting-times" class="section level3">
 <h3>Course Meeting Times</h3>
-<p><strong>Lecture</strong>: M at 8am in DMS 103 (105 mins)<br />
-<strong>Discussion/demo</strong>: W at 9am in DMS 103 (45 mins)</p>
+<p><strong>Lecture</strong>: MW 2:30pm to 3:45pm in EMM 242 (Effie Mona
+Mack Social Sciences Building)</p>
 </div>
 <div id="course-website" class="section level3">
 <h3>Course Website</h3>
-<p><a href="http://kevintshoemaker.github.io/NRES-710/">http://kevintshoemaker.github.io/NRES-710/</a></p>
+<p><a
+href="http://kevintshoemaker.github.io/NRES-710/">http://kevintshoemaker.github.io/NRES-710/</a></p>
 </div>
 <div id="course-objectives" class="section level3">
 <h3>Course Objectives</h3>
-<p>Statistics are fundamental to the generation of scientific knowledge. In this course, students will learn basic principles of statistical inference and will gain experience applying these principles to questions in ecology and environmental science using the R environment for statistical computing. In this course we focus on the concepts and implementation and we generally leave the nitty-gritty stats questions to statisticians.</p>
+<p>In this course, students will learn basic principles of statistical
+inference and will gain experience applying these principles to
+questions in ecology and environmental science using R. In this course
+we focus on the concepts and implementation and we generally leave the
+nitty-gritty stats questions to statisticians.</p>
 </div>
 <div id="student-learning-objectives" class="section level3">
 <h3>Student Learning Objectives</h3>
 <p>Students will be able to:</p>
 <ol style="list-style-type: decimal">
-<li>Communicate, in writing or verbally, the assumptions associated with classical statistical models.<br />
+<li>Communicate, in writing or verbally, the assumptions associated with
+classical statistical models.<br />
 </li>
-<li>Understand and perform statistical tests such as T-test, ANOVAs, and linear regression.<br />
+<li>Understand and perform statistical tests such as T-test, ANOVAs, and
+linear regression.<br />
 </li>
-<li>Identify and perform appropriate statistical tests on data collected during their graduate program<br />
+<li>Identify and perform appropriate statistical tests on data collected
+during their graduate program<br />
 </li>
 <li>Compare and contrast statistical tools and methods.<br />
 </li>
-<li>Import data, visualize patterns, interpret plots, and perform statistical tests using R.</li>
+<li>Import data, visualize patterns, interpret plots, and perform
+statistical tests using R.</li>
 </ol>
 </div>
 <div id="prerequisites" class="section level3">
 <h3>Prerequisites</h3>
-<p>Curious scientific mind, broad research interests, readiness to engage with equations and computer programming. Students are expected to already have a basic understanding of standard statistical concepts and methods, obtained through other coursework. If this is not the case, they should be prepared to work harder to develop the necessary prerequisite knowledge.</p>
+<p>Curious scientific mind, broad research interests, readiness to
+engage with data, equations and computer programming. Students are
+expected to have a basic understanding of standard statistical concepts
+and methods, obtained through other coursework. If this is not the case,
+they should be prepared to work harder to develop the necessary
+prerequisite knowledge.</p>
 </div>
-<div id="required-materials" class="section level3">
-<h3>Required materials</h3>
-<p>Readings and handouts will be provided as appropriate. Unless otherwise noted, all readings assigned for a given week should be done before our Wednesday class meetings. All readings will be posted to WebCampus at least a week before they are due.</p>
-<p>Students will use the open source statistical software R to perform analyses. <em>All students should bring laptops to each class</em>; much of class time will be devoted to hands-on learning in R.</p>
-<p>There are many good R books, but ultimately, most material can be found for free online. For the beginner in statistics or R, I recommend the following:</p>
+<div id="course-materials" class="section level3">
+<h3>Course materials</h3>
+<p>We will use the course website in addition to the WebCampus page set
+up for the course. Most course content (lecture materials) can be found
+on the website, which will be updated frequently. Additional readings
+are available via WebCampus. We will use the Discussion Board feature in
+WebCampus as a forum for written discussion, Q&amp;A, and mutual support
+in engaging with course materials.</p>
+<p>Readings will be provided as appropriate. Unless otherwise noted, all
+readings assigned for a given week should be done before our Wednesday
+class meetings. All readings will be posted to WebCampus at least a week
+before they are due.</p>
+<p>Students will use the open source statistical software R to perform
+analyses. <em>All students should bring laptops to each class</em>; much
+of class time will be devoted to hands-on learning in R.</p>
+<p>There are many good R books, but ultimately, most material can be
+found for free online. For the beginner in statistics or R, I recommend
+the following:</p>
 <ol style="list-style-type: decimal">
 <li>Discovering Statistics using R (Andy Field and Jeremy Miles)</li>
-<li>Introductory R: A beginner’s guide to data visualization, statistical analysis, and programming in R (Robert Knell)</li>
-<li>R Graphics Cookbook (Winston Chang). This book is available for free as a PDF online.</li>
-<li>Qian, Song S. Environmental and Ecological Statistics with R, Second Edition, 2nd Edition. Chapman &amp; Hall, 2017.</li>
+<li>Introductory R: A beginner’s guide to data visualization,
+statistical analysis, and programming in R (Robert Knell)</li>
+<li>R Graphics Cookbook (Winston Chang). This book is available for free
+as a PDF online.</li>
+<li>Qian, Song S. Environmental and Ecological Statistics with R, Second
+Edition, 2nd Edition. Chapman &amp; Hall, 2017.</li>
+<li>A Primer of Ecological Statistics. (Nicholas Gotelli and Aaron
+Ellison). <em>A stats book, but not an R book.</em></li>
 </ol>
 </div>
 <div id="course-structure" class="section level3">
 <h3>Course structure</h3>
-<p>Instruction will consist of lessons on general statistical concepts and specific methods commonly used to address questions in ecology and environmental science. Stats lessons will include lecture-style materials, readings, demonstrations, exercises and class discussions. In general, our Monday class meetings will consist of instructor-led lectures and R demos, and the Wednesday class meetings will consist of student-led discussions.</p>
-<p>There will be one midterm exam and one final project. The midterm exam will be based on stats lessons and will include both a traditional in-class exam and a take-home exam in which you will use R to make inference from provided datasets.</p>
-<p>Homework assignments will occur throughout the semester. They are designed to provide you and me with progress assessments. Therefore, the frequency and subjects of the assignments will depend on the pace of progress during the semester.</p>
-<p>The final project is designed to test your ability to understand and apply the tools that you have developed during the semester using R. The project will involve conducting a rigorous data analysis using statistical approaches that we have learned during the semester (or other tools as approved by the instructor). You can choose whichever statistical methods are suitable to your project scope and questions, but they must be methods we covered in class and appropriate to your data. Please turn in your own work and assignment, but you may use as many resources as you wish (class material, online material, or the insight/experience of other students) to generate the material presented. More specific instructions will come during the semester.</p>
-<p>With roughly a month left in the semester, first drafts of your final projects will be due. These first drafts will then be subjected to anonymous peer review. At this time, the assignment itself will not be “graded,” but the assignment will be reviewed by at least two other students, and the reviews will be graded. The reviews are designed to provide feedback on the statistical approach being used. For example, are the stats relevant to the data? Will the stats appropriate to the experimental design? The reviews will be due in one week and will be provided to the author for their consideration and assistance in their final project.</p>
-<p>Given the nature of graduate classes, student participation is expected.</p>
-<p>Grades will be assigned as follows (percentage is calculated as fraction of total semester score): Midterm exam (and optional final): 20% Final project (including peer review): 40% Homework/exercises: 20% Overall class participation: 20%</p>
+<p>Instruction will consist of lessons on general statistical concepts
+and specific methods commonly used to address questions in ecology and
+environmental science. Stats lessons will include lecture-style
+materials, readings, demonstrations, exercises and class
+discussions.</p>
+<p>A large portion of the overall grade (40%) will be based upon
+periodic, relatively brief homework assignments that follow from the
+topics covered in class. Most assignments will involve statistical
+analysis and interpretation of sample data sets that are provided. There
+will be a final project (30% of your grade) that is designed to test
+your ability to understand and apply the tools that you have developed
+during the semester using R. The final project will involve conducting a
+rigorous data analysis using statistical approaches that we have learned
+during the semester (or other tools as approved by the instructor). You
+can choose whichever statistical methods are suitable to your project
+scope and questions, but they must be methods we covered in class and
+appropriate to your data. Please turn in your own work and assignment,
+but you may use as many resources as you wish (class material, online
+material, or the insight/experience of other students) to generate the
+material presented. More specific instructions will come during the
+semester.</p>
+<p>With roughly 5 weeks left in the semester, first drafts of your final
+projects will be due. These first drafts will then be subjected to
+anonymous peer review. At this time, the assignment itself will not be
+“graded,” but the assignment will be reviewed by at least two other
+students, and the peer reviews will be graded (20% of the overall
+grade). The reviews are designed to provide feedback on the statistical
+approach being used and whether the appropriate connections are made
+between research question, data, statistical model, and inferences
+developed from model outputs. Are the statistics relevant to the data,
+and appropriate for the experimental design? The reviews will be due
+within two weeks and will be provided to the author for their
+consideration and assistance in their final project.</p>
+<p>Given the nature of graduate classes, student participation is
+expected.</p>
 </div>
 <div id="grading" class="section level3">
 <h3>Grading</h3>
 <table>
+<colgroup>
+<col width="43%" />
+<col width="56%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>Course component</th>
@@ -508,25 +551,29 @@ Office hours: Wednesdays from 1 to 230pm via Zoom (and by appointment)</p>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Midterm exam</td>
-<td>20%</td>
+<td>Homeworks</td>
+<td>30%</td>
 </tr>
 <tr class="even">
 <td>Final project</td>
 <td>40%</td>
 </tr>
 <tr class="odd">
-<td>Homework</td>
+<td>Peer review</td>
 <td>20%</td>
 </tr>
 <tr class="even">
 <td>Participation</td>
-<td>20%</td>
+<td>10%</td>
 </tr>
 </tbody>
 </table>
 <p>Letter grades will be assigned as follows:</p>
 <table>
+<colgroup>
+<col width="43%" />
+<col width="56%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>Grade</th>
@@ -536,81 +583,245 @@ Office hours: Wednesdays from 1 to 230pm via Zoom (and by appointment)</p>
 <tbody>
 <tr class="odd">
 <td>A</td>
-<td>100-94</td>
+<td>93-100</td>
 </tr>
 <tr class="even">
 <td>A-</td>
-<td>93-89</td>
+<td>90-92</td>
 </tr>
 <tr class="odd">
 <td>B+</td>
-<td>88-83</td>
+<td>87-89</td>
 </tr>
 <tr class="even">
 <td>B</td>
-<td>82-75</td>
+<td>83-86</td>
+</tr>
+<tr class="odd">
+<td>B-</td>
+<td>80-82</td>
+</tr>
+<tr class="even">
+<td>C+</td>
+<td>77-79</td>
 </tr>
 <tr class="odd">
 <td>C</td>
-<td>74-60</td>
+<td>73-76</td>
+</tr>
+<tr class="even">
+<td>C-</td>
+<td>70-72</td>
+</tr>
+<tr class="odd">
+<td>F</td>
+<td>below 70</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div id="course-schedule" class="section level3">
 <h3><a href="schedule.html">Course Schedule</a></h3>
-<p>NOTE: the course schedule is subject to change, so please check back frequently!</p>
-<p><a href="schedule.html">http://kevintshoemaker.github.io/NRES-746/schedule.html</a></p>
+<p>NOTE: the course schedule is subject to change, so please check back
+frequently!</p>
+<p><a
+href="schedule.html">http://kevintshoemaker.github.io/NRES-710/schedule.html</a></p>
 </div>
 <div id="make-up-policy-and-late-work" class="section level3">
 <h3>Make-up policy and late work:</h3>
-<p>If you miss a class meeting or lab period, it is your responsibility to talk to one of your classmates about what you missed. If you miss a lab meeting, you are still responsible for completing the lab activities and write-up on your own time. You do not need to let me know in advance that you are going to miss class or lab.</p>
+<p>If you miss a class meeting or lab period, it is your responsibility
+to talk to one of your classmates about what you missed. If you miss a
+lab meeting, you are still responsible for completing the lab activities
+and write-up on your own time. You do not need to let me know in advance
+that you are going to miss class or lab.</p>
 </div>
 <div id="students-with-disabilities" class="section level3">
 <h3>Students with Disabilities</h3>
-<p>Any student with a disability needing academic adjustments or accommodations is requested to speak with the Disability Resource Center (Thompson Building, Suite 101) as soon as possible to arrange for appropriate accommodations.</p>
+<p>Any student with a disability needing academic adjustments or
+accommodations is requested to speak with the Disability Resource Center
+(Thompson Building, Suite 101) as soon as possible to arrange for
+appropriate accommodations.</p>
 </div>
 <div id="statement-on-academic-dishonesty" class="section level3">
 <h3>Statement on Academic Dishonesty</h3>
-<p>Cheating, plagiarism or otherwise obtaining grades under false pretenses constitute academic dishonesty according to the code of this university. Plagiarism is using the ideas or words of another person without giving credit to the original source; this includes copying another student in class. Always cite the source of your information. This includes copying or paraphrasing from a book, journal, or unpublished material without giving credit to the author(s), and submitting a term paper that was used in another course. Academic dishonesty will not be tolerated and penalties can include filing a final grade of “F”; reducing the student’s final course grade one or two full grade points; awarding a failing mark on the coursework in question; or requiring the student to retake or resubmit the coursework. For more details, see the <a href="http://catalog.unr.edu/">University of Nevada, Reno General Catalog</a>.</p>
+<p>Cheating, plagiarism or otherwise obtaining grades under false
+pretenses constitute academic dishonesty according to the code of this
+university. Plagiarism is using the ideas or words of another person
+without giving credit to the original source; this includes copying
+another student in class. Always cite the source of your information.
+This includes copying or paraphrasing from a book, journal, or
+unpublished material without giving credit to the author(s), and
+submitting a term paper that was used in another course. Academic
+dishonesty will not be tolerated and penalties can include filing a
+final grade of “F”; reducing the student’s final course grade one or two
+full grade points; awarding a failing mark on the coursework in
+question; or requiring the student to retake or resubmit the coursework.
+For more details, see the <a href="http://catalog.unr.edu/">University
+of Nevada, Reno General Catalog</a>.</p>
 </div>
 <div id="this-is-a-safe-space" class="section level3">
 <h3>This is a safe space</h3>
-<p>The University of Nevada, Reno is committed to providing a safe learning and work environment for all. If you believe you have experienced discrimination, sexual harassment, sexual assault, domestic/dating violence, or stalking, whether on or off campus, or need information related to immigration concerns, please contact the University’s Equal Opportunity &amp; Title IX Office at 775-784-1547. Resources and interim measures are available to assist you. For more information, please visit: <a href="http://www.unr.edu/equal-opportunity-title-ix" class="uri">http://www.unr.edu/equal-opportunity-title-ix</a>"</p>
+<p>The University of Nevada, Reno is committed to providing a safe
+learning and work environment for all. If you believe you have
+experienced discrimination, sexual harassment, sexual assault,
+domestic/dating violence, or stalking, whether on or off campus, or need
+information related to immigration concerns, please contact the
+University’s Equal Opportunity &amp; Title IX Office at 775-784-1547.
+Resources and interim measures are available to assist you. For more
+information, please visit: <a
+href="http://www.unr.edu/equal-opportunity-title-ix"
+class="uri">http://www.unr.edu/equal-opportunity-title-ix</a>”</p>
 </div>
 <div id="statement-on-audio-and-video-recording" class="section level3">
 <h3>Statement on Audio and Video Recording</h3>
-<p>Surreptitious or covert video-taping of class or unauthorized audio recording of class is prohibited by law and by Board of Regents policy. This class may be videotaped or audio recorded only with the written permission of the instructor. In order to accommodate students with disabilities, some students may have been given permission to record class lectures and discussions. Therefore, students should understand that their comments during class may be recorded.</p>
+<p>Surreptitious or covert video-taping of class or unauthorized audio
+recording of class is prohibited by law and by Board of Regents policy.
+This class may be videotaped or audio recorded only with the written
+permission of the instructor. In order to accommodate students with
+disabilities, some students may have been given permission to record
+class lectures and discussions. Therefore, students should understand
+that their comments during class may be recorded.</p>
 </div>
 <div id="statement-on-content-accessibility" class="section level3">
 <h3>Statement on content accessibility</h3>
-<p>This course may leverage 3rd party web/multimedia content, if you experience any issues accessing this content, please notify your instructor.</p>
+<p>This course may leverage 3rd party web/multimedia content, if you
+experience any issues accessing this content, please notify your
+instructor.</p>
 </div>
-<div id="statement-on-covid-19-training-policies" class="section level3">
-<h3>Statement on COVID-19 Training Policies</h3>
-<p>Students must complete and follow all guidelines as stated in the Student COVID-19 Training modules, or any other trainings or directives provided by the University.</p>
+<div id="statement-on-covid-19-policies" class="section level3">
+<h3>Statement on COVID-19 Policies</h3>
+<div id="face-coverings" class="section level4">
+<h4>Face Coverings</h4>
+<p>Pursuant to Nevada law, NSHE employees, students and members of the
+public are no longer required to wear face coverings while inside NSHE
+buildings irrespective of vaccination status.</p>
 </div>
-<div id="statement-on-covid-19-face-coverings" class="section level3">
-<h3>Statement on COVID-19 Face Coverings</h3>
-<p>In response to COVID-19, and in alignment with State of Nevada Governor Executive Orders, Roadmap to Recovery for Nevada plans, Nevada System of Higher Education directives, the University of Nevada President directives, and local, state, and national health official guidelines face coverings are required at all times while on campus, except when alone in a private office. This includes the classroom, laboratory, studio, creative space, or any type of in-person instructional activity, and public spaces.</p>
-<p>A “face covering” is defined as a “covering that fully covers a person’s nose and mouth, including without limitation, cloth face mask, surgical mask, towels, scarves, and bandanas” (State of Nevada Emergency Directive 024).</p>
-<p>Students that cannot wear a face covering due to a medical condition or disability, or who are unable to remove a mask without assistance may seek an accommodation through the Disability Resource Center.</p>
+<div id="social-distancing" class="section level4">
+<h4>Social Distancing</h4>
+<p>In alignment with State of Nevada guidelines, social distancing is no
+longer required.<br />
+#### Disinfecting Your Learning Space Disinfecting supplies are provided
+for you to disinfect your learning space. You may also use your own
+disinfecting supplies.</p>
 </div>
-<div id="statement-on-covid-19-social-distancing" class="section level3">
-<h3>Statement on COVID-19 Social Distancing</h3>
-<p>Face coverings are not a substitute for social distancing. Students shall observe current social distancing guidelines where possible in accordance with the Phase we are in while in the classroom, laboratory, studio, creative space (hereafter referred to as instructional space) setting and in public spaces. Students should avoid congregating around instructional space entrances before or after class sessions. If the instructional space has designated entrance and exit doors students are required to use them. Students should exit the instructional space immediately after the end of instruction to help ensure social distancing and allow for the persons attending the next scheduled class session to enter.</p>
+<div
+id="covid-19-covid-19-like-symptoms-and-contact-with-someone-testing-positive-for-covid-19"
+class="section level4">
+<h4>COVID-19, COVID-19 Like Symptoms, and Contact with Someone Testing
+Positive for COVID-19</h4>
+<p>Students testing positive for COVID 19, exhibiting COVID 19 symptoms
+regardless of vaccination status will not be allowed to attend in-person
+instructional activities and must leave the venue immediately. Students
+should contact the Student Health Center or their health care provider
+to receive care and who can provide the latest direction on quarantine
+and self-isolation. Contact your instructor immediately to make
+instructional and learning arrangements.</p>
 </div>
-<div id="statement-on-covid-19-disinfecting-your-learning-space" class="section level3">
-<h3>Statement on COVID-19 Disinfecting Your Learning Space</h3>
-<p>Disinfecting supplies are provided for you to disinfect your learning space. You may also use your own disinfecting supplies.</p>
+<div id="accommodations-for-covid-19-quarantined-students"
+class="section level4">
+<h4>Accommodations for COVID 19 Quarantined Students</h4>
+<p>For students who are required to quarantine or self-isolate due to 1)
+COVID 19 infection or 2) exposure while not vaccinated, instructors must
+provide opportunities to make-up missed course work, including
+assignments, quizzes or exams. In courses with mandatory attendance
+policies, instructors must not penalize students for missing classes
+while quarantined.</p>
 </div>
-<div id="statement-on-covid-19-covid-19-like-symptoms-and-contact-with-someone-testing-positive-for-covid-19" class="section level3">
-<h3>Statement on COVID-19, COVID-19 Like Symptoms, and Contact with Someone Testing Positive for COVID-19</h3>
-<p>Students must conduct daily health checks in accordance with CDC guidelines. Students testing positive for COVID 19, exhibiting COVID 19 symptoms or who have been in direct contact with someone testing positive for COVID 19 will not be allowed to attend in-person instructional activities and must leave the venue immediately. Students should contact the Student Health Center or their health care provider to receive care and who can provide the latest direction on quarantine and self-isolation. Contact your instructor immediately to make instructional and learning arrangements.</p>
 </div>
-<div id="statement-on-failure-to-comply-with-policy-including-as-outlined-in-this-syllabus-or-directives-of-a-university-employee" class="section level3">
-<h3>Statement on Failure to Comply with Policy (including as outlined in this Syllabus) or Directives of a University Employee:</h3>
-<p>In accordance with section 6,502 of the University Administrative Manual, a student may receive academic and disciplinary sanctions for failure to comply with policy, including this syllabus, for failure to comply with the directions of a University Official, for disruptive behavior in the classroom, or any other prohibited action. “Disruptive behavior” is defined in part as behavior, including but not limited to failure to follow course, laboratory or safety rules, or endangering the health of others. A student may be dropped from class at any time for misconduct or disruptive behavior in the classroom upon recommendation of the instructor and with approval of the college dean. A student may also receive disciplinary sanctions through the Office of Student Conduct for misconduct or disruptive behavior, including endangering the health of others, in the classroom. The student shall not receive a refund for course fees or tuition.</p>
+<div
+id="failure-to-comply-with-policy-including-as-outlined-in-this-syllabus-or-directives-of-a-university-employee"
+class="section level3">
+<h3>Failure to Comply with Policy (including as outlined in this
+Syllabus) or Directives of a University Employee</h3>
+<p>In accordance with section 6,502 of the University Administrative
+Manual, a student may receive academic and disciplinary sanctions for
+failure to comply with policy, including this syllabus, for failure to
+comply with the directions of a University Official, for disruptive
+behavior in the classroom, or any other prohibited action. “Disruptive
+behavior” is defined in part as behavior, including but not limited to
+failure to follow course, laboratory or safety rules, or endangering the
+health of others. A student may be dropped from class at any time for
+misconduct or disruptive behavior in the classroom upon recommendation
+of the instructor and with approval of the college dean. A student may
+also receive disciplinary sanctions through the Office of Student
+Conduct for misconduct or disruptive behavior, including endangering the
+health of others, in the classroom. The student shall not receive a
+refund for course fees or tuition.</p>
+</div>
+<div id="statement-on-academic-dishonesty-1" class="section level3">
+<h3>Statement on Academic Dishonesty</h3>
+<p>“The University Academic Standards Policy defines academic
+dishonesty, and mandates specific sanctions for violations. See the
+University Academic Standards policy: UAM 6,502.”</p>
+</div>
+<div id="statement-of-disability-services" class="section level3">
+<h3>Statement of Disability Services</h3>
+<p>Use either the traditional or online statement, in addition to the
+last sentence regarding third party materials.</p>
+</div>
+<div id="for-traditional-and-seated-classrooms" class="section level3">
+<h3>For Traditional and Seated Classrooms:</h3>
+<p>“Any student with a disability needing academic adjustments or
+accommodations is requested to speak with me or the Disability Resource
+Center (Pennington Achievement Center Suite 230) as soon as possible to
+arrange for appropriate accommodations.”</p>
+</div>
+<div id="statement-on-audio-and-video-recording-1"
+class="section level3">
+<h3>Statement on Audio and Video Recording</h3>
+<div id="student-created-recordings" class="section level4">
+<h4>Student-created Recordings</h4>
+<p>“Surreptitious or covert video-taping of class or unauthorized audio
+recording of class is prohibited by law and by Board of Regents policy.
+This class may be videotaped, or audio recorded only with the written
+permission of the instructor. In order to accommodate students with
+disabilities, some students may have been given permission to record
+class lectures and discussions. Therefore, students should understand
+that their comments during class may be recorded.”</p>
+</div>
+<div id="instructor-created-recordings" class="section level4">
+<h4>Instructor-created Recordings</h4>
+<p>Class sessions may be audio-visually recorded for students in the
+class to review and for enrolled students who are unable to attend live
+to view. Students who participate with their camera on or who use a
+profile image are consenting to have their video or image recorded. If
+you do not consent to have your profile or video image recorded, keep
+your camera off and do not use a profile image. Students who un-mute
+during class and participate orally are consenting to have their voices
+recorded. If you do not consent to have your voice recorded during
+class, keep your mute button activated and only communicate by using the
+“chat” feature, which allows you to type questions and comments
+live.</p>
+</div>
+</div>
+<div id="statement-on-maintaining-a-safe-learning-and-work-environment"
+class="section level3">
+<h3>Statement on Maintaining a Safe Learning and Work Environment</h3>
+<p>The University of Nevada, Reno is committed to providing a safe
+learning and work environment for all. If you believe you have
+experienced discrimination, sexual harassment, sexual assault,
+domestic/dating violence, or stalking, whether on or off campus, or need
+information related to immigration concerns, please contact the
+University’s Equal Opportunity &amp; Title IX office at 775-784-1547.
+Resources and interim measures are available to assist you. For more
+information, please visit the Equal Opportunity and Title IX page.</p>
+</div>
+<div id="statement-for-academic-success-services"
+class="section level3">
+<h3>Statement for academic success services:</h3>
+<p>Your student fees cover usage of the University Math Center (<a
+href="https://www.unr.edu/university-math-center"
+class="uri">https://www.unr.edu/university-math-center</a>), (775)
+784-4433; University Tutoring Center (<a
+href="https://www.unr.edu/tutoring-center"
+class="uri">https://www.unr.edu/tutoring-center</a>), (775) 784-6801;
+and University Writing &amp; Speaking Center (<a
+href="https://www.unr.edu/writing-speaking-center"
+class="uri">https://www.unr.edu/writing-speaking-center</a>), (775)
+784-6030. These centers support your classroom learning; it is your
+responsibility to take advantage of their services. Keep in mind that
+seeking help outside of class is the sign of a responsible and
+successful student.</p>
 </div>
 
 
@@ -642,7 +853,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -651,6 +862,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

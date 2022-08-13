@@ -1,18 +1,18 @@
-Week,Mon class meeting,Wed class meeting
-Aug. 24 (week 1),"Intro, Overview, Data types ",Discussion: hot hand reading; face mask reading
-Aug. 31 (week 2),"P-values, sampling",Discussion: p-value readings
-Sept. 7  (week 3),No Class (labor day),Discussion: p-hacking readings
-Sept. 14 (week 4),"Replication, sampling distributions",Discussion: pseudoreplication
-Sept. 21 (week 5),"Central limit theorem, data simulation",Discussion: final projects
-Sept. 28 (week 6),"Data independence, t distribution",Discussion: code and data sharing
-Oct. 5 (week 7),"Confidence intervals, probability in R",R exercise: probability distributions
-Oct. 12 (week 8),"T-tests, z-tests","R exercise: t-test, z-test"
-Oct. 19 (week 9),Overview of classical statistical tests,Midterm prep
-Oct. 26 (week 10),Exam review session ,Midterm exam
-Nov. 2 (week 11),"Exam recap, power analysis",R exercise: power analysis
-Nov. 9 (week 12),Chi-squared test,No class (Veteran's Day)
-Nov. 16 (week 13),Linear regression,Linear regression lecture (continued)
-Nov. 23 (week 14),ANOVA,ANOVA lecture (condinued)
-Nov. 30 (week 15),Mixed effects models,GLMM lecture (continued)
-Dec. 7 (week 16),"Next steps- multivariate, bayesian, etc.",No class
-Dec. 16 (week 17),Final projects due 5pm,Review session (optional)
+Week,Mon class meeting,Wed class meeting,Homework,Reading
+Aug. 29 (week 1),"Intro, Overview, Data types ","P-values, sampling",,
+Sept. 5 (week 2),No Class (labor day),Sampling distributions; overview of classical statistical tests,,Hot hand
+Sept. 12  (week 3),"Central limit theorem, data simulation","R exercise: t-test, z-test",CLT and z-tests,
+Sept. 19 (week 4),"Confidence intervals, probability in R",R exercise: probability distributions,,
+Sept. 26 (week 5),Non-parametric analysis,R exercise: non-parametrics,permutation test,
+Oct. 3 (week 6),Chi-squared test,No class (Kevin at tortoise summit),,
+Oct. 10 (week 7),Linear regression,R exercise: linear regression,Linear regression,
+Oct. 17 (week 8),ANOVA,R exercise: ANOVA,,p-values and p-hacking
+Oct. 24 (week 9),Discussion: p-values,Discussion: p-hacking,ANOVA,
+Oct. 31 (week 10),More advanced ANOVA,R exercise: ,,pseudoreplication
+Nov. 7 (week 11),Discussion: pseudoreplication,R exercise: power analysis,GLM,
+Nov. 14 (week 12),GLM,R exercise: GLM,,
+Nov. 21 (week 13),GLMM,R exercise: GLMM,GLMM,
+Nov. 28 (week 14),More advanced GLMM,Final project peer review,,
+Dec. 5 (week 15),Random Forest,R exercise: Random forest,,
+Dec. 12 (week 16),"Next steps- multivariate, bayesian, etc.",Discussion: code and data sharing,,
+Dec. 19 (week 17),Final projects due 5pm,Review session (optional),,

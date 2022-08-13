@@ -1,7 +1,7 @@
 ---
 title: "Schedule"
 author: "NRES 710"
-date: "Fall 2020"
+date: "Fall 2022"
 output: 
   html_document: 
     theme: yeti
@@ -24,7 +24,7 @@ courseSchedule <- read.csv("CourseSchedule.csv")
 
 ```{r results='asis', echo=FALSE}
 knitr::kable(courseSchedule,caption="",col.names = c("Week","Mon. meeting",
-                                                     "Wed. meeting (R mini-lab)"))
+                                                     "Wed. meeting (R mini-lab)","Homework","Readings"))
 
 ```
 
