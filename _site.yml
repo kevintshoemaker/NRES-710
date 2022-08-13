@@ -33,6 +33,10 @@ navbar:
       href: FINALPROJ.html
     - text: Study Guide 
       href: STUDYGUIDE.html
+  - text: Datasets
+    menu:
+    - text: Links 
+      href: Links.html
 output:
   html_document:
     lib_dir: site_libs
