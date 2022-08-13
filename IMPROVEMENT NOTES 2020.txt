@@ -1,0 +1,19 @@
+NOTE: bad reviews- notes on how to do better next time
+
+- Move to MWF schedule with 2 separate lectures and one discussion, ideally with lab
+- Spend less time on basic concepts, more time on learning analysis methods*
+- R bootcamp mandatory
+- Clearer expectations on final project
+- Require everyone to use analyses from the class
+- Try to make the lectures into slides?
+- Don't use made up data? (don't embed to make the made up data)
+- Independent rather than group problem solving and homework responses? [need a lab]
+- more time on GLM/GLMM
+- clearer lectures [move from 2 hours] [basic concepts into multile pages]
+- peer reviews were difficult [felt they couldn't do a good job.]  [limit to 15 participants]
+- exam questions need to be clearer and better written [revisit]
+- Work backwards, start with GLMM skills, then work backwards to basic concepts
+- Set lab time. 
+- Targeted peer reviews - people select their own project to peer review?
+- pair up for homework/labs [lab]
+- 
