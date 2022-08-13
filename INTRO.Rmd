@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ####                                                    ####  
 ####  NRES 710, Introduction                            ####
 ####                                                    ####
-####  Kevin Shoemaker and Ben Sullivan                  #### 
+####  Kevin Shoemaker                                   #### 
 ####  University of Nevada, Reno                        ####
 ####                                                    #### 
 ############################################################
@@ -46,31 +46,24 @@ To follow along with the R-based lessons and demos, [right (or command) click on
 
 Statistics is the process of making inference about a property of a *population* (a parameter) from a representative *sample*.
 
-It’s not just you. Many ecologists are fuzzy about the language, and even the concepts! 
-
-
-## Why do we need stats class?
-
-I tend to recommend that grad students take the least coursework possible- but I think stats is an exception. I think it's more efficient, fun, and rewarding to learn stats as a group rather than on your own. I hope you agree by the end of this class! 
-
 ## Types of data
 
 Statistics is fundamentally about making sense of data. Therefore understanding statistics requires starting with an understanding types of data. 
 
 What types of data are there? 
 
-1.	Categorical (Can be quantitative or qualitative) – represents characteristics, can be logical      
+1.	Categorical (Can be quantitative or qualitative) – represents qualitative characteristics      
     a.	Nominal (labels, > 2 categories)     
     b.	Dichotomous (2 categories)    
-    c.	Ordinal (ordered units)     
+    c.	Ordinal (ordered categories: category 3 is bigger than 2 is bigger than 1)  
+    
 2.	Quantitative     
     a.	Discrete: can be counted (number of individuals in a population)
     b.	Continuous: not countable, but can be measured (total body length)
         i.	Interval data: the difference between two values is meaningful but zero doesn't mean the absence of a thing (e.g., temperature in Celsius)     
-        ii.	Ratio: zero means complete absence     (e.g., temperature in Kelvin). If zero means absence, then the ratio between two values is meaningful (something that weighs 4 g has twice the mass of something that weighs 2 g). Note that you can't say that for interval data (e.g., something with a temperature of 4 C doesn't have twice the heat of something at 2 C).    
+        ii.	Ratio: zero means complete absence of a thing (e.g., temperature in Kelvin). If zero means absence, then the ratio between two values is meaningful (something that weighs 4 g has twice the mass of something that weighs 2 g). Note that you can't say that for interval data (e.g., something with a temperature of 4 C is not twice as hot as something at 2 C).    
 
-
-Why do we need to know about data types? We have to deal with these data types differently! 
+Why do we need to know about data types? We have to analyze and visualize these data types differently! 
 
 For example: 
 
@@ -79,7 +72,7 @@ For example:
 
 ## Messing around with data types in R: 
 
-Let's explore some existing data that is easily obtained in R: iris, mtcars, titanic (install titanic package first)
+Let's explore some of R's built in data sets: iris, mtcars, titanic (install titanic package first)
 
 We will also simulate some data on our own!
 
@@ -116,13 +109,9 @@ five<-four+1      # you can use variables to define new ones
 
 Q: what are those hashtags doing in the above code block? [these are 'comments' and they are super helpful- use them early and often!]
 
-Note: Be careful about creating object names. Try to avoid any names that might already be defined as a function- like 'sum'. 
-
-Use variable names that will not confuse you. 
+Use variable names that will not confuse you (but variable names can't start with a number). 
 
 Use Rstudio's autofill feature to avoid typos!
-
-Variable names can not start with a number - e.g., 5pt
 
 
 #### Explore R's existing datasets
@@ -239,7 +228,6 @@ Note: I recommend always using Rstudio Projects. This reduces the hassle of sett
 
 ## [math/bio "stats chats"](https://kevintshoemaker.github.io/StatsChats/)
 Paul Hurtado (math/stats dept), Ken Nussear (geography) and I host informal sessions for grad students in EECB, NRES, Geography etc (and faculty) to discuss data analysis questions. This can be a good opportunity to ask questions, find out more about what types of data and questions your peers are working with, and contribute some insights! We haven't figured out a time yet for this semester, but I'll keep you posted. 
-
 
 
 Remember, I need your frequent and honest feedback in order to make sure that the level is appropriate and the topics are useful!

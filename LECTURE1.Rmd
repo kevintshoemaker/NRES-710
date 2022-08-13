@@ -1,7 +1,7 @@
 ---
 title: "Basic Concepts of Prob. and Stats."
 author: "NRES 710"
-date: "Fall 2020"
+date: "Fall 2022"
 output: 
   html_document: 
     theme: yeti
@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ####                                                    ####  
 ####  NRES 710, Lecture 1                               ####
 ####                                                    ####
-####  Kevin Shoemaker and Ben Sullivan                  #### 
+####  Kevin Shoemaker                                   #### 
 ####  University of Nevada, Reno                        ####
 ####                                                    #### 
 ############################################################
@@ -40,15 +40,13 @@ To follow along with the R-based lessons and demos, [right (or command) click on
 
 ## Overview of basic concepts of probability and statistics
 
-Now that we've explored data types, we are going to talk about making sense of data! Specifically, through the lens of (frequentist) probability and (classical) statistical tests!
+Now that we've explored data types, we are going to talk about making sense of data! Specifically, through the lens of probability and statistics.
 
 Probability can be tricky. Humans are not very intuitive about probability!
 
 Yet it’s not just laypeople who are confused by concepts of probability and uncertainty. Statisticians themselves argue about probabilities. For example, the [hot hand in basketball](hothand.pdf).  
 
-Why does this matter to us? Because we have to use probability to make inferences from our data (which is what statistics is all about)!
-
-## Classical Statistics Part 1
+Why does this matter to us? Because we have to use probability to make inferences from our data!
 
 For example, say I asked you: are people with last names beginning A-M taller than those with last names beginning N-Z?  
 As a scientist, what would we do? 
@@ -76,11 +74,9 @@ When we go from the population to the sample, we implicitly make several assumpt
 
 Classical statistics involves computing a *summary statistic* from the data, and then using a (usually theoretical) 'sampling distribution' to determine whether or not that summary statistic contains a meaningful signal or is likely to be a result of random noise.
 
-## Frequentist Probability Part 1
-
 Where does probability come in? Well, samples are random- and by random we mean that every time we sample from a population can result in a different outcome. Therefore, all *statistics* derived from samples are random quantities, and will differ with each sample. When something is random, we use probability to quantify how commonplace or unexpected an outcome is. Probability helps us to quantify things that we can't know with certainty.
 
-If all samples (and the statistics derived from them) differ from one another, how can we be sure that our statistic (derived from a random sample) is actually telling us something about the population of interest (i.e., a true signal)? How can we be convinced that our result is meaningful and not simply an *artifact of random sampling*?
+If all samples (and the statistics derived from them) differ from one another, how can we be sure that our statistic (derived from a random sample) is actually telling us something about the population of interest (i.e., a true signal)? How can we be convinced that our result is *meaningful* and not simply an artifact of random sampling?
 
 ### Aside: probability measures lack of surprise!
 

@@ -14,20 +14,28 @@
 
 <title>Intro to NRES 710</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -39,11 +47,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -56,32 +59,8 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
+
 
 
 
@@ -91,10 +70,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -111,40 +86,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 45px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h2 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h3 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h4 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h5 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h6 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -172,7 +123,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -184,7 +135,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -195,10 +146,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -210,7 +174,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -336,7 +299,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -350,7 +313,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -366,7 +329,7 @@ div.tocify {
   <a href="schedule.html">Schedule</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Lectures
      
     <span class="caret"></span>
@@ -399,7 +362,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     More Resources
      
     <span class="caret"></span>
@@ -416,6 +379,18 @@ div.tocify {
     </li>
   </ul>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Datasets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Links.html">Links</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -424,7 +399,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -434,47 +409,72 @@ div.tocify {
 </div>
 
 
-<p>This course provides an introduction to both statistics and computer programming. Statistics and computer programming can in some ways be considered ‘languages’ because they help us to understand and communicate complex ideas (to other people and with computers!). But learning these languages is easier than learning a spoken language in many ways, because statistics and computer programming begin and end with pure logic! Statistics and computer programming are nothing if they don’t make logical sense! Spoken languages on the other hand often don’t follow completely logical structures- they don’t always ‘make sense’. So you can’t ‘get by’ in most spoken languages simply by following a few basic rules. With statistics and computer programming, you can! With a solid grounding in basic rules of probability and statistics, and armed with some basic computer programming abilities (and some human creativity and ingenuity), you can go extremely far in making sense of data and communicating that understanding with others!!</p>
+<p>This course provides an introduction to both statistics and computer
+programming. Statistics and computer programming can in some ways be
+considered ‘languages’ because they help us to understand and
+communicate complex ideas (to other people and with computers!). But
+learning these languages is easier than learning a spoken language in
+many ways, because statistics and computer programming begin and end
+with pure logic! Statistics and computer programming are nothing if they
+don’t make logical sense! Spoken languages on the other hand often don’t
+follow completely logical structures- they don’t always ‘make sense’. So
+you can’t ‘get by’ in most spoken languages simply by following a few
+basic rules. With statistics and computer programming, you can! With a
+solid grounding in basic rules of probability and statistics, and armed
+with some basic computer programming abilities (and some human
+creativity and ingenuity), you can go extremely far in making sense of
+data and communicating that understanding with others!!</p>
 <div id="download-the-r-code-for-this-lecture" class="section level2">
 <h2>Download the R code for this lecture!</h2>
-<p>To follow along with the R-based lessons and demos, <a href="INTRO.R">right (or command) click on this link and save the script to your working directory</a></p>
+<p>To follow along with the R-based lessons and demos, <a
+href="INTRO.R">right (or command) click on this link and save the script
+to your working directory</a></p>
 </div>
 <div id="what-is-statistics" class="section level2">
 <h2>What is statistics?</h2>
 <p><img src="statistics1.png" /></p>
-<p>Statistics is the process of making inference about a property of a <em>population</em> (a parameter) from a representative <em>sample</em>.</p>
-<p>It’s not just you. Many ecologists are fuzzy about the language, and even the concepts!</p>
-</div>
-<div id="why-do-we-need-stats-class" class="section level2">
-<h2>Why do we need stats class?</h2>
-<p>I tend to recommend that grad students take the least coursework possible- but I think stats is an exception. I think it’s more efficient, fun, and rewarding to learn stats as a group rather than on your own. I hope you agree by the end of this class!</p>
+<p>Statistics is the process of making inference about a property of a
+<em>population</em> (a parameter) from a representative
+<em>sample</em>.</p>
 </div>
 <div id="types-of-data" class="section level2">
 <h2>Types of data</h2>
-<p>Statistics is fundamentally about making sense of data. Therefore understanding statistics requires starting with an understanding types of data.</p>
+<p>Statistics is fundamentally about making sense of data. Therefore
+understanding statistics requires starting with an understanding types
+of data.</p>
 <p>What types of data are there?</p>
 <ol style="list-style-type: decimal">
-<li>Categorical (Can be quantitative or qualitative) – represents characteristics, can be logical
+<li>Categorical (Can be quantitative or qualitative) – represents
+qualitative characteristics
 <ol style="list-style-type: lower-alpha">
 <li>Nominal (labels, &gt; 2 categories)<br />
 </li>
 <li>Dichotomous (2 categories)<br />
 </li>
-<li>Ordinal (ordered units)<br />
-</li>
+<li>Ordinal (ordered categories: category 3 is bigger than 2 is bigger
+than 1)</li>
 </ol></li>
 <li>Quantitative
 <ol style="list-style-type: lower-alpha">
-<li>Discrete: can be counted (number of individuals in a population)</li>
+<li>Discrete: can be counted (number of individuals in a
+population)</li>
 <li>Continuous: not countable, but can be measured (total body length)
 <ol style="list-style-type: lower-roman">
-<li>Interval data: the difference between two values is meaningful but zero doesn’t mean the absence of a thing (e.g., temperature in Celsius)<br />
+<li>Interval data: the difference between two values is meaningful but
+zero doesn’t mean the absence of a thing (e.g., temperature in
+Celsius)<br />
 </li>
-<li>Ratio: zero means complete absence (e.g., temperature in Kelvin). If zero means absence, then the ratio between two values is meaningful (something that weighs 4 g has twice the mass of something that weighs 2 g). Note that you can’t say that for interval data (e.g., something with a temperature of 4 C doesn’t have twice the heat of something at 2 C).</li>
+<li>Ratio: zero means complete absence of a thing (e.g., temperature in
+Kelvin). If zero means absence, then the ratio between two values is
+meaningful (something that weighs 4 g has twice the mass of something
+that weighs 2 g). Note that you can’t say that for interval data (e.g.,
+something with a temperature of 4 C is not twice as hot as something at
+2 C).</li>
 </ol></li>
 </ol></li>
 </ol>
-<p>Why do we need to know about data types? We have to deal with these data types differently!</p>
+<p>Why do we need to know about data types? We have to analyze and
+visualize these data types differently!</p>
 <p>For example:</p>
 <ul>
 <li>Nominal data: frequencies, pie charts</li>
@@ -483,20 +483,36 @@ div.tocify {
 </div>
 <div id="messing-around-with-data-types-in-r" class="section level2">
 <h2>Messing around with data types in R:</h2>
-<p>Let’s explore some existing data that is easily obtained in R: iris, mtcars, titanic (install titanic package first)</p>
+<p>Let’s explore some of R’s built in data sets: iris, mtcars, titanic
+(install titanic package first)</p>
 <p>We will also simulate some data on our own!</p>
 <div id="notes-about-working-in-r" class="section level3">
 <h3>Notes about working in R:</h3>
-<p>R is open source, so it is ‘messy’. Packages are being added all the time, there are millions of ways to accomplish the same task.</p>
-<p>R is incredibly powerful and feature rich- you are NOT expected to memorize much, just know that the answer is always a few clicks away!</p>
+<p>R is open source, so it is ‘messy’. Packages are being added all the
+time, there are millions of ways to accomplish the same task.</p>
+<p>R is incredibly powerful and feature rich- you are NOT expected to
+memorize much, just know that the answer is always a few clicks
+away!</p>
 <p>When in doubt, Google it!!</p>
-<p>Here is a <a href="base-r.pdf">base R cheat sheet (from RStudio)</a>- this is a great reference for most of the basic tasks you will need to perform in R. Keep it handy!</p>
-<p>Learn to use R scripts- and save the R script frequently!! This is the primary record of what you’ve done and allows you and other scientists to reproduce your models, analyses and visualizations.</p>
+<p>Here is a <a href="base-r.pdf">base R cheat sheet (from RStudio)</a>-
+this is a great reference for most of the basic tasks you will need to
+perform in R. Keep it handy!</p>
+<p>Learn to use R scripts- and save the R script frequently!! This is
+the primary record of what you’ve done and allows you and other
+scientists to reproduce your models, analyses and visualizations.</p>
 </div>
 <div id="first-r-demo" class="section level3">
 <h3>First R demo!</h3>
-<p><strong>NOTE:</strong> for those wishing to follow along with the R-based demo in class, <a href="INTRO.R">click here</a> for an R-script that contains all of the code blocks in this web-based lecture.</p>
-<p>All of you should have R and RStudio installed on your computers. See the <a href="https://kevintshoemaker.github.io/NRES-746/">links page</a> for some useful references. I will be leading <a href="http://naes.unr.edu/shoemaker/teaching/R-Bootcamp/index.html">“bootcamps” on using R</a> in two upcoming Saturday afternoons (Sep 12 and 19- virtual of course)- please consider attending if you don’t have much experience in R!</p>
+<p><strong>NOTE:</strong> for those wishing to follow along with the
+R-based demo in class, <a href="INTRO.R">click here</a> for an R-script
+that contains all of the code blocks in this web-based lecture.</p>
+<p>All of you should have R and RStudio installed on your computers. See
+the <a href="https://kevintshoemaker.github.io/NRES-746/">links page</a>
+for some useful references. I will be leading <a
+href="http://naes.unr.edu/shoemaker/teaching/R-Bootcamp/index.html">“bootcamps”
+on using R</a> in two upcoming Saturday afternoons (Sep 12 and 19-
+virtual of course)- please consider attending if you don’t have much
+experience in R!</p>
 <p>First of all, R can be used as a calculator. Try it!</p>
 <pre class="r"><code>2+2               # use R as a calculator</code></pre>
 <pre><code>## [1] 4</code></pre>
@@ -506,11 +522,11 @@ four</code></pre>
 <pre class="r"><code>five&lt;-2+2         # you can make mistakes and define misleading labels- R will let you!
 five&lt;-2+3
 five&lt;-four+1      # you can use variables to define new ones</code></pre>
-<p>Q: what are those hashtags doing in the above code block? [these are ‘comments’ and they are super helpful- use them early and often!]</p>
-<p>Note: Be careful about creating object names. Try to avoid any names that might already be defined as a function- like ‘sum’.</p>
-<p>Use variable names that will not confuse you.</p>
+<p>Q: what are those hashtags doing in the above code block? [these are
+‘comments’ and they are super helpful- use them early and often!]</p>
+<p>Use variable names that will not confuse you (but variable names
+can’t start with a number).</p>
 <p>Use Rstudio’s autofill feature to avoid typos!</p>
-<p>Variable names can not start with a number - e.g., 5pt</p>
 <div id="explore-rs-existing-datasets" class="section level4">
 <h4>Explore R’s existing datasets</h4>
 <pre class="r"><code># data()     # &#39;uncomment&#39; this command and run it to explore built-in datasets</code></pre>
@@ -544,7 +560,8 @@ str(iris)</code></pre>
 hist(len)             # what does this do? How could you learn more about this &#39;hist&#39; function?</code></pre>
 <p><img src="INTRO_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <pre class="r"><code># Q: what kind of data are petal lengths?</code></pre>
-<p>Now let’s switch to the ‘titanic’ dataset. To get this dataset you need to install an R package!</p>
+<p>Now let’s switch to the ‘titanic’ dataset. To get this dataset you
+need to install an R package!</p>
 <pre class="r"><code>#install.packages(&quot;titanic&quot;)     # uncomment this command to install the package- you only need to install once!
  
 library(titanic)              # this &#39;loads&#39; the package and needs to be done every time you run this script
@@ -558,20 +575,20 @@ head(titanic_train)</code></pre>
 ## 4           4        1      1
 ## 5           5        0      3
 ## 6           6        0      3
-##                                                  Name    Sex Age SibSp
-## 1                             Braund, Mr. Owen Harris   male  22     1
-## 2 Cumings, Mrs. John Bradley (Florence Briggs Thayer) female  38     1
-## 3                              Heikkinen, Miss. Laina female  26     0
-## 4        Futrelle, Mrs. Jacques Heath (Lily May Peel) female  35     1
-## 5                            Allen, Mr. William Henry   male  35     0
-## 6                                    Moran, Mr. James   male  NA     0
-##   Parch           Ticket    Fare Cabin Embarked
-## 1     0        A/5 21171  7.2500              S
-## 2     0         PC 17599 71.2833   C85        C
-## 3     0 STON/O2. 3101282  7.9250              S
-## 4     0           113803 53.1000  C123        S
-## 5     0           373450  8.0500              S
-## 6     0           330877  8.4583              Q</code></pre>
+##                                                  Name    Sex Age SibSp Parch
+## 1                             Braund, Mr. Owen Harris   male  22     1     0
+## 2 Cumings, Mrs. John Bradley (Florence Briggs Thayer) female  38     1     0
+## 3                              Heikkinen, Miss. Laina female  26     0     0
+## 4        Futrelle, Mrs. Jacques Heath (Lily May Peel) female  35     1     0
+## 5                            Allen, Mr. William Henry   male  35     0     0
+## 6                                    Moran, Mr. James   male  NA     0     0
+##             Ticket    Fare Cabin Embarked
+## 1        A/5 21171  7.2500              S
+## 2         PC 17599 71.2833   C85        C
+## 3 STON/O2. 3101282  7.9250              S
+## 4           113803 53.1000  C123        S
+## 5           373450  8.0500              S
+## 6           330877  8.4583              Q</code></pre>
 <pre class="r"><code># ?titanic_train              # uncomment and run to learn more about the data
 
 # Q: What kind of data are those in the &quot;Embarked&quot; column? 
@@ -583,17 +600,16 @@ head(titanic_train)</code></pre>
 a &lt;- rnorm(15)
 a &lt;- rnorm(15,mean=2,sd=0.5)
 a</code></pre>
-<pre><code>##  [1] 1.464874 1.848222 1.537186 2.421553 2.264205 1.905743 2.127606
-##  [8] 3.085320 2.844102 2.074142 2.717911 1.969223 2.423507 2.083948
-## [15] 2.034486</code></pre>
+<pre><code>##  [1] 1.860032 1.034486 2.504418 2.639506 1.540322 2.956401 2.489496 2.985118
+##  [9] 2.937774 2.143449 1.514816 2.722032 2.520638 2.041234 1.922108</code></pre>
 <pre class="r"><code># want to be able to repeat this? set the &quot;seed.&quot;
 
 set.seed(1234)
 a &lt;- rnorm(15)
 a</code></pre>
-<pre><code>##  [1] -1.20706575  0.27742924  1.08444118 -2.34569770  0.42912469
-##  [6]  0.50605589 -0.57473996 -0.54663186 -0.56445200 -0.89003783
-## [11] -0.47719270 -0.99838644 -0.77625389  0.06445882  0.95949406</code></pre>
+<pre><code>##  [1] -1.20706575  0.27742924  1.08444118 -2.34569770  0.42912469  0.50605589
+##  [7] -0.57473996 -0.54663186 -0.56445200 -0.89003783 -0.47719270 -0.99838644
+## [13] -0.77625389  0.06445882  0.95949406</code></pre>
 <pre class="r"><code># let&#39;s pull 15 numbers from the binomial distribution
 b&lt;- rbinom(15, size=1, prob=0.2) # we could &quot;weight the coin&quot;
 b</code></pre>
@@ -629,7 +645,8 @@ head(my.data)</code></pre>
 ## 4      4         A     4           0  9.256534
 ## 5      5         A     5           2 11.037570
 ## 6      6         A     6           0 12.262523</code></pre>
-<p>We can also import data from files stored on our computers (or even directly from the web)</p>
+<p>We can also import data from files stored on our computers (or even
+directly from the web)</p>
 <pre class="r"><code># Then, we can import data. 
 
 # Don&#39;t forget to set your working directory (or just make sure you&#39;re using an Rstudio Project). I did it here, just for fun... 
@@ -641,14 +658,24 @@ head(my.data)</code></pre>
 # Pleach&lt;-read.csv(&quot;PbyTime_Bio.csv&quot;, header=T) # obvs, this won&#39;t work for you because you don&#39;t have this file. 
 
 # Use your own file to try it out. This is an example! </code></pre>
-<p>Note: I recommend always using Rstudio Projects. This reduces the hassle of setting working directories. By default the project directory becomes your working directory!</p>
+<p>Note: I recommend always using Rstudio Projects. This reduces the
+hassle of setting working directories. By default the project directory
+becomes your working directory!</p>
 </div>
 </div>
 </div>
 <div id="mathbio-stats-chats" class="section level2">
-<h2><a href="https://kevintshoemaker.github.io/StatsChats/">math/bio “stats chats”</a></h2>
-<p>Paul Hurtado (math/stats dept), Ken Nussear (geography) and I host informal sessions for grad students in EECB, NRES, Geography etc (and faculty) to discuss data analysis questions. This can be a good opportunity to ask questions, find out more about what types of data and questions your peers are working with, and contribute some insights! We haven’t figured out a time yet for this semester, but I’ll keep you posted.</p>
-<p>Remember, I need your frequent and honest feedback in order to make sure that the level is appropriate and the topics are useful!</p>
+<h2><a href="https://kevintshoemaker.github.io/StatsChats/">math/bio
+“stats chats”</a></h2>
+<p>Paul Hurtado (math/stats dept), Ken Nussear (geography) and I host
+informal sessions for grad students in EECB, NRES, Geography etc (and
+faculty) to discuss data analysis questions. This can be a good
+opportunity to ask questions, find out more about what types of data and
+questions your peers are working with, and contribute some insights! We
+haven’t figured out a time yet for this semester, but I’ll keep you
+posted.</p>
+<p>Remember, I need your frequent and honest feedback in order to make
+sure that the level is appropriate and the topics are useful!</p>
 <p><a href="LECTURE1.html">–go to next lecture–</a></p>
 </div>
 
@@ -681,7 +708,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -690,6 +717,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
