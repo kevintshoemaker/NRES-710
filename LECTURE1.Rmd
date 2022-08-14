@@ -40,26 +40,21 @@ To follow along with the R-based lessons and demos, [right (or command) click on
 
 ## Overview of basic concepts of probability and statistics
 
-Now that we've explored data types, we are going to talk about making sense of data! Specifically, through the lens of probability and statistics.
+We use probability to make inferences from our data!
 
-Probability can be tricky. Humans are not very intuitive about probability!
+For example, say I asked you: can people with last names beginning A-M jump higher than those with last names beginning N-Z? 
 
-Yet it’s not just laypeople who are confused by concepts of probability and uncertainty. Statisticians themselves argue about probabilities. For example, the [hot hand in basketball](hothand.pdf).  
-
-Why does this matter to us? Because we have to use probability to make inferences from our data!
-
-For example, say I asked you: are people with last names beginning A-M taller than those with last names beginning N-Z?  
 As a scientist, what would we do? 
 
 We would want to identify, and then sample, the population of interest!
 
+The bold line in the figure below indicates two quadrants: on the left, the unseen population of interest, and to the right, the observed sample from which we can make inference:     
 
 ![](statistics1.png)
-Unseen population of interest:    
+
 **Q**: what is the population in the above example?     
 **Q** what is the parameter in the above example?
 
-Observed sample from which we can make inference:    
 **Q** what is the sample in the above example?     
 **Q** what is the 'statistic' in the above example?    
 
@@ -68,17 +63,17 @@ Observed sample from which we can make inference:
 *Sample*: ???     
 *Statistic*: ???    
 
-When we go from the population to the sample, we implicitly make several assumptions about the sample (i.e., that the sample is representative of the population).
-
 *Statistics* is about making *inference* about a population-level property (the *parameter*) from a sample.
 
-Classical statistics involves computing a *summary statistic* from the data, and then using a (usually theoretical) 'sampling distribution' to determine whether or not that summary statistic contains a meaningful signal or is likely to be a result of random noise.
+For statistical inference to make sense, we must make several assumptions about the sample (i.e., that the sample is representative of the population).
 
-Where does probability come in? Well, samples are random- and by random we mean that every time we sample from a population can result in a different outcome. Therefore, all *statistics* derived from samples are random quantities, and will differ with each sample. When something is random, we use probability to quantify how commonplace or unexpected an outcome is. Probability helps us to quantify things that we can't know with certainty.
+Classical statistics involves computing a *summary statistic* from the data, and then using a (usually theoretical) 'sampling distribution' to determine whether or not that summary statistic is meaningfully different from a (usually null) hypothesis.
 
-If all samples (and the statistics derived from them) differ from one another, how can we be sure that our statistic (derived from a random sample) is actually telling us something about the population of interest (i.e., a true signal)? How can we be convinced that our result is *meaningful* and not simply an artifact of random sampling?
+Where does probability come in? Well, samples are random- every sample from a population can result in a different outcome. All *summary statistics* are derived from a random sampling process. Probability helps us to quantify things that we can't know with certainty.
 
-### Aside: probability measures lack of surprise!
+If all samples (and the statistics derived from them) are random, how can we be convinced that our result is *meaningful* and not simply an artifact of random sampling?
+
+### Aside: probability
 
 **Q**: what is the probability of getting four heads out of 4 coin flips?
 
@@ -103,7 +98,7 @@ HHTH
 HHHT     
 HHHH     
 
-Are each of these outcomes/sequences equally likely?
+Assuming a 'fair' coin, are each of these outcomes/sequences equally likely?
 
 How many of the possible outcomes meet our criterion (all heads)? (How many ways are there of getting 4 heads?)
 
@@ -113,57 +108,38 @@ If you get four heads in a row, are you *surprised* enough by that outcome to re
 
 Probability of a specific outcome = (# ways of getting a specific outcome)/(total number of equally plausible outcomes)
 
-Probability measures your lack of surprise at observing a particular outcome from a sampling process. If there is only one way of getting a particular outcome out of hundreds of different, equally possible sampled outcomes, you might be pretty surprised to see that one specific outcome!
-
 **Q** What is the probability of getting at least three of the same face (heads or tails) out of 4 coin flips?
 
-How surprised would you be to flip 4 coins and observe at least three flips with the same face??  
+**Q** How surprised would you be to flip 4 coins and observe at least three flips with the same face??  
 
-## Classical Statistics Part 2 (the null!)
+## Null hypotheses and p-values
 
-The null hypothesis is simply the notion that the effect you are testing for is entirely absent in the population of interest. 
+The null hypothesis is simply the notion that the effect you are testing for is absent in the population of interest. 
 
-The null universe is the universe where the null hypothesis is true. It is this universe that we must dwell in when we practice statistics, at least in classical/frequentist statistics! Therefore in this class we will tend to dwell in the null universe quite a lot!
-
-**Q** what is the null hypothesis for the height example above?
+**Q** what is the null hypothesis for the jump-height example?
 
 The *p value* is a key concept of frequentist statistics, but one that is often misinterpreted and misunderstood. 
 
-The p value is the probability of obtaining a result at least as extreme as your observed result, *given you are dwelling in the null universe* (the effect you are testing for is entirely absent in the population of interest). The p value answers the question: "what's the probability that my result (or one even more extreme) could have happened by chance alone, given the null hypothesis is true?"
+The p value answers the question: "what's the probability that my result (or one even more "extreme", or unlikely) could have happened by chance alone, *given the null hypothesis is true*?"
 
-Another way of stating the p-value:
-
-"Given the null hypothesis is true, how *unsurprised* would you be to observe a *signal* at least as strong as the one you observed?". The lower the p-value, the more surprised you will be that your result could simply be a result of random chance in the null universe AND the more likely you might be to reject the null hypothesis (we just can't be living in the null universe- the result is too unlikely!) 
+The lower the p-value, the more surprised you will be that your observed data could simply be a result of random chance under the null hypothesis AND the more likely you might be to *reject* the null hypothesis! 
 
 ### Aside: extremeness
 
-When we use the phrase 'at least as extreme as your observed result' we mean a result that would lend even more support for rejecting the null hypothesis than your observed result (a result with even more *signal* than the observed data). For example, let's imagine the following scenario for the height/last name question:
+A result 'at least as extreme as your observed result' means a result that would lend even more support for rejecting the null hypothesis than your observed result. For example, let's imagine the following scenario for the jump-height question:
 
 Sample size: 20, 10 with names between A and M and 10 with names between N and Z.              
-Observed summary statistic: mean height for A-M is 2 cm greater than mean height for N-Z                  
+Observed summary statistic: mean jump-height for A-M is 0.2 cm greater than mean height for N-Z                  
 
-**Q** What are some results that would lend at least as much support for supporting the notion that the null hypothesis is false??     
-
-**Q** Would you be comfortable rejecting the null hypothesis if random sampling in the null universe yielded mean height differences of 2 cm or greater 20% of the time (p = 0.2)?           
+**Q** Would you be comfortable rejecting the null hypothesis if random sampling under the null hypothesis yielded mean height differences of 0.2 cm or greater 20% of the time (p = 0.2)?           
 
 ### Rejecting the null
 
 We reject the null hypothesis if the chance of the result occurring by random chance is sufficiently small. For historical reasons, 0.05 is used as the threshold (known as alpha)- if a p value is less than 0.05, we reject the null! 
 
-Fisher proposed alpha=0.05 as a nice balance between the probability of mistakenly rejecting a true null hypothesis (Type 1 error), and the probability of failing to reject a false null hypothesis (a Type 2 error). This cutoff value was NEVER intended to be a fixed value to be applied unthinkingly!!! In addition, it made computation easier in the days of the slide rule!
+Fisher proposed alpha=0.05 as a nice balance between the probability of mistakenly rejecting a true null hypothesis (Type 1 error), and the probability of failing to reject a false null hypothesis (a Type 2 error). This cutoff value was NEVER intended to be a fixed value to be applied unthinkingly!!!
 
 Increasingly, scientists are rejecting the threshold of 0.05 and many are rejecting p-values in general. 
-
-### The p-value: good or evil?
-
-There has been a lot of hating on p-values in recent decades. Largely this is due to frequent misinterpretation of what they mean, unthinking use of the alpha=0.05 threshold, and failure to report other important pieces of information like effect sizes and confidence intervals (reporting only p-values is called the 'naked p-value' phenomenon!).  
-
-The American Statistical Association (ASA) released a statement about p-values and their misuse:
-
-[Summary of ASA statement](pval_asa1.pdf)      
-[ASA statement](pval_asa2.pdf)    
-
-P-values remain very important and widely used and reported. But we need to keep in mind the common pitfalls and try to avoid them!
 
 
 ### Example: Fisher’s cups of tea: 
