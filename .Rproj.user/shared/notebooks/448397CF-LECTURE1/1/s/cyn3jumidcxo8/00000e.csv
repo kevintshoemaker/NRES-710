@@ -1,2 +1,0 @@
-"0",""
-"0","curve(pbeta(x,shape1,shape2),ylab=""cumulative probability"",xlab=""possibilities"")   # cumulative distribution"

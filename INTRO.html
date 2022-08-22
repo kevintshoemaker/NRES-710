@@ -409,68 +409,118 @@ div.tocify {
 </div>
 
 
+<p>NRES 710 is designed to be an introductory, graduate-level statistics
+class. “Introductory” because you are not assumed to have much in the
+way of prior statistical knowledge (although an undergrad course under
+your belt will be helpful) or prior experience in R programming
+(although some prior exposure will make the learning curve less steep).
+“Graduate-level” because once we get rolling, it’ll be full steam ahead!
+However, another dimension of a graduate-level course is an emphasis on
+collaborative knowledge development through group discussion and
+collective learning, and NRES 710 will provide opportunities for
+this.</p>
 <p>This course provides an introduction to both statistics and computer
-programming. Statistics and computer programming can in some ways be
-considered ‘languages’ because they help us to understand and
-communicate complex ideas (to other people and with computers!). But
-learning these languages is easier than learning a spoken language in
-many ways, because statistics and computer programming begin and end
-with pure logic! Statistics and computer programming are nothing if they
-don’t make logical sense! Spoken languages on the other hand often don’t
-follow completely logical structures- they don’t always ‘make sense’. So
-you can’t ‘get by’ in most spoken languages simply by following a few
-basic rules. With statistics and computer programming, you can! With a
-solid grounding in basic rules of probability and statistics, and armed
-with some basic computer programming abilities (and some human
-creativity and ingenuity), you can go extremely far in making sense of
-data and communicating that understanding with others!!</p>
+programming. With a solid grounding in basic rules of probability and
+statistics, and armed with some basic computer programming abilities
+(and some human creativity and ingenuity), you can go extremely far in
+making sense of data and communicating that understanding with
+others!!</p>
+<div id="install-r-and-rstudio" class="section level2">
+<h2>Install R and Rstudio</h2>
+<p><a href="https://cran.r-project.org/">CRAN website for downloading
+R</a><br />
+<a href="https://www.rstudio.com/">Rstudio main site</a></p>
+<p>Make sure you have the most recent versions!</p>
+</div>
+<div id="make-a-new-rstudio-project-for-this-class"
+class="section level2">
+<h2>Make a new Rstudio “project” for this class</h2>
+<p><a
+href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">R
+projects are a useful feature of RStudio</a>. Just store all the code
+and data for this course in your project folder and it will make your
+life easier!</p>
+</div>
 <div id="download-the-r-code-for-this-lecture" class="section level2">
 <h2>Download the R code for this lecture!</h2>
 <p>To follow along with the R-based lessons and demos, <a
 href="INTRO.R">right (or command) click on this link and save the script
-to your working directory</a></p>
+to your project directory</a></p>
 </div>
 <div id="what-is-statistics" class="section level2">
 <h2>What is statistics?</h2>
-<p><img src="statistics1.png" /></p>
+<p>“Statistics is like grout –the word feels decidedly unpleasant in the
+mouth, but it describes something essential for holding a mosaic in
+place. Statistics is a common bond supporting all other science.”
+-Ramsey and Schafer (2013), The Statistical Sleuth, 3rd Edition.</p>
+<p><img src="statistics1.png" style="width:40.0%" /></p>
 <p>Statistics is the process of making inference about a property of a
-<em>population</em> (a parameter) from a representative
-<em>sample</em>.</p>
+<em>population</em> (a parameter) from a representative <em>sample</em>
+The vertical line separates the stuff we can observe and measure
+directly (right side) and the stuff we can’t observe but want to make
+inference about (left side).</p>
+<p>Commonly, statistical analysis is conducted to compare parameters
+from multiple populations(e.g., “are the population means different?”),
+or to compare parameters estimated from a sampled data set with those of
+an idealized model representing an underlying hypothesis of interest (or
+null hypothesis).</p>
+<p>More broadly, a common dictionary definition of statistics includes
+“… the collection, organization, analysis, interpretation, and
+presentation of data” (Oxford Dictionary, Wikipedia, etc.). Given this
+broader definition, statistics includes key components of data
+collection (via study design), data analysis, data science, scientific
+inference, and science communication. It’s not just you. Many ecologists
+and environmental scientistsare fuzzy about the language, and even the
+concepts!</p>
 </div>
-<div id="types-of-data" class="section level2">
-<h2>Types of data</h2>
-<p>Statistics is fundamentally about making sense of data. Therefore
-understanding statistics requires starting with an understanding types
-of data.</p>
+<div id="why-do-we-need-this-particularstats-class"
+class="section level2">
+<h2>Why do we need (this particular)stats class?</h2>
+<p>Many professors recommend that grad students take the least
+coursework possible and focus on gathering knowledge as needed while
+conducting their research. But typically, with statistics coursework as
+a notable exception. It can be more efficient, fun, and rewarding to
+learn statistics as a group rather than on your own. I hope you agree by
+the end of this class!</p>
+<p>##Course Overview We will discuss the course organization and
+expectations. Please see <a href="syllabus.pdf">course syllabus</a> and
+<a href="schedule.pdf">schedule</a> documents, provided separately.</p>
+</div>
+<div id="different-approaches-to-the-scientific-method"
+class="section level2">
+<h2>Different Approaches to “the Scientific Method”</h2>
+<p>Scientific inquiry is furthered through using both inductive and
+hypothetico-deductive approaches. Both require statistics in order to
+test hypotheses about how nature works. The inductive approach involves
+a continuous and cyclical generation of hypotheses from observations;
+developing predictions from hypotheses; matching new observations to
+predictions in order to test hypotheses; and revising hypotheses -until
+a hypothesis is ultimately confirmed. The emphasis is on hypothesis
+verification. The hypothetico-deductive approach, on the other hand,
+proposes multiple working hypotheses from the outset, with an emphasis
+on falsifying incorrect hypotheses. An “accepted truth” is one that
+stands up to repeated attempts at falsification. Here is an illustration
+of the inductive method, taken from Gotelli and Ellison (2004):</p>
+<p><img src="gotell1.jpg" style="width:50.0%" /> And here, an
+illustration of the hypothetico-deductive method, taken from the same
+source:</p>
+<p><img src="gotell2.jpg" style="width:50.0%" /> ## Types of data</p>
+<p>Statistics is about making sense of data. Therefore understanding
+statistics requires starting with an understanding of data types.</p>
 <p>What types of data are there?</p>
 <ol style="list-style-type: decimal">
-<li>Categorical (Can be quantitative or qualitative) – represents
-qualitative characteristics
+<li>Categorical – represents qualitative (labeled) characteristics
 <ol style="list-style-type: lower-alpha">
-<li>Nominal (labels, &gt; 2 categories)<br />
+<li>Nominal (&gt; 2 categories)<br />
 </li>
-<li>Dichotomous (2 categories)<br />
-</li>
-<li>Ordinal (ordered categories: category 3 is bigger than 2 is bigger
-than 1)</li>
+<li>Dichotomous (2 categories)</li>
 </ol></li>
 <li>Quantitative
 <ol style="list-style-type: lower-alpha">
 <li>Discrete: can be counted (number of individuals in a
 population)</li>
-<li>Continuous: not countable, but can be measured (total body length)
-<ol style="list-style-type: lower-roman">
-<li>Interval data: the difference between two values is meaningful but
-zero doesn’t mean the absence of a thing (e.g., temperature in
-Celsius)<br />
-</li>
-<li>Ratio: zero means complete absence of a thing (e.g., temperature in
-Kelvin). If zero means absence, then the ratio between two values is
-meaningful (something that weighs 4 g has twice the mass of something
-that weighs 2 g). Note that you can’t say that for interval data (e.g.,
-something with a temperature of 4 C is not twice as hot as something at
-2 C).</li>
-</ol></li>
+<li>Continuous: not countable, but can be measured (total body length,
+temperature)</li>
 </ol></li>
 </ol>
 <p>Why do we need to know about data types? We have to analyze and
@@ -481,25 +531,24 @@ visualize these data types differently!</p>
 <li>Continuous data: calculate percentiles, mean and variance.</li>
 </ul>
 </div>
-<div id="messing-around-with-data-types-in-r" class="section level2">
-<h2>Messing around with data types in R:</h2>
+<div id="working-with-data-in-r" class="section level2">
+<h2>Working with data in R:</h2>
 <p>Let’s explore some of R’s built in data sets: iris, mtcars, titanic
 (install titanic package first)</p>
-<p>We will also simulate some data on our own!</p>
 <div id="notes-about-working-in-r" class="section level3">
 <h3>Notes about working in R:</h3>
-<p>R is open source, so it is ‘messy’. Packages are being added all the
+<p>R is an open source project, and new packages are being added all the
 time, there are millions of ways to accomplish the same task.</p>
 <p>R is incredibly powerful and feature rich- you are NOT expected to
 memorize much, just know that the answer is always a few clicks
 away!</p>
 <p>When in doubt, Google it!!</p>
-<p>Here is a <a href="base-r.pdf">base R cheat sheet (from RStudio)</a>-
-this is a great reference for most of the basic tasks you will need to
-perform in R. Keep it handy!</p>
+<p>Here is a <a href="base-r.pdf">base R cheat sheet</a>- this is a
+great reference for most of the basic tasks you will need to perform in
+R.</p>
 <p>Learn to use R scripts- and save the R script frequently!! This is
 the primary record of what you’ve done and allows you and other
-scientists to reproduce your models, analyses and visualizations.</p>
+scientists to reproduce your workflows.</p>
 </div>
 <div id="first-r-demo" class="section level3">
 <h3>First R demo!</h3>
@@ -509,28 +558,31 @@ that contains all of the code blocks in this web-based lecture.</p>
 <p>All of you should have R and RStudio installed on your computers. See
 the <a href="https://kevintshoemaker.github.io/NRES-746/">links page</a>
 for some useful references. I will be leading <a
-href="http://naes.unr.edu/shoemaker/teaching/R-Bootcamp/index.html">“bootcamps”
-on using R</a> in two upcoming Saturday afternoons (Sep 12 and 19-
-virtual of course)- please consider attending if you don’t have much
-experience in R!</p>
-<p>First of all, R can be used as a calculator. Try it!</p>
-<pre class="r"><code>2+2               # use R as a calculator</code></pre>
+href="https://kevintshoemaker.github.io/R-Bootcamp/index.html">workshops
+on getting started with R</a> in two upcoming Saturday afternoons (Sep
+10 and 17)- please consider attending if you don’t have much experience
+in R!</p>
+<p>Starting at the most basic level, R can be used as a calculator. Try
+it!</p>
+<pre class="r"><code># Use R as a calculator ----------------
+
+2+2               # use R as a calculator</code></pre>
 <pre><code>## [1] 4</code></pre>
 <pre class="r"><code>four &lt;- 2+2       # define your first variable!
 four</code></pre>
 <pre><code>## [1] 4</code></pre>
 <pre class="r"><code>five&lt;-2+2         # you can make mistakes and define misleading labels- R will let you!
-five&lt;-2+3
-five&lt;-four+1      # you can use variables to define new ones</code></pre>
-<p>Q: what are those hashtags doing in the above code block? [these are
-‘comments’ and they are super helpful- use them early and often!]</p>
-<p>Use variable names that will not confuse you (but variable names
-can’t start with a number).</p>
+three &lt;- four + five</code></pre>
+<p>What about those hashtags (#) in the above code block? These are
+‘comments’ and they are super helpful- use them early and often!</p>
 <p>Use Rstudio’s autofill feature to avoid typos!</p>
 <div id="explore-rs-existing-datasets" class="section level4">
 <h4>Explore R’s existing datasets</h4>
-<pre class="r"><code># data()     # &#39;uncomment&#39; this command and run it to explore built-in datasets</code></pre>
-<p>Let’s start by working with the famous iris dataset:</p>
+<pre class="r"><code># R&#39;s built in datasets -------------------------
+
+# data()     # &#39;uncomment&#39; this command and run it to explore built-in datasets</code></pre>
+<p>Let’s start by working with Fisher’s famous iris dataset:</p>
+<p><img src="iris1.png" /></p>
 <pre class="r"><code>#iris                   # this is a data frame- the basic data storage type in R
 head(iris)             # [add your own comment here!]</code></pre>
 <pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
@@ -540,23 +592,13 @@ head(iris)             # [add your own comment here!]</code></pre>
 ## 4          4.6         3.1          1.5         0.2  setosa
 ## 5          5.0         3.6          1.4         0.2  setosa
 ## 6          5.4         3.9          1.7         0.4  setosa</code></pre>
-<pre class="r"><code>tail(iris)</code></pre>
-<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
-## 145          6.7         3.3          5.7         2.5 virginica
-## 146          6.7         3.0          5.2         2.3 virginica
-## 147          6.3         2.5          5.0         1.9 virginica
-## 148          6.5         3.0          5.2         2.0 virginica
-## 149          6.2         3.4          5.4         2.3 virginica
-## 150          5.9         3.0          5.1         1.8 virginica</code></pre>
-<pre class="r"><code>#  ?iris               # uncomment this to learn more about the iris dataset
-str(iris)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    150 obs. of  5 variables:
-##  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
-##  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
-##  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
-##  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
-##  $ Species     : Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
-<pre class="r"><code>len&lt;-iris$Petal.Length
+<pre class="r"><code># tail(iris)
+
+#  ?iris               # uncomment this to learn more about the iris dataset
+# str(iris)
+
+
+len&lt;-iris$Petal.Length
 hist(len)             # what does this do? How could you learn more about this &#39;hist&#39; function?</code></pre>
 <p><img src="INTRO_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <pre class="r"><code># Q: what kind of data are petal lengths?</code></pre>
@@ -594,42 +636,22 @@ head(titanic_train)</code></pre>
 # Q: What kind of data are those in the &quot;Embarked&quot; column? 
 # Q: What kind of data are those in &quot;Pclass?&quot;</code></pre>
 <p>We can even make our own dataset!</p>
-<pre class="r"><code># Make our own data
+<pre class="r"><code># Make our own data ------------------
+
 # lets pull 15 numbers from the standard normal distribution
 
 a &lt;- rnorm(15)
 a &lt;- rnorm(15,mean=2,sd=0.5)
-a</code></pre>
-<pre><code>##  [1] 1.860032 1.034486 2.504418 2.639506 1.540322 2.956401 2.489496 2.985118
-##  [9] 2.937774 2.143449 1.514816 2.722032 2.520638 2.041234 1.922108</code></pre>
-<pre class="r"><code># want to be able to repeat this? set the &quot;seed.&quot;
 
-set.seed(1234)
-a &lt;- rnorm(15)
-a</code></pre>
-<pre><code>##  [1] -1.20706575  0.27742924  1.08444118 -2.34569770  0.42912469  0.50605589
-##  [7] -0.57473996 -0.54663186 -0.56445200 -0.89003783 -0.47719270 -0.99838644
-## [13] -0.77625389  0.06445882  0.95949406</code></pre>
-<pre class="r"><code># let&#39;s pull 15 numbers from the binomial distribution
+# let&#39;s pull 15 numbers from the binomial distribution
 b&lt;- rbinom(15, size=1, prob=0.2) # we could &quot;weight the coin&quot;
-b</code></pre>
-<pre><code>##  [1] 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0</code></pre>
-<pre class="r"><code># we can create categories: 
+
+
+# we can create categories: 
 unit&lt;-rep(c(&quot;Control&quot;,&quot;+N&quot;,&quot;+P&quot;,&quot;+NP&quot;),each=20)
-unit</code></pre>
-<pre><code>##  [1] &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot;
-##  [8] &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot;
-## [15] &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;Control&quot; &quot;+N&quot;     
-## [22] &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;     
-## [29] &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;     
-## [36] &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+N&quot;      &quot;+P&quot;      &quot;+P&quot;     
-## [43] &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;     
-## [50] &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;     
-## [57] &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+P&quot;      &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;    
-## [64] &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;    
-## [71] &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;    
-## [78] &quot;+NP&quot;     &quot;+NP&quot;     &quot;+NP&quot;</code></pre>
-<pre class="r"><code># we can even create a whole dataframe
+
+
+# we can even create a whole dataframe
 my.data &lt;- data.frame(
   Obs.Id = 1:100,
   Treatment = rep(c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;),each=20),
@@ -639,17 +661,17 @@ my.data &lt;- data.frame(
 )
 head(my.data)</code></pre>
 <pre><code>##   Obs.Id Treatment Block Germination AvgHeight
-## 1      1         A     1           1 10.325180
-## 2      2         A     2           1 10.166115
-## 3      3         A     3           1 10.193746
-## 4      4         A     4           0  9.256534
-## 5      5         A     5           2 11.037570
-## 6      6         A     6           0 12.262523</code></pre>
+## 1      1         A     1           3  9.517356
+## 2      2         A     2           0 11.947648
+## 3      3         A     3           2 10.482145
+## 4      4         A     4           1  8.808578
+## 5      5         A     5           3  8.743263
+## 6      6         A     6           2  9.857716</code></pre>
 <p>We can also import data from files stored on our computers (or even
 directly from the web)</p>
-<pre class="r"><code># Then, we can import data. 
+<pre class="r"><code># import data from file ----------------------- 
 
-# Don&#39;t forget to set your working directory (or just make sure you&#39;re using an Rstudio Project). I did it here, just for fun... 
+# Don&#39;t forget to set your working directory (or just make sure you&#39;re using an Rstudio Project). 
 
 # setwd(&quot;~/Desktop&quot;)       # uncomment and run if you want to set the desktop as your working directory.
 
@@ -667,13 +689,13 @@ becomes your working directory!</p>
 <div id="mathbio-stats-chats" class="section level2">
 <h2><a href="https://kevintshoemaker.github.io/StatsChats/">math/bio
 “stats chats”</a></h2>
-<p>Paul Hurtado (math/stats dept), Ken Nussear (geography) and I host
-informal sessions for grad students in EECB, NRES, Geography etc (and
-faculty) to discuss data analysis questions. This can be a good
-opportunity to ask questions, find out more about what types of data and
-questions your peers are working with, and contribute some insights! We
-haven’t figured out a time yet for this semester, but I’ll keep you
-posted.</p>
+<p>Paul Hurtado (math/stats dept), Ken Nussear (geography), Perry
+Williams (NRES) and I host informal sessions for grad students in EECB,
+NRES, Geography etc (and faculty) to discuss data analysis questions.
+This can be a good opportunity to ask questions, find out more about
+what types of data and questions your peers are working with, and
+contribute some insights! We haven’t figured out a time yet for this
+semester, but I’ll keep you posted.</p>
 <p>Remember, I need your frequent and honest feedback in order to make
 sure that the level is appropriate and the topics are useful!</p>
 <p><a href="LECTURE1.html">–go to next lecture–</a></p>

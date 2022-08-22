@@ -1,5 +1,0 @@
-"0",""
-"0","samplemeans <- sapply(lotsofsamples,mean)"
-"0",""
-"0","hist(samplemeans,xlab=""mean body size (n=30)"")"
-"0",""

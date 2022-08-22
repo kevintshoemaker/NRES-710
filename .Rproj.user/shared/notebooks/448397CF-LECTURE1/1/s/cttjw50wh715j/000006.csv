@@ -1,3 +1,0 @@
-"0",""
-"0","    # for discrete distribution"
-"0","x <- barplot(sapply(0:10,function(t) ppois(t,2)),xlab=""possibilities"",ylab='cumulative probability')"

@@ -1,2 +1,0 @@
-"0",""
-"0","barplot(cumsum(probs),ylab=""Cumulative Probability"",main=""Poisson distribution (discrete)"")   # cumulative distribution"

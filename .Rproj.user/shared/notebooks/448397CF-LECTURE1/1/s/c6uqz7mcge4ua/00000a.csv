@@ -1,4 +1,0 @@
-"0",""
-"0","    # for discrete distribution"
-"0","curve(qpois(x,4),0,1,xlab=""cumulative probability"",ylab='quantile')"
-"0",""

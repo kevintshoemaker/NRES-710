@@ -1,4 +1,0 @@
-"0",""
-"0","### One-sided (alternative = 'greater')"
-"0","curve(dt(x,samp.n-1),-3,3, main=""Meaning of more extreme (one tailed version: greater than)"","
-"0","      ylab=""probability density"",xlab=""t statistic"")    # visualize the sampling distribution of the t-statistic"

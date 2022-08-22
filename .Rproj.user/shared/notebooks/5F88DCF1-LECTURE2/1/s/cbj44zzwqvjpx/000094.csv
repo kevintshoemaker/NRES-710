@@ -1,4 +1,0 @@
-"0",""
-"0","p.onesided <- pt(-abs(t.statistic),samp.n-1)     # one-tailed p-value"
-"0",""
-"0","text(-2,0.3,paste(""p ="",round(p.onesided,4)))"

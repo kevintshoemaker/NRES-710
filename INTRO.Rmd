@@ -10,59 +10,82 @@ output:
 
 ```{r setup, include=FALSE}
 
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
-
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
 ```
 
 ```{r echo=FALSE}
 
-############################################################
-####                                                    ####  
-####  NRES 710, Introduction                            ####
-####                                                    ####
-####  Kevin Shoemaker                                   #### 
-####  University of Nevada, Reno                        ####
-####                                                    #### 
-############################################################
-
-
-############################################################
-####  Getting started with R                            ####
-############################################################
-
+#  NRES 710, Introduction  -----------------------------
+#     University of Nevada, Reno
+#     Getting started with R     
 
 ```
 
+NRES 710 is designed to be an introductory, graduate-level statistics class. “Introductory” because you are not assumed to have much in the way of prior statistical knowledge (although an undergrad course under your belt will be helpful) or prior experience in R programming (although some prior exposure will make the learning curve less steep). “Graduate-level” because once we get rolling, it’ll be full steam ahead! However, another dimension of a graduate-level course is an emphasis on collaborative knowledge development through group discussion and collective learning, and NRES 710 will provide opportunities for this. 
 
-This course provides an introduction to both statistics and computer programming. Statistics and computer programming can in some ways be considered 'languages' because they help us to understand and communicate complex ideas (to other people and with computers!). But learning these languages is easier than learning a spoken language in many ways, because statistics and computer programming begin and end with pure logic! Statistics and computer programming are nothing if they don't make logical sense! Spoken languages on the other hand often don't follow completely logical structures- they don't always 'make sense'. So you can't 'get by' in most spoken languages simply by following a few basic rules. With statistics and computer programming, you can! With a solid grounding in basic rules of probability and statistics, and armed with some basic computer programming abilities (and some human creativity and ingenuity), you can go extremely far in making sense of data and communicating that understanding with others!!   
+This course provides an introduction to both statistics and computer programming. With a solid grounding in basic rules of probability and statistics, and armed with some basic computer programming abilities (and some human creativity and ingenuity), you can go extremely far in making sense of data and communicating that understanding with others!!   
 
+## Install R and Rstudio
+
+ [CRAN website for downloading R](https://cran.r-project.org/)  
+ [Rstudio main site](https://www.rstudio.com/) 
+ 
+Make sure you have the most recent versions!
+
+## Make a new Rstudio "project" for this class  
+
+[R projects are a useful feature of RStudio](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects). Just store all the code and data for this course in your project folder and it will make your life easier!
+ 
 ## Download the R code for this lecture!
 
-To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](INTRO.R)
+To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your project directory](INTRO.R)
 
 ## What is statistics?
 
-![](statistics1.png)
+“Statistics is like grout –the word feels decidedly unpleasant in the mouth, but it describes something essential for holding a mosaic in place. Statistics is a common bond supporting all other science.”
+   -Ramsey and Schafer (2013), The Statistical Sleuth, 3rd Edition. 
 
-Statistics is the process of making inference about a property of a *population* (a parameter) from a representative *sample*.
+![](statistics1.png){width=40%}
 
+Statistics is the process of making inference about a property of a *population* (a parameter) from a representative *sample* The vertical line separates the stuff we can observe and measure directly (right side) and the stuff we can't observe but want to make inference about (left side).
+
+Commonly, statistical analysis is conducted to compare parameters from multiple populations(e.g., “are the population means different?”), or to compare parameters estimated from a sampled data set with those of an idealized model representing an underlying hypothesis of interest (or null hypothesis). 
+
+More broadly, a common dictionary definition of statistics includes “... the collection, organization, analysis, interpretation, and presentation of data” (Oxford Dictionary, Wikipedia, etc.). Given this broader definition, statistics includes key components of data collection (via study design), data analysis, data science, scientific inference, and science communication. It’s not just you. Many ecologists and environmental scientistsare fuzzy about the language, and even the concepts!
+
+
+## Why do we need (this particular)stats class?
+Many professors recommend that grad students take the least coursework possible and focus on gathering knowledge as needed while conducting their research. But typically, with statistics coursework as a notable exception. It can be more efficient, fun, and rewarding to learn statistics as a group rather than on your own. I hope you agree by the end of this class!
+
+##Course Overview
+We will discuss the course organization and expectations. Please see [course syllabus](syllabus.pdf) and [schedule](schedule.pdf) documents, provided separately.
+
+## Different Approaches to “the Scientific Method”
+Scientific inquiry is furthered through using both inductive and hypothetico-deductive approaches. Both require statistics in order to test hypotheses about how nature works. The inductive approach involves a continuous and cyclical generation of hypotheses from observations; developing predictions from hypotheses; matching new observations to predictions in order to test hypotheses; and revising hypotheses -until a hypothesis is ultimately confirmed. The emphasis is on hypothesis verification. The hypothetico-deductive approach, on the other hand, proposes multiple working hypotheses from the outset, with an emphasis on falsifying incorrect hypotheses. An “accepted truth” is one that stands up to repeated attempts at falsification. Here is an illustration of the inductive method, taken from Gotelli and Ellison (2004):
+
+![](gotell1.jpg){width=50%}
+And here, an illustration of the hypothetico-deductive method, taken from the same source:
+
+![](gotell2.jpg){width=50%}
 ## Types of data
 
-Statistics is fundamentally about making sense of data. Therefore understanding statistics requires starting with an understanding types of data. 
+Statistics is about making sense of data. Therefore understanding statistics requires starting with an understanding of data types. 
 
 What types of data are there? 
 
-1.	Categorical (Can be quantitative or qualitative) – represents qualitative characteristics      
-    a.	Nominal (labels, > 2 categories)     
+1.	Categorical – represents qualitative (labeled) characteristics      
+    a.	Nominal (> 2 categories)     
     b.	Dichotomous (2 categories)    
-    c.	Ordinal (ordered categories: category 3 is bigger than 2 is bigger than 1)  
     
 2.	Quantitative     
     a.	Discrete: can be counted (number of individuals in a population)
-    b.	Continuous: not countable, but can be measured (total body length)
-        i.	Interval data: the difference between two values is meaningful but zero doesn't mean the absence of a thing (e.g., temperature in Celsius)     
-        ii.	Ratio: zero means complete absence of a thing (e.g., temperature in Kelvin). If zero means absence, then the ratio between two values is meaningful (something that weighs 4 g has twice the mass of something that weighs 2 g). Note that you can't say that for interval data (e.g., something with a temperature of 4 C is not twice as hot as something at 2 C).    
-
+    b.	Continuous: not countable, but can be measured (total body length, temperature)
+        
 Why do we need to know about data types? We have to analyze and visualize these data types differently! 
 
 For example: 
@@ -70,68 +93,68 @@ For example:
 * Nominal data: frequencies, pie charts
 * Continuous data: calculate percentiles, mean and variance. 
 
-## Messing around with data types in R: 
+## Working with data in R: 
 
 Let's explore some of R's built in data sets: iris, mtcars, titanic (install titanic package first)
 
-We will also simulate some data on our own!
-
 ### Notes about working in R:
 
-R is open source, so it is 'messy'. Packages are being added all the time, there are millions of ways to accomplish the same task. 
+R is an open source project, and new packages are being added all the time, there are millions of ways to accomplish the same task. 
 
 R is incredibly powerful and feature rich- you are NOT expected to memorize much, just know that the answer is always a few clicks away!
 
 When in doubt, Google it!! 
 
-Here is a [base R cheat sheet (from RStudio)](base-r.pdf)- this is a great reference for most of the basic tasks you will need to perform in R. Keep it handy!
+Here is a [base R cheat sheet](base-r.pdf)- this is a great reference for most of the basic tasks you will need to perform in R.
 
-Learn to use R scripts- and save the R script frequently!! This is the primary record of what you've done and allows you and other scientists to reproduce your models, analyses and visualizations.
+Learn to use R scripts- and save the R script frequently!! This is the primary record of what you've done and allows you and other scientists to reproduce your workflows.
 
 ### First R demo!
 
 **NOTE:** for those wishing to follow along with the R-based demo in class, [click here](INTRO.R) for an R-script that contains all of the code blocks in this web-based lecture. 
 
-All of you should have R and RStudio installed on your computers. See the [links page](https://kevintshoemaker.github.io/NRES-746/) for some useful references. I will be leading ["bootcamps" on using R](http://naes.unr.edu/shoemaker/teaching/R-Bootcamp/index.html) in two upcoming Saturday afternoons (Sep 12 and 19- virtual of course)- please consider attending if you don't have much experience in R!
+All of you should have R and RStudio installed on your computers. See the [links page](https://kevintshoemaker.github.io/NRES-746/) for some useful references. I will be leading [workshops on getting started with  R](https://kevintshoemaker.github.io/R-Bootcamp/index.html) in two upcoming Saturday afternoons (Sep 10 and 17)- please consider attending if you don't have much experience in R!
 
-First of all, R can be used as a calculator. Try it! 
+Starting at the most basic level, R can be used as a calculator. Try it! 
 
 ```{r}
+
+# Use R as a calculator ----------------
 
 2+2               # use R as a calculator
 four <- 2+2       # define your first variable!
 four
 five<-2+2         # you can make mistakes and define misleading labels- R will let you!
-five<-2+3
-five<-four+1      # you can use variables to define new ones
+three <- four + five
 
 ```
 
-Q: what are those hashtags doing in the above code block? [these are 'comments' and they are super helpful- use them early and often!]
-
-Use variable names that will not confuse you (but variable names can't start with a number). 
+What about those hashtags (#) in the above code block? These are 'comments' and they are super helpful- use them early and often!
 
 Use Rstudio's autofill feature to avoid typos!
-
 
 #### Explore R's existing datasets
 
 ```{r}
-# data()     # 'uncomment' this command and run it to explore built-in datasets
 
+# R's built in datasets -------------------------
+
+# data()     # 'uncomment' this command and run it to explore built-in datasets
 
 ```
 
-Let's start by working with the famous iris dataset:
+Let's start by working with Fisher's famous iris dataset:
+
+![](iris1.png)
 
 ```{r}
 
 #iris                   # this is a data frame- the basic data storage type in R
 head(iris)             # [add your own comment here!]
-tail(iris)
+# tail(iris)
 
 #  ?iris               # uncomment this to learn more about the iris dataset
-str(iris)
+# str(iris)
 
 
 len<-iris$Petal.Length
@@ -140,7 +163,6 @@ hist(len)             # what does this do? How could you learn more about this '
 # Q: what kind of data are petal lengths?
 
 ```
-
 
 Now let's switch to the 'titanic' dataset. To get this dataset you need to install an R package!
 
@@ -159,33 +181,23 @@ head(titanic_train)
 
 
 ```
-
-
 We can even make our own dataset!
 
 ```{r}
 
-# Make our own data
+# Make our own data ------------------
+
 # lets pull 15 numbers from the standard normal distribution
 
 a <- rnorm(15)
 a <- rnorm(15,mean=2,sd=0.5)
-a
-
-# want to be able to repeat this? set the "seed."
-
-set.seed(1234)
-a <- rnorm(15)
-a
 
 # let's pull 15 numbers from the binomial distribution
 b<- rbinom(15, size=1, prob=0.2) # we could "weight the coin"
-b
 
 
 # we can create categories: 
 unit<-rep(c("Control","+N","+P","+NP"),each=20)
-unit
 
 
 # we can even create a whole dataframe
@@ -204,12 +216,11 @@ head(my.data)
 
 We can also import data from files stored on our computers (or even directly from the web)
 
-
 ```{r}
 
-# Then, we can import data. 
+# import data from file ----------------------- 
 
-# Don't forget to set your working directory (or just make sure you're using an Rstudio Project). I did it here, just for fun... 
+# Don't forget to set your working directory (or just make sure you're using an Rstudio Project). 
 
 # setwd("~/Desktop")       # uncomment and run if you want to set the desktop as your working directory.
 
@@ -227,8 +238,7 @@ Note: I recommend always using Rstudio Projects. This reduces the hassle of sett
 
 
 ## [math/bio "stats chats"](https://kevintshoemaker.github.io/StatsChats/)
-Paul Hurtado (math/stats dept), Ken Nussear (geography) and I host informal sessions for grad students in EECB, NRES, Geography etc (and faculty) to discuss data analysis questions. This can be a good opportunity to ask questions, find out more about what types of data and questions your peers are working with, and contribute some insights! We haven't figured out a time yet for this semester, but I'll keep you posted. 
-
+Paul Hurtado (math/stats dept), Ken Nussear (geography), Perry Williams (NRES) and I host informal sessions for grad students in EECB, NRES, Geography etc (and faculty) to discuss data analysis questions. This can be a good opportunity to ask questions, find out more about what types of data and questions your peers are working with, and contribute some insights! We haven't figured out a time yet for this semester, but I'll keep you posted. 
 
 Remember, I need your frequent and honest feedback in order to make sure that the level is appropriate and the topics are useful!
 

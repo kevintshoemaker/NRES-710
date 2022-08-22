@@ -1,2 +1,0 @@
-"0",""
-"0","curve(pnorm(x,mean,stdev),0,15)   # cumulative distribution"

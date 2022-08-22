@@ -1,5 +1,0 @@
-"0",""
-"0","## cumulative density function  "
-"0",""
-"0","    # for continuous distribution"
-"0","curve(pt(x,df=8),-4,4,xlab=""possibilities"",ylab='cumulative probability')"

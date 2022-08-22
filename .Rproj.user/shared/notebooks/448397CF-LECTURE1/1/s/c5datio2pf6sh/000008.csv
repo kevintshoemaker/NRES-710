@@ -1,2 +1,0 @@
-"0",""
-"0","curve(pchisq(x,df),0,15)   # cumulative distribution"
