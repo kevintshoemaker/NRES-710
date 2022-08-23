@@ -208,6 +208,8 @@ Now imagine we want to test the hypothesis that there are a greater proportion o
 
 ## Statistics: inference from a sample
 
+Pretty much all of classical null hypothesis testing works this way. We compute summary statistics from data that have well-described sampling distributions under the null hypothesis. We climb into the null universe and, using this known sampling distribution, we inquire whether or not our summary statistic (computed from our sample data) could have been a result of random sampling error in the null universe. If not (if $p\le\alpha$) then we are sufficiently surprised to reject the null hypothesis.
+
 Consider the following example:
 
 Yellow-Legged frog example:    

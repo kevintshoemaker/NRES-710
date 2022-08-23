@@ -1,7 +1,7 @@
 ---
 title: "Final Project Overview"
 author: "NRES 710"
-date: "Fall 2020"
+date: "Fall 2022"
 output: 
   html_document: 
     theme: yeti
@@ -13,31 +13,29 @@ output:
 knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ```
 
-
 ## Final projects: expectations
 
-The final project is designed to test your ability to understand and apply the tools that you have developed during the semester using R. The project will involve conducting a rigorous data analysis using statistical approaches that we have learned during the semester (or other tools as approved by the instructor). You can choose whichever statistical methods are suitable to your project scope and questions, but they must be methods we covered in class (unless otherwise approved) and appropriate to your data. Please turn in your own work and assignment, but you may use as many resources as you wish (class material, online material, or the insight/experience of other students) to help generate the results and figures. 
+The final project involves conducting a rigorous data analysis using statistical approaches that we have learned during the semester (or other tools as approved by the instructor). You can choose whichever statistical methods are suitable to your project scope and questions, but they must be methods we cover in this class (unless otherwise approved) and appropriate to your data. Please turn in your own work and assignment, but you may use as many resources as you wish (class material, online material, or the insight/experience of other students) to help generate the results and figures. 
 
 The write-up will loosely take the format of a scientific paper to be submitted to a professional journal. However, because of the nature of this course, the most important pieces of the write-up are the **methods** and **results** sections. Nonetheless, I expect at least a few paragraphs introducing the topic and why it's important, and a few paragraphs discussing the implications of the results. Be concise- include only enough text to convey the important information for each section! See below for details.
-
 
 ## Picking a topic and data set
 
 I encourage you to talk with your advisor to see if there is a way you can make the final project directly part of your thesis project or at least relevant to your thesis/dissertation project. You will end up spending quite a bit of time on your final projects, so think about what types of analyses you want/need to get to know better as part of your graduate research. If you don't have a dataset to work with you can choose to work with a public dataset- there are lots of great datasets out there... see [links page](Links.html#Data_links)
 
-#### Project proposal (1 page)  (due Sep 23)
+#### Project proposal (1 page)  (due Sep 21)
 
 Please provide a 1-page project description. Make sure you include:     
 
 * Project title    
-* Name of researcher      
+* Name of researcher  (your name- these should all be single-author papers)     
 * Brief background (motivation for research question)     
 * Research question(s)      
-* Primary and ancillary data sources      
-* Anticipated analytical approach      
+* Short description of primary and ancillary data sources      
+* Anticipated analytical approach (this may change of course!)    
 
 
-## Draft manuscript (due Nov 25 at 9pm)
+## Draft manuscript (due Nov 16)
 
 Here is a more detailed description of expectations for the manuscript.
 
@@ -51,11 +49,10 @@ Here is a more detailed description of expectations for the manuscript.
 
 **Methods:**      
 
-* Provide just enough details about the data collection to give the reader the context necessary to understand the data.     
-* Provide plenty of detail about the analytical approach- enough detail to replicate the analysis. Justify all decisions that were made and (where appropriate) discuss why you did not use alternative approaches. For this project, err on the side of too much detail!     
-* Discuss key assumptions.  
+* Provide just enough detail about the data collection to give the reader the context necessary to understand the data.     
+* Provide plenty of detail about the analytical approach- enough detail to replicate the analysis. Justify all decisions you made. For this project, err on the side of too much detail! Make sure all key assumptions are made explicit.  
 
-**Results:** Present all relevant results completely yet concisely. Wherever possible, results should be presented via figures and tables. There is a limit of 4 figures and 2 tables, so choose carefully which figures and tables to present. Figures should be *publication quality*, with well-labeled, readable axes. Make sure figure captions have enough information for a reader to interpret the figure without reading the main manuscript! Remember that each figure can contain multile *panels* so you should have no trouble fitting all your key results into 4 figures max.   
+**Results:** Present all relevant results completely yet concisely. Wherever possible, results should be presented via figures and tables. There is a limit of 4 figures and 2 tables, so choose carefully which figures and tables to present. Figures should be *publication quality*, with well-labeled, readable axes. Make sure figure captions have enough information for a reader to interpret the figure without reading the main manuscript! Remember that each figure can contain multiple *panels* so you should have no trouble fitting all your key results into 4 figures max.   
 
 **Discussion:** Write at least two paragraphs that put the results in a larger context (returning to the key research questions) and discuss areas of uncertainty. Potential topics are possible violations of assumptions, and future work that your analysis suggests would be profitable.
 
@@ -63,15 +60,17 @@ Here is a more detailed description of expectations for the manuscript.
 
 **Literature cited** Full references (exact format up to you, but be consistent!) for all citations in your main text. Make sure you cite key R packages that you use- and make sure to cite R. The 'citation()' function in R makes it easy to know how to cite R and R packages. 
 
-**Supplement** Provide all code used to run the analyses presented in the paper as an R script. Only present the code for running the analyses you present in the paper- you don't need to include all side tangents and alternative visualizations, analyses you did not present, etc. 
+**Supplement** Provide all code used to run the analyses presented in the paper as an R script. Only present the code for running the analyses you present in the paper- you don't need to include all side tangents and alternative visualizations, analyses you did not present, etc. You are welcome to use a github link instead.
 
 NOTE: please embed figures and tables within your main text- you do not need to put them in a separate section at the end of the manuscript. 
 
 NOTE: you may also choose to include additional (supplemental) tables and figures at the end of your document. But such figures and tables will not affect your final project grade. 
 
-## Peer review (December 2)
+NOTE: please include line numbers- this is important for the peer-review process
 
-Your first drafts will be subjected to peer review. Unlike standard scientific peer-review practice, the peer-reviews in this class will be *not be anonymous*-- please sign your reviews with the names of all members of your peer-review group. Your manuscript will be reviewed by two other students, and the reviews themselves will be graded as group assignments (see below; one peer review document should be turned in per peer-review group). The reviews are designed to provide feedback on all aspects of the paper- but for this class the most important aspect of the peer reviews is a critique of the statistical approach being used. Key questions for peer-reviewers to consider are (in no particular order):     
+## Peer reviews (due November 30)
+
+Your first drafts will be subjected to peer review. Unlike standard scientific peer-review practice, the peer-reviews in this class will be *not be anonymous*-- please sign your reviews. Your manuscript will be reviewed by two other students, and the reviews themselves will be graded (see below; one peer review document should be turned). The reviews are designed to provide feedback on all aspects of the paper- but for this class the most important aspect of the peer reviews is a critique of the statistical approach being used. Key questions for peer-reviewers to consider are (in no particular order):     
 
 1. Are the stats appropriate for the data and the experimental design? Can you recommend an approach that might be more appropriate?         
 2. Do the results justify the conclusions?     
@@ -85,9 +84,9 @@ Your first drafts will be subjected to peer review. Unlike standard scientific p
 
 ### Peer review submitted assignment
 
-T he peer review assignment is a group assignment, with only one submission due per peer-review group (group of 2-3 students assigned to review a particular paper). The person listed as "Peer Reviewer #1" on our Google Sheets (peer review tab) should be the one to submit the peer review assignment on behalf of their peer-review group.
+The peer review assignment is an individual assignment, with two submissions due per person (one review per paper). 
 
-Each submission should be approximately one page in length and should include:
+Each submission should be approximately two pages in length and should include:
 
 1. Title and author of the work under review    
 2. A brief summary of the work under review (just a couple sentences is okay)
@@ -106,7 +105,7 @@ In class on Wed Dec 2, you will have a chance to confer with your peer-review gr
 
 ## Final manuscript (due Dec 16 at 5pm)
 
-I look forward to reading your final projects. Final grades will be posted by Monday Dec 21. 
+I look forward to reading your final papers! 
 
 
 

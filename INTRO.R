@@ -1,37 +1,31 @@
 
-############################################################
-####                                                    ####  
-####  NRES 710, Introduction                            ####
-####                                                    ####
-####  Kevin Shoemaker and Ben Sullivan                  #### 
-####  University of Nevada, Reno                        ####
-####                                                    #### 
-############################################################
+#  NRES 710, Introduction  
+#     University of Nevada, Reno
+#     Getting started with R     
 
 
-############################################################
-####  Getting started with R                            ####
-############################################################
+# Getting started with R ----------------- 
 
-
+# Use R as a calculator 
 
 2+2               # use R as a calculator
 four <- 2+2       # define your first variable!
 four
 five<-2+2         # you can make mistakes and define misleading labels- R will let you!
-five<-2+3
-five<-four+1      # you can use variables to define new ones
+three <- four + five
+
+
+# R's built in datasets 
 
 # data()     # 'uncomment' this command and run it to explore built-in datasets
 
 
-
 #iris                   # this is a data frame- the basic data storage type in R
 head(iris)             # [add your own comment here!]
-tail(iris)
+# tail(iris)
 
 #  ?iris               # uncomment this to learn more about the iris dataset
-str(iris)
+# str(iris)
 
 
 len<-iris$Petal.Length
@@ -53,27 +47,19 @@ head(titanic_train)
 
 
 
-# Make our own data
+# Make our own data -------------------
+
 # lets pull 15 numbers from the standard normal distribution
 
 a <- rnorm(15)
 a <- rnorm(15,mean=2,sd=0.5)
-a
-
-# want to be able to repeat this? set the "seed."
-
-set.seed(1234)
-a <- rnorm(15)
-a
 
 # let's pull 15 numbers from the binomial distribution
 b<- rbinom(15, size=1, prob=0.2) # we could "weight the coin"
-b
 
 
 # we can create categories: 
 unit<-rep(c("Control","+N","+P","+NP"),each=20)
-unit
 
 
 # we can even create a whole dataframe
@@ -88,9 +74,9 @@ head(my.data)
 
 
 
-# Then, we can import data. 
+# import data from file ----------------------
 
-# Don't forget to set your working directory (or just make sure you're using an Rstudio Project). I did it here, just for fun... 
+# Don't forget to set your working directory (or just make sure you're using an Rstudio Project). 
 
 # setwd("~/Desktop")       # uncomment and run if you want to set the desktop as your working directory.
 

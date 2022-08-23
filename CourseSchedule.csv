@@ -1,18 +1,17 @@
 Week,Mon class meeting,Wed class meeting,Homework,Reading
 Aug. 29 (week 1),"Overview, intro to R","P-values, statistical tests",,
 Sept. 5 (week 2),No Class (labor day),Sampling distributions; central limit theorem,,Hot hand
-Sept. 12  (week 3),Central limit theorem and data simulation,"R exercise: t-test, z-test",CLT and z-tests,
-Sept. 19 (week 4),"Confidence intervals, probability in R",R exercise: probability distributions,,
-Sept. 26 (week 5),Non-parametric analysis,R exercise: non-parametrics,permutation test,
+Sept. 12  (week 3),Central limit theorem and data simulation,"R exercise: t-test, z-test","z-tests, t-test",
+Sept. 19 (week 4),"Confidence intervals, probability in R",R exercise: probability distributions,(project proposals due Sep. 21),
+Sept. 26 (week 5),Non-parametric analysis,R exercise: non-parametrics,,
 Oct. 3 (week 6),Chi-squared test,No class (Kevin at conference),,
 Oct. 10 (week 7),Linear regression,R exercise: linear regression,Linear regression,
 Oct. 17 (week 8),ANOVA,R exercise: ANOVA,,p-values and p-hacking
 Oct. 24 (week 9),Discussion: p-values,Discussion: p-hacking,ANOVA,
 Oct. 31 (week 10),More advanced ANOVA,R exercise: ,,pseudoreplication
 Nov. 7 (week 11),No class (Kevin at conference),R exercise: power analysis,GLM,
-Nov. 14 (week 12),GLM,R exercise: GLM,,
+Nov. 14 (week 12),GLM,R exercise: GLM,(draft project ms due Nov 16),
 Nov. 21 (week 13),GLMM,R exercise: GLMM,GLMM,
-Nov. 28 (week 14),More advanced GLMM,Final project peer review,,
+Nov. 28 (week 14),More advanced GLMM,Final project peer review,(peer reviews due Nov 30),
 Dec. 5 (week 15),Random Forest,R exercise: Random forest,,
-Dec. 12 (week 16),"Next steps- multivariate, bayesian, etc.",Discussion: code and data sharing,,
-Dec. 19 (week 17),Final projects due 5pm on Dec 21,Review session (optional),,
+Dec. 12 (week 16),"Next steps- multivariate, bayesian, etc.",Discussion: code and data sharing,(final projects due Dec 16),

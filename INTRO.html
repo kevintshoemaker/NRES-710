@@ -342,19 +342,22 @@ div.tocify {
       <a href="LECTURE1.html">Basic Concepts</a>
     </li>
     <li>
-      <a href="LECTURE2.html">Analysis- t test</a>
+      <a href="LECTURE2.html">Sampling uncertainty</a>
     </li>
     <li>
-      <a href="LECTURE3.html">Analysis- chi2 test</a>
+      <a href="LECTURE3.html">Taxonomy of common statistics</a>
     </li>
     <li>
-      <a href="LECTURE4.html">Analysis- linear regression</a>
+      <a href="LECTURE4.html">t-test and z-test</a>
     </li>
     <li>
-      <a href="LECTURE5.html">Analysis- ANOVA</a>
+      <a href="LECTURE5.html">chi-squared tests</a>
     </li>
     <li>
-      <a href="LECTURE6.html">Analysis- GLM and GLMM</a>
+      <a href="LECTURE6.html">Analysis- ANOVA</a>
+    </li>
+    <li>
+      <a href="LECTURE7.html">Analysis- GLM and GLMM</a>
     </li>
     <li>
       <a href="LECTURE7.html">Next steps</a>
@@ -374,9 +377,6 @@ div.tocify {
     <li>
       <a href="FINALPROJ.html">Final Projects</a>
     </li>
-    <li>
-      <a href="STUDYGUIDE.html">Study Guide</a>
-    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -387,7 +387,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="Links.html">Links</a>
+      <a href="Data1.dat">Data1</a>
     </li>
   </ul>
 </li>
@@ -455,7 +455,7 @@ place. Statistics is a common bond supporting all other science.”
 -Ramsey and Schafer (2013), The Statistical Sleuth, 3rd Edition.</p>
 <p><img src="statistics1.png" style="width:40.0%" /></p>
 <p>Statistics is the process of making inference about a property of a
-<em>population</em> (a parameter) from a representative <em>sample</em>
+<em>population</em> (a parameter) from a representative <em>sample</em>.
 The vertical line separates the stuff we can observe and measure
 directly (right side) and the stuff we can’t observe but want to make
 inference about (left side).</p>
@@ -564,7 +564,9 @@ on getting started with R</a> in two upcoming Saturday afternoons (Sep
 in R!</p>
 <p>Starting at the most basic level, R can be used as a calculator. Try
 it!</p>
-<pre class="r"><code># Use R as a calculator ----------------
+<pre class="r"><code># Getting started with R ----------------- 
+
+# Use R as a calculator 
 
 2+2               # use R as a calculator</code></pre>
 <pre><code>## [1] 4</code></pre>
@@ -578,7 +580,7 @@ three &lt;- four + five</code></pre>
 <p>Use Rstudio’s autofill feature to avoid typos!</p>
 <div id="explore-rs-existing-datasets" class="section level4">
 <h4>Explore R’s existing datasets</h4>
-<pre class="r"><code># R&#39;s built in datasets -------------------------
+<pre class="r"><code># R&#39;s built in datasets 
 
 # data()     # &#39;uncomment&#39; this command and run it to explore built-in datasets</code></pre>
 <p>Let’s start by working with Fisher’s famous iris dataset:</p>
@@ -636,7 +638,7 @@ head(titanic_train)</code></pre>
 # Q: What kind of data are those in the &quot;Embarked&quot; column? 
 # Q: What kind of data are those in &quot;Pclass?&quot;</code></pre>
 <p>We can even make our own dataset!</p>
-<pre class="r"><code># Make our own data ------------------
+<pre class="r"><code># Make our own data -------------------
 
 # lets pull 15 numbers from the standard normal distribution
 
@@ -661,15 +663,15 @@ my.data &lt;- data.frame(
 )
 head(my.data)</code></pre>
 <pre><code>##   Obs.Id Treatment Block Germination AvgHeight
-## 1      1         A     1           3  9.517356
-## 2      2         A     2           0 11.947648
-## 3      3         A     3           2 10.482145
-## 4      4         A     4           1  8.808578
-## 5      5         A     5           3  8.743263
-## 6      6         A     6           2  9.857716</code></pre>
+## 1      1         A     1           1 11.035051
+## 2      2         A     2           0 11.059027
+## 3      3         A     3           2  9.457404
+## 4      4         A     4           3  9.304159
+## 5      5         A     5           0 10.026888
+## 6      6         A     6           1  9.584460</code></pre>
 <p>We can also import data from files stored on our computers (or even
 directly from the web)</p>
-<pre class="r"><code># import data from file ----------------------- 
+<pre class="r"><code># import data from file ----------------------
 
 # Don&#39;t forget to set your working directory (or just make sure you&#39;re using an Rstudio Project). 
 

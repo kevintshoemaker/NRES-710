@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 ```{r echo=FALSE}
 
-#  NRES 710, Introduction  -----------------------------
+#  NRES 710, Introduction  
 #     University of Nevada, Reno
 #     Getting started with R     
 
@@ -52,7 +52,7 @@ To follow along with the R-based lessons and demos, [right (or command) click on
 
 ![](statistics1.png){width=40%}
 
-Statistics is the process of making inference about a property of a *population* (a parameter) from a representative *sample* The vertical line separates the stuff we can observe and measure directly (right side) and the stuff we can't observe but want to make inference about (left side).
+Statistics is the process of making inference about a property of a *population* (a parameter) from a representative *sample*. The vertical line separates the stuff we can observe and measure directly (right side) and the stuff we can't observe but want to make inference about (left side).
 
 Commonly, statistical analysis is conducted to compare parameters from multiple populations(e.g., “are the population means different?”), or to compare parameters estimated from a sampled data set with those of an idealized model representing an underlying hypothesis of interest (or null hypothesis). 
 
@@ -119,7 +119,9 @@ Starting at the most basic level, R can be used as a calculator. Try it!
 
 ```{r}
 
-# Use R as a calculator ----------------
+# Getting started with R ----------------- 
+
+# Use R as a calculator 
 
 2+2               # use R as a calculator
 four <- 2+2       # define your first variable!
@@ -137,7 +139,7 @@ Use Rstudio's autofill feature to avoid typos!
 
 ```{r}
 
-# R's built in datasets -------------------------
+# R's built in datasets 
 
 # data()     # 'uncomment' this command and run it to explore built-in datasets
 
@@ -185,7 +187,7 @@ We can even make our own dataset!
 
 ```{r}
 
-# Make our own data ------------------
+# Make our own data -------------------
 
 # lets pull 15 numbers from the standard normal distribution
 
@@ -218,7 +220,7 @@ We can also import data from files stored on our computers (or even directly fro
 
 ```{r}
 
-# import data from file ----------------------- 
+# import data from file ----------------------
 
 # Don't forget to set your working directory (or just make sure you're using an Rstudio Project). 
 

@@ -1,21 +1,12 @@
 
-############################################################
-####                                                    ####  
-####  NRES 710, Lecture 1                               ####
-####                                                    ####
-####  Kevin Shoemaker and Ben Sullivan                  #### 
-####  University of Nevada, Reno                        ####
-####                                                    #### 
-############################################################
+#  NRES 710, Lecture 1                         
+#    University of Nevada, Reno     
+#    Basic Concepts of Probability and statistics      
 
 
-############################################################
-####  Basic Concepts of Probability and statistics      ####
-############################################################
+# Statistical "samples" and "populations" ----------------------
 
-
-
-#### ALL FROGS IN CA
+# ALL FROGS IN CA
 
 allfrogs.bodysize <- rlnorm(10000,1.5,0.4)        # statistical 'population'
 hist(allfrogs.bodysize,main="",xlab="SVL (mm)")   # plot out histogram
@@ -52,6 +43,7 @@ hist(samplemeans,xlab="mean body size (n=30)")
 
 hist(rbinom(10000,1,.5),xlab="N heads out of 1")
 
+
 par(mfrow=c(3,2))
 for(i in seq(2,12,2)){
    hist(rbinom(10000,i,.5),main=paste0("sample size = ",i),xlab=sprintf("N heads out of %s",i)) 
@@ -61,7 +53,7 @@ for(i in seq(2,12,2)){
 hist(rbinom(10000,1000,.5),xlab="N heads out of 1")
 
 
-# pseudoreplication demonstration
+# pseudoreplication demo ---------------------
 
 meansize.allfrogs <- 1.5    # population mean 
 sdsize.allfrogs <- 0.5     # population sd
@@ -136,7 +128,8 @@ length(which(ttest<0.05))/1000
 length(which(ttest.ind<0.05))/1000
 
 
-#######
+# Sampling distributions -------------------
+
 # Sampling distribution: the sample mean
 
 mysample <- c(4.1,3.5,3.7,6.6,8.0,5.4,7.3,4.4)
@@ -156,7 +149,6 @@ confint <- c(sample.mean+std.error*qt(0.025,n-1),sample.mean+std.error*qt(0.975,
 abline(v=confint,col="blue",lty=2)
 
 
-#######
 # Sampling distribution: the sample mean #2 (brute force simulation version)
 
 mysample <- c(4.1,1.5,3.7,6.6,8.0,4.5,5.3,4.4)
@@ -180,8 +172,7 @@ abline(v=sample.mean,col="green",lwd=3)
 
 
 
-
-## Paired t-test example:
+## Paired t-test example -----------------
 
 weightloss.data <- c(-10.4,-11.6,3.9,1.5,-0.3,-3.5 -10.0,-6.7,-6.1,-2.4,-6.0,2.3,0.1,-4.1,-3.2, -11.3,-3.2,-9.3,-7.5,-5.7,-0.1,0.0,-9.8,1.0,-11.9)
 hist(weightloss.data,breaks=7)
@@ -203,12 +194,12 @@ p=pt(t.statistic,sample.size-1)    # p value
 p    # this is the p value
 
 
-####### Alternative: use R's built in t test
+# Alternative: use R's built in t test
 
 t.test(weightloss.data,alternative = "less")   # should get the same p=value!
 
 
-### confidence interval for weight loss data
+### confidence intervals ------------
 
 # summary(weightloss.data)
 # 
@@ -232,7 +223,11 @@ lower.bound
 upper.bound
 
 
-## Chi squared goodness-of-fit example
+## Other sampling distributions --------------------
+
+## Chi squared distribution
+
+#   goodness of fit example
 
 birthdays.bymonth <- c(40,23,33,39,28,29,45,31,22,34,44,20)
 months <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
@@ -261,7 +256,9 @@ chisq.test(birthdays.bymonth)     # should get the same p value!
 
 
 
-## Z test  (Ben Sullivan example)
+# Z distribution --------------------
+
+## Z test  
 
 df <- read.csv("GSW_height.csv")
 GSWheight <- df$Height
@@ -287,8 +284,9 @@ p
 pnorm(z.statistic)
 
 
-#################
-# Discrete probability distributions
+# Probability distributions ---------------------
+
+# Discrete probability distributions 
 
 mean <- 5
 rpois(10,mean)    # note: the random numbers sampled from this distribution have no decimal component
@@ -305,7 +303,6 @@ barplot(cumsum(probs),ylab="Cumulative Probability",main="Poisson distribution (
 sum(probs)   # just to make sure it sums to 1!  Does it???
 
 
-#########
 # continuous distributions
 
 shape1 = 0.5
@@ -357,7 +354,6 @@ curve(qt(x,df=8),0,1,xlab="cumulative probability",ylab='quantile')
 curve(qpois(x,4),0,1,xlab="cumulative probability",ylab='quantile')
 
 
-##########
 # Binomial
 
 size <- 10
@@ -375,7 +371,6 @@ barplot(cumsum(probs),ylab="Cumulative Probability",main="Binomial distribution"
 sum(probs)   # just to make sure it sums to 1!  Does it???
 
 
-#########
 # Gaussian (normal)
 
 mean = 7.1
@@ -391,7 +386,6 @@ integrate(f=dnorm,lower=-Inf,upper=Inf,mean=mean,sd=stdev)    # just to make sur
 
 
 
-#########
 # t distribution
 
 df = 6
@@ -406,7 +400,6 @@ integrate(f=dt,lower=-Inf,upper=Inf,df=df)    # just to make sure it integrates 
 
 
 
-#########
 # Chi-squared distribution
 
 df = 6
