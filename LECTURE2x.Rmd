@@ -1,5 +1,5 @@
 ---
-title: "Common statistical tests and sampling distributions"
+title: "t-tests"
 author: "NRES 710"
 date: "Fall 2020"
 output: 

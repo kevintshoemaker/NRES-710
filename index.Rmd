@@ -18,14 +18,16 @@ Email: [kevinshoemaker@unr.edu](kevinshoemaker@unr.edu)
 I have no pre-scheduled office hours for this class- please email me to set up a meeting. Also note that when I am in my office and my door is propped open, as will usually be the case when I am not in a meeting or struggling to meet a deadline, you are welcome to pop in for a chat. When my office door is closed, I am not available.
 
 ### Course Meeting Times
-**Lecture**: MW 2:30pm to 3:45pm in EMM 242 (Effie Mona Mack Social Sciences Building)          
+**Lecture**: MW 2:30pm to 3:45pm in EMM 242 (Effie Mona Mack Social Sciences Building)    
+
 ### Course Website
 [http://kevintshoemaker.github.io/NRES-710/](http://kevintshoemaker.github.io/NRES-710/)
 
 ### Course Objectives
-In this course, students will learn basic principles of statistical inference and will gain experience applying these principles to questions in ecology and environmental science using R. In this course we focus on the concepts and implementation and we generally leave the nitty-gritty stats questions to statisticians.
+In this course, students will learn basic principles of statistical inference and will gain experience applying these principles to their research questions using R. In this course we focus on the concepts and implementation and we generally leave the nitty-gritty stats questions to statisticians.
 
 ### Student Learning Objectives
+
 Students will be able to:   
 
 1. Communicate, in writing or verbally, the assumptions associated with classical statistical models.   
@@ -51,13 +53,13 @@ There are many good R books, but ultimately, most material can be found for free
 2.	Introductory R: A beginner’s guide to data visualization, statistical analysis, and programming in R (Robert Knell)
 3.	R Graphics Cookbook (Winston Chang). This book is available for free as a PDF online. 
 4.	Qian, Song S. Environmental and Ecological Statistics with R, Second Edition, 2nd Edition. Chapman & Hall, 2017. 
-5. A Primer of Ecological Statistics. (Nicholas Gotelli and Aaron Ellison). *A stats book, but not an R book.* 
+5.  A Primer of Ecological Statistics. (Nicholas Gotelli and Aaron Ellison). *A stats book, but not an R book.* 
 
 ### Course structure
 
 Instruction will consist of lessons on general statistical concepts and specific methods commonly used to address questions in ecology and environmental science. Stats lessons will include lecture-style materials, readings, demonstrations, exercises and class discussions.   
 
-A large portion of the overall grade (40%) will be based upon periodic, relatively brief homework assignments that follow from the topics covered in class. Most assignments will involve statistical analysis and interpretation of sample data sets that are provided. There will be a final project (30% of your grade) that is designed to test your ability to understand and apply the tools that you have developed during the semester using R. The final project will involve conducting a rigorous data analysis using statistical approaches that we have learned during the semester (or other tools as approved by the instructor). You can choose whichever statistical methods are suitable to your project scope and questions, but they must be methods we covered in class and appropriate to your data. Please turn in your own work and assignment, but you may use as many resources as you wish (class material, online material, or the insight/experience of other students) to generate the material presented. More specific instructions will come during the semester.
+A large portion of the overall grade (25%) will be based upon periodic, relatively brief homework assignments that follow from the topics covered in class. Most assignments will involve statistical analysis and interpretation of sample data sets that are provided. There will be a final project (40% of your grade) that is designed to test your ability to understand and apply the tools that you have developed during the semester using R. The final project will involve conducting a rigorous data analysis using statistical approaches that we have learned during the semester (or other tools as approved by the instructor). You can choose whichever statistical methods are suitable to your project scope and questions, but they must be methods we covered in class and appropriate to your data. Please turn in your own work and assignment, but you may use as many resources as you wish (class material, online material, or the insight/experience of other students) to generate the material presented. More specific instructions will come during the semester.
 
 With roughly 5 weeks left in the semester, first drafts of your final projects will be due. These first drafts will then be subjected to anonymous peer review. At this time, the assignment itself will not be “graded,” but the assignment will be reviewed by at least two other students, and the peer reviews will be graded (20% of the overall grade). The reviews are designed to provide feedback on the statistical approach being used and whether the appropriate connections are made between research question, data, statistical model, and inferences developed from model outputs. Are the statistics relevant to the data, and appropriate for the experimental design? The reviews will be due within two weeks and will be provided to the author for their consideration and assistance in their final project. 
 

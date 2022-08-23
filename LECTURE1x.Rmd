@@ -89,9 +89,13 @@ HHHH
 
 Assuming a 'fair' coin, are each of these outcomes/sequences equally likely?
 
-What is the probability of all four coin flips coming out heads?
+How many of the possible outcomes meet our criterion (all heads)? (How many ways are there of getting 4 heads?)
+
+What is the probability of getting all heads?
 
 If you get four heads in a row, are you *surprised* enough by that outcome to reject the assumption that the coin is 'fair'? What about if you got 100 heads in a row?
+
+Probability of a specific outcome = (# ways of getting a specific outcome)/(total number of equally plausible outcomes)
 
 **Q** What is the probability of getting at least three of the same face (heads or tails) out of 4 coin flips?
 
@@ -124,13 +128,16 @@ We reject the null hypothesis if the chance of the result occurring by random ch
 
 Fisher proposed alpha=0.05 as a nice balance between the probability of mistakenly rejecting a true null hypothesis (Type 1 error), and the probability of failing to reject a false null hypothesis (a Type 2 error). This cutoff value was NEVER intended to be a fixed value to be applied unthinkingly!!!
 
+Increasingly, scientists are rejecting the threshold of 0.05 and many are rejecting p-values in general. 
+
+
 ### Example: Fisher’s cups of tea: 
 
 A Woman claimed she could tell if milk was added to a cup of tea first or last.
 
-Fisher suggested we give her 8 seemingly identical cups of tea at once, 4 with milk first and 4 with tea first. The woman is asked to identify the four cups that were poured with milk first. 
+Fisher suggested we give her 8 cups of tea at once, 4 with milk first and 4 with tea first. The woman is asked to identify the four cups that were poured with milk first. 
 
-There are 70 possible ways of choosing four cups out of 8. The probability of getting all of them right by random chance (assuming the null is true) would be 1/70 = 0.014 = 1.4%. That would be kinda surprising, right? So if the lady selected all four cups correctly, are we surprised enough to reject the null?
+There are 70 possible ways of choosing four cups out of 8. The probability of getting all of them right by random chance (in the null universe) would be 1/70 = 0.014 = 1.4%. That would be kinda surprising, right (in the null universe that is)? So if the lady selected all four cups correctly, are we surprised enough to reject the null?
 
 **Q**: How would you state the null hypothesis in words?
 
@@ -157,7 +164,7 @@ O1/O2/X6/X8 (2)    O1/O4/X6/X7 (2)    O2/O3/X6/X8 (2)   O3/O4/X6/X7 (2)
 O1/O2/X7/X8 (2)    O1/O4/X6/X8 (2)    O2/O3/X7/X8 (2)   O3/O4/X6/X8 (2)    
 
 
-**Q** what if the lady selected 3 of 4 correctly? [there are 17 ways of getting three of the four correct out of 70 total permutations]. Would you be surprised enough to reject the null hypothesis. Is it possible that you (and the lady) are living in the null universe? How surprised would you have to be to reject the null and admit that she can tell the difference??
+**Q** what if the lady selected 3 of 4 correctly? [there are 17 ways of getting three of the four correct out of 70 total permutations]. Would you be surprised enough to reject the null hypothesis. Is it possible that you (and the lady) are living in the null universe? How surprised would you have to be to reject the null universe and admit that she can tell the difference??
 
 ASIDE: the test above is called 'Fisher's exact test' because it literally enumerates all the possible outcomes to compute the exact probability of observing any particular outcome under the null hypothesis. Most tests we will use in this class are (necessarily) approximations that rely on certain assumptions that may or not be met in practice. Fisher's exact test assumes that all observations are independent, but otherwise makes no additional assumptions.
 
@@ -165,13 +172,13 @@ ASIDE: the test above is called 'Fisher's exact test' because it literally enume
 
 A type 1 error is mistakenly rejecting the null hypothesis (probability of false positive). 
 
-A *p value* is the probability that you collect a sample in the null universe with at least as much evidence against the null (at least as much signal) than your observed data. The p-value is not a test in itself- it is only a formal test when paired with a threshold below which you are sufficiently convinced that the null hypothesis can be rejected. This threshold is called **Alpha**.  
+A *p value* is the probability that you collect a sample in the null universe with at least as much evidence against the null (at least as much signal) than your observed data. The p-value is not a test in itself- it is only a formal test when paired with a threshold of surprise below which you are sufficiently convinced that the null hypothesis can be rejected. This threshold is called **Alpha**.  
 
-**Alpha** is the threshold p value below which we are sufficiently convinced (surprised) that we can reject the null. We usually set the alpha level prior to performing an experiment or collecting data. 
+**Alpha** is the threshold p value below which we are sufficiently convinced (surprised) that we can reject the null. We usually set the alpha level prior to performing an experiment or collecting data so we ensure a low probability of committing a type 1 error. Both an alpha level and a p-value are needed to perform a classical null hypothesis test. 
 
 You can reject the null if *p* < alpha. Conversely you will fail to reject the null hypothesis if *p* > alpha (you are insufficiently convinced that you are NOT living in the null universe!)
 
-A *type 2 error* is mistakenly failing to reject a false null hypothesis (you are not living in the null universe but you fail to acknowledge it!)
+A *type 2 error* is mistakenly failing to reject a false null hypothesis (you are not living in the null universe but you fail to realize it!)
 
 **Beta** is the probability of committing a Type 2 error. 
 
@@ -185,6 +192,20 @@ Power is influenced by sample size and effect size (signal strength in the popul
 
 ![](clt1.jpg)
 
+## Quick Review of Basic Concepts
+
+A p value is the probability of obtaining a result at least as extreme (containing at least as much 'signal') as the observed result due to random sampling, given you are dwelling in the null universe. 
+
+Usually the 'result' we are referring to is a single 'summary statistic' calculated from our sample and representing the amount of signal in our sample -- for example, the sample mean, the difference between two sample means relative to sampling error (as in a 2-sample t test), some other signal-to-noise ratio, or the proportion of a sample that meets some criterion (e.g., proportion red M+Ms).
+
+This implies a multitude of potential results. Your observed result (observed test statistic) is just one of an infinite number of possible results from some sampling/measurement process. This variation across possible samples/results is called 'sampling variation' or 'sampling error'.
+
+Imagine buying a random bag of M&Ms from a random convenience store (one of many possible bags you could buy at many possible convenience stores) and counting the proportion of red ones. There are practically countless possible samples (bags) we could get (each one potentially associated with a different proportion of reds), even though there is only one true proportion of red M+Ms in the world. Each dataset you collect is like one bag of M&Ms out a much larger population of potential bags. 
+
+**the truth is fixed but unknown and we can only approach the truth indirectly and imperfectly via sampling**    
+
+Now imagine we want to test the hypothesis that there are a greater proportion of red M&Ms than other five classic colors-- that is, that P(red)>(1/6). We start off by pretending we live in the null universe (first level of pretending in classical statistics), and we start collecting imaginary samples (LOTS of potential bags of M&Ms-- this is the second level of pretending!) in the null universe where reds are exactly 1/6 of the population. We then determine the probability that these simulated bags have a greater proportion of reds than our observed results (proportion of reds in our bag). This is our p-value. We use our p-value, along with our pre-determined type I error rate (threshold level of surprise we need to reject the null universe).
+
 ## Statistics: inference from a sample
 
 Consider the following example:
@@ -197,15 +218,19 @@ Yellow-Legged frog example:
 
 Even more generally, the goal of statistics (even when not performing a test) is to infer something about a population from a sample. In the yellow-legged frog example below, there is a “true” mean body size of frogs in ponds in the central Sierra Nevada. We just don’t know what it is! After collecting the data, statistics might help use to say something about the mean body size in the population -- both about what we know AND what we don't know! 
 
-All of statistics is about dealing with uncertainty. We don't need statistics if we have complete certainty!
+Really, all of statistics is about dealing with uncertainty. We don't need statistics if we have complete certainty!
 
 However, we assume that our sample mean (and many other summary statistics derived from a sample) is representative of the population. How? Why? Because of the *Central Limit Theorem*. 
 
 ## The Central Limit Theorem
 
-The Central Limit Theorem (CLT) says that if you have a sample with a reasonably large number of observations, and each observation is randomly sampled, then the sample mean will be similar to the actual population mean: the mean of ALL yellow-legged frogs in ponds in the central Sierra Nevada (how similar? that's where the t-distribution comes in- we'll get there). And as the sample size gets bigger, the sample mean will become more representative of the true mean (it will converge on the true mean as sample size approaches infinity). This concept is sometimes referred to as **regression to the mean**.
+The Central Limit Theorem (CLT) says that if you have a sample with a reasonably large number of observations, and each observation is randomly sampled, then the sample mean will be similar to the actual population mean: the mean of ALL yellow-legged frogs in ponds in the central Sierra Nevada (how similar? that's where the t-distribution comes in- we'll get there). And as the sample size gets bigger, the sample mean will become more representative of the true mean (it will converge on the true mean as sample size approaches infinity). 
+
+The concept of **regression to the mean** is a natural consequence of the Central Limit Theorem!
 
 [In-class R demo: regression to the mean]
+
+This is useful, but that's not all. 
 
 The CLT is the magic wand of statistics. It does enormous amounts of work for us. Why?
 
