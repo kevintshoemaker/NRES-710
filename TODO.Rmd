@@ -1,0 +1,290 @@
+---
+title: "EXTRA"
+author: "NRES 710"
+date: "Fall 2022"
+output: 
+  html_document: 
+    theme: yeti
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+
+```
+
+## todo: add stuff back in
+
+
+## Replication and pseudoreplication
+
+Let’s explore replication, and what it truly means. 
+
+Make sure you read this [highly influential monograph on 'Pseudoreplication' by Stuart Hurlburt](hurlburt.pdf).  
+
+And here's [one more paper for good measure, by Davies and Gray (2015)](daviesandgray.pdf): this is a counter to the Hurlburt article.
+
+Clearly one of the main take-aways is: science is messy!!!
+
+Why does science require replication?
+
+In general, the scientific project is to discover generalizable truths. 
+
+Q: How do we know if a result is true, and not a result of just random noise?     
+    A: We use a large enough sample size so that we can convince ourselves that random noise (sampling variation) could not cause the result!
+ 
+Q: How do we know if a result is general, and not a result of just some localized or specific phenomenon?     
+    A: We draw our sample randomly from the entire population so that our sample is truly representative!
+    
+### Find the pseudoreplication!
+
+*Population*: All little brown bats across the USA    
+*Parameter*: Infection rate of white nose syndrome infection in cave hibernacula    
+*Sample*: Two cave hibernacula in New York state.    
+*Statistic*: Infection rate among sampled bats    
+
+*Population*: All humans    
+*Parameter*: Effectiveness of a coronavirus vaccine    
+*Sample*: 10,000 humans sampled in Sweden    
+*Statistic*: Infection rate in Uppsala (control) vs infection rate in Helsingborg (treatment)    
+
+*Population*: all yellow-legged frogs in ponds in the central Sierra Nevada     
+*Parameter*: mean body size (SVL) of adult yellow-legged frogs in all ponds in the central Sierra Nevada    
+*Sample*: 3,000 frogs sampled from a single pond in the central Sierra Nevada    
+*Statistic*: Sample mean
+
+
+The takeaway: you can only convince yourself of the generality of a result if the sample is representative of the population. In experimental design, one way to try to ensure generality is to sample randomly from the population of interest. 
+
+One part of the scientific endeavor is to poke at other people's research to see if it stands up to scrutiny. Even more so, we poke at in our own research. If we can convince ourselves of the truth of our results and conclusions, only then can we feel comfortable sharing the results with the scientific community. That's not out of meanness or masochism, it's out of a search for truth and generality!  
+
+But the search for the truth is messy. In environmental science, we pseudoreplicate all the time - by necessity. For practical reasons our observations are not always completely independent from one another. 
+
+Are we ever truly replicating perfectly and sampling sufficiently from our generalized target of inference? In many cases we are not. But that shouldn't stop us from trying to find truth- we just need to proceed with caution! 
+
+## Assumption: all data points are independent!
+
+Nearly all of the classical statistical analyses and tests we will go over in this class make a very important assumption -- that all data points are independent samples drawn from the population of interest. Unfortunately, truly independent data points are far from the norm in ecology and environmental science! When data points are not independent, the information content of the sample (relative to the population of interest) is reduced. Does this make sense? When we treat non-independent data points as independent we are committing pseudoreplication!
+
+Pseudoreplication, when left 'untreated' (i.e., subjected to statistical analyses that account for sources of non-independence), can result in using statistical methods inappropriately -- mistakenly assuming that you have more information than you actually have. 
+
+### Demo: non-independence and sampling distributions
+
+Let's see what happens to sampling distributions with and without pseudoreplication. We are interested in testing whether mountain yellow-legged frogs in the cascade range tend to be heavier than frogs in the sierra nevada (which we know to be 1.5 g from previous studies). We take a sample of 100 individuals: 50 from each of 2 ponds. 
+
+We assume that frogs from the two mountain ranges are the same size on average (null hypothesis is true) and that the distribution of sizes is Gaussian. However, individuals from the same pond tend to be more similar to one another than individuals sampled from other ponds. Here is the scenario: 
+
+```{r}
+
+# pseudoreplication demonstration
+
+meansize.allfrogs <- 1.5    # population mean 
+sdsize.allfrogs <- 0.5     # population sd
+sdsize.amongpond <- 0.44   # standard deviation among ponds 
+
+nponds <- 5000   # total number of ponds in the population
+nfrogs.perpond <- 1000    # 1000 frogs in each pond
+
+
+```
+
+So we can now generate the mean sizes for all ponds in the population and all frogs within each pond 
+
+
+```{r}
+
+pondmeans <- rnorm(nponds,meansize.allfrogs,sdsize.amongpond)
+ # hist(pondmeans)
+allfrogs <- sapply(pondmeans, function(t) rnorm(nfrogs.perpond,t,sqrt(sdsize.allfrogs^2-sdsize.amongpond^2)) )
+rownames(allfrogs) <- paste0("frog",1:(nfrogs.perpond))
+colnames(allfrogs) <- paste0("pond",1:nponds)
+
+  # confirm that population mean and standard deviation are as specified
+sd(allfrogs)
+mean(allfrogs)
+
+```
+
+Okay, now we have a population of frogs. Now we need to sample from this population!! Remember that for practical reasons we are only able to sample from 2 ponds. 
+
+```{r}
+
+nponds.sampled <- 2
+nsamp.perpond <- 50 
+
+ponds.sampled <- sample(1:nponds,nponds.sampled)
+frogs.sampled <- replicate(nponds.sampled,sample(1:nfrogs.perpond,nsamp.perpond))
+
+thissamp <- sapply(1:nponds.sampled,function(t) allfrogs[frogs.sampled[,t],ponds.sampled[t]])
+rownames(thissamp) <- paste0("frog",1:(nsamp.perpond))
+colnames(thissamp) <- paste0("pond",1:nponds.sampled)
+
+head(thissamp)
+
+```
+
+Okay, now that we have collected our sample, let's run a t-test to see if the mean in our sample is different from 1.5
+
+```{r}
+
+test <- t.test(as.vector(thissamp),mu=1.5,alternative="greater")
+test
+
+```
+
+Okay, we have now collected one sample from this hypothetical scenario. To generate a sampling distribution we need to generate many more samples. Let's do that now! Here we will run both a sampling scheme where we only sample 2 ponds and another sampling scheme where we sample 100 frogs randomly from the entire population. 
+
+```{r}
+
+means <- numeric(1000)
+means.ind <- numeric(1000)
+
+ttest <- numeric(1000)
+ttest.ind <- numeric(1000)
+
+for(scenario in 1:1000){
+  ponds.sampled <- sample(1:nponds,nponds.sampled)
+  frogs.sampled <- replicate(nponds.sampled,sample(1:nfrogs.perpond,nsamp.perpond))
+  
+  thissamp <- sapply(1:nponds.sampled,function(t) allfrogs[frogs.sampled[,t],ponds.sampled[t]])
+  thissamp.ind <- matrix(sample(allfrogs,nsamp.perpond*nponds.sampled),ncol=nponds.sampled)
+  
+  means[scenario] <- mean(thissamp)
+  means.ind[scenario] <- mean(thissamp.ind)
+  
+  test <- t.test(as.vector(thissamp),mu=1.5,alternative="greater")
+  test.ind <- t.test(as.vector(thissamp.ind),mu=1.5,alternative="greater")
+  
+  ttest[scenario] <- test$p.value
+  ttest.ind[scenario] <- test.ind$p.value
+  
+}
+
+
+
+```
+
+Let's look at the sampling distribution of the mean difference between male and female body mass in the null universe. Here we compare the sampling distribution for the pseudoreplicated design vs the sampling distribution for the case with 100 true independent replicates. 
+
+```{r}
+
+layout(matrix(1:2,nrow=1))
+hist(means,xlim=c(0,3))
+hist(means.ind,xlim=c(0,3))
+
+length(which(ttest<0.05))/1000
+
+length(which(ttest.ind<0.05))/1000
+
+```
+
+In the pseudoreplicated design, we have a ca. 40% chance of incorrectly rejecting the null hypothesis with nominal alpha = 0.05! With independent samples the rate is around 0.05 as it should be. 
+
+Try running this script with less egregious pseudoreplication- e.g., with 5 ponds with 20 frogs each. How much does this improve the result??
+
+NOTE: in the above example, the only reason pseudoreplication is a problem is that we are incorrectly assuming that the sampling distribution of our test statistic resembles the histogram on the right (independent samples). If we used the sampling distribution on the left (which correctly accounts for pseudoreplication) there would be no issue -- except that we would need to see much more extreme results in order to reject our null hypothesis! 
+
+
+
+
+
+
+Just to cement this concept, let's compare the distribution above (based on a t distribution) with a brute-force simulation method!
+
+
+
+```{r}
+
+#######
+# Sampling distribution: the sample mean #2 (brute force simulation version)
+
+mysample <- c(4.1,1.5,3.7,6.6,8.0,4.5,5.3,4.4)
+mysample
+n <- length(mysample)    # sample size
+sample.mean <- mean(mysample)  # sample mean
+sample.stdev <- sd(mysample)   # sample standard deviation (r uses denominator of n-1 by default!)
+
+simulated.samples <- list()
+for(s in 1:10000){
+  sd1 <- sqrt(sum((sample(mysample,length(mysample)-1,replace = T)-sample.mean)^2)/(length(mysample)-2))  # account for unknown standard deviation
+  simulated.samples[[paste0("sample ",s)]] <- rnorm(n,sample.mean,sd1)
+}
+sampling.distribution <- sapply(simulated.samples,mean)
+
+plot(density(sampling.distribution),xlim=c(0,11),ylab="probability density",xlab="value",main="sampling distribution for the sample mean!",lwd=2)    # plot the brute-force sampling distribution
+hist(sampling.distribution,add=T,freq=F)
+par(new=T)
+curve(sampdist,0,11,xlim=c(0,11),xaxt="n",yaxt="n",xlab="",ylab="",col="red",lwd=2)  # official sampling distribution
+abline(v=sample.mean,col="green",lwd=3)
+
+
+
+```
+
+
+
+Not a bad match right? Obviously it's easier and faster (and more accurate) to use the t distribution to approximate the sampling distribution, but I hope this helps to cement the concept!! 
+
+NOTE: the t distribution accounts for uncertainty about the true population variance as well as the true population mean, which is why I did not just use the sample variance in the code block above (if I had, you would see that the t distribution had 'heavier tails' than the brute force distribution because it accounts for uncertainty in the sample variance and the sample mean) 
+
+
+
+So I took a little time to write some code that implements the hypothetical experiment from the ESPN article: that is, you take a pro basketball player and ask them to take 100 shots, each of which has a 50% chance of success. You then select all the sequences that begin with three 'makes', record the fourth shot, and compute the percentage of makes vs misses in the fourth shot. The ESPN article claims the average percent should be 46% makes, not 50% makes.
+
+The code is attached, feel free to download and run the code- don't worry if you don't understand how it works yet. 
+
+So... by doing this I learned how incredibly difficult and subtle this issue is. Because the first time I wrote the code, I simply had it make a sequence of a million throws, and I selected all those sequences of four that started with three ones, pulled out the fourth shot in each of the selected sequence. And when I looked at the the results  ... it was absolutely 50-50, even with many millions of throws. 
+
+But... then I realized that wasn't exactly how the problem was set up in the article. In fact we limited the experiment to 100 throws. When I re-wrote the code to reflect a 100-throw limit and repeated that experiment thousands of times, the answer matched the ESPN article (46% hits and 54% misses). 
+
+In the end, I'm still struggling with the rationale for why this is true. Any brave people willing to weigh in and suggest why the answer depends on the number of trials in the experiment? 
+
+And the take-away is: there seems to be good reason that statisticians have been debating this problem for a while!! 
+
+
+
+
+At the end of class today we went through Ronald Fisher's classic 'lady tasting tea' example. In this example, Muriel Bristol was asked to select which four of eight cups of tea were poured milk first and which four were poured tea first. She correctly identified all 8 cups. The contingency table (data summary for two categorical variables) looks like this:
+
+MURIEL: milk first	MURIEL: tea first
+TRUTH: milk first	4	0
+TRUTH: tea first	0	4
+ 
+
+On the website, we identified 70 different outcomes (ways of selecting four cups out of 8) that would be equally plausible under the null hypothesis that Muriel is not able to tell the difference and is selecting cups randomly. Since there is only one way of correctly identifying all 8 cups, we can compute the p-value as 1/70, which is about 1.4%. We determined all 70 different outcomes manually, but someone asked if there was a way to do this mathematically.  Of course there is! It involves the factorial operator (4! = 4*3*2*1). 
+
+To compute the denominator, we can use the formula: n!/(k!*(n-k)!), where n is the sample size (8) and k is the number selected (e.g., as milk first; which is 4). That is:
+
+8!/(4!(8-4)!)  = 8!/(4!4!) = 70. 
+
+In R, this computation looks like this: factorial(8)/(factorial(4)*factorial(8-4))
+
+To perform the Fisher Exact test in R:
+
+contingency.table = matrix(c(4,0,0,4),nrow=2)
+fisher.test(contingency.table,alternative = "greater")
+
+The "alternative='greater'" argument means that our hypothesis is there is a positive association between the truth and muriel's selections. If we didn't use this argument, there would in fact be two ways to obtain an association at least as strong as the observed association (i.e., Muriel incorrectly identified all cups), so the p value would be 2/70 =  0.029. 
+
+Please reply here or in the discussion forum with any questions!
+
+[--go to next lecture--](LECTURE6.html) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,117 @@
+---
+title: "Exercise 1"
+author: "NRES 710"
+date: "Fall 2022"
+output: 
+  html_document: 
+    theme: yeti
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
+```
+
+```{r echo=FALSE}
+
+#  NRES 710, Lecture 1                         
+#    University of Nevada, Reno     
+#    Basic Concepts of Probability and statistics      
+
+```
+
+## Intro to R, data summaries
+
+Please enter your responses into a Word document and submit via WebCampus on the date indicated.  
+
+### Part 1: R basics
+
+Work at your own pace through the following submodules of the [UNR R workshop](https://kevintshoemaker.github.io/R-Bootcamp/): 
+
+* [Working with data objects](https://kevintshoemaker.github.io/R-Bootcamp/module1_1.html)
+* [Managing data](https://kevintshoemaker.github.io/R-Bootcamp/module1_2.html)
+* [Programming](https://kevintshoemaker.github.io/R-Bootcamp/module2_2.html)
+
+I know some of you are enrolled to take this workshop for credit as part of GRAD 778, but I'd like you to at least skim these modules now so you don't fall behind!  
+
+### Part 2: functions and data summaries 
+
+Work at your own pace on solving the following R challenge problems involving writing functions in R (as needed outside the classroom)
+
+Let’s look at the structure of an R function:
+```
+f <- function( <arguments>){ 
+  ## Do something interesting 
+}
+```
+
+The arguments, passed to the function when it is called, can specify default values (using equals sign), or not. The value returned by a function is the last expression in the body of the function to be evaluated, or else can be specified using the `return()` function. 
+
+You have used the lm() function for simple linear regression already. Type the following in your R console to see what the arguments of that function are:
+
+```
+args(lm)
+```
+
+Here is a simple function for calculating any number cubed, with example applications:
+
+```
+Cube.me <- function ( x= 1) {
+  x * x * x
+}
+Cube.me()
+Cube.me(3)
+
+x.vec <- c(2, 19, 99)
+Cube.me(x.vec)
+
+```
+
+Try this out in R!
+
+## Assignments: writing simple functions in R
+
+Write three functions according to the instructions below, applying them as indicated. Please submit your R code via the assignment link posted in WebCampus to me by the indicated date/time (on WebCampus). Please note that these assignments are not tests, and you are encouraged to ask for help as needed!
+
+### Assigment 1: Sample variance
+
+Using the formula [here](LECTURE2.html) (see "summary metrics" section), write a function that computes the sample variance of any arbitrary data vector. Use this function to compute the sample variance for the "height" vector in the "trees" dataset built into base R. Compare your answer with the results from using the `var()` function. Show your code and results!
+
+
+### Assigment 2: Population standard deviation
+
+Using the formula [here](LECTURE2.html) (see "summary metrics" section), write a function that computes the population standard deviation (standard deviation for a complete population rather than an incomplete sample) for any arbitrary data vector. Use this function to compute the standard deviation for the "height" vector in the "trees" dataset built into base R. Compare your answer with the results from using the `sd()` function. Show your code and results!
+
+
+### Assignment 3: Coefficient of Variation (CV)
+
+Write a function to compute the CV for any data vector and apply this to the “height” vector in the “trees” dataset.  [hint: You should remember that the Coefficient of Variation (CV) is the ratio of the standard deviation to the mean.] Use the formula for the sample standard deviation (not the population standard deviation) to compute the CV. Show your code and results!
+
+### Assignment 4: drawing a regression line through a scatter plot 
+
+Write a function for drawing a regression line through a scatter plot. [hint: Within your custom function, you will use the existing `plot()`, `lm()`, and `abline()` functions. You will need to include at least two arguments in your function, specifying the response vector and the predictor vector]. Apply this function to the “height” and “volume” vectors in the “trees” dataset, and then to the “eruptions” and “waiting” vectors in the “faithful” dataset. Show your code and results!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

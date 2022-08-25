@@ -12,22 +12,30 @@
 <meta name="author" content="NRES 710" />
 
 
-<title>t-tests</title>
+<title>Sampling distributions/uncertainty</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -39,11 +47,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -56,32 +59,8 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
+
 
 
 
@@ -91,10 +70,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -111,40 +86,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 45px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h2 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h3 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h4 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h5 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h6 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -172,7 +123,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -184,7 +135,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -195,10 +146,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -210,7 +174,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -336,7 +299,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -350,7 +313,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -366,7 +329,7 @@ div.tocify {
   <a href="schedule.html">Schedule</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Lectures
      
     <span class="caret"></span>
@@ -379,19 +342,22 @@ div.tocify {
       <a href="LECTURE1.html">Basic Concepts</a>
     </li>
     <li>
-      <a href="LECTURE2.html">Analysis- t test</a>
+      <a href="LECTURE2.html">Sampling uncertainty</a>
     </li>
     <li>
-      <a href="LECTURE3.html">Analysis- chi2 test</a>
+      <a href="LECTURE3.html">Taxonomy of common statistics</a>
     </li>
     <li>
-      <a href="LECTURE4.html">Analysis- linear regression</a>
+      <a href="LECTURE4.html">t-test and z-test</a>
     </li>
     <li>
-      <a href="LECTURE5.html">Analysis- ANOVA</a>
+      <a href="LECTURE5.html">chi-squared tests</a>
     </li>
     <li>
-      <a href="LECTURE6.html">Analysis- GLM and GLMM</a>
+      <a href="LECTURE6.html">Analysis- ANOVA</a>
+    </li>
+    <li>
+      <a href="LECTURE7.html">Analysis- GLM and GLMM</a>
     </li>
     <li>
       <a href="LECTURE7.html">Next steps</a>
@@ -399,7 +365,19 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Exercises
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="EXERCISE1.htmc">Exercise- data summaries</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     More Resources
      
     <span class="caret"></span>
@@ -411,8 +389,17 @@ div.tocify {
     <li>
       <a href="FINALPROJ.html">Final Projects</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Datasets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="STUDYGUIDE.html">Study Guide</a>
+      <a href="Data1.dat">Data1</a>
     </li>
   </ul>
 </li>
@@ -424,580 +411,609 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
-<h1 class="title toc-ignore">t-tests</h1>
+<h1 class="title toc-ignore">Sampling distributions/uncertainty</h1>
 <h4 class="author">NRES 710</h4>
-<h4 class="date">Fall 2020</h4>
+<h4 class="date">Fall 2022</h4>
 
 </div>
 
 
 <div id="download-the-r-code-for-this-lecture" class="section level2">
 <h2>Download the R code for this lecture!</h2>
-<p>To follow along with the R-based lessons and demos, <a href="LECTURE2.R">right (or command) click on this link and save the script to your working directory</a></p>
+<p>To follow along with the R-based lessons and demos, <a
+href="LECTURE2.R">right (or command) click on this link and save the
+script to your working directory</a></p>
 </div>
-<div id="overview-of-statistical-methods" class="section level2">
-<h2>Overview of statistical methods</h2>
-<p>Okay before we delve further into t-tests, let’s first give a broad overview of the analyses we will cover in this class (at least a tiny bit) and in which cases they are most appropriate:</p>
-<div id="continuous-response-variable" class="section level3">
-<h3>Continuous response variable</h3>
-<p>If your response variable is continuous (ratio, interval), common classical parametric statistical analyses include: t-tests, ANOVA, linear regression. Each of these tests is associated with non-parametric alternatives. In each case, we are interested in testing if the <em>population mean</em> of the continuous response variable is affected by the predictor variables (null hypothesis: nope, there is no effect!). Predictor variables, in turn, can be continuous or categorical (factor variables in R).</p>
-<div id="continuous-response-categorical-predictor" class="section level4">
-<h4>Continuous response, categorical predictor</h4>
-<p>If your categorical predictor is binary (two levels), you can use a <strong>two-sample t-test</strong>. The non-parametric alternative is the <strong>Mann-Whitney test</strong>.</p>
-<p>Example: Are females larger than males? (null hypothesis: no difference)</p>
-<p>If your categorical predictor has more than two levels, you can use an <strong>ANalysis Of Variance (ANOVA)</strong> followed by <em>pairwise comparisons</em> to test which categories differ from one another. You can visualize these relationships with (e.g.) a boxplot. The non-parametric alternative is the <strong>Kruskal-Wallis test</strong>.</p>
-<p><strong>Q</strong>: What is the predictor variable for a one-sample t-test?</p>
+<div id="statistics-inference-from-a-sample" class="section level2">
+<h2>Statistics: inference from a sample</h2>
+<p><img src="ylf.jpg" style="width:40.0%" /></p>
+<p>Consider the following example:</p>
+<p>Yellow-Legged frog example:<br />
+<em>Population</em>: all yellow-legged frogs in ponds in the central
+Sierra Nevada<br />
+<em>Parameter</em>: mean body size (SVL) of adult yellow-legged frogs in
+all ponds in the central Sierra Nevada<br />
+<em>Sample</em>: As many frogs are captured and measured as possible in
+10 ponds randomly sampled from the central Sierra Nevada<br />
+<em>Statistic</em>: Sample mean</p>
+<p>The goal of statistics is to infer something meaningful about a
+population from a sample. In the yellow-legged frog example above, there
+is a “true” mean body size of frogs in ponds in the central Sierra
+Nevada. We just don’t know what it is!</p>
+<p>After collecting data from a sample, statistics will help us to say
+something about the mean body size in the population – both about what
+we know AND what we don’t know about the population!</p>
+<p>First of all, we assume that the summary statistic computed from our
+sample (n&gt;&gt;1) is representative of the population. How? Why?
+Because of the <em>Central Limit Theorem</em>.</p>
+<div id="the-central-limit-theorem" class="section level3">
+<h3>The Central Limit Theorem</h3>
+<p>The Central Limit Theorem (CLT) says that if you have a sample with a
+reasonably large number of observations (the larger, the better!), and
+each observation is indpendently sampled from the population, then the
+statistics we compute from the sample (e.g., the sample mean) should be
+representative of the population.</p>
+<p>For the yellow-legged frog example: our sample mean should be
+representative of the mean of ALL yellow-legged frogs in the central
+Sierra Nevada.</p>
+<p>And as the sample size gets bigger, the sample mean will become more
+representative of the true mean (it will converge on the true mean as
+sample size approaches infinity).</p>
+<p>The concept of <strong>regression to the mean</strong> is a natural
+consequence of the Central Limit Theorem!</p>
+<p>[In-class R demo: regression to the mean]</p>
+<p>The CLT is the magic wand of statistics. It does enormous amounts of
+work for us. Why?</p>
+<p>The CLT also implies that the sampling distribution (distribution of
+hypothetical samples collected from repeated sampling) for the sample
+mean (and many other summary statistics) will be approximately normally
+distributed – even if the underlying data themselves are NOT normally
+distributed.</p>
+<p>Did you ever wonder why the normal (Gaussian) distribution is so
+common in statistics? It’s because of the CLT- many summary statistics
+derived from a sample are expected to have a sampling distribution that
+is <em>approximately</em> normally distributed (based on the CLT)!</p>
+<p><img src="clt1.png" /></p>
 </div>
-<div id="continuous-response-continuous-predictor" class="section level4">
-<h4>Continuous response, continuous predictor</h4>
-<p>If your predictor variable is continuous, you can use <strong>linear regression</strong>. If you just want to know if two variables are correlated but you are not interested in modeling one (the response) as a function of another (the predictor) you can run a <strong>Pearson correlation test</strong>. The non-parametric alternative is a <strong>Spearman correlation test</strong>.</p>
-<p>Example: What is the relationship between tree diameter and age- can tree diameter be used to effectively predict the age of a tree?</p>
-</div>
-<div id="continuous-response-both-continuous-and-categorical-predictors" class="section level4">
-<h4>Continuous response, both continuous and categorical predictors</h4>
-<p>In this case you can use <strong>Analysis of Covariance (ANCOVA)</strong> or just use <strong>multiple linear regression</strong>. In truth, linear regression and ANOVA/ANCOVA are two sides of the same coin. You can run both analyses using the workhorse of linear modeling in R, the ‘lm’ function. Basically, if you have a continuous response variable, you can use the ‘lm’ function! The non-parametric alternative might be something like a <strong>regression tree</strong> analysis.</p>
-</div>
-</div>
-<div id="discrete-count-response-variable" class="section level3">
-<h3>Discrete (count) response variable</h3>
-<p>With a discrete count response, you can use the same techniques as with a continuous response OR you can use <strong>generalized linear models</strong> with a Poisson error distribution (or other discrete probability distribution).</p>
-</div>
-<div id="categorical-response-variable" class="section level3">
-<h3>Categorical response variable</h3>
-<p>If your response variable is categorical (factor variable, ordinal variable, binary variable) then your choice of statistical methods changes:</p>
-<div id="categorical-response-variable-categorical-predictor" class="section level4">
-<h4>Categorical response variable, categorical predictor</h4>
-<p>If both your response variable and your predictor variable are categorical, then you can use a <strong>chi-squared test</strong> or a <strong>Fisher exact test</strong> to test for an association between the two variables. You may first summarize your data as a <em>contingency table</em> like we did with the ‘lady tasting tea’ example.</p>
-<p>Example: test for an association between salamander color morph (melanistic vs wild-type) and mating behavior (‘sneaker’ vs territory holder).</p>
-</div>
-<div id="categorical-response-variable-continuous-predictor" class="section level4">
-<h4>Categorical response variable, continuous predictor</h4>
-<p>If your response variable is binary (true/false, two levels) and your predictor variable is continuous, you can use <strong>logistic regression</strong> (which is a type of <em>generalized linear model (GLM)</em>).</p>
-<p>If your categorical response variable has more than two levels, you can use <strong>multinomial logistic regression</strong> (for categorical responses) or <strong>ordinal logistic regression</strong> (for ordinal responses).</p>
-</div>
-</div>
-</div>
-<div id="overview-t-tests" class="section level2">
-<h2>Overview: t-tests</h2>
-<p>Okay, now let’s move to the main topic of this lecture: t-tests! Here we have a continuous response variable and either no predictor variable (one sample t-test) or a binary predictor variable (two-sample t-test).</p>
-<p>We have already performed simple versions of the t-test (one-sample t-tests). But t-tests are quite flexible and can be applied to a wide variety of null-hypothesis testing scenarios:</p>
-<div id="one-sample-t-test" class="section level3">
-<h3>One-sample t-test</h3>
-<p>A one-sample t-test tests the consistency of the sample data with the null hypothesis that the sample was generated from a population with a specified mean (often zero, but not necessarily). As we have seen before, the t-statistic in this case is expressed as:</p>
-<p><span class="math inline">\(t = \frac{(\bar{x}-\mu_0)}{s.e.}\)</span></p>
-<p>Where <span class="math inline">\(\bar{x}\)</span> is the sample mean, <span class="math inline">\(s.e.\)</span> is the standard error of the mean, and <span class="math inline">\(\mu_0\)</span> is the population mean under the null hypothesis.</p>
-<p>The t-statistic can be interpreted as the difference between the sample mean and the null population mean in units of standard errors.</p>
-<p>Under the null hypothesis, the sampling distribution of the t-statistic should follow a t distribution with n-1 degrees of freedom.</p>
-<pre class="r"><code>### one sample t-test (paired t-test is a type of one sample t-test)
+<div id="example" class="section level3">
+<h3>Example</h3>
+<p>How does this work? Let’s use the yellow-legged frog example.</p>
+<p>Let’s say that we could measure ALL the frogs in ALL the ponds in CA.
+What would that look like?</p>
+<p>Let’s simulate it using a log-normal distribution that is strongly
+right skewed (positively skewed), suggesting that there are a lot of
+frogs out there that are relatively small-bodied, and a few that are
+giants! NOTE: this is not necessarily biologically realistic, but it
+makes a point.</p>
+<p>First, let’s set the population/parameter (the truth about which we
+hope to make inference but can never know in reality)</p>
+<pre class="r"><code># Yellow-legged frog example ---------------------
 
-sample.data &lt;- rgamma(10,2,.1)
-null.mean &lt;- 10
+### ALL FROGS IN CA (the statistical population- all the frogs!)
 
-sample.size &lt;- length(sample.data)
-sample.mean &lt;- mean(sample.data)
-sample.sd &lt;- sd(sample.data)
-std.err &lt;- sample.sd/sqrt(sample.size)
-t.stat &lt;- (sample.mean-null.mean)/std.err
+allfrogs.bodysize &lt;- rlnorm(10000,1.5,0.4)        # statistical &#39;population&#39;
+hist(allfrogs.bodysize,main=&quot;&quot;,xlab=&quot;SVL (mm)&quot;)   # plot out histogram</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>truemean_SVL &lt;- mean(allfrogs.bodysize)           # the &#39;parameter&#39;
+truemean_SVL </code></pre>
+<pre><code>## [1] 4.86589</code></pre>
+<p>Now let’s take a sample!</p>
+<pre class="r"><code>mysample &lt;- sample(allfrogs.bodysize,10)    # take sample of size 10 (10 frogs measured)
+mean(mysample)   # compute the sample mean</code></pre>
+<pre><code>## [1] 4.490253</code></pre>
+<p>And another, this time with n=20</p>
+<pre class="r"><code>mysample &lt;- sample(allfrogs.bodysize,20)    # take sample of size 20 (20 frogs measured)
+mean(mysample)   # compute the sample mean</code></pre>
+<pre><code>## [1] 4.741507</code></pre>
+<p>Since sampling is random, sampling will produce a different result
+every time.</p>
+<p>To get a better picture of the sampling variance, let’s sample many
+times!</p>
+<pre class="r"><code>lotsofsamples &lt;- list()
 
-t.crit &lt;- abs(qt(0.025,sample.size-1))   # for 2-tailed test
+for(s in 1:5000){
+  lotsofsamples[[paste0(&quot;sample&quot;,s)]] &lt;- sample(allfrogs.bodysize,30)    # take sample of size 30 (20 frogs measured)
+}
 
-p.val &lt;- (1-pt(abs(t.stat),sample.size-1))*2   # 
+lotsofsamples$sample1</code></pre>
+<pre><code>##  [1] 9.870530 2.585398 3.333185 4.691382 5.738534 8.773529 3.249062 2.860118
+##  [9] 3.800551 3.865068 3.622419 4.949816 4.941926 6.162584 5.316123 1.819894
+## [17] 5.966691 5.435843 8.389564 4.032064 3.437772 3.326147 8.020591 2.584070
+## [25] 3.778267 2.423480 7.759992 6.451879 6.646355 3.087408</code></pre>
+<pre class="r"><code>lotsofsamples$sample99</code></pre>
+<pre><code>##  [1]  3.735208  5.907859  3.563188  5.658130  3.671438  3.791738  3.759257
+##  [8]  2.367941  3.660289  5.817977  5.349160  2.817195  3.263106  3.369762
+## [15]  4.889541  5.033721  2.174314  7.899127  8.148929  3.521663  4.299664
+## [22]  4.573797  2.029409  3.834115  7.176607 10.522934 12.306219  4.918912
+## [29]  2.702932  5.297337</code></pre>
+<pre class="r"><code>lotsofsamples$sample732</code></pre>
+<pre><code>##  [1]  3.628170  3.265468  2.979275  5.841681  2.924863  6.213154  2.968529
+##  [8]  8.824904  4.786010  2.422554  7.157891  3.214569  5.830407  6.503452
+## [15]  5.291989  6.187573  2.546349  3.898771  3.083737  4.128964  4.950483
+## [22]  4.630313  7.101422  4.058735  4.203144 12.026801  3.645135  8.468668
+## [29]  1.496934  5.726627</code></pre>
+<p>Now we can compute the sample means and the sampling variance for the
+summary statistic (mean body size)</p>
+<pre class="r"><code>samplemeans &lt;- sapply(lotsofsamples,mean)
 
-
-### alternatively use the t.test function:
-
-t.test(sample.data,mu=null.mean)   # should get the same answer!</code></pre>
-<pre><code>## 
-##  One Sample t-test
-## 
-## data:  sample.data
-## t = 3.3424, df = 9, p-value = 0.008628
-## alternative hypothesis: true mean is not equal to 10
-## 95 percent confidence interval:
-##  13.13360 26.25834
-## sample estimates:
-## mean of x 
-##  19.69597</code></pre>
-<div id="paired-t-test" class="section level4">
-<h4>Paired t-test</h4>
-<p>A common version of the one-sample t-test is the ‘paired t-test’, in which a measurement is taken on a single individual before and after a treatment is applied. An example of a paired t-test is the ‘weight loss drug’ example from the ‘basic concepts’ lecture. In the weight-loss drug’ example, we measured patients before and after taking a drug and measured the total weight change in each patient. Even though we have two measurements per patient (repeated measures!) we collapse the data for each patient into a single number (difference in weight) before running our t-test.</p>
-</div>
-</div>
-<div id="two-sample-t-test" class="section level3">
-<h3>Two-sample t-test</h3>
-<p>A two-sample t-test tests the consistency of the sample data with the null hypothesis that sample A was generated from the same underlying population as sample B. The t-statistic in this case is expressed as:</p>
-<p><span class="math inline">\(t = \frac{(\bar{x_A}-\bar{x_B})}{s.e._{pooled}}\)</span></p>
-<p>Where <span class="math inline">\(\bar{x}\)</span> is the sample mean, <span class="math inline">\(s.e._{pooled}\)</span> is the pooled standard error of the mean across both samples, and <span class="math inline">\(\mu_0\)</span> is the population mean under the null hypothesis.</p>
-<p>The t-statistic in the 2-sample case can be interpreted as the difference between the sample mean from population A and the sample mean from population B, in units of (pooled) standard errors.</p>
-<p>The formula for the pooled standard deviation depends on whether your sample size is equal in the two samples and whether you are able to assume that the standard deviation is the same or similar in the two underlying populations.</p>
-<p>For example, the formula for the pooled standard deviation when we assume equal standard deviation in the two population but we have unequal sample size is:</p>
-<p><span class="math inline">\(\sqrt{((N_1-1)*\sigma_1^2 + (N_2-1)*\sigma_2^2)/(N_{pooled}-2)}\)</span></p>
-<p>For the 2-sample t-test, the degrees of freedom is equal to the total sample size across both samples minus 2.</p>
-<pre class="r"><code>### two sample t-test 
-
-sample.data.1 &lt;- rnorm(15,55,10)
-sample.data.2 &lt;- rnorm(10,45,10)
-
-sample.size.1 &lt;- length(sample.data.1)
-sample.size.2 &lt;- length(sample.data.2)
-sample.size.pooled &lt;- length(sample.data.1) + length(sample.data.2)
-
-sample.mean1 &lt;- mean(sample.data.1)
-sample.mean2 &lt;- mean(sample.data.2)
-
-sample.sd1 &lt;- sd(sample.data.1)
-sample.sd2 &lt;- sd(sample.data.2)
-sample.sd.pooled &lt;- sqrt(((sample.size.1-1)*sample.sd1^2 + (sample.size.2-1)*sample.sd2^2)/(sample.size.pooled-2))
-
-std.err.pooled &lt;- sample.sd.pooled*sqrt(1/sample.size.1+1/sample.size.2)
-t.stat &lt;- (sample.mean1-sample.mean2)/std.err.pooled
-
-t.crit &lt;- abs(qt(0.025,sample.size-1))   # for 2-tailed test
-
-p.val &lt;- (1-pt(abs(t.stat),sample.size.pooled-2))*2   # 2-tailed test
-
-
-
-### alternatively use the t.test function:
-
-t.test(sample.data.1,sample.data.2,var.equal = T)   # should get the same answer!</code></pre>
-<pre><code>## 
-##  Two Sample t-test
-## 
-## data:  sample.data.1 and sample.data.2
-## t = 0.93552, df = 23, p-value = 0.3592
-## alternative hypothesis: true difference in means is not equal to 0
-## 95 percent confidence interval:
-##  -4.03479 10.69700
-## sample estimates:
-## mean of x mean of y 
-##  55.40201  52.07090</code></pre>
-<p><strong>Q</strong> What are the key assumptions of the 2-sample t-test?</p>
-<p><strong>Q</strong> What is the null hypothesis for the 2-sample t-test?</p>
-<div id="one-tailed-vs-two-tailed-tests" class="section level4">
-<h4>One tailed vs two-tailed tests</h4>
-<p>Tailed-ness is a common point of confusion when running t-tests and z-tests, so it’s worth taking a little time to review.</p>
-<p>It all has to do with what we mean by ‘more extreme than the observed test statistic’ (from the definition of a p-value).</p>
-<p>In a one-tailed test in which our (alternative) hypothesis is that our sample mean is <em>greater than</em> than the null hypothesis, we mean ‘more positive than the observed test statistic’.</p>
-<p>In a one-tailed test in which our (alternative) hypothesis is that our sample mean is <em>less than</em> than the null hypothesis, we mean ‘more negative than the observed test statistic’.</p>
-<p>In a two-tailed test, we mean ‘more positive or more negative than the absolute value of our observed test statistic’</p>
-<p>Here is an R demo to illustrate the concept:</p>
-<p>We have the following data:</p>
-<pre class="r"><code># one vs two tailed demo
-
-#my.data &lt;- rnorm(15, 0.5, 1)   # generate sample data
-my.data &lt;- c(0.20119786,1.41700898,-0.72426698,0.44006284,0.01487128,-0.19031680,1.75470699,-0.81992816,2.31978530,  2.71442595,-0.31461411,0.52086138,-0.50580117,1.52260888,0.76454698)
-samp.mean &lt;- mean(my.data)
-samp.sd &lt;- sd(my.data)
-samp.n &lt;- length(my.data)
-std.err &lt;- samp.sd/sqrt(samp.n)
-
-null.mean &lt;- 0
-
-t.statistic &lt;- (samp.mean-null.mean)/std.err
-
-### Two-tailed
-curve(dt(x,samp.n-1),-3,3, main=&quot;Meaning of more extreme (two tailed version)&quot;,
-      ylab=&quot;probability density&quot;,xlab=&quot;t statistic&quot;)    # visualize the sampling distribution of the t-statistic
-abline(v=t.statistic,lwd=2,col=&quot;blue&quot;)
-
-xs &lt;- seq(abs(t.statistic),10,0.05)                
-ys &lt;- dt(xs,samp.n-1)
-polygon(x=c(xs,rev(xs)),y=c(ys,rep(0,times=length(ys))),col=&quot;green&quot;,border=NA)
-polygon(x=c(-xs,rev(-xs)),y=c(ys,rep(0,times=length(ys))),col=&quot;green&quot;,border=NA)
-
-p.twosided &lt;- pt(-abs(t.statistic),samp.n-1)*2     # two-tailed p-value
-
-text(-2,0.3,paste(&quot;p =&quot;,round(p.twosided,4)))</code></pre>
-<p><img src="LECTURE2_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<pre class="r"><code>### One-sided (alternative = &#39;greater&#39;)
-curve(dt(x,samp.n-1),-3,3, main=&quot;Meaning of more extreme (one tailed version: greater than)&quot;,
-      ylab=&quot;probability density&quot;,xlab=&quot;t statistic&quot;)    # visualize the sampling distribution of the t-statistic
-abline(v=t.statistic,lwd=2,col=&quot;blue&quot;)
-
-xs &lt;- seq(t.statistic,10,0.05)                
-ys &lt;- dt(xs,samp.n-1)
-polygon(x=c(xs,rev(xs)),y=c(ys,rep(0,times=length(ys))),col=&quot;green&quot;,border=NA)
-
-p.onesided &lt;- pt(-abs(t.statistic),samp.n-1)     # one-tailed p-value
-
-text(-2,0.3,paste(&quot;p =&quot;,round(p.onesided,4)))</code></pre>
-<p><img src="LECTURE2_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
-<p>In the same way, the critical value for a t-statistic is different for a two-tailed vs a one-tailed test:</p>
-<pre class="r"><code>### t-crit in one tailed vs two tailed test
-
-sample.size=7
-
-curve(dt(x,sample.size-1),-8,4, main=&quot;2-tailed vs 1-tailed critical value&quot;,
-      xlab=&quot;t-statistic&quot;,ylab=&quot;probability density&quot;)
-
-alpha &lt;- 0.1
-t.crit.twosided &lt;- qt(alpha/2,sample.size-1) 
-
-abline(v=c(t.crit.twosided,abs(t.crit.twosided)),col=&quot;red&quot;,lwd=2)
-
-
-t.crit.twosided &lt;- qt(alpha/2,sample.size-1) 
-
-abline(v=c(t.crit.twosided,abs(t.crit.twosided)),col=&quot;red&quot;,lwd=2)
-
-t.crit.onesided &lt;- qt(alpha,sample.size-1) 
-
-abline(v=abs(t.crit.onesided),col=&quot;green&quot;,lwd=2)
-abline(v=t.crit.onesided,col=&quot;blue&quot;,lwd=2)
-
-legend(&quot;topleft&quot;,lwd=c(2,2,2),col=c(&quot;red&quot;,&quot;green&quot;,&quot;blue&quot;),bty=&quot;n&quot;,legend=c(&quot;two-tailed crit value&quot;,&quot;one-tailed crit value (greater than)&quot;,&quot;one-tailed crit value (less than)&quot;))</code></pre>
-<p><img src="LECTURE2_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>All of these critical values have the same percentage of the sampling distribution that are more extreme than them (the percentage is alpha, which is set at 0.1 in this example)– but the definition of ‘extremeness’ differs for the one-tailed and two-tailed cases!</p>
-</div>
-<div id="welchs-t-test" class="section level4">
-<h4>Welch’s t-test</h4>
-<p>Welch’s t-test allows for unequal sample sizes AND unequal variance in the two populations. The Welch’s t-test is like the two-sample t-test we already ran, but it is more flexible. Like other t-tests, this test is robust against violations of normality due to the CLT. This is the DEFAULT version of a t-test in R. If you want a classical Student’s t-test, you need to tell it to do so (otherwise it will do the Welch’s test; use the ‘var.equal = TRUE’ argument to ru the classical test)!</p>
-<p>I won’t go through the math for the Welch’s t-test (you can look it up if you’d like) because the basic concepts and interpretation are the same. The differences lie in the computation of the pooled variance and the degrees of freedom.</p>
-</div>
-</div>
-</div>
-<div id="t-tests-in-r" class="section level2">
-<h2>t-tests in R</h2>
-<p>Previously, we have mostly avoided using R’s built in ‘t-test’ function. Let’s use it now!</p>
-<pre class="r"><code>######
-# More t-test examples
-
-
-#### 
-# T-tests
-####
-
-#Ttest
-# Are my data greater than zero? 
-Group0 &lt;- c(0.5, -0.03, 4, 2.5, 0.89, 2.2, 1.7, 1.125)
-hist(Group0)
-t.test(Group0,alternative=&quot;greater&quot;) # This gets at directionality</code></pre>
-<pre><code>## 
-##  One Sample t-test
-## 
-## data:  Group0
-## t = 3.5487, df = 7, p-value = 0.00468
-## alternative hypothesis: true mean is greater than 0
-## 95 percent confidence interval:
-##  0.7507388       Inf
-## sample estimates:
-## mean of x 
-##  1.610625</code></pre>
-<pre class="r"><code>#Are my data different than zero? 
-Group0 &lt;- c(0.5, -0.03, 4, 2.5, 0.89, 2.2, 1.7, 1.125)
-hist(Group0)</code></pre>
+hist(samplemeans,xlab=&quot;mean body size (n=30)&quot;)    # visualize the sampling distribution!</code></pre>
 <p><img src="LECTURE2_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<pre class="r"><code>t.test(Group0) # Okay, that&#39;s to zero. What about if it&#39;s different than 1? </code></pre>
-<pre><code>## 
-##  One Sample t-test
-## 
-## data:  Group0
-## t = 3.5487, df = 7, p-value = 0.00936
-## alternative hypothesis: true mean is not equal to 0
-## 95 percent confidence interval:
-##  0.5374007 2.6838493
-## sample estimates:
-## mean of x 
-##  1.610625</code></pre>
-<pre class="r"><code># are my data different than 1? 
-t.test(Group0, mu=1)</code></pre>
-<pre><code>## 
-##  One Sample t-test
-## 
-## data:  Group0
-## t = 1.3454, df = 7, p-value = 0.2205
-## alternative hypothesis: true mean is not equal to 1
-## 95 percent confidence interval:
-##  0.5374007 2.6838493
-## sample estimates:
-## mean of x 
-##  1.610625</code></pre>
-<pre class="r"><code># Now let&#39;s test two groups. 
-# are the means equal? 
-group1 &lt;- c(7,9,6,6,6,11,6,3,8,7)
-group2 &lt;- c(11,13,8,6,14,11,13,13,10,11)
-t.test(group1, group2, var.equal=T) # Notice how we set equal variance? Look at the output - &quot;Two Sample t-test.&quot;</code></pre>
-<pre><code>## 
-##  Two Sample t-test
-## 
-## data:  group1 and group2
-## t = -3.9513, df = 18, p-value = 0.000936
-## alternative hypothesis: true difference in means is not equal to 0
-## 95 percent confidence interval:
-##  -6.27997 -1.92003
-## sample estimates:
-## mean of x mean of y 
-##       6.9      11.0</code></pre>
-<pre class="r"><code># is this one-tail or two? 
-
-group1 &lt;- c(7,9,6,6,6,11,6,3,8,7)
-group2 &lt;- c(11,13,8,6,14,11,13,13,10,11)
-t.test(group1, group2) #  &quot;Welch&#39;s Two Sample t-test&quot;</code></pre>
-<pre><code>## 
-##  Welch Two Sample t-test
-## 
-## data:  group1 and group2
-## t = -3.9513, df = 17.573, p-value = 0.0009743
-## alternative hypothesis: true difference in means is not equal to 0
-## 95 percent confidence interval:
-##  -6.283771 -1.916229
-## sample estimates:
-## mean of x mean of y 
-##       6.9      11.0</code></pre>
-<pre class="r"><code># WELCH&#39;S TEST IS THE DEFAULT IN R</code></pre>
+<p>Interesting- does this look skewed to you? Doesn’t it look like a
+normal distribution??</p>
+<p>It’s the CLT at work!!</p>
+<p>Of all the samples you could get, there are very few that are all at
+one end of the distribution. There are a lot more possible random
+samples that span the full distribution of values, from low to high.
+Take the average af all those values, low and high, and you get
+something in the middle. The normal distribution is humped right in the
+middle, because of the tendency for low and high observations to
+‘average out’ within a sample.</p>
 </div>
-<div id="t-test-assumptions" class="section level2">
-<h2>t-test assumptions</h2>
-<div id="normality-of-the-data" class="section level3">
-<h3>Normality of the data</h3>
-<p>Like we have mentioned before, the t-test is quite robust to non-normality of the raw data – this is due to the Central Limit Theorem!</p>
-<p>However, if the data are strongly skewed or otherwise clearly non-normal you may want to go with a non-parametric alternative (see below)!</p>
-<div id="testing-for-normality" class="section level4">
-<h4>Testing for normality!</h4>
-<p>Before ‘accepting’ the results of a statistical test, we often want to run ‘goodness-of-fit’ tests to see if there is any reason to think we may be violating key assumptions of our statistical analyses. For the t-test and many other parametric tests, one ‘goodness-of-fit’ test we might want to run is a test for normality. For linear regression analyses, we test for normality of the residuals. For the t-test, we test for normality of the raw data.</p>
-<p>Here we will discuss two tests- one visual and one quantitative. The visual test is called a ‘quantile-quantile (Q-Q) plot’ and the quantitative test is called a Shapiro-Wilk test.</p>
-<p>The quantile-quantile plot compares the quantiles of the observed data (y axis) with the theoretical quantiles from a normal distribution (x axis). If the q-q plot is highly non-linear, your data are probably not normally distributed and you might want to run a non-parametric alternative.</p>
-<p>The Shapiro-Wilk test is a way of quantitatively assessing the linearity of the q-q plot such that you can get a p-value. The p-value here is interpreted the same as any other p-value. The catch is that the null hypothesis is that the data are normally distributed. If p&gt;alpha you fail to reject the null - that is, you can move forward assuming that the data are normally distributed!</p>
-<pre class="r"><code>## testing for normality
-
-my.data.nonnorm &lt;- rgamma(20,0.1,0.1)    # simulate some non-normal data
-hist(my.data.nonnorm,main=&quot;non-normal&quot;)     # visualize the data distribution</code></pre>
+<div id="coin-flipping-example" class="section level3">
+<h3>Coin flipping example</h3>
+<p>Here’s the sampling distribution for the number of heads out of a
+single coin flip (either 0 or 1!):</p>
+<pre class="r"><code>barplot(table(rbinom(10000,1,.5))/10000,xlab=&quot;N heads out of 1&quot;,ylab=&quot;Probability&quot;)</code></pre>
 <p><img src="LECTURE2_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<pre class="r"><code>my.data.norm &lt;- rnorm(20,6,0.9)    # simulate some normal data
-hist(my.data.norm,main=&quot;normal&quot;)     # visualize the data distribution</code></pre>
-<p><img src="LECTURE2_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
-<pre class="r"><code># visualize q-q plot
-
-qqnorm(my.data.nonnorm,main=&quot;non-normal&quot;)   # visual test for normality</code></pre>
-<p><img src="LECTURE2_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
-<pre class="r"><code>qqnorm(my.data.norm,main=&quot;normal&quot;)</code></pre>
-<p><img src="LECTURE2_files/figure-html/unnamed-chunk-7-4.png" width="672" /></p>
-<pre class="r"><code># run shapiro-wilk test
-
-shapiro.test(my.data.nonnorm)</code></pre>
-<pre><code>## 
-##  Shapiro-Wilk normality test
-## 
-## data:  my.data.nonnorm
-## W = 0.45799, p-value = 1.355e-07</code></pre>
-<pre class="r"><code>shapiro.test(my.data.norm)</code></pre>
-<pre><code>## 
-##  Shapiro-Wilk normality test
-## 
-## data:  my.data.norm
-## W = 0.91826, p-value = 0.09172</code></pre>
-</div>
-</div>
-<div id="outliers" class="section level3">
-<h3>Outliers</h3>
-<p>The t-test can be highly affected by outliers. If you suspect your data contain highly influential outliers, you might want to run a non-parametric alternative, as non-parametric tests are much less influenced by outliers.</p>
-<p>To look for outliers, the first step is to simply visualize a histogram of the raw data and look for any observations that fall far from the others.</p>
-</div>
-</div>
-<div id="non-parametric-alternatives" class="section level2">
-<h2>Non-parametric alternatives</h2>
-<p>If your data are highly non-normal or contain obvious outliers, you probably want to run one of the non-parametric alternatives to the classical t-test. These tests do not assume normality of the data nor are they highly affected by outliers!</p>
-<div id="one-sample-t-test-1" class="section level3">
-<h3>One sample t-test</h3>
-<p>The non-parametric alternative to the one-sample t-test is called the <strong>one sample Wilcoxon signed rank test</strong>. This analysis first reduces the data to signs- negative 1 if the observation is greater than the null and -1 if the data are less than the null. Then, like many non-parametric tests, you sort the data from smallest to largest absolute value. You then multiply the ranks times the signs and sum across all observations. This test statistic (W) has a known sampling distribution (approximately anyway!) under the null hypothesis and therefore you can compute a p-value. The null hypothesis for the Wilcoxon test refers to the median of the distribution and not the mean (the null hypothesis for the t-test refers to the mean). Therefore the two tests are not strictly comparable!</p>
-<pre class="r"><code># Wilcoxon signed rank test
-
-my.data &lt;- rgamma(20,0.1,0.1)-2
-
-hist(my.data)</code></pre>
+<p>Now let’s build up sample size and see how the sampling distribution
+changes.</p>
+<pre class="r"><code>par(mfrow=c(3,2))
+for(i in seq(2,12,2)){
+   barplot(table(rbinom(10000,i,.5))/10000,xlab=sprintf(&quot;N heads out of %s&quot;,i),ylab=&quot;Probability&quot;,main=paste0(&quot;sample size = &quot;,i))
+   #hist(rbinom(10000,i,.5),main=paste0(&quot;sample size = &quot;,i),xlab=sprintf(&quot;N heads out of %s&quot;,i)) 
+}</code></pre>
 <p><img src="LECTURE2_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<pre class="r"><code>wilcox.test(my.data)</code></pre>
-<pre><code>## 
-##  Wilcoxon signed rank exact test
-## 
-## data:  my.data
-## V = 2, p-value = 5.722e-06
-## alternative hypothesis: true location is not equal to 0</code></pre>
-<pre class="r"><code>t.test(my.data)   # t-test for comparison</code></pre>
-<pre><code>## 
-##  One Sample t-test
-## 
-## data:  my.data
-## t = -9.5629, df = 19, p-value = 1.076e-08
-## alternative hypothesis: true mean is not equal to 0
-## 95 percent confidence interval:
-##  -2.070901 -1.327165
-## sample estimates:
-## mean of x 
-## -1.699033</code></pre>
-</div>
-<div id="two-sample-t-test-1" class="section level3">
-<h3>Two sample t-test</h3>
-<p>The non-parametric alternative to the two-sample t-test is called the <strong>Mann Whitney U test (or Wilcoxon rank sum test)</strong>. This analysis first reduces the data to ranks- that is, you first sort the data from smallest to largest absolute value. You then essentially test to see if the ranks of one group are higher on average than the ranks of the other group. This test statistic (U) has a known sampling distribution (approximately anyway!) under the null hypothesis and therefore you can compute a p-value. The null hypothesis for the Mann-Whitney test is that there is a 50% probability that a single sample from one distribution is larger than a single sample drawn from the other distribution. The null hypothesis for the t-test is that the means of two distributions are the same. Therefore the two tests are not strictly comparable!</p>
-<pre class="r"><code># Wilcoxon signed rank test
-
-my.data1 &lt;- rgamma(20,0.1,0.1)-2
-my.data2 &lt;- rgamma(20,0.2,0.1)-2
-
-median(my.data1)</code></pre>
-<pre><code>## [1] -1.980554</code></pre>
-<pre class="r"><code>median(my.data2)</code></pre>
-<pre><code>## [1] -1.745295</code></pre>
-<pre class="r"><code>wilcox.test(my.data1,my.data2)</code></pre>
-<pre><code>## 
-##  Wilcoxon rank sum exact test
-## 
-## data:  my.data1 and my.data2
-## W = 147, p-value = 0.1572
-## alternative hypothesis: true location shift is not equal to 0</code></pre>
-<pre class="r"><code>t.test(my.data1,my.data2)   # t-test for comparison</code></pre>
-<pre><code>## 
-##  Welch Two Sample t-test
-## 
-## data:  my.data1 and my.data2
-## t = 0.66995, df = 22.092, p-value = 0.5098
-## alternative hypothesis: true difference in means is not equal to 0
-## 95 percent confidence interval:
-##  -2.271395  4.439958
-## sample estimates:
-##  mean of x  mean of y 
-##  0.2931888 -0.7910931</code></pre>
-<pre class="r"><code>#### perform rank test from scratch!
-
-allobs &lt;- c(my.data1,my.data2)
-inorder &lt;- order(allobs)
-
-rank1 &lt;- inorder[1:20]
-rank2 &lt;- inorder[21:40]
-
-t.test(rank1,rank2,var.equal = T)    # perform t-test on the ranks (usually similar to Mann-Whitney test)</code></pre>
-<pre><code>## 
-##  Two Sample t-test
-## 
-## data:  rank1 and rank2
-## t = -0.26726, df = 38, p-value = 0.7907
-## alternative hypothesis: true difference in means is not equal to 0
-## 95 percent confidence interval:
-##  -8.574589  6.574589
-## sample estimates:
-## mean of x mean of y 
-##        20        21</code></pre>
+<p>And with really big sample size:</p>
+<pre class="r"><code>hist(rbinom(10000,1000,.5),xlab=&quot;N heads out of 1&quot;,freq = F)</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>The larger the sample size, the more closely the sampling
+distribution (number of heads out of N flips of a fair coin) looks like
+a normal distribution!</p>
 </div>
 </div>
-<div id="power-analysis-for-t-test" class="section level2">
-<h2>Power analysis for t-test</h2>
-<p>Okay, before we leave the t-test, let’s run a power analysis! Remember that a power analysis is a way of assessing whether you are likely to detect a signal given your null hypothesis is false (i.e., there is a signal there to detect!). Power analyses can be a great way to assess if your sampling design is adequate to detect a signal. If not, you may want to alter your sampling design by adding more replicates!</p>
-<pre class="r"><code>###### First we will set the population parameters:
+<div id="sampling-distributions-in-null-hypothesis-testing"
+class="section level2">
+<h2>Sampling distributions in null hypothesis testing</h2>
+<p>Pretty much all of classical null hypothesis testing (NHT) works like
+this:</p>
+<ol style="list-style-type: decimal">
+<li>We compute a summary statistic from our data. This statistic
+represents the “signal” in your data.</li>
+<li>Using the known sampling distribution for our summary statistic
+under the null hypothesis (worked out by statisticians!), we inquire
+whether or not our summary statistic (signal) could have been a result
+of random sampling error in the null universe, given the “noise” that
+could be produced by random sampling error.</li>
+<li>If it is implausble that random noise could have produced our result
+(if <span class="math inline">\(p\le\alpha\)</span>) then we reject the
+null hypothesis. Otherwise we fail to reject the null…</li>
+</ol>
+<p>Sampling distributions that are commonly used include:</p>
+<ul>
+<li>t distribution (sampling distribution for the t statistic under the
+null hypothesis)</li>
+<li>Chi-squared distribution (sampling distribution for the Chi-squared
+statistic under the null hypothesis)</li>
+<li>F distribution (sampling distribution for the F statistic under the
+null hypothesis- used in ANOVA and regression)</li>
+</ul>
+</div>
+<div id="summary-metrics-calculated-from-sample-data"
+class="section level2">
+<h2>Summary metrics (calculated from sample data)</h2>
+<p>We often summarize our samples by their centers (e.g., average) and
+their spread (dispersion). These informative data summaries are useful
+on their own, and are also used to compute statistics like the t or F
+statistics.</p>
+<div id="center-statistics-means-medians-geometric-mean"
+class="section level3">
+<h3>“Center” statistics: means, medians, geometric mean</h3>
+<p>Sample Mean (arithmetic mean) = sum of all sampled values divided by
+the sample size<br />
+Sample Median (midway point) = 50% quantile. Order the values and select
+the value at the center.</p>
+<p>Sample Geometric mean: product of numbers taken to the nth root. For
+two numbers, 3 and 4, you’d have the sq root of 3*4 = 3.46</p>
+</div>
+<div id="data-spread-or-dispersion" class="section level3">
+<h3>Data spread, or dispersion:</h3>
+<p>Standard deviations and variances are calculated differently
+depending on whether we are computing these quantities for an entire
+population of interest vs a sample drawn from a larger population!</p>
+<p>Standard Deviation – sigma (<span
+class="math inline">\(\sigma\)</span>) for population standard
+deviation, <em>s</em> for the sample standard deviation. T</p>
+<p>Variance- (<span class="math inline">\(\sigma^2\)</span>) for
+population varianc, (<span class="math inline">\(s^2\)</span>) for the
+sample variance</p>
+<p>The variance represents the average squared difference from the mean.
+The standard deviation represents the square root of the variance.</p>
+<p>Standard deviation is much more commonly reported than variance
+because it is in the same units/scale as the original measurements.</p>
+<p>Coefficient of variation (cv) is the standard deviation represented
+as a fraction of the mean.</p>
+<div id="std-deviation-calculation-example" class="section level4">
+<h4>Std deviation calculation example</h4>
+<p>For a population: <span class="math inline">\(\sigma =
+\sqrt{\sum_{n=1}^{i}{\frac{(x_i-\mu)^2}{N}}}\)</span></p>
+<p>For a sample (estimating population variance from a sample): <span
+class="math inline">\(s =
+\sqrt{\sum_{n=1}^{i}{\frac{(x_i-\bar{x})^2}{(N-1)}}}\)</span></p>
+<p>For example: compute the variance of 5 numbers: 4, 3, 5, 5, 2</p>
+<p><span class="math inline">\(\mu = (4+3+5+5+2)/5 = 3.8\)</span></p>
+<p>(4-3.8)^2 = 0.2^2 = 0.04<br />
+(3-3.8)^2 = 0.64<br />
+(5-3.8)^2 = 1.44<br />
+(5-3.8)^2 = 1.44<br />
+(2-3.8)^2 = 3.24</p>
+<p>Sum these = 6.8<br />
+Divide by 5 = <span class="math inline">\(\sigma\)</span> = 6.8/5 =
+1.36</p>
+<p>For sample sd (summary statistic for population variance from a
+sample):</p>
+<p><span class="math inline">\(\bar{x} = (4+3+5+5+2)/5 =
+3.8\)</span></p>
+<p>(4-3.8)^2 = 0.2^2 = 0.04<br />
+(3-3.8)^2 = 0.64<br />
+(5-3.8)^2 = 1.44<br />
+(5-3.8)^2 = 1.44<br />
+(2-3.8)^2 = 3.24</p>
+<p>Sum these = 6.8<br />
+Divide by 4 = <span class="math inline">\(s\)</span> = 6.8/4 = 1.7</p>
+<p>So the population sd is 1.36 whereas the sample sd is 1.7.</p>
+</div>
+<div id="aside-degrees-of-freedom" class="section level4">
+<h4>Aside: degrees of freedom</h4>
+<p>OK, so why the different estimates of dispersion for population
+vs. sample?</p>
+<p>Which is larger? Which are we less confident in?</p>
+<p>This has to do with a concept called <em>degrees of freedom</em>.</p>
+<p>Sigma is known. Since you have the entire population measured, you
+can compute a measure of dispersion for the population and that measure
+is perfect. It is not an estimate.</p>
+<p>The sample standard deviation <span class="math inline">\(s\)</span>,
+on the other hand, is an imperfect estimate of dispersion for a much
+larger population! In fact, if we used the population formula for a
+sample, it would underestimate the dispersion of the target
+population.</p>
+<p>Th reason for this is that the formula for sample stdev <em>uses the
+sample mean</em>, not the population mean. In fact, the same sample data
+were used to compute the sample mean! If you know the values of four of
+the five sampled values AND we know that the sample mean, we know what
+the value of the final observation must be. Therefore, even though we
+have 5 data points, we have only 4 <em>degrees of freedom</em> if the
+sample mean is included in our formula. In this case, we have four
+independent pieces of information that we can use for computing standard
+deviation (we ‘spent’ one degree of freedom already to compute the
+sample mean!).</p>
+<p>By dividing the sum of squared deviations from the sample mean by 4
+instead of 5, we are <em>unbiasing</em> the estimate of dispersion to
+account for the fact that we are using the sample data twice- once for
+computing the mean, next for computing the standard deviation!</p>
+</div>
+</div>
+</div>
+<div id="sampling-distributions" class="section level2">
+<h2>Sampling distributions</h2>
+<p>Statisticians have used probability calculus to work out the sampling
+distributions (often called the sampling variance- don’t confuse this
+with the ‘sample variance’ we discussed above!) for some common summary
+statistics.</p>
+<div id="standard-error-of-the-mean" class="section level3">
+<h3>Standard error of the mean</h3>
+<p>Standard error of the mean = sample std deviation divided by the
+square root of the sample size</p>
+<p><span class="math inline">\(se = \frac{s}{\sqrt{N}}\)</span></p>
+<p>The standard error of the mean is used to help us describe the
+sampling distribution for the sample mean (the expected distribution of
+sample means if you collected thousands of new samples and computed the
+mean).</p>
+<pre class="r"><code># Survey of common sampling distributions -----------------
 
-true.mean.A &lt;- 13.5
-true.mean.B &lt;- 13.9
+# Sampling distribution: the sample mean
 
-true.sd &lt;- 3.4
+mysample &lt;- c(4.1,3.5,3.7,6.6,8.0,5.4,7.3,4.4)
+mysample</code></pre>
+<pre><code>## [1] 4.1 3.5 3.7 6.6 8.0 5.4 7.3 4.4</code></pre>
+<pre class="r"><code>n &lt;- length(mysample)    # sample size
+sample.mean &lt;- mean(mysample)  # sample mean
+sample.stdev &lt;- sd(mysample)   # sample standard deviation (r uses denominator of n-1 by default!)
+std.error &lt;- sample.stdev/sqrt(n) 
 
-# Assume a two-tailed test- alternative hypothesis is that the mean of A is different from the mean of B
+std.error </code></pre>
+<pre><code>## [1] 0.6122995</code></pre>
+<p>Now we have all the information we need to compute the sampling
+distribution for the sample mean.</p>
+<p>Our sample mean is 5.375. But if we collected different samples of
+size n=8, we would get different values - even if the true population
+mean was 5.375. What does this distribution of values look like?</p>
+<pre class="r"><code>sampdist &lt;- function(x){dt((x-sample.mean)/std.error,n-1)}
+curve(sampdist,0,11,ylab=&quot;probability density&quot;,xlab=&quot;value&quot;,main=&quot;sampling distribution for the sample mean!&quot;)
+abline(v=sample.mean,col=&quot;green&quot;,lwd=3)
+confint &lt;- c(sample.mean+std.error*qt(0.025,n-1),sample.mean+std.error*qt(0.975,n-1))
+abline(v=confint,col=&quot;blue&quot;,lty=2)</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>The vertical blue lines indicate the <em>confidence interval</em>
+around the mean with the <em>confidence level</em> set at 95%. We will
+talk about confidence intervals a lot more, but just know that the
+confidence interval helps us visualize what might happen if we repeated
+our sampling over and over and over- how might our summary statistic
+change?</p>
+<p>Note the use of the <em>t distribution</em> in the above code block.
+The t distribution is a theoretical sampling distribution representing
+sampling error in units of standard error.</p>
+</div>
+</div>
+<div id="probability-distributions--the-basics-and-how-to-use-them-in-r"
+class="section level2">
+<h2>Probability distributions- the basics (and how to use them in
+R)</h2>
+<div id="discrete-vs.-continuous" class="section level3">
+<h3>Discrete vs. continuous</h3>
+<p>In <em>discrete distributions</em>, each outcome (value that could be
+sampled under this probability distribution) has a specific
+<em>probability mass</em> (like the probability of flipping a coin 10
+times and getting 4 heads). For example, let’s consider the Poisson
+distribution:</p>
+<pre class="r"><code># Probability distributions ---------------------
 
-###### Now let&#39;s set the sampling scenario
+# Discrete probability distributions 
 
-sampsize.A &lt;- 10
-sampsize.B &lt;- 12
-
-###### now we will simulate a single &#39;experiment&#39;
-
-samp.A &lt;- rnorm(sampsize.A,true.mean.A,true.sd)
-samp.B &lt;- rnorm(sampsize.B,true.mean.B,true.sd)
-
-###### and now we can run a test!
-
-this.test &lt;- t.test(samp.A,samp.B,var.equal = T)
-
-###### and determine if we rejected our null hypothesis (which we know is not true!)
-
-this.test$p.value &lt; 0.05</code></pre>
-<pre><code>## [1] FALSE</code></pre>
-<p>Okay, but if we really want to compute power we need to do this many times and see what percent of samples allow us to reject the null!</p>
-<pre class="r"><code>### full power analysis:
-
-###### First we will set the population parameters:
-
-true.mean.A &lt;- 13.5
-true.mean.B &lt;- 13.9
-
-true.sd &lt;- 3.4
-
-# Assume a two-tailed test- alternative hypothesis is that the mean of A is different from the mean of B
-
-###### Now let&#39;s set the sampling scenario
-
-sampsize.A &lt;- 10
-sampsize.B &lt;- 12
-
-###### now we will simulate LOTS of  &#39;experiments&#39;
-
-pvals &lt;- numeric(1000)
-
-for(i in 1:1000){
-  samp.A &lt;- rnorm(sampsize.A,true.mean.A,true.sd)
-  samp.B &lt;- rnorm(sampsize.B,true.mean.B,true.sd)
-  
-  ###### and now we can run a test!
-  
-  this.test &lt;- t.test(samp.A,samp.B,var.equal = T)
-  
-  ###### and determine if we rejected our null hypothesis (which we know is not true!)
-  
-  pvals[i] &lt;- this.test$p.value
-}
-
- # hist(pvals)
-
-length(which(pvals&lt;0.05))/1000</code></pre>
-<pre><code>## [1] 0.056</code></pre>
-<p>Of course, if your power is not adequate, you may want to increase sample size. But what is the minimum sample size that gives you sufficient power? We can use simulation to answer this question!</p>
-<pre class="r"><code>### full power analysis WITH SAMPLE SIZE DETERMINATION:
-
-###### First we will set the population parameters:
-
-true.mean.A &lt;- 13.5
-true.mean.B &lt;- 13.9
-
-true.sd &lt;- 3.4
-
-# Assume a two-tailed test- alternative hypothesis is that the mean of A is different from the mean of B
-
-
-###### now we will simulate LOTS of  &#39;experiments&#39; under different sample sizes
-
-sampsize &lt;- seq(5,400,10)
-
-power &lt;- numeric(length(sampsize))
-
-for(j in 1:length(sampsize)){
-  
-  pvals &lt;- numeric(1000)
-  for(i in 1:1000){
-    samp.A &lt;- rnorm(sampsize[j],true.mean.A,true.sd)
-    samp.B &lt;- rnorm(sampsize[j],true.mean.B,true.sd)
-    
-    ###### and now we can run a test!
-    
-    this.test &lt;- t.test(samp.A,samp.B,var.equal = T)
-    
-    ###### and determine if we rejected our null hypothesis (which we know is not true!)
-    
-    pvals[i] &lt;- this.test$p.value
-  }
-
- # hist(pvals)
-
-  power[j] &lt;- length(which(pvals&lt;0.05))/1000
-}
-
-names(power) &lt;- sampsize
-
-plot(power~sampsize)</code></pre>
+mean &lt;- 5
+rpois(10,mean)    # note: the random numbers sampled from this distribution have no decimal component</code></pre>
+<pre><code>##  [1]  6 11  3  5  2  7  8  4  6 14</code></pre>
+<pre class="r"><code>             # plot discrete probabilities of getting particular outcomes!
+xvals &lt;- seq(0,15,1)
+probs &lt;- dpois(xvals,lambda=mean)
+names(probs) &lt;- xvals
+               
+barplot(probs,ylab=&quot;Probability Mass&quot;,main=&quot;Poisson distribution (discrete)&quot;)</code></pre>
 <p><img src="LECTURE2_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<p>So what sample size would you need (in each of the two groups) to detect a signal in this case?</p>
+<pre class="r"><code>barplot(cumsum(probs),ylab=&quot;Cumulative Probability&quot;,main=&quot;Poisson distribution (discrete)&quot;)   # cumulative distribution</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
+<pre class="r"><code>sum(probs)   # just to make sure it sums to 1!  Does it???</code></pre>
+<pre><code>## [1] 0.999931</code></pre>
+<p>In <em>continuous distributions</em>, each possible value/quantity
+that could be randomly sampled is associated with a <em>probability
+density</em>, <span class="math inline">\(f(x)\)</span>, not probability
+mass <span class="math inline">\(Prob(x)\)</span>. This is because the
+probability of getting any particular value in a continuous distribution
+is effectively zero. This arises from the problem of precision. The sum
+of the probability distribution must be 1 (there is only 100% of
+probability to go around). In a continuous distribution, there are an
+infinite number of possible values of x. So any individual probability
+is always divided by infinity, which makes it zero. Therefore we have to
+talk about probability density, unless we want to specify a particular
+range of values – we can’t calculate <span class="math inline">\(Prob(x
+= 5)\)</span>, but we can calculate <span class="math inline">\(Prob(4
+&lt; x &lt; 6)\)</span> or <span class="math inline">\(Prob(x &gt;
+5)\)</span>. The probability density is defined as the probability of
+getting a value within an infinitesimally small range of a particular
+value, divided by that infinitesimally small interval. No worries if you
+don’t understand that - you can just think of probability density as the
+relative likelihood of sampling one value versus another. Let’s consider
+the beta distribution:</p>
+<pre class="r"><code># continuous distributions
+
+shape1 = 0.5
+shape2 = 0.5
+
+rbeta(10,shape1,shape2)   # generate 10 random numbers from a continuous distribution</code></pre>
+<pre><code>##  [1] 0.9994135545 0.1227895102 0.9982528837 0.1963592479 0.1678191284
+##  [6] 0.5322601653 0.0002699926 0.7129923751 0.1518480336 0.8368569283</code></pre>
+<pre class="r"><code>curve(dbeta(x,shape1,shape2),ylab=&quot;probability density&quot;,xlab=&quot;possibilities&quot;)   # probability density function (PDF)</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>curve(pbeta(x,shape1,shape2),ylab=&quot;cumulative probability&quot;,xlab=&quot;possibilities&quot;)   # cumulative distribution</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+<pre class="r"><code>integrate(f=dbeta,lower=0,upper=1,shape1=shape1,shape2=shape2)    # just to make sure it integrates to 1!!</code></pre>
+<pre><code>## 1 with absolute error &lt; 3e-06</code></pre>
+</div>
+<div id="parameters-and-parametric-statistics" class="section level3">
+<h3>Parameters and parametric statistics</h3>
+<p><strong>Parameters</strong> are the arguments used to describe
+probability distributions - they describe the exact shape and location
+of the distribution. Different distribution families are associated with
+different parameters. For example, the normal distribution is described
+by 2 parameters: mean and stdev. The Poisson distribution has only one
+parameter (the mean). The binomial distribution is described by 2
+parameters: size (number of trials) and prob (success probability for
+each trial).</p>
+<p><em>Parametric statistics</em> require assuming certain things about
+distributions &amp; parameters, while <em>nonparametric statistics</em>
+do not require these assumptions. NOTE: nonparametric statistics still
+usually make the assumption that observations are independent!</p>
+<p><strong>Q</strong> Given the CLT makes many classical tests robust to
+non-normal data distributions, why do we need non-parametric
+statistics?</p>
+</div>
+<div id="probability-distributions-in-r" class="section level3">
+<h3>Probability distributions in R</h3>
+<div id="random-number-generators" class="section level4">
+<h4>Random number generators</h4>
+<p><strong>Random number generators</strong> are functions for
+generating random values from a specified probability distribution
+(e.g., ‘rnorm’, ‘rpois’, ‘rt’)</p>
+<pre class="r"><code># random number generators
+
+rnorm(10)    # generate 10 random numbers from a standard normal distribution</code></pre>
+<pre><code>##  [1]  1.38606637  1.48803220  1.06464652  0.03827372  1.04792179  1.62113488
+##  [7] -1.18348124 -1.25397255 -1.00410726 -0.05334176</code></pre>
+<pre class="r"><code>rnorm(5,25,5)  # generate 5 random numbers from a normal distribution with mean=25 and sd=5</code></pre>
+<pre><code>## [1] 32.61277 28.48059 16.98099 27.47501 27.01813</code></pre>
+<pre class="r"><code>rpois(8,18)  # generate 8 random numbers from a poisson distribution with mean=18</code></pre>
+<pre><code>## [1] 19 23 19 30 23 24 23 15</code></pre>
+</div>
+<div id="probability-density-functions" class="section level4">
+<h4>Probability density functions</h4>
+<p>Continuous distributions are associated with <strong>PDFs</strong>,
+or probability density functions (e.g., ‘dnorm’,‘dt’,‘dgamma’). These
+functions give you the probability density (relative probability) of any
+particular value/quantity that could be randomly sampled under this
+distribution.</p>
+<pre class="r"><code>## probability density function example 
+
+curve(dt(x,8),-4,4,xlab=&quot;possibilities&quot;,ylab=&#39;relative probability (prob density)&#39;)</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
+<div id="probability-mass-functions" class="section level4">
+<h4>Probability mass functions</h4>
+<p>For discrete distributions, <strong>PMFs</strong> - Probability mass
+functions (e.g., ‘dpois’,‘dbinom’) – give you the exact probability of
+obtaining any particular value that could be sampled under this
+distribution.</p>
+<pre class="r"><code>## probability mass function example 
+
+x &lt;- barplot(sapply(0:10,function(t) dpois(t,2)),xlab=&quot;possibilities&quot;,ylab=&#39;probability&#39;)
+axis(1,at=x,labels=0:10)</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+<div id="cumulative-distribution-function" class="section level4">
+<h4>Cumulative distribution function</h4>
+<p>For continuous AND discrete probability distributions,
+<strong>CDFs</strong> - Cumulative distribution functions (e.g.,
+‘pnorm’,‘pt’,‘pchisq’,‘pbinom’,‘ppois’) give you the probability of
+obtaining a value less than or equal to any particular value that could
+be sampled under the distribution.</p>
+<pre class="r"><code>## cumulative distribution function  
+
+    # for continuous distribution
+curve(pt(x,df=8),-4,4,xlab=&quot;possibilities&quot;,ylab=&#39;cumulative probability&#39;)</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<pre class="r"><code>    # for discrete distribution
+x &lt;- barplot(sapply(0:10,function(t) ppois(t,2)),xlab=&quot;possibilities&quot;,ylab=&#39;cumulative probability&#39;)
+axis(1,at=x,labels=0:10)</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+</div>
+<div id="quantile-functions" class="section level4">
+<h4>Quantile functions</h4>
+<p><strong>Quantile functions</strong> - inverse of CDF- give you the
+values below which a specific percent of random samples should fall
+(e.g., ‘qnorm’,‘qt’,‘qpois’,‘qchisq’). The quantile function is the
+inverse of the cumulative distribution function.</p>
+<pre class="r"><code>## quantile function  
+
+    # for continuous distribution
+curve(qt(x,df=8),0,1,xlab=&quot;cumulative probability&quot;,ylab=&#39;quantile&#39;)</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<pre class="r"><code>    # for discrete distribution
+curve(qpois(x,4),0,1,xlab=&quot;cumulative probability&quot;,ylab=&#39;quantile&#39;)</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
+</div>
+</div>
+<div id="moments" class="section level3">
+<h3>Moments</h3>
+<p><strong>Moments</strong> are important descriptors of a distribution.
+The collection of all the moments (of all orders, from 0 to infinity)
+uniquely determines the shape of the distribution.</p>
+<ul>
+<li>The zeroth central moment (<span class="math inline">\(\int \left (
+x-\mu \right )^{0}Prob(x)\partial x\)</span>) is the total probability
+(i.e. one),<br />
+</li>
+<li>The first central moment (<span class="math inline">\(\int \left (
+x-\mu \right )^{1}Prob(x)\partial x\)</span>) is <span
+class="math inline">\(\mu - \mu = 0\)</span>.<br />
+</li>
+<li>The second central moment (<span class="math inline">\(\int \left (
+x-\mu \right )^{2}Prob(x)\partial x\)</span>) is the variance.<br />
+</li>
+<li>The third central moment (<span class="math inline">\(\int \left (
+\left (x-\mu \right )/\sigma \right )^{3}Prob(x)\partial x\)</span>) is
+the skewness.<br />
+</li>
+<li>The fourth central moment is the kurtosis.</li>
+</ul>
+</div>
+<div id="some-common-probability-distributions" class="section level3">
+<h3>Some common probability distributions</h3>
+<p>Here are some common probability distributions. Pay particular
+attention to the type of <em>process</em> described by each
+distribution. The key to using these distributions to represent random
+variables is to figure out which statistical process best matches the
+ecological process you’re studying, then use that distribution. e.g., am
+I counting independent, random events occurring in a fixed window of
+time or space (like sampling barnacles in quadrats on an intertidal
+bench)? Then the distribution of their occurrence is likely to follow a
+Poisson or Negative Binomial distribution.</p>
+<div id="binomial" class="section level4">
+<h4>Binomial</h4>
+<pre class="r"><code># Binomial
+
+size &lt;- 10
+prob &lt;- 0.3
+rbinom(10,size,prob)</code></pre>
+<pre><code>##  [1] 2 3 4 3 3 3 2 4 2 3</code></pre>
+<pre class="r"><code>xvals &lt;- seq(0,size,1)
+probs &lt;- dbinom(xvals,size,prob)
+names(probs) &lt;- xvals
+               
+barplot(probs,ylab=&quot;Probability&quot;,main=&quot;Binomial distribution&quot;)</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<pre class="r"><code>barplot(cumsum(probs),ylab=&quot;Cumulative Probability&quot;,main=&quot;Binomial distribution&quot;)   # cumulative distribution</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
+<pre class="r"><code>sum(probs)   # just to make sure it sums to 1!  Does it???</code></pre>
+<pre><code>## [1] 1</code></pre>
+</div>
+<div id="normal" class="section level4">
+<h4>Normal</h4>
+<pre class="r"><code># Gaussian (normal)
+
+mean = 7.1
+stdev = 1.9
+
+rnorm(10,mean,stdev)</code></pre>
+<pre><code>##  [1]  6.830874  3.339121  7.945878  4.998624  7.040611  1.969721  8.125616
+##  [8]  4.569595  3.958652 10.008928</code></pre>
+<pre class="r"><code>curve(dnorm(x,mean,stdev),0,15)   # probability density</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<pre class="r"><code>curve(pnorm(x,mean,stdev),0,15)   # cumulative distribution</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-20-2.png" width="672" /></p>
+<pre class="r"><code>integrate(f=dnorm,lower=-Inf,upper=Inf,mean=mean,sd=stdev)    # just to make sure it integrates to 1!!</code></pre>
+<pre><code>## 1 with absolute error &lt; 1.1e-05</code></pre>
+</div>
+<div id="t-distribution" class="section level4">
+<h4>t distribution</h4>
+<pre class="r"><code># t distribution
+
+df = 6
+
+rt(10,df)     # random numbers from the t distribution</code></pre>
+<pre><code>##  [1]  1.8950749  0.2146613  0.2134575  1.0122429  0.7770777  0.3850882
+##  [7] -0.3507519 -0.2418912 -0.1792895 -0.9069788</code></pre>
+<pre class="r"><code>curve(dt(x,df),-4,4)   # probability density</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<pre class="r"><code>curve(pt(x,df),-4,4)   # cumulative distribution</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
+<pre class="r"><code>integrate(f=dt,lower=-Inf,upper=Inf,df=df)    # just to make sure it integrates to 1!!</code></pre>
+<pre><code>## 1 with absolute error &lt; 1.9e-05</code></pre>
+</div>
+<div id="chi-squared-distribution" class="section level4">
+<h4>Chi-squared distribution</h4>
+<pre class="r"><code># Chi-squared distribution
+
+df = 6
+
+rchisq(10,df)     # random numbers from the chi squared distribution</code></pre>
+<pre><code>##  [1]  1.042111 10.944370  2.683156  2.802392  5.554620  1.030739  4.249502
+##  [8]  9.024725  1.266405  3.147394</code></pre>
+<pre class="r"><code>curve(dchisq(x,df),0,15)   # probability density</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<pre class="r"><code>curve(pchisq(x,df),0,15)   # cumulative distribution</code></pre>
+<p><img src="LECTURE2_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
+<pre class="r"><code>integrate(f=dchisq,lower=0,upper=Inf,df=df)    # just to make sure it integrates to 1!!</code></pre>
+<pre><code>## 1 with absolute error &lt; 2.3e-05</code></pre>
+</div>
+<div id="exercise-optional" class="section level4">
+<h4>Exercise (optional):</h4>
+<p>Visualize (in R) the following distributions as above: Gamma,
+Exponential, Lognormal, Negative Binomial.</p>
 <p><a href="LECTURE3.html">–go to next lecture–</a></p>
+</div>
+</div>
 </div>
 
 
@@ -1029,7 +1045,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -1038,6 +1054,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

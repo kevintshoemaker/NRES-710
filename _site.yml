@@ -27,6 +27,10 @@ navbar:
       href: LECTURE7.html
     - text: Next steps
       href: LECTURE7.html
+  - text: Exercises
+    menu:
+    - text: Exercise- data summaries
+      href: EXERCISE1.htmc
   - text: More Resources
     menu:
     - text: Links 

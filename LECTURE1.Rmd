@@ -11,8 +11,12 @@ output:
 
 ```{r setup, include=FALSE}
 
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
-
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
 ```
 
 ```{r echo=FALSE}
@@ -23,9 +27,6 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```
 
-## Download the R code for this lecture!
-
-To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](LECTURE1.R)
 
 ## Overview of basic concepts of probability and statistics
 
@@ -35,11 +36,15 @@ For example, say I asked you: can people with last names beginning A-M jump high
 
 As a scientist, what would we do? 
 
-We would want to identify, and then sample, the population of interest!
+We would want to identify, and then sample, the population of interest! The process of making inferences about the world based on sample data is called **statistics**!
 
-The bold line in the figure below indicates two quadrants: on the left, the unseen population of interest, and to the right, the observed sample from which we can make inference:     
+### Statistics
+
+The figure below illustrates the basic concepts of statistics. The bold line separates the unseen population of interest (left) from the observed sample (right):     
 
 ![](statistics1.png)
+
+Statistics is about using the things we can observe (the sample) to say something meaningful about the things we can't observe (the population).
 
 **Q**: what is the population in the above example?     
 **Q** what is the parameter in the above example?
@@ -52,23 +57,25 @@ The bold line in the figure below indicates two quadrants: on the left, the unse
 *Sample*: ???     
 *Statistic*: ???    
 
-*Statistics* is about making *inference* about a population-level property (the *parameter*) from a sample.
-
 For statistical inference to make sense, we must make several assumptions about the sample (i.e., that the sample is representative of the population).
 
-Classical statistics involves computing a *statistic* from the data, and then using a (usually theoretical) 'sampling distribution' to determine whether or not that summary statistic is meaningfully different from a (usually null) hypothesis -- which gives you some insight into the unseen *parameter*.
+Classical statistics often involves comparing a *statistic* computed from the data (the "signal") with a (usually theoretical) 'sampling distribution' to quantify the "noise" or sampling error and ultimately determine whether or not we can say anything meaningful about the unseen *parameter*.
 
-Where does probability come in? Well, samples are random- all *statistics* are derived from a random sampling process. 
+Where does probability come in? Well, samples are random- all *statistics* are derived from random sampling processes. 
 
-If all samples are random, how can we be convinced that our result is *meaningful* and not simply an artifact of random sampling?
+How can we tease apart signal from noise- i.e., determine that our result is *meaningful* and not simply an artifact of random sampling?
 
-Probability helps us to make sense of this uncertainty!
+*Probability* helps us to quantify uncertainty and make sense of processes that come out different every time -like random sampling! 
 
-### Aside: probability
+Specifically, we use a special type of probability distribution known as a "sampling distribution" to quantify how much noise to expect from our random sampling process alone. 
 
-**Q**: what is the probability of getting four heads out of 4 coin flips?
+In this class, we define the probability of any specific outcome as the expected frequency of that outcome.
 
-We assume that heads or tails are equally likely outcomes of a single coin flip and that the four flips are completely independent.
+### Sampling distributions
+
+**Q**: what is the probability of getting four heads out of 4 coin flips from a fair coin?
+
+We assume that heads or tails are equally likely outcomes of a single coin flip (fair coin) and that the four flips are completely independent.
 
 How many possible outcomes are there?
 
@@ -89,41 +96,49 @@ HHTH
 HHHT     
 HHHH     
 
-Assuming a 'fair' coin, are each of these outcomes/sequences equally likely?
+Assuming a 'fair' coin each of these outcomes/sequences is equally likely!
 
-What is the probability of all four coin flips coming out heads?
+What is the probability (expected frequency) of all four coin flips coming out heads? 
 
 If you get four heads in a row, are you *surprised* enough by that outcome to reject the assumption that the coin is 'fair'? What about if you got 100 heads in a row?
 
 **Q** What is the probability of getting at least three of the same face (heads or tails) out of 4 coin flips? Would this cause you to reject the fairness of the coin?
 
-## Null hypotheses
+The distribution of possible outcomes from your sampling process (assuming a fair coin) is an example of a *sampling distribution*.
 
-The null hypothesis is simply the notion that the effect you are testing for is absent in the population of interest. 
+The notion that the coin is a fair coin is an example of a *null hypothesis*... 
+
+## Null hypotheses and statistical tests
+
+The null hypothesis is the notion that the signal you are looking for is entirely absent in the population of interest. 
+
+Under the null hypothesis, any hypothetical random samples you collect might have some apparent signal, but that apparent signal is just an artifact of random sampling, and not representative of the population (after all, the signal is completely absent in the population). 
 
 **Q** what is the null hypothesis for the jump-height example?
 
-## P values
+### P values
 
 The *p value* is a key concept of frequentist statistics, but one that is often misinterpreted and misunderstood.
 
 The p value only has meaning in the context of the null hypothesis- that is, in a world where the null hypothesis is true. I will sometimes refer to this as the "null universe". 
 
-The p value answers the question: "what's the probability that my result (or one even more "extreme", or unlikely) could have occurred by chance *given the null hypothesis is true*?"
+The p value answers the question: "what's the probability that my observed result (or one even more "extreme" --i.e., with even more "signal") could have occurred by chance *given the null hypothesis is true*?"
 
 The lower the p-value, the more surprised you will be that your observed data could simply be a result of random chance alone AND the more likely you might be to *reject* the null hypothesis! 
 
-### Aside: extremeness
+#### Aside: extremeness
 
 The p value definition is accompanied by the word "extreme": *the probability of observing a result at least as extreme as your observed result, given the null hypothesis is true*. 
 
-A result 'at least as extreme as your observed result' means a result that would lend as much or more support for rejecting the null hypothesis than your observed result. For example:
+A result 'at least as extreme as your observed result' means a result that has at least as much "signal" as your observed data. 
+
+For example:
 
 *Sample size*: 20, 10 with names between A and M and 10 with names between N and Z.              
 *Observed result*: mean jump-height for A-M is 0.2 cm greater than mean height for N-Z                  
 **Q** Would you be comfortable rejecting the null hypothesis if random sampling under the null hypothesis yielded a result as or more extreme approximately 20% of the time (p = 0.2)? 
 
-## Statistical tests: rejecting the null!
+### Statistical tests: rejecting the null!
 
 A p value is not in itself a statistical test. A p-value is a probability, which can take values between 0 and 1. It doesn't in itself tell you whether or not you should reject the null hypothesis!
 
@@ -199,49 +214,8 @@ Confidence intervals, like p-values, are commonly misinterpreted!
 
 In classical, frequentist statistics, the population parameter of interest is fixed- there is no uncertainty associated with the population parameter itself -- it's just that we can only collect and assess a small sample from the much larger population. So it does not make sense to say something like "the true parameter has a 90% chance of falling within the confidence interval". The true parameter is either in the interval or it is not in the interval. All we can say is something more like "90% of confidence intervals generated from different random samples would contain the true parameter". 
 
-[Whiteboard example: confidence intervals]
-
 ![](confint1.png)
 We unfortunately have no idea if our particular confidence interval is one that includes the true parameter, or one that does not!!
-
-
-TODO: read in weight loss example data!
-[R demo: confidence interval for the weight loss example]
-
-```{r}
-
-### confidence intervals ------------
-
-
-# read in weightloss example...
-
-# summary(weightloss.data)
-# 
-# mean.weightloss    # mean weight loss
-# std.error          # standard error of weight loss
-
-curve(dt(x,sample.size),-4,4,xaxt="n",xlab="weight loss",ylab="probability density")
-axis(1,at=seq(-4,4,2),labels = round(mean.weightloss+std.error*seq(-4,4,2),1) )
-abline(v=0,col="blue",lwd=3)
-
-t.crit <- qt(0.975,sample.size-1)    # for 95% confidence interval
-
-abline(v=-1*t.crit,col="red",lty=2)
-abline(v=1*t.crit,col="red",lty=2)
-
-lower.bound <- mean.weightloss - t.crit*std.error
-upper.bound <- mean.weightloss + t.crit*std.error
-
-lower.bound
-
-upper.bound
-
-```
-
-[quick discussion: define the confidence interval in the context of the weight loss example]
-
-
-
 
 
 [--go to next lecture--](LECTURE2.html) 

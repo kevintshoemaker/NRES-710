@@ -15,306 +15,385 @@
 
 
 
-eggs.per.nest <- 100
-n.nests <- 15
-light <- rnorm(n.nests,50,10)   # make up some light pollution values (predictor var)
+## Paired t-test example -----------------
 
-probsucc <- function(light){    # egg success as a function of light pollution
-  plogis(1.5-0.01*light)
+weightloss.data <- c(-10.4,-11.6,3.9,1.5,-0.3,-3.5 -10.0,-6.7,-6.1,-2.4,-6.0,2.3,0.1,-4.1,-3.2, -11.3,-3.2,-9.3,-7.5,-5.7,-0.1,0.0,-9.8,1.0,-11.9)
+hist(weightloss.data,breaks=7)
+mean.weightloss <- mean(weightloss.data)
+null.weightloss <- 0
+stdev.weightloss <- sd(weightloss.data)
+sample.size <- length(weightloss.data)
+std.error <- stdev.weightloss/sqrt(sample.size)
+
+t.statistic <- (mean.weightloss-null.weightloss)/std.error
+t.statistic
+
+curve(dt(x,sample.size-1),-5.5,2)
+abline(v=t.statistic,col="green",lwd=3)
+
+t.crit <- qt(0.05,sample.size-1)    # 'critical value' of the t statistic- you can reject the null if your value is more extreme than this!
+
+p=pt(t.statistic,sample.size-1)    # p value
+p    # this is the p value
+
+
+# Alternative: use R's built in t test
+
+t.test(weightloss.data,alternative = "less")   # should get the same p=value!
+
+
+# Z distribution --------------------
+
+## Z test  
+
+df <- read.csv("GSW_height.csv")
+GSWheight <- df$Height
+GSWheight
+mean.gsw <- mean(GSWheight)
+sd.gsw <- sd(GSWheight) 
+sd.pop <- 4
+mean.pop <- 79
+n <- length(GSWheight)
+s.e. <- sd.pop/sqrt(n)
+
+null.height <- mean.pop   # null: GSW are sampled randomly from the pool of all NBA players. They are not fundamentally different!
+
+z.statistic <- (mean.gsw-null.height)/s.e.
+z.statistic
+
+curve(dnorm(x),-3,3)    # we assume that the z statistic is normally distributed- standard normal!
+abline(v=z.statistic,col="green",lwd=3)
+
+p <- 1-pnorm(z.statistic)    # is the p value enough evidence to tell you that GSW players are taller than the NBA average??
+p       
+
+pnorm(z.statistic)
+
+
+### one sample t-test (paired t-test is a type of one sample t-test)
+
+sample.data <- rgamma(10,2,.1)
+null.mean <- 10
+
+sample.size <- length(sample.data)
+sample.mean <- mean(sample.data)
+sample.sd <- sd(sample.data)
+std.err <- sample.sd/sqrt(sample.size)
+t.stat <- (sample.mean-null.mean)/std.err
+
+t.crit <- abs(qt(0.025,sample.size-1))   # for 2-tailed test
+
+p.val <- (1-pt(abs(t.stat),sample.size-1))*2   # 
+
+
+### alternatively use the t.test function:
+
+t.test(sample.data,mu=null.mean)   # should get the same answer!
+
+
+
+### two sample t-test 
+
+sample.data.1 <- rnorm(15,55,10)
+sample.data.2 <- rnorm(10,45,10)
+
+sample.size.1 <- length(sample.data.1)
+sample.size.2 <- length(sample.data.2)
+sample.size.pooled <- length(sample.data.1) + length(sample.data.2)
+
+sample.mean1 <- mean(sample.data.1)
+sample.mean2 <- mean(sample.data.2)
+
+sample.sd1 <- sd(sample.data.1)
+sample.sd2 <- sd(sample.data.2)
+sample.sd.pooled <- sqrt(((sample.size.1-1)*sample.sd1^2 + (sample.size.2-1)*sample.sd2^2)/(sample.size.pooled-2))
+
+std.err.pooled <- sample.sd.pooled*sqrt(1/sample.size.1+1/sample.size.2)
+t.stat <- (sample.mean1-sample.mean2)/std.err.pooled
+
+t.crit <- abs(qt(0.025,sample.size-1))   # for 2-tailed test
+
+p.val <- (1-pt(abs(t.stat),sample.size.pooled-2))*2   # 2-tailed test
+
+
+
+### alternatively use the t.test function:
+
+t.test(sample.data.1,sample.data.2,var.equal = T)   # should get the same answer!
+
+
+
+# one vs two tailed demo
+
+#my.data <- rnorm(15, 0.5, 1)   # generate sample data
+my.data <- c(0.20119786,1.41700898,-0.72426698,0.44006284,0.01487128,-0.19031680,1.75470699,-0.81992816,2.31978530,  2.71442595,-0.31461411,0.52086138,-0.50580117,1.52260888,0.76454698)
+samp.mean <- mean(my.data)
+samp.sd <- sd(my.data)
+samp.n <- length(my.data)
+std.err <- samp.sd/sqrt(samp.n)
+
+null.mean <- 0
+
+t.statistic <- (samp.mean-null.mean)/std.err
+
+### Two-tailed
+curve(dt(x,samp.n-1),-3,3, main="Meaning of more extreme (two tailed version)",
+      ylab="probability density",xlab="t statistic")    # visualize the sampling distribution of the t-statistic
+abline(v=t.statistic,lwd=2,col="blue")
+
+xs <- seq(abs(t.statistic),10,0.05)                
+ys <- dt(xs,samp.n-1)
+polygon(x=c(xs,rev(xs)),y=c(ys,rep(0,times=length(ys))),col="green",border=NA)
+polygon(x=c(-xs,rev(-xs)),y=c(ys,rep(0,times=length(ys))),col="green",border=NA)
+
+p.twosided <- pt(-abs(t.statistic),samp.n-1)*2     # two-tailed p-value
+
+text(-2,0.3,paste("p =",round(p.twosided,4)))
+
+### One-sided (alternative = 'greater')
+curve(dt(x,samp.n-1),-3,3, main="Meaning of more extreme (one tailed version: greater than)",
+      ylab="probability density",xlab="t statistic")    # visualize the sampling distribution of the t-statistic
+abline(v=t.statistic,lwd=2,col="blue")
+
+xs <- seq(t.statistic,10,0.05)                
+ys <- dt(xs,samp.n-1)
+polygon(x=c(xs,rev(xs)),y=c(ys,rep(0,times=length(ys))),col="green",border=NA)
+
+p.onesided <- pt(-abs(t.statistic),samp.n-1)     # one-tailed p-value
+
+text(-2,0.3,paste("p =",round(p.onesided,4)))
+
+
+
+### t-crit in one tailed vs two tailed test
+
+sample.size=7
+
+curve(dt(x,sample.size-1),-8,4, main="2-tailed vs 1-tailed critical value",
+      xlab="t-statistic",ylab="probability density")
+
+alpha <- 0.1
+t.crit.twosided <- qt(alpha/2,sample.size-1) 
+
+abline(v=c(t.crit.twosided,abs(t.crit.twosided)),col="red",lwd=2)
+
+
+t.crit.twosided <- qt(alpha/2,sample.size-1) 
+
+abline(v=c(t.crit.twosided,abs(t.crit.twosided)),col="red",lwd=2)
+
+t.crit.onesided <- qt(alpha,sample.size-1) 
+
+abline(v=abs(t.crit.onesided),col="green",lwd=2)
+abline(v=t.crit.onesided,col="blue",lwd=2)
+
+legend("topleft",lwd=c(2,2,2),col=c("red","green","blue"),bty="n",legend=c("two-tailed crit value","one-tailed crit value (greater than)","one-tailed crit value (less than)"))
+
+
+######
+# More t-test examples
+
+
+#### 
+# T-tests
+####
+
+#Ttest
+# Are my data greater than zero? 
+Group0 <- c(0.5, -0.03, 4, 2.5, 0.89, 2.2, 1.7, 1.125)
+hist(Group0)
+t.test(Group0,alternative="greater") # This gets at directionality
+
+
+#Are my data different than zero? 
+Group0 <- c(0.5, -0.03, 4, 2.5, 0.89, 2.2, 1.7, 1.125)
+hist(Group0)
+t.test(Group0) # Okay, that's to zero. What about if it's different than 1? 
+
+# are my data different than 1? 
+t.test(Group0, mu=1)
+
+# Now let's test two groups. 
+# are the means equal? 
+group1 <- c(7,9,6,6,6,11,6,3,8,7)
+group2 <- c(11,13,8,6,14,11,13,13,10,11)
+t.test(group1, group2, var.equal=T) # Notice how we set equal variance? Look at the output - "Two Sample t-test."
+# is this one-tail or two? 
+
+group1 <- c(7,9,6,6,6,11,6,3,8,7)
+group2 <- c(11,13,8,6,14,11,13,13,10,11)
+t.test(group1, group2) #  "Welch's Two Sample t-test"
+# WELCH'S TEST IS THE DEFAULT IN R
+
+
+
+## testing for normality
+
+my.data.nonnorm <- rgamma(20,0.1,0.1)    # simulate some non-normal data
+hist(my.data.nonnorm,main="non-normal")     # visualize the data distribution
+
+my.data.norm <- rnorm(20,6,0.9)    # simulate some normal data
+hist(my.data.norm,main="normal")     # visualize the data distribution
+
+# visualize q-q plot
+
+qqnorm(my.data.nonnorm,main="non-normal")   # visual test for normality
+
+qqnorm(my.data.norm,main="normal")
+
+
+# run shapiro-wilk test
+
+shapiro.test(my.data.nonnorm)
+
+shapiro.test(my.data.norm)
+
+
+# Wilcoxon signed rank test
+
+my.data <- rgamma(20,0.1,0.1)-2
+
+hist(my.data)
+
+wilcox.test(my.data)
+
+t.test(my.data)   # t-test for comparison
+  
+  
+
+# Wilcoxon signed rank test
+
+my.data1 <- rgamma(20,0.1,0.1)-2
+my.data2 <- rgamma(20,0.2,0.1)-2
+
+median(my.data1)
+median(my.data2)
+
+wilcox.test(my.data1,my.data2)
+
+t.test(my.data1,my.data2)   # t-test for comparison
+
+
+#### perform rank test from scratch!
+
+allobs <- c(my.data1,my.data2)
+inorder <- order(allobs)
+
+rank1 <- inorder[1:20]
+rank2 <- inorder[21:40]
+
+t.test(rank1,rank2,var.equal = T)    # perform t-test on the ranks (usually similar to Mann-Whitney test)
+  
+
+###### First we will set the population parameters:
+
+true.mean.A <- 13.5
+true.mean.B <- 13.9
+
+true.sd <- 3.4
+
+# Assume a two-tailed test- alternative hypothesis is that the mean of A is different from the mean of B
+
+###### Now let's set the sampling scenario
+
+sampsize.A <- 10
+sampsize.B <- 12
+
+###### now we will simulate a single 'experiment'
+
+samp.A <- rnorm(sampsize.A,true.mean.A,true.sd)
+samp.B <- rnorm(sampsize.B,true.mean.B,true.sd)
+
+###### and now we can run a test!
+
+this.test <- t.test(samp.A,samp.B,var.equal = T)
+
+###### and determine if we rejected our null hypothesis (which we know is not true!)
+
+this.test$p.value < 0.05
+
+
+
+
+### full power analysis:
+
+###### First we will set the population parameters:
+
+true.mean.A <- 13.5
+true.mean.B <- 13.9
+
+true.sd <- 3.4
+
+# Assume a two-tailed test- alternative hypothesis is that the mean of A is different from the mean of B
+
+###### Now let's set the sampling scenario
+
+sampsize.A <- 10
+sampsize.B <- 12
+
+###### now we will simulate LOTS of  'experiments'
+
+pvals <- numeric(1000)
+
+for(i in 1:1000){
+  samp.A <- rnorm(sampsize.A,true.mean.A,true.sd)
+  samp.B <- rnorm(sampsize.B,true.mean.B,true.sd)
+  
+  ###### and now we can run a test!
+  
+  this.test <- t.test(samp.A,samp.B,var.equal = T)
+  
+  ###### and determine if we rejected our null hypothesis (which we know is not true!)
+  
+  pvals[i] <- this.test$p.value
 }
 
-hatchlings.successful <- rbinom(n.nests,eggs.per.nest,probsucc(light))   # determine number of successful eggs (response var)
+ # hist(pvals)
 
-#curve(probsucc,0,100)
+length(which(pvals<0.05))/1000
 
-plot(hatchlings.successful~light)  # plot the data
 
+### full power analysis WITH SAMPLE SIZE DETERMINATION:
 
+###### First we will set the population parameters:
 
-slope <- sum((light-mean(light))*(hatchlings.successful-mean(hatchlings.successful)))/sum((light-mean(light))^2)
-intercept <- mean(hatchlings.successful) - slope*mean(light)
+true.mean.A <- 13.5
+true.mean.B <- 13.9
 
-exp.successful <- intercept+slope*light # expected number of eggs for each observation
-residuals <- hatchlings.successful-exp.successful
+true.sd <- 3.4
 
-stderr <- sqrt(((1/(n.nests-2))*sum(residuals^2))/(sum((light-mean(light))^2)))    # standard error
+# Assume a two-tailed test- alternative hypothesis is that the mean of A is different from the mean of B
 
-t.stat <- (slope-0)/stderr    # t statistic
 
-pval <- 2*pt(t.stat,n.nests-2)    # p value
+###### now we will simulate LOTS of  'experiments' under different sample sizes
 
+sampsize <- seq(5,400,10)
 
-############
-# use lm function instead (easy way!)
+power <- numeric(length(sampsize))
 
-model <- lm(hatchlings.successful~light)
+for(j in 1:length(sampsize)){
+  
+  pvals <- numeric(1000)
+  for(i in 1:1000){
+    samp.A <- rnorm(sampsize[j],true.mean.A,true.sd)
+    samp.B <- rnorm(sampsize[j],true.mean.B,true.sd)
+    
+    ###### and now we can run a test!
+    
+    this.test <- t.test(samp.A,samp.B,var.equal = T)
+    
+    ###### and determine if we rejected our null hypothesis (which we know is not true!)
+    
+    pvals[i] <- this.test$p.value
+  }
 
-summary(model)   # get the same t stat and p-value hopefully!
+ # hist(pvals)
 
+  power[j] <- length(which(pvals<0.05))/1000
+}
 
-############
-# plot regression line!
+names(power) <- sampsize
 
-plot(hatchlings.successful~light)  # plot the data
-abline(intercept,slope,col="blue")
-
-
-
-######
-# add confidence interval on the regression line
-
-newdata <- data.frame(    # make a data frame containing the light values we want to make predictions for (spanning the range of light values in our data)
-  light = seq(20,80,1)
-)
-
-my.predict <- predict(model, newdata = newdata, interval = "confidence")  # 95% conf int by default
-
-plot(hatchlings.successful~light)  # plot the data
-abline(intercept,slope,col="blue")
-lines(newdata$light,my.predict[,"upr"],col="red",lty=2)   # add upper bound
-lines(newdata$light,my.predict[,"lwr"],col="red",lty=2)   # add lower bound
-
-
-#  use the lm function to regress tree volume on tree girth using the 'trees' dataset
-
-mod <- lm(Volume~Girth,data=trees)
-summary(mod)
-
-
-my.intercept <- model$coefficients["(Intercept)"]
-my.slope <- model$coefficients["light"]
-expected.vals <- my.intercept+my.slope*light 
-my.residuals <- hatchlings.successful-expected.vals
-my.residuals
-
-### alternative way of getting residuals (best way!)
-
-my.residuals2 <- model$residuals
-
-### alternative way using predict function
-
-my.residuals3 <- hatchlings.successful-predict(model)
-
-### histogram of residuals
-
-hist(my.residuals)
-
-### test for normality
-
-qqnorm(my.residuals)
-
-shapiro.test(my.residuals)
-
-
-
-layout(matrix(1:4,nrow=2,byrow = T))
-plot(anscombe$y1~anscombe$x1,ylab="response",xlab="predictor")
-plot(anscombe$y2~anscombe$x2,ylab="response",xlab="predictor")
-plot(anscombe$y3~anscombe$x3,ylab="response",xlab="predictor")
-plot(anscombe$y4~anscombe$x4,ylab="response",xlab="predictor")
-
-
-my.residuals <- model$residuals
-
-plot(my.residuals~light)
-
-plot(my.residuals~predict(model))
-
-
-layout(matrix(1:4,2,byrow = T))
-plot(model)
-
-
-layout(matrix(1:4,nrow=2,byrow = T))
-plot(anscombe$y1~anscombe$x1,ylab="response",xlab="predictor")
-plot(anscombe$y2~anscombe$x2,ylab="response",xlab="predictor")
-plot(anscombe$y3~anscombe$x3,ylab="response",xlab="predictor")
-plot(anscombe$y4~anscombe$x4,ylab="response",xlab="predictor")
-
-
-## load the 'mtcars' data set
-
-data(mtcars)
-
-## define which variables to assess correlation for.
-
-myvars <- c("disp","hp","wt")
-
-## grab only the variables of interest
-
-mtcars.reduced <- mtcars[,myvars]
-
-## compute (pearson) correlations for all pairs of variables (correlation matrix)
-
-cor.mat <- cor(mtcars.reduced)
-
-cor.mat
-
-## visualize correlations with the 'pairs' function
-
-pairs(mtcars.reduced)
-
-## run a correlation test- with 95% confidence interval
-    # default is Pearson product-moment correlation.
-
-cor.test(mtcars$disp,mtcars$wt)
-
-## now try a non-parametric version
-
-cor.test(mtcars$disp,mtcars$wt, method = "kendall") # or spearman
-
-
-
-########
-# load the car package
-
-library(car)
-
-#######
-# load the trees dataset
-
-data(trees)
-
-######
-# visualize relationships among predictor vars
-
-pairs(trees[,c("Girth","Height")])
-
-
-######
-# check for correlation in predictor variables
-
-cor(trees[,c("Girth","Height")])   # predictor variables not highly correlated
-
-# run a multiple regression model
-
-my.mod <- lm(Volume~Girth+Height,data=trees)
-
-
-# check variance inflation factors
-
-car::vif(my.mod)
-
-
-########
-## mtcars multicollinearity example
-
-mymod <- lm(mpg~disp+hp+wt,data=mtcars) 
-
-vif(mymod)
-
-
-cor(mtcars.reduced)
-
-## let's remove the 'disp' variable and keep weight...
-
-mymod <- lm(mpg~hp+wt,data=mtcars) 
-
-vif(mymod)
-
-
-# ?nls
-
-data(DNase)
-
-plot(DNase$density~DNase$conc)   # looks non-linear!
-
-### run linear regression model
-
-model1 <- lm(density~conc,data=DNase)
-
-### run diagnostic plots
-
-par(mfrow=c(2,2))
-plot(model1)     # clear non-linearity (and non-normal residuals, and heteroskedasticity!)
-
-par(mfrow=c(1,1))      # plot data with regression line - obvious issues!
-plot(DNase$density~DNase$conc)
-abline(model1)
-
-### run non-linear regression model - use saturation curve
-
-model2 <- nls(density ~ (max*conc)/(K+conc),data=DNase,start=list(max=2,K=1))
-summary(model2)
-
-### run non-linear regression model - use logistic function 
-
-model3 <- nls(density ~ Asym/(1 + exp((xmid - log(conc))/scal)),
-                 data = DNase,
-                 start = list(Asym = 3, xmid = 0, scal = 1))
-
-summary(model3)
-
-plot(DNase$density~DNase$conc)
-abline(model1)
-concs.toplot <- seq(0.01,14,0.1)
-densities.toplot <- predict(model2,newdata=data.frame(conc=concs.toplot))
-lines(concs.toplot,densities.toplot,col="blue")
-densities.toplot <- predict(model3,newdata=data.frame(conc=concs.toplot))
-lines(concs.toplot,densities.toplot,col="red")
-
-legend("topleft",lty=c(1,1,1),col=c("black","blue","red"),legend=c("linear",
-                  "saturation","logistic"))
-
-
-
-## residual plots
-
-resids <- DNase$density-predict(model3)
-
-residuals(model3)   # alternative method! This works for 'lm' objects as well (and many other model objects)
-
-## check for normality
-
-qqnorm(resids)
-shapiro.test(resids)
-
-
-## check for heteroskedasticity
-plot(resids~predict(model3))
-
-##########
-# heteroskedasticity
-
-##### first, simulate data with heteroskedastic residuals
-
-simulated.x <- runif(100,0.1,5)
-simulated.y <- exp(rnorm(100,1.1+0.3*simulated.x,0.7))
-
-plot(simulated.y~simulated.x)
-
-### run linear model
-
-model1 <- lm(simulated.y~simulated.x)
-par(mfrow=c(2,2))
-plot(model1)  # run diagnostic plots    heteroskedasticity issues
-
-
-### Take a minute to test for normality of residuals!
-
-### run linear model with log transformation of response variable
-
-model2 <- lm(log(simulated.y)~simulated.x)
-par(mfrow=c(2,2))
-plot(model2)  # run diagnostic plots - no issues!  
-
-
-#### ANOVA as regression example
-
-data(iris)    # load the iris dataset
-
-plot(iris$Sepal.Length ~ iris$Species)   # r uses a boxplot by default for categorical predictor
-
-my.mod <- lm(Sepal.Length~Species,data=iris)    # run an ANOVA!
-summary(my.mod)    # look at the results
-
-anova(my.mod)     # produce an analysis of variance table
-
-####
-# alternative!
-
-my.mod <- aov(Sepal.Length~Species,data=iris)   # same model!!
-summary(my.mod)     # but produces an anova table by default
-
+plot(power~sampsize)
 
 
