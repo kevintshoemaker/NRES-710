@@ -19,7 +19,6 @@ I have no pre-scheduled office hours for this class- please email me to set up a
 
 ### Course Meeting Times
 **Lecture**: MW 2:30pm to 3:45pm in EMM 242 (Effie Mona Mack Social Sciences Building)    
-
 ### Course Website
 [http://kevintshoemaker.github.io/NRES-710/](http://kevintshoemaker.github.io/NRES-710/)
 
@@ -41,7 +40,7 @@ Students will be able to:
 Curious scientific mind, broad research interests, readiness to engage with data, equations and computer programming. Students are expected to have a basic understanding of standard statistical concepts and methods, obtained through other coursework. If this is not the case, they should be prepared to work harder to develop the necessary prerequisite knowledge.
 
 ### Course materials
-We will use the course website in addition to the WebCampus page set up for the course. Most course content (lecture materials) can be found on the website, which will be updated frequently. Additional readings are available via WebCampus. We will use the Discussion Board feature in WebCampus as a forum for written discussion, Q&A, and mutual support in engaging with course materials. 
+We will use the course website in addition to the WebCampus page set up for the course. Most course content (lecture materials) can be found on the website, which will be updated frequently. Additional readings are available via WebCampus. We will use the Discussion Board feature in WebCampus as a forum for discussion, Q&A, and mutual support in engaging with course materials outside of our regular class meetings. 
 
 Readings will be provided as appropriate. Unless otherwise noted, all readings assigned for a given week should be done before our Wednesday class meetings. All readings will be posted to WebCampus at least a week before they are due.
 
@@ -50,8 +49,9 @@ Students will use the open source statistical software R to perform analyses. *A
 There are many good R books, but ultimately, most material can be found for free online. For the beginner in statistics or R, I recommend the following:
 
 1.	Discovering Statistics using R (Andy Field and Jeremy Miles)
-2.	Introductory R: A beginner’s guide to data visualization, statistical analysis, and programming in R (Robert Knell)
-3.	R Graphics Cookbook (Winston Chang). This book is available for free as a PDF online. 
+2.  [R for data science](https://r4ds.had.co.nz/) (Garrett Grolemund and Hadley Wickham). This book is available for free online.
+3.	Introductory R: A beginner’s guide to data visualization, statistical analysis, and programming in R (Robert Knell)
+4.	[R Graphics Cookbook](https://r-graphics.org/) (Winston Chang). This book is available for free online. 
 4.	Qian, Song S. Environmental and Ecological Statistics with R, Second Edition, 2nd Edition. Chapman & Hall, 2017. 
 5.  A Primer of Ecological Statistics. (Nicholas Gotelli and Aaron Ellison). *A stats book, but not an R book.* 
 
@@ -59,7 +59,7 @@ There are many good R books, but ultimately, most material can be found for free
 
 Instruction will consist of lessons on general statistical concepts and specific methods commonly used to address questions in ecology and environmental science. Stats lessons will include lecture-style materials, readings, demonstrations, exercises and class discussions.   
 
-A large portion of the overall grade (25%) will be based upon periodic, relatively brief homework assignments that follow from the topics covered in class. Most assignments will involve statistical analysis and interpretation of sample data sets that are provided. There will be a final project (40% of your grade) that is designed to test your ability to understand and apply the tools that you have developed during the semester using R. The final project will involve conducting a rigorous data analysis using statistical approaches that we have learned during the semester (or other tools as approved by the instructor). You can choose whichever statistical methods are suitable to your project scope and questions, but they must be methods we covered in class and appropriate to your data. Please turn in your own work and assignment, but you may use as many resources as you wish (class material, online material, or the insight/experience of other students) to generate the material presented. More specific instructions will come during the semester.
+A large portion of the overall grade (30%) will be based upon periodic, relatively brief homework assignments that follow from the topics covered in class. Most assignments will involve statistical analysis and interpretation of sample data sets that are provided. There will be a final project (40% of your grade) that is designed to test your ability to understand and apply the tools that you have developed during the semester using R. The final project will involve conducting a rigorous data analysis using statistical approaches that we have learned during the semester (or other tools as approved by the instructor). You can choose whichever statistical methods are suitable to your project scope and questions, but they must be methods we covered in class and appropriate to your data. Please turn in your own work and assignment, but you may use as many resources as you wish (class material, online material, or the insight/experience of other students) to generate the material presented. More specific instructions will come during the semester.
 
 With roughly 5 weeks left in the semester, first drafts of your final projects will be due. These first drafts will then be subjected to anonymous peer review. At this time, the assignment itself will not be “graded,” but the assignment will be reviewed by at least two other students, and the peer reviews will be graded (20% of the overall grade). The reviews are designed to provide feedback on the statistical approach being used and whether the appropriate connections are made between research question, data, statistical model, and inferences developed from model outputs. Are the statistics relevant to the data, and appropriate for the experimental design? The reviews will be due within two weeks and will be provided to the author for their consideration and assistance in their final project. 
 

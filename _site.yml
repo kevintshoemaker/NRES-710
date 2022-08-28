@@ -29,8 +29,8 @@ navbar:
       href: LECTURE7.html
   - text: Exercises
     menu:
-    - text: Exercise- data summaries
-      href: EXERCISE1.htmc
+    - text: Exercise- data summary functions
+      href: EXERCISE1.html
   - text: More Resources
     menu:
     - text: Links 

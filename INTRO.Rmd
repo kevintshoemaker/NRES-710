@@ -56,25 +56,29 @@ Statistics is the process of making inference about a property of a *population*
 
 Commonly, statistical analysis is conducted to compare parameters from multiple populations(e.g., “are the population means different?”), or to compare parameters estimated from a sampled data set with those of an idealized model representing an underlying hypothesis of interest (or null hypothesis). 
 
-More broadly, a common dictionary definition of statistics includes “... the collection, organization, analysis, interpretation, and presentation of data” (Oxford Dictionary, Wikipedia, etc.). Given this broader definition, statistics includes key components of data collection (via study design), data analysis, data science, scientific inference, and science communication. It’s not just you. Many ecologists and environmental scientistsare fuzzy about the language, and even the concepts!
+More broadly, a common dictionary definition of statistics includes “... the collection, organization, analysis, interpretation, and presentation of data” (Oxford Dictionary, Wikipedia, etc.). Given this broader definition, statistics includes key components of data collection (via study design), data analysis, data science, scientific inference, and science communication. It’s not just you. Many ecologists and environmental scientists are fuzzy about the language, and even the concepts!
 
 
-## Why do we need (this particular)stats class?
+## Why do we need (this particular) stats class?
 Many professors recommend that grad students take the least coursework possible and focus on gathering knowledge as needed while conducting their research. But typically, with statistics coursework as a notable exception. It can be more efficient, fun, and rewarding to learn statistics as a group rather than on your own. I hope you agree by the end of this class!
 
-##Course Overview
+## Course Overview
 We will discuss the course organization and expectations. Please see [course syllabus](syllabus.pdf) and [schedule](schedule.pdf) documents, provided separately.
 
 ## Different Approaches to “the Scientific Method”
 Scientific inquiry is furthered through using both inductive and hypothetico-deductive approaches. Both require statistics in order to test hypotheses about how nature works. The inductive approach involves a continuous and cyclical generation of hypotheses from observations; developing predictions from hypotheses; matching new observations to predictions in order to test hypotheses; and revising hypotheses -until a hypothesis is ultimately confirmed. The emphasis is on hypothesis verification. The hypothetico-deductive approach, on the other hand, proposes multiple working hypotheses from the outset, with an emphasis on falsifying incorrect hypotheses. An “accepted truth” is one that stands up to repeated attempts at falsification. Here is an illustration of the inductive method, taken from Gotelli and Ellison (2004):
 
 ![](gotell1.jpg){width=50%}
+
 And here, an illustration of the hypothetico-deductive method, taken from the same source:
 
 ![](gotell2.jpg){width=50%}
-## Types of data
 
-Statistics is about making sense of data. Therefore understanding statistics requires starting with an understanding of data types. 
+## Data are fundamental to science!
+
+All of science is empirical- that is, it relies on data for evaluating the validity of conclusions.
+
+Statistics is fundamental to science because it allows us to better understand what our data can and can not tell us. 
 
 What types of data are there? 
 
@@ -90,8 +94,8 @@ Why do we need to know about data types? We have to analyze and visualize these 
 
 For example: 
 
-* Nominal data: frequencies, pie charts
-* Continuous data: calculate percentiles, mean and variance. 
+* Nominal data can be visualized with bar plots and pie charts
+* Continuous data can be visualized with histograms or scatterplots. 
 
 ## Working with data in R: 
 
@@ -99,21 +103,21 @@ Let's explore some of R's built in data sets: iris, mtcars, titanic (install tit
 
 ### Notes about working in R:
 
-R is an open source project, and new packages are being added all the time, there are millions of ways to accomplish the same task. 
+R is an open source project, and new packages are being added all the time. 
 
-R is incredibly powerful and feature rich- you are NOT expected to memorize much, just know that the answer is always a few clicks away!
+R is incredibly powerful and feature rich- you are NOT expected to memorize syntax right away, just know that the answer is always a few clicks away!
 
 When in doubt, Google it!! 
 
 Here is a [base R cheat sheet](base-r.pdf)- this is a great reference for most of the basic tasks you will need to perform in R.
 
-Learn to use R scripts- and save the R script frequently!! This is the primary record of what you've done and allows you and other scientists to reproduce your workflows.
+Learn to use R scripts- and save your scripts frequently!! This is the primary record of what you've done and allows you and others to reproduce your workflows.
 
 ### First R demo!
 
-**NOTE:** for those wishing to follow along with the R-based demo in class, [click here](INTRO.R) for an R-script that contains all of the code blocks in this web-based lecture. 
+**NOTE:** for those wishing to follow along with the R-based demo in class, [click here](INTRO.R) for an R-script that contains all the code blocks in this web-based lecture. 
 
-All of you should have R and RStudio installed on your computers. See the [links page](https://kevintshoemaker.github.io/NRES-746/) for some useful references. I will be leading [workshops on getting started with  R](https://kevintshoemaker.github.io/R-Bootcamp/index.html) in two upcoming Saturday afternoons (Sep 10 and 17)- please consider attending if you don't have much experience in R!
+All of you should have R and RStudio installed on your computers. See the [links page](https://kevintshoemaker.github.io/NRES-710/) for some useful references. I will be leading [workshops on getting started with  R](https://kevintshoemaker.github.io/R-Bootcamp/index.html) in two upcoming Saturday afternoons (Sep 10 and 17)- please consider attending if you don't have much experience in R!
 
 Starting at the most basic level, R can be used as a calculator. Try it! 
 

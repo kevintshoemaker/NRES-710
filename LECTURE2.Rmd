@@ -320,7 +320,7 @@ abline(v=confint,col="blue",lty=2)
 
 ```
 
-The vertical blue lines indicate the *confidence interval* around the mean with the *confidence level* set at 95%. We will talk about confidence intervals a lot more, but just know that the confidence interval helps us visualize what might happen if we repeated our sampling over and over and over- how might our summary statistic change?
+The vertical blue lines indicate the *confidence interval* around the mean with the *confidence level* set at 95% - the confidence interval helps us visualize what might happen if we repeated our sampling over and over and over- how might our result change?
 
 Note the use of the *t distribution* in the above code block. The t distribution is a theoretical sampling distribution representing sampling error in units of standard error.  
 

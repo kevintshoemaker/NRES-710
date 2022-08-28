@@ -372,7 +372,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="EXERCISE1.htmc">Exercise- data summaries</a>
+      <a href="EXERCISE1.html">Exercise- data summary functions</a>
     </li>
   </ul>
 </li>
@@ -422,33 +422,30 @@ div.tocify {
 </div>
 
 
-<div id="intro-to-r-data-summaries" class="section level2">
-<h2>Intro to R, data summaries</h2>
+<div id="exercise-1-intro-to-r-data-summaries" class="section level2">
+<h2>EXERCISE 1: Intro to R, data summaries</h2>
 <p>Please enter your responses into a Word document and submit via
-WebCampus on the date indicated.</p>
-<div id="part-1-r-basics" class="section level3">
-<h3>Part 1: R basics</h3>
-<p>Work at your own pace through the following submodules of the <a
+WebCampus on the date indicated (see WebCampus).</p>
+<p>If you are new to R, or just want a refresher, please work at your
+own pace through the following submodules of the <a
 href="https://kevintshoemaker.github.io/R-Bootcamp/">UNR R
 workshop</a>:</p>
 <ul>
 <li><a
 href="https://kevintshoemaker.github.io/R-Bootcamp/module1_1.html">Working
-with data objects</a></li>
+with data objects</a><br />
+</li>
 <li><a
 href="https://kevintshoemaker.github.io/R-Bootcamp/module1_2.html">Managing
-data</a></li>
+data</a><br />
+</li>
 <li><a
 href="https://kevintshoemaker.github.io/R-Bootcamp/module2_2.html">Programming</a></li>
 </ul>
-<p>I know some of you are enrolled to take this workshop for credit as
-part of GRAD 778, but I’d like you to at least skim these modules now so
-you don’t fall behind!</p>
-</div>
-<div id="part-2-functions-and-data-summaries" class="section level3">
-<h3>Part 2: functions and data summaries</h3>
-<p>Work at your own pace on solving the following R challenge problems
-involving writing functions in R (as needed outside the classroom)</p>
+<p>I know some of you are enrolled in these Saturday R workshops for
+credit as part of GRAD 778, but I’d like you to at least skim these
+modules now so you don’t fall behind!<br />
+### Background: functions</p>
 <p>Let’s look at the structure of an R function:</p>
 <pre><code>f &lt;- function( &lt;arguments&gt;){ 
   ## Do something interesting 
@@ -458,12 +455,12 @@ default values (using equals sign), or not. The value returned by a
 function is the last expression in the body of the function to be
 evaluated, or else can be specified using the <code>return()</code>
 function.</p>
-<p>You have used the lm() function for simple linear regression already.
-Type the following in your R console to see what the arguments of that
-function are:</p>
+<p>For example, the <code>lm()</code> function comes with base R and is
+used for simple linear regression. Type the following in your R console
+to see what the arguments of that function are:</p>
 <pre><code>args(lm)</code></pre>
-<p>Here is a simple function for calculating any number cubed, with
-example applications:</p>
+<p>Here is a simple custom function for calculating any number cubed,
+with example applications:</p>
 <pre><code>Cube.me &lt;- function ( x= 1) {
   x * x * x
 }
@@ -473,47 +470,58 @@ Cube.me(3)
 x.vec &lt;- c(2, 19, 99)
 Cube.me(x.vec)
 </code></pre>
-<p>Try this out in R!</p>
-</div>
-</div>
-<div id="assignments-writing-simple-functions-in-r"
-class="section level2">
-<h2>Assignments: writing simple functions in R</h2>
+<p>Try it in R!</p>
+<p>When you’re ready, work at your own pace to solve the following four
+R challenge problems involving writing functions in R (as needed outside
+the classroom)</p>
 <p>Write three functions according to the instructions below, applying
 them as indicated. Please submit your R code via the assignment link
-posted in WebCampus to me by the indicated date/time (on WebCampus).
-Please note that these assignments are not tests, and you are encouraged
-to ask for help as needed!</p>
+posted in WebCampus to me by the indicated date/time (on WebCampus). You
+can either use a text box to submit (copy and paste your R code into the
+text box) or a file submission (Word doc or PDF). Please note that these
+assignments are not tests, and you are encouraged to ask for help as
+needed! You may also work in groups, but please submit your own
+assignment so you get credit!</p>
 <div id="assigment-1-sample-variance" class="section level3">
 <h3>Assigment 1: Sample variance</h3>
 <p>Using the formula <a href="LECTURE2.html">here</a> (see “summary
-metrics” section), write a function that computes the sample variance of
-any arbitrary data vector. Use this function to compute the sample
-variance for the “height” vector in the “trees” dataset built into base
-R. Compare your answer with the results from using the
-<code>var()</code> function. Show your code and results!</p>
+metrics” section), write a function that computes the <strong>sample
+variance</strong> of any arbitrary data vector. Use this function to
+compute the sample variance for the “height” column in the “trees”
+dataset built into base R. Compare your answer with the results from
+using the <code>var()</code> function (built into R!). Your submission
+should include (1) the function code, (2) a command (line of code) using
+your function to compute the sample variance of the “height” column, and
+(3) a test using the <code>var()</code> function to compute the same
+thing.</p>
 </div>
 <div id="assigment-2-population-standard-deviation"
 class="section level3">
 <h3>Assigment 2: Population standard deviation</h3>
 <p>Using the formula <a href="LECTURE2.html">here</a> (see “summary
-metrics” section), write a function that computes the population
-standard deviation (standard deviation for a complete population rather
-than an incomplete sample) for any arbitrary data vector. Use this
-function to compute the standard deviation for the “height” vector in
-the “trees” dataset built into base R. Compare your answer with the
-results from using the <code>sd()</code> function. Show your code and
-results!</p>
+metrics” section), write a function that computes the <strong>population
+standard deviation</strong> (standard deviation for a complete
+population rather than an incomplete sample) for any arbitrary data
+vector. Use this function to compute the standard deviation for the
+“height” column in the “trees” dataset built into base R. Compare your
+answer with the results from using the <code>sd()</code> function. Note
+that the result should not be exactly the same! Your submission should
+include (1) the function code, (2) a command (line of code) using your
+function to compute the population sd for the “height” column, and (3) a
+test using the <code>sd()</code> function to compute the sample sd.</p>
 </div>
 <div id="assignment-3-coefficient-of-variation-cv"
 class="section level3">
 <h3>Assignment 3: Coefficient of Variation (CV)</h3>
 <p>Write a function to compute the CV for any data vector and apply this
-to the “height” vector in the “trees” dataset. [hint: You should
+to the “height” column in the “trees” dataset. [hint: You should
 remember that the Coefficient of Variation (CV) is the ratio of the
 standard deviation to the mean.] Use the formula for the sample standard
-deviation (not the population standard deviation) to compute the CV.
-Show your code and results!</p>
+deviation (not the population standard deviation) to compute the CV. You
+are welcome to use the <code>sd()</code> function in base R as part of
+your function. Your submission should include (1) the function code and
+(2) a command (line of code) using your function to compute the CV of
+the “height” column.</p>
 </div>
 <div id="assignment-4-drawing-a-regression-line-through-a-scatter-plot"
 class="section level3">
@@ -521,11 +529,15 @@ class="section level3">
 <p>Write a function for drawing a regression line through a scatter
 plot. [hint: Within your custom function, you will use the existing
 <code>plot()</code>, <code>lm()</code>, and <code>abline()</code>
-functions. You will need to include at least two arguments in your
+functions]. You will need to include at least two arguments in your
 function, specifying the response vector and the predictor vector].
-Apply this function to the “height” and “volume” vectors in the “trees”
-dataset, and then to the “eruptions” and “waiting” vectors in the
-“faithful” dataset. Show your code and results!</p>
+Apply this function to the “height” (predictor) and “volume” (response)
+columns in the “trees” dataset, and then to the “waiting” (predictor)
+and “eruptions” (response) columns in the “faithful” dataset. Your
+submission should include (1) the function code, (2) a command (line of
+code) using your function on the “trees” dataset as specified, and (3) a
+command (line of code) using your function on the “faithful” dataset as
+specified.</p>
 </div>
 </div>
 

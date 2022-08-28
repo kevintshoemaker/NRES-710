@@ -27,7 +27,6 @@ knitr::opts_chunk$set(
 
 ```
 
-
 ## Overview of basic concepts of probability and statistics
 
 We use probability and statistics to make inferences from data!
