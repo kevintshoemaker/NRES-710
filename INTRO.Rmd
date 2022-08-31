@@ -67,11 +67,12 @@ More broadly, a common dictionary definition of statistics includes “... the c
 ## Different Approaches to “the Scientific Method”
 Scientific inquiry is furthered through using both inductive and hypothetico-deductive approaches. Both require statistics in order to test hypotheses about how nature works. The inductive approach involves a continuous and cyclical generation of hypotheses from observations; developing predictions from hypotheses; matching new observations to predictions in order to test hypotheses; and revising hypotheses -until a hypothesis is ultimately confirmed. The emphasis is on hypothesis verification. The hypothetico-deductive approach, on the other hand, proposes multiple working hypotheses from the outset, with an emphasis on falsifying incorrect hypotheses. An “accepted truth” is one that stands up to repeated attempts at falsification. Here is an illustration of the inductive method, taken from Gotelli and Ellison (2004):
 
-![](gotell1.jpg){width=50%}
+![](gotell1.jpg){width=50%}              
+
 
 And here, an illustration of the hypothetico-deductive method, taken from the same source:
 
-![](gotell2.jpg){width=50%}
+![](gotell2.jpg){width=50%}                   
 
 ## Data are fundamental to science!
 
