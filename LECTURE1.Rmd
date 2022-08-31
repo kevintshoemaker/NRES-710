@@ -39,9 +39,9 @@ We would want to identify, and then sample, the population of interest! The proc
 
 ### Statistics
 
-The figure below illustrates the basic concepts of statistics. The bold line separates the unseen population of interest (left) from the observed sample (right):     
+The figure below illustrates the basic concepts of statistics (we've already seen this). The bold line separates the unseen population of interest (left) from the observed sample (right):     
 
-![](statistics1.png)
+![](statistics1.png){width=40%}
 
 Statistics is about using the things we can observe (the sample) to say something meaningful about the things we can't observe (the population).
 
@@ -66,9 +66,7 @@ How can we tease apart signal from noise- i.e., determine that our result is *me
 
 *Probability* helps us to quantify uncertainty and make sense of processes that come out different every time -like random sampling! 
 
-Specifically, we use a special type of probability distribution known as a "sampling distribution" to quantify how much noise to expect from our random sampling process alone. 
-
-In this class, we define the probability of any specific outcome as the expected frequency of that outcome.
+Specifically, we use a special type of probability distribution known as a "sampling distribution" to quantify how much noise to expect from our random sampling process (this is also the topic of our next lecture).
 
 ### Sampling distributions
 
@@ -103,15 +101,15 @@ If you get four heads in a row, are you *surprised* enough by that outcome to re
 
 **Q** What is the probability of getting at least three of the same face (heads or tails) out of 4 coin flips? Would this cause you to reject the fairness of the coin?
 
-The distribution of possible outcomes from your sampling process (assuming a fair coin) is an example of a *sampling distribution*.
+The distribution of possible outcomes from your sampling process (often under strict assumptions- like assuming a fair coin) is a *sampling distribution*.
 
 The notion that the coin is a fair coin is an example of a *null hypothesis*... 
 
 ## Null hypotheses and statistical tests
 
-The null hypothesis is the notion that the signal you are looking for is entirely absent in the population of interest. 
+The null hypothesis is the notion that the particular signal you are looking for is entirely absent in the population of interest. 
 
-Under the null hypothesis, any hypothetical random samples you collect might have some apparent signal, but that apparent signal is just an artifact of random sampling, and not representative of the population (after all, the signal is completely absent in the population). 
+Under the null hypothesis, any hypothetical random samples you collect might have some apparent signal, but that apparent signal is just a meaningless artifact of random sampling, and not representative of the population (after all, the signal is completely absent in the population under the null hypothesis). 
 
 **Q** what is the null hypothesis for the jump-height example?
 
@@ -123,19 +121,21 @@ The p value only has meaning in the context of the null hypothesis- that is, in 
 
 The p value answers the question: "what's the probability that my observed result (or one even more "extreme" --i.e., with even more "signal") could have occurred by chance *given the null hypothesis is true*?"
 
-The lower the p-value, the more surprised you will be that your observed data could simply be a result of random chance alone AND the more likely you might be to *reject* the null hypothesis! 
+The lower the p-value, the more surprised you will be that your observed data could be a meaningless result of random chance alone AND the more likely you might be to *reject* the null hypothesis!
+
+**Q**: What does a p-value tell you about your *alternative hypothesis*? 
 
 #### Aside: extremeness
 
 The p value definition is accompanied by the word "extreme": *the probability of observing a result at least as extreme as your observed result, given the null hypothesis is true*. 
 
-A result 'at least as extreme as your observed result' means a result that has at least as much "signal" as your observed data. 
+A result 'at least as extreme as your observed result' means a sample dataset that has at least as much "signal" as your observed data. 
 
 For example:
 
-*Sample size*: 20, 10 with names between A and M and 10 with names between N and Z.              
-*Observed result*: mean jump-height for A-M is 0.2 cm greater than mean height for N-Z                  
-**Q** Would you be comfortable rejecting the null hypothesis if random sampling under the null hypothesis yielded a result as or more extreme approximately 20% of the time (p = 0.2)? 
+*Sample size*: 20, 10 with names between A and M and 10 with names between N and Z.                
+*Observed result*: mean jump-height for A-M is 0.2 cm greater than mean height for N-Z                     
+**Q** Would you be comfortable rejecting the null hypothesis if random sampling under the null hypothesis could produce a result as or more extreme approximately 20% of the time (p = 0.2)? 
 
 ### Statistical tests: rejecting the null!
 
@@ -155,7 +155,7 @@ Fisher proposed $\alpha =0.05$ as striking a nice balance between mistakenly rej
 
 A Woman claimed she could tell if milk was added to a cup of tea first or last.
 
-Fisher suggested we give her 8 seemingly identical cups of tea at once, 4 with milk first and 4 with tea first. The woman is asked to identify the four cups that were poured with milk first. 
+Fisher suggested we give her 8 seemingly identical cups of tea at once, 4 with milk first and 4 with tea first. The woman is asked to identify the four cups that were poured with milk first, given the 8 cups are presented to the woman in a randomized order. 
 
 There are 70 possible ways of choosing four cups out of 8. The probability of getting all of them right by random chance (assuming the null is true) would be 1/70 = 0.014 = 1.4%. That would be kinda surprising, right? So if the lady selected all four cups correctly, are we surprised enough to reject the null?
 
@@ -165,26 +165,26 @@ There are 70 possible ways of choosing four cups out of 8. The probability of ge
 
 **Q**: If we fail to reject the null, what do we now believe about our tea-taster? More specifically, do we now know she is a fraud?
 
-Here are the possibilities (X=correct id, O=false id), which in the null universe are equally likely (since the lady can't actually tell the difference!). Let's assume cups 5-8 are milk first and 1-4 are milk last. The number of correct choices is in parentheses...
+Here are the possibilities (X=incorrect id, O=correct id), which under the null hypothesis are equally likely (since the lady can't actually tell the difference under the null hypothesis). Let's assume cups 5-8 are milk first and 1-4 are milk last. The number of correct choices is in parentheses.
 
-O1/O2/O3/O4 (0)    O1/O3/O4/X5 (1)    O1/O4/X7/X8 (2)   O2/O4/X5/X6 (2)    O3/O4/X7/X8 (2)        
-O1/O2/O3/X5 (1)    O1/O3/O4/X6 (1)    O1/X5/X6/X7 (3)   O2/O4/X5/X7 (2)    O3/X5/X6/X7 (3)    
-O1/O2/O3/X6 (1)    O1/O3/O4/X7 (1)    O1/X5/X6/X8 (3)   O2/O4/X5/X8 (2)    O3/X5/X6/X8 (3)    
-O1/O2/O3/X7 (1)    O1/O3/O4/X8 (1)    O1/X5/X7/X8 (3)   O2/O4/X6/X7 (2)    O3/X5/X7/X8 (3)    
-O1/O2/O3/X8 (1)    O1/O3/X5/X6 (2)    O1/X6/X7/X8 (3)   O2/O4/X6/X8 (2)    O3/X6/X7/X8 (3)    
-O1/O2/O4/X5 (1)    O1/O3/X5/X7 (2)    O2/O3/O4/X5 (1)   O2/O4/X7/X8 (2)    O4/X5/X6/X7 (3)    
-O1/O2/O4/X6 (1)    O1/O3/X5/X8 (2)    O2/O3/O4/X6 (1)   O2/X5/X6/X7 (3)    O4/X5/X6/X8 (3)    
-O1/O2/O4/X7 (1)    O1/O3/X6/X7 (2)    O2/O3/O4/X7 (1)   O2/X5/X6/X8 (3)    O4/X5/X7/X8 (3)    
-O1/O2/O4/X8 (1)    O1/O3/X6/X8 (2)    O2/O3/O4/X8 (1)   O2/X5/X7/X8 (3)    O4/X6/X7/X8 (3)    
-O1/O2/X5/X6 (2)    O1/O3/X7/X8 (2)    O2/O3/X5/X6 (2)   O2/X6/X7/X8 (3)    *X5/X6/X7/X8 (4)*      
-O1/O2/X5/X7 (2)    O1/O4/X5/X6 (2)    O2/O3/X5/X7 (2)   O3/O4/X5/X6 (2)    
-O1/O2/X5/X8 (2)    O1/O4/X5/X7 (2)    O2/O3/X5/X8 (2)   O3/O4/X5/X7 (2)    
-O1/O2/X6/X7 (2)    O1/O4/X5/X8 (2)    O2/O3/X6/X7 (2)   O3/O4/X5/X8 (2)    
-O1/O2/X6/X8 (2)    O1/O4/X6/X7 (2)    O2/O3/X6/X8 (2)   O3/O4/X6/X7 (2)    
-O1/O2/X7/X8 (2)    O1/O4/X6/X8 (2)    O2/O3/X7/X8 (2)   O3/O4/X6/X8 (2)    
+X1/X2/X3/X4 (0)    X1/X3/X4/O5 (1)    X1/X4/O7/O8 (2)   X2/X4/O5/O6 (2)    X3/X4/O7/O8 (2)        
+X1/X2/X3/O5 (1)    X1/X3/X4/O6 (1)    X1/O5/O6/O7 (3)   X2/X4/O5/O7 (2)    X3/O5/O6/O7 (3)    
+X1/X2/X3/O6 (1)    X1/X3/X4/O7 (1)    X1/O5/O6/O8 (3)   X2/X4/O5/O8 (2)    X3/O5/O6/O8 (3)    
+X1/X2/X3/O7 (1)    X1/X3/X4/O8 (1)    X1/O5/O7/O8 (3)   X2/X4/O6/O7 (2)    X3/O5/O7/O8 (3)    
+X1/X2/X3/O8 (1)    X1/X3/O5/O6 (2)    X1/O6/O7/O8 (3)   X2/X4/O6/O8 (2)    X3/O6/O7/O8 (3)    
+X1/X2/X4/O5 (1)    X1/X3/O5/O7 (2)    X2/X3/X4/O5 (1)   X2/X4/O7/O8 (2)    X4/O5/O6/O7 (3)    
+X1/X2/X4/O6 (1)    X1/X3/O5/O8 (2)    X2/X3/X4/O6 (1)   X2/O5/O6/O7 (3)    X4/O5/O6/O8 (3)    
+X1/X2/X4/O7 (1)    X1/X3/O6/O7 (2)    X2/X3/X4/O7 (1)   X2/O5/O6/O8 (3)    X4/O5/O7/O8 (3)    
+X1/X2/X4/O8 (1)    X1/X3/O6/O8 (2)    X2/X3/X4/O8 (1)   X2/O5/O7/O8 (3)    X4/O6/O7/O8 (3)    
+X1/X2/O5/O6 (2)    X1/X3/O7/O8 (2)    X2/X3/O5/O6 (2)   X2/O6/O7/O8 (3)    **O5/O6/O7/O8** (4)      
+X1/X2/O5/O7 (2)    X1/X4/O5/O6 (2)    X2/X3/O5/O7 (2)   X3/X4/O5/O6 (2)    
+X1/X2/O5/O8 (2)    X1/X4/O5/O7 (2)    X2/X3/O5/O8 (2)   X3/X4/O5/O7 (2)    
+X1/X2/O6/O7 (2)    X1/X4/O5/O8 (2)    X2/X3/O6/O7 (2)   X3/X4/O5/O8 (2)    
+X1/X2/O6/O8 (2)    X1/X4/O6/O7 (2)    X2/X3/O6/O8 (2)   X3/X4/O6/O7 (2)    
+X1/X2/O7/O8 (2)    X1/X4/O6/O8 (2)    X2/X3/O7/O8 (2)   X3/X4/O6/O8 (2)    
 
 
-**Q** what if the lady selected 3 of 4 correctly? [there are 17 ways of getting three of the four correct out of 70 total permutations]. Would you be surprised enough to reject the null hypothesis. Is it possible that you (and the lady) are living in the null universe? How surprised would you have to be to reject the null and admit that she can tell the difference??
+**Q** what if the lady selected 3 of 4 correctly? [there are 17 ways of getting at least three of the four correct out of 70 total combinations]. Would you be surprised enough to reject the null hypothesis. Is it possible that you (and the lady) are living in the null universe? How surprised would you have to be to reject the null and admit that she can tell the difference?
 
 ASIDE: the test above is called 'Fisher's exact test' because it literally enumerates all the possible outcomes to compute the exact probability of observing any particular outcome under the null hypothesis. Most tests we will use in this class are (necessarily) approximations that rely on certain assumptions that may or not be met in practice. Fisher's exact test assumes that all observations are independent, but otherwise makes no additional assumptions.
 
@@ -211,10 +211,12 @@ Power is influenced by sample size (amount of information at your disposal) and 
 
 Confidence intervals, like p-values, are commonly misinterpreted! 
 
-In classical, frequentist statistics, the population parameter of interest is fixed- there is no uncertainty associated with the population parameter itself -- it's just that we can only collect and assess a small sample from the much larger population. So it does not make sense to say something like "the true parameter has a 90% chance of falling within the confidence interval". The true parameter is either in the interval or it is not in the interval. All we can say is something more like "90% of confidence intervals generated from different random samples would contain the true parameter". 
+In classical frequentist statistics, the population parameter of interest is fixed- there is no uncertainty associated with the population parameter itself -- it's just that we can only collect and assess a small sample from the much larger population. So it does not make sense to say something like "the true parameter has a 90% chance of falling within the confidence interval". The true parameter is either in the interval or it is not in the interval. All we can say is something more like "90% of confidence intervals generated from different random samples would contain the true parameter". 
 
 ![](confint1.png)
 We unfortunately have no idea if our particular confidence interval is one that includes the true parameter, or one that does not!!
+
+Don't worry if you find this difficulty- everyone does! And practically speaking, just about everyone interprets a 95% confidence interval as having a 95% probability of including the true parameter - and it doesn't really matter that much!   
 
 
 [--go to next lecture--](LECTURE2.html) 
