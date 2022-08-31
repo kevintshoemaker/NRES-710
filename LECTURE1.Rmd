@@ -213,7 +213,10 @@ Confidence intervals, like p-values, are commonly misinterpreted!
 
 In classical frequentist statistics, the population parameter of interest is fixed- there is no uncertainty associated with the population parameter itself -- it's just that we can only collect and assess a small sample from the much larger population. So it does not make sense to say something like "the true parameter has a 90% chance of falling within the confidence interval". The true parameter is either in the interval or it is not in the interval. All we can say is something more like "90% of confidence intervals generated from different random samples would contain the true parameter". 
 
-![](confint1.png)
+![](confint1.png){width=40%}
+
+
+
 We unfortunately have no idea if our particular confidence interval is one that includes the true parameter, or one that does not!!
 
 Don't worry if you find this difficulty- everyone does! And practically speaking, just about everyone interprets a 95% confidence interval as having a 95% probability of including the true parameter - and it doesn't really matter that much!   
