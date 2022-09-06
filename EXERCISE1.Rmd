@@ -27,9 +27,9 @@ knitr::opts_chunk$set(
 
 ```
 
-## EXERCISE 1: Intro to R, data summaries
+## EXERCISE 1: Data summaries and custom functions
 
-Please enter your responses into a Word document and submit via WebCampus on the date indicated (see WebCampus).  
+Please submit your responses to all questions below via WebCampus (text box submission) on the date indicated (see WebCampus).  
 
 If you are new to R, or just want a refresher, please work at your own pace through the following submodules of the [UNR R workshop](https://kevintshoemaker.github.io/R-Bootcamp/): 
 
@@ -38,9 +38,10 @@ If you are new to R, or just want a refresher, please work at your own pace thro
 * [Programming](https://kevintshoemaker.github.io/R-Bootcamp/module2_2.html)   
 
 I know some of you are enrolled in these Saturday R workshops for credit as part of GRAD 778, but I'd like you to at least skim these modules now so you don't fall behind!  
-### Background: functions
 
-Let’s look at the structure of an R function:
+### Background: custom functions
+
+Let’s look at the syntax of a custom R function:
 ```
 f <- function( <arguments>){ 
   ## Do something interesting 
@@ -71,23 +72,29 @@ Cube.me(x.vec)
 
 Try it in R!
 
-When you're ready, work at your own pace to solve the following four R challenge problems involving writing functions in R (as needed outside the classroom)
+When you're ready, write four functions according to the instructions below, applying them and testing them as indicated. 
 
-Write three functions according to the instructions below, applying them as indicated. Please submit your R code via the assignment link posted in WebCampus to me by the indicated date/time (on WebCampus). You can either use a text box to submit (copy and paste your R code into the text box) or a file submission (Word doc or PDF). Please note that these assignments are not tests, and you are encouraged to ask for help as needed! You may also work in groups, but please submit your own assignment so you get credit!
+Please submit all responses (answers to all questions) in a single text box submission via the assignment link posted in WebCampus by the indicated date/time (on WebCampus). All answers should include readable, **well-commented** R code along with with any requested code for testing your functions. Please make sure your submission is as clear and legible as possible!  
 
-### Assigment 1: Sample variance
+Please note that these assignments are not formal exams- you are encouraged to ask for help as needed! You may also work in groups, but please submit your own assignment so you get credit! 
 
-Using the formula [here](LECTURE2.html) (see "summary metrics" section), write a function that computes the **sample variance** of any arbitrary data vector. Use this function to compute the sample variance for the "height" column in the "trees" dataset built into base R. Compare your answer with the results from using the `var()` function (built into R!). Your submission should include (1) the function code, (2) a command (line of code) using your function to compute the sample variance of the "height" column, and (3) a test using the `var()` function to compute the same thing.   
+### Part 1: Sample variance
 
-### Assigment 2: Population standard deviation
+Using the formula [here](LECTURE2.html) (see "summary metrics" section) and reproduced below, write a function that computes the **sample variance** of any arbitrary data vector. Use this function to compute the sample variance for the "height" column in the "trees" dataset built into base R. Compare your answer with the results from using the `var()` function (built into R!). Your submission should include (1) the function code, (2) a command (line of code) using your function to compute the sample variance of the "height" column, and (3) a test using the `var()` function to compute the same thing.  
+
+Here's the formula: $s^2 = \sum_{n=1}^{i}{\frac{(x_i-\bar{x})^2}{(N-1)}}$
+
+### Part 2: Population standard deviation
 
 Using the formula [here](LECTURE2.html) (see "summary metrics" section), write a function that computes the **population standard deviation** (standard deviation for a complete population rather than an incomplete sample) for any arbitrary data vector. Use this function to compute the standard deviation for the "height" column in the "trees" dataset built into base R. Compare your answer with the results from using the `sd()` function. Note that the result should not be exactly the same! Your submission should include (1) the function code, (2) a command (line of code) using your function to compute the population sd for the "height" column, and (3) a test using the `sd()` function to compute the sample sd.
 
-### Assignment 3: Coefficient of Variation (CV)
+Here's the formula: $\sigma = \sqrt{\sum_{n=1}^{i}{\frac{(x_i-\mu)^2}{N}}}$
 
-Write a function to compute the CV for any data vector and apply this to the “height” column in the “trees” dataset. [hint: You should remember that the Coefficient of Variation (CV) is the ratio of the standard deviation to the mean.] Use the formula for the sample standard deviation (not the population standard deviation) to compute the CV. You are welcome to use the `sd()` function in base R as part of your function. Your submission should include (1) the function code and (2) a command (line of code) using your function to compute the CV of the "height" column.
+### Part 3: Coefficient of Variation (CV)
 
-### Assignment 4: drawing a regression line through a scatter plot 
+Write a function to compute the CV for any data vector and apply this to the “height” column in the “trees” dataset. [hint: You should remember that the Coefficient of Variation (CV) is the ratio of the (sample) standard deviation to the mean.] Use the formula for the sample standard deviation (not the population standard deviation) to compute the CV. You are welcome to use the `sd()` function in base R within your function if you'd like. Your submission should include (1) the function code and (2) a command (line of code) using your function to compute the CV of the "height" column in the 'trees' dataset.
+
+### Part 4: drawing a regression line through a scatter plot 
 
 Write a function for drawing a regression line through a scatter plot. [hint: Within your custom function, you will use the existing `plot()`, `lm()`, and `abline()` functions]. You will need to include at least two arguments in your function, specifying the response vector and the predictor vector]. Apply this function to the “height” (predictor) and “volume” (response) columns in the “trees” dataset, and then to the “waiting” (predictor) and “eruptions” (response) columns in the “faithful” dataset. Your submission should include (1) the function code, (2) a command (line of code) using your function on the "trees" dataset as specified, and (3) a command (line of code) using your function on the "faithful" dataset as specified.
 

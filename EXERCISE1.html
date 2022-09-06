@@ -422,10 +422,11 @@ div.tocify {
 </div>
 
 
-<div id="exercise-1-intro-to-r-data-summaries" class="section level2">
-<h2>EXERCISE 1: Intro to R, data summaries</h2>
-<p>Please enter your responses into a Word document and submit via
-WebCampus on the date indicated (see WebCampus).</p>
+<div id="exercise-1-data-summaries-and-custom-functions"
+class="section level2">
+<h2>EXERCISE 1: Data summaries and custom functions</h2>
+<p>Please submit your responses to all questions below via WebCampus
+(text box submission) on the date indicated (see WebCampus).</p>
 <p>If you are new to R, or just want a refresher, please work at your
 own pace through the following submodules of the <a
 href="https://kevintshoemaker.github.io/R-Bootcamp/">UNR R
@@ -444,9 +445,10 @@ href="https://kevintshoemaker.github.io/R-Bootcamp/module2_2.html">Programming</
 </ul>
 <p>I know some of you are enrolled in these Saturday R workshops for
 credit as part of GRAD 778, but I’d like you to at least skim these
-modules now so you don’t fall behind!<br />
-### Background: functions</p>
-<p>Let’s look at the structure of an R function:</p>
+modules now so you don’t fall behind!</p>
+<div id="background-custom-functions" class="section level3">
+<h3>Background: custom functions</h3>
+<p>Let’s look at the syntax of a custom R function:</p>
 <pre><code>f &lt;- function( &lt;arguments&gt;){ 
   ## Do something interesting 
 }</code></pre>
@@ -471,33 +473,35 @@ x.vec &lt;- c(2, 19, 99)
 Cube.me(x.vec)
 </code></pre>
 <p>Try it in R!</p>
-<p>When you’re ready, work at your own pace to solve the following four
-R challenge problems involving writing functions in R (as needed outside
-the classroom)</p>
-<p>Write three functions according to the instructions below, applying
-them as indicated. Please submit your R code via the assignment link
-posted in WebCampus to me by the indicated date/time (on WebCampus). You
-can either use a text box to submit (copy and paste your R code into the
-text box) or a file submission (Word doc or PDF). Please note that these
-assignments are not tests, and you are encouraged to ask for help as
-needed! You may also work in groups, but please submit your own
-assignment so you get credit!</p>
-<div id="assigment-1-sample-variance" class="section level3">
-<h3>Assigment 1: Sample variance</h3>
-<p>Using the formula <a href="LECTURE2.html">here</a> (see “summary
-metrics” section), write a function that computes the <strong>sample
-variance</strong> of any arbitrary data vector. Use this function to
-compute the sample variance for the “height” column in the “trees”
-dataset built into base R. Compare your answer with the results from
-using the <code>var()</code> function (built into R!). Your submission
-should include (1) the function code, (2) a command (line of code) using
-your function to compute the sample variance of the “height” column, and
-(3) a test using the <code>var()</code> function to compute the same
-thing.</p>
+<p>When you’re ready, write four functions according to the instructions
+below, applying them and testing them as indicated.</p>
+<p>Please submit all responses (answers to all questions) in a single
+text box submission via the assignment link posted in WebCampus by the
+indicated date/time (on WebCampus). All answers should include readable,
+<strong>well-commented</strong> R code along with with any requested
+code for testing your functions. Please make sure your submission is as
+clear and legible as possible!</p>
+<p>Please note that these assignments are not formal exams- you are
+encouraged to ask for help as needed! You may also work in groups, but
+please submit your own assignment so you get credit!</p>
 </div>
-<div id="assigment-2-population-standard-deviation"
-class="section level3">
-<h3>Assigment 2: Population standard deviation</h3>
+<div id="part-1-sample-variance" class="section level3">
+<h3>Part 1: Sample variance</h3>
+<p>Using the formula <a href="LECTURE2.html">here</a> (see “summary
+metrics” section) and reproduced below, write a function that computes
+the <strong>sample variance</strong> of any arbitrary data vector. Use
+this function to compute the sample variance for the “height” column in
+the “trees” dataset built into base R. Compare your answer with the
+results from using the <code>var()</code> function (built into R!). Your
+submission should include (1) the function code, (2) a command (line of
+code) using your function to compute the sample variance of the “height”
+column, and (3) a test using the <code>var()</code> function to compute
+the same thing.</p>
+<p>Here’s the formula: <span class="math inline">\(s^2 =
+\sum_{n=1}^{i}{\frac{(x_i-\bar{x})^2}{(N-1)}}\)</span></p>
+</div>
+<div id="part-2-population-standard-deviation" class="section level3">
+<h3>Part 2: Population standard deviation</h3>
 <p>Using the formula <a href="LECTURE2.html">here</a> (see “summary
 metrics” section), write a function that computes the <strong>population
 standard deviation</strong> (standard deviation for a complete
@@ -509,23 +513,24 @@ that the result should not be exactly the same! Your submission should
 include (1) the function code, (2) a command (line of code) using your
 function to compute the population sd for the “height” column, and (3) a
 test using the <code>sd()</code> function to compute the sample sd.</p>
+<p>Here’s the formula: <span class="math inline">\(\sigma =
+\sqrt{\sum_{n=1}^{i}{\frac{(x_i-\mu)^2}{N}}}\)</span></p>
 </div>
-<div id="assignment-3-coefficient-of-variation-cv"
-class="section level3">
-<h3>Assignment 3: Coefficient of Variation (CV)</h3>
+<div id="part-3-coefficient-of-variation-cv" class="section level3">
+<h3>Part 3: Coefficient of Variation (CV)</h3>
 <p>Write a function to compute the CV for any data vector and apply this
 to the “height” column in the “trees” dataset. [hint: You should
 remember that the Coefficient of Variation (CV) is the ratio of the
-standard deviation to the mean.] Use the formula for the sample standard
-deviation (not the population standard deviation) to compute the CV. You
-are welcome to use the <code>sd()</code> function in base R as part of
-your function. Your submission should include (1) the function code and
-(2) a command (line of code) using your function to compute the CV of
-the “height” column.</p>
+(sample) standard deviation to the mean.] Use the formula for the sample
+standard deviation (not the population standard deviation) to compute
+the CV. You are welcome to use the <code>sd()</code> function in base R
+within your function if you’d like. Your submission should include (1)
+the function code and (2) a command (line of code) using your function
+to compute the CV of the “height” column in the ‘trees’ dataset.</p>
 </div>
-<div id="assignment-4-drawing-a-regression-line-through-a-scatter-plot"
+<div id="part-4-drawing-a-regression-line-through-a-scatter-plot"
 class="section level3">
-<h3>Assignment 4: drawing a regression line through a scatter plot</h3>
+<h3>Part 4: drawing a regression line through a scatter plot</h3>
 <p>Write a function for drawing a regression line through a scatter
 plot. [hint: Within your custom function, you will use the existing
 <code>plot()</code>, <code>lm()</code>, and <code>abline()</code>

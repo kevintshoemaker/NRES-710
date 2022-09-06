@@ -216,9 +216,9 @@ Sample Geometric mean: product of numbers taken to the nth root. For two numbers
 
 Standard deviations and variances are calculated differently depending on whether we are computing these quantities for an entire population of interest vs a sample drawn from a larger population!     
 
-Standard Deviation – sigma ($\sigma$) for population standard deviation, *s* for the sample standard deviation.  T
+Standard Deviation – sigma ($\sigma$) for population standard deviation, *s* for the sample standard deviation.
 
-Variance- ($\sigma^2$) for population varianc, ($s^2$) for the sample variance     
+Variance- ($\sigma^2$) for population variance, ($s^2$) for the sample variance     
 
 The variance represents the average squared difference from the mean. The standard deviation represents the square root of the variance.
 
