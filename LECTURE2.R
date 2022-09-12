@@ -28,7 +28,7 @@ mean(mysample)   # compute the sample mean
 lotsofsamples <- list()
 
 for(s in 1:5000){
-  lotsofsamples[[paste0("sample",s)]] <- sample(allfrogs.bodysize,30)    # take sample of size 30 (20 frogs measured)
+  lotsofsamples[[paste0("sample",s)]] <- sample(allfrogs.bodysize,30)    # take sample of size 30 (30 frogs measured)
 }
 
 lotsofsamples$sample1
@@ -50,7 +50,7 @@ for(i in seq(2,12,2)){
 }
 
 
-hist(rbinom(10000,1000,.5),xlab="N heads out of 1",freq = F)
+hist(rbinom(10000,1000,.5),xlab="N heads out of 1000",freq = F, main="")
 
 
 # Survey of common sampling distributions -----------------

@@ -44,6 +44,8 @@ Yellow-Legged frog example:
 *Sample*: As many frogs are captured and measured as possible in 10 ponds randomly sampled from the central Sierra Nevada   
 *Statistic*: Sample mean    
 
+![](statistics1.png){width=40%}
+
 The goal of statistics is to infer something meaningful about a population from a sample. In the yellow-legged frog example above, there is a “true” mean body size of frogs in ponds in the central Sierra Nevada. We just don’t know what it is! 
 
 After collecting data from a sample, statistics will help us to say something about the mean body size in the population -- both about what we know AND what we don't know about the population! 
@@ -52,7 +54,7 @@ First of all, we assume that the summary statistic computed from our sample (n>>
 
 ### The Central Limit Theorem
 
-The Central Limit Theorem (CLT) says that if you have a sample with a reasonably large number of observations (the larger, the better!), and each observation is indpendently sampled from the population, then the statistics we compute from the sample (e.g., the sample mean) should be representative of the population.
+The Central Limit Theorem (CLT) says that if you have a sample with a reasonably large number of observations (the larger, the better!), and each observation is independently sampled from the population, then the statistics we compute from the sample (e.g., the sample mean) should be reflective of the population.
 
 For the yellow-legged frog example: our sample mean should be representative of the mean of ALL yellow-legged frogs in the central Sierra Nevada. 
 
@@ -127,7 +129,7 @@ To get a better picture of the sampling variance, let's sample many times!
 lotsofsamples <- list()
 
 for(s in 1:5000){
-  lotsofsamples[[paste0("sample",s)]] <- sample(allfrogs.bodysize,30)    # take sample of size 30 (20 frogs measured)
+  lotsofsamples[[paste0("sample",s)]] <- sample(allfrogs.bodysize,30)    # take sample of size 30 (30 frogs measured)
 }
 
 lotsofsamples$sample1
@@ -180,26 +182,28 @@ And with really big sample size:
 
 ```{r}
 
-hist(rbinom(10000,1000,.5),xlab="N heads out of 1",freq = F)
+hist(rbinom(10000,1000,.5),xlab="N heads out of 1000",freq = F, main="")
 
 ```
 
-The larger the sample size, the more closely the sampling distribution (number of heads out of N flips of a fair coin) looks like a normal distribution!
+The larger the sample size, the more closely the sampling distribution (number of heads out of N flips of a fair coin) looks like a normal distribution! Again, the CLT at work!
 
 ## Sampling distributions in null hypothesis testing
 
 Pretty much all of classical null hypothesis testing (NHT) works like this: 
 
 1. We compute a summary statistic from our data. This statistic represents the "signal" in your data.
-2. Using the known sampling distribution for our summary statistic under the null hypothesis (worked out by statisticians!), we inquire whether or not our summary statistic (signal) could have been a result of random sampling error in the null universe, given the "noise" that could be produced by random sampling error. 
+2. Using the known (theoretical) sampling distribution for our summary statistic under the null hypothesis (worked out by statisticians!), we inquire whether or not our summary statistic (signal) could have been a result of random sampling error under the null hypothesis. 
 3. If it is implausble that random noise could have produced our result (if $p\le\alpha$) then we reject the null hypothesis. Otherwise we fail to reject the null...
 
 Sampling distributions that are commonly used include:
 
 - t distribution (sampling distribution for the t statistic under the null hypothesis)
+- z distribution (assume your test statistic is a standard normal distribution)
 - Chi-squared distribution (sampling distribution for the Chi-squared statistic under the null hypothesis)
 - F distribution (sampling distribution for the F statistic under the null hypothesis- used in ANOVA and regression)
 
+Sampling distributions are thought experiments! What would our test statistic look like under repeated sampling from a population (e.g., under the null hypothesis)?
 
 ## Summary metrics (calculated from sample data)
 
@@ -226,11 +230,9 @@ Standard deviation is much more commonly reported than variance because it is in
 
 Coefficient of variation (cv) is the standard deviation represented as a fraction of the mean.        
 
-#### Std deviation calculation example
+#### Variance and Std deviation calculation example
 
 For a population:  $\sigma = \sqrt{\sum_{n=1}^{i}{\frac{(x_i-\mu)^2}{N}}}$      
-
-For a sample (estimating population variance from a sample):  $s = \sqrt{\sum_{n=1}^{i}{\frac{(x_i-\bar{x})^2}{(N-1)}}}$     
 
 For example: compute the variance of 5 numbers: 4, 3, 5, 5, 2
 
@@ -243,9 +245,10 @@ $\mu = (4+3+5+5+2)/5 = 3.8$
 (2-3.8)^2 = 3.24     
 
 Sum these  = 6.8     
-Divide by 5  = $\sigma$ = 6.8/5 = 1.36        
+Divide by 5  =  population variance = 6.8/5 = 1.36 
+Take square root = $\sigma$ = 1.17
 
-For sample sd (summary statistic for population variance from a sample):    
+For a sample (estimating population variance from a sample):  $s = \sqrt{\sum_{n=1}^{i}{\frac{(x_i-\bar{x})^2}{(N-1)}}}$     
 
 $\bar{x}  = (4+3+5+5+2)/5 = 3.8$   
 
@@ -256,8 +259,8 @@ $\bar{x}  = (4+3+5+5+2)/5 = 3.8$
 (2-3.8)^2 = 3.24      
 
 Sum these  = 6.8      
-Divide by 4  = $s$ = 6.8/4 = 1.7     
-
+Divide by 4  =  sample variance = 6.8/4 = 1.7     
+Take square root = $s$ = 1.30
 
 So the population sd is 1.36 whereas the sample sd is 1.7.    
 
@@ -269,7 +272,7 @@ Which is larger? Which are we less confident in?
 
 This has to do with a concept called *degrees of freedom*. 
 
-Sigma is known. Since you have the entire population measured, you can compute a measure of dispersion for the population and that measure is perfect. It is not an estimate.     
+Sigma can be computed with 100% accuracy. Since you have the entire population measured, you can compute a measure of dispersion for the population and that measure is perfect. It is not an estimate.     
 
 The sample standard deviation $s$, on the other hand, is an imperfect estimate of dispersion for a much larger population! In fact, if we used the population formula for a sample, it would underestimate the dispersion of the target population. 
 
@@ -279,7 +282,7 @@ By dividing the sum of squared deviations from the sample mean by 4 instead of 5
 
 ## Sampling distributions
 
-Statisticians have used probability calculus to work out the sampling distributions (often called the sampling variance- don't confuse this with the 'sample variance' we discussed above!) for some common summary statistics. 
+Statisticians worked out the sampling distributions (often called the sampling variance- don't confuse this with the 'sample variance' we discussed above!) for some common summary statistics. 
 
 ### Standard error of the mean
 
@@ -323,6 +326,18 @@ abline(v=confint,col="blue",lty=2)
 The vertical blue lines indicate the *confidence interval* around the mean with the *confidence level* set at 95% - the confidence interval helps us visualize what might happen if we repeated our sampling over and over and over- how might our result change?
 
 Note the use of the *t distribution* in the above code block. The t distribution is a theoretical sampling distribution representing sampling error in units of standard error.  
+
+### Confidence intervals
+
+Confidence intervals, like p-values, are commonly misinterpreted! 
+
+In classical frequentist statistics, the population parameter of interest is fixed- there is no uncertainty associated with the population parameter itself -- it's just that we can only collect and assess a small sample from the much larger population. So it does not make sense to say something like "the true parameter has a 90% chance of falling within the confidence interval". The true parameter is either in the interval or it is not in the interval. All we can say is something more like "90% of confidence intervals generated from different random samples would contain the true parameter". 
+
+![](confint1.png){width=40%}
+
+We unfortunately have no idea if our particular confidence interval is one that includes the true parameter, or one that does not!!
+
+Don't worry if you find this difficulty- everyone does! And practically speaking, just about everyone interprets a 95% confidence interval as having a 95% probability of including the true parameter - and it doesn't really matter that much! 
 
 ## Probability distributions- the basics (and how to use them in R)
 
@@ -551,7 +566,7 @@ integrate(f=dchisq,lower=0,upper=Inf,df=df)    # just to make sure it integrates
 
 
 
-#### Exercise (optional):
+#### Exercise (in class, not graded):
 
 Visualize (in R) the following distributions as above: Gamma, Exponential, Lognormal, Negative Binomial.
 

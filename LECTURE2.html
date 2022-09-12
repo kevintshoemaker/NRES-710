@@ -372,7 +372,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="EXERCISE1.htmc">Exercise- data summaries</a>
+      <a href="EXERCISE1.html">Exercise- data summary functions</a>
     </li>
   </ul>
 </li>
@@ -440,6 +440,7 @@ all ponds in the central Sierra Nevada<br />
 <em>Sample</em>: As many frogs are captured and measured as possible in
 10 ponds randomly sampled from the central Sierra Nevada<br />
 <em>Statistic</em>: Sample mean</p>
+<p><img src="statistics1.png" style="width:40.0%" /></p>
 <p>The goal of statistics is to infer something meaningful about a
 population from a sample. In the yellow-legged frog example above, there
 is a “true” mean body size of frogs in ponds in the central Sierra
@@ -454,9 +455,9 @@ Because of the <em>Central Limit Theorem</em>.</p>
 <h3>The Central Limit Theorem</h3>
 <p>The Central Limit Theorem (CLT) says that if you have a sample with a
 reasonably large number of observations (the larger, the better!), and
-each observation is indpendently sampled from the population, then the
+each observation is independently sampled from the population, then the
 statistics we compute from the sample (e.g., the sample mean) should be
-representative of the population.</p>
+reflective of the population.</p>
 <p>For the yellow-legged frog example: our sample mean should be
 representative of the mean of ALL yellow-legged frogs in the central
 Sierra Nevada.</p>
@@ -516,7 +517,7 @@ times!</p>
 <pre class="r"><code>lotsofsamples &lt;- list()
 
 for(s in 1:5000){
-  lotsofsamples[[paste0(&quot;sample&quot;,s)]] &lt;- sample(allfrogs.bodysize,30)    # take sample of size 30 (20 frogs measured)
+  lotsofsamples[[paste0(&quot;sample&quot;,s)]] &lt;- sample(allfrogs.bodysize,30)    # take sample of size 30 (30 frogs measured)
 }
 
 lotsofsamples$sample1</code></pre>
@@ -568,11 +569,11 @@ for(i in seq(2,12,2)){
 }</code></pre>
 <p><img src="LECTURE2_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>And with really big sample size:</p>
-<pre class="r"><code>hist(rbinom(10000,1000,.5),xlab=&quot;N heads out of 1&quot;,freq = F)</code></pre>
+<pre class="r"><code>hist(rbinom(10000,1000,.5),xlab=&quot;N heads out of 1000&quot;,freq = F, main=&quot;&quot;)</code></pre>
 <p><img src="LECTURE2_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>The larger the sample size, the more closely the sampling
 distribution (number of heads out of N flips of a fair coin) looks like
-a normal distribution!</p>
+a normal distribution! Again, the CLT at work!</p>
 </div>
 </div>
 <div id="sampling-distributions-in-null-hypothesis-testing"
@@ -583,11 +584,10 @@ this:</p>
 <ol style="list-style-type: decimal">
 <li>We compute a summary statistic from our data. This statistic
 represents the “signal” in your data.</li>
-<li>Using the known sampling distribution for our summary statistic
-under the null hypothesis (worked out by statisticians!), we inquire
-whether or not our summary statistic (signal) could have been a result
-of random sampling error in the null universe, given the “noise” that
-could be produced by random sampling error.</li>
+<li>Using the known (theoretical) sampling distribution for our summary
+statistic under the null hypothesis (worked out by statisticians!), we
+inquire whether or not our summary statistic (signal) could have been a
+result of random sampling error under the null hypothesis.</li>
 <li>If it is implausble that random noise could have produced our result
 (if <span class="math inline">\(p\le\alpha\)</span>) then we reject the
 null hypothesis. Otherwise we fail to reject the null…</li>
@@ -596,11 +596,16 @@ null hypothesis. Otherwise we fail to reject the null…</li>
 <ul>
 <li>t distribution (sampling distribution for the t statistic under the
 null hypothesis)</li>
+<li>z distribution (assume your test statistic is a standard normal
+distribution)</li>
 <li>Chi-squared distribution (sampling distribution for the Chi-squared
 statistic under the null hypothesis)</li>
 <li>F distribution (sampling distribution for the F statistic under the
 null hypothesis- used in ANOVA and regression)</li>
 </ul>
+<p>Sampling distributions are thought experiments! What would our test
+statistic look like under repeated sampling from a population (e.g.,
+under the null hypothesis)?</p>
 </div>
 <div id="summary-metrics-calculated-from-sample-data"
 class="section level2">
@@ -626,9 +631,9 @@ depending on whether we are computing these quantities for an entire
 population of interest vs a sample drawn from a larger population!</p>
 <p>Standard Deviation – sigma (<span
 class="math inline">\(\sigma\)</span>) for population standard
-deviation, <em>s</em> for the sample standard deviation. T</p>
+deviation, <em>s</em> for the sample standard deviation.</p>
 <p>Variance- (<span class="math inline">\(\sigma^2\)</span>) for
-population varianc, (<span class="math inline">\(s^2\)</span>) for the
+population variance, (<span class="math inline">\(s^2\)</span>) for the
 sample variance</p>
 <p>The variance represents the average squared difference from the mean.
 The standard deviation represents the square root of the variance.</p>
@@ -636,13 +641,11 @@ The standard deviation represents the square root of the variance.</p>
 because it is in the same units/scale as the original measurements.</p>
 <p>Coefficient of variation (cv) is the standard deviation represented
 as a fraction of the mean.</p>
-<div id="std-deviation-calculation-example" class="section level4">
-<h4>Std deviation calculation example</h4>
+<div id="variance-and-std-deviation-calculation-example"
+class="section level4">
+<h4>Variance and Std deviation calculation example</h4>
 <p>For a population: <span class="math inline">\(\sigma =
 \sqrt{\sum_{n=1}^{i}{\frac{(x_i-\mu)^2}{N}}}\)</span></p>
-<p>For a sample (estimating population variance from a sample): <span
-class="math inline">\(s =
-\sqrt{\sum_{n=1}^{i}{\frac{(x_i-\bar{x})^2}{(N-1)}}}\)</span></p>
 <p>For example: compute the variance of 5 numbers: 4, 3, 5, 5, 2</p>
 <p><span class="math inline">\(\mu = (4+3+5+5+2)/5 = 3.8\)</span></p>
 <p>(4-3.8)^2 = 0.2^2 = 0.04<br />
@@ -651,10 +654,11 @@ class="math inline">\(s =
 (5-3.8)^2 = 1.44<br />
 (2-3.8)^2 = 3.24</p>
 <p>Sum these = 6.8<br />
-Divide by 5 = <span class="math inline">\(\sigma\)</span> = 6.8/5 =
-1.36</p>
-<p>For sample sd (summary statistic for population variance from a
-sample):</p>
+Divide by 5 = population variance = 6.8/5 = 1.36 Take square root =
+<span class="math inline">\(\sigma\)</span> = 1.17</p>
+<p>For a sample (estimating population variance from a sample): <span
+class="math inline">\(s =
+\sqrt{\sum_{n=1}^{i}{\frac{(x_i-\bar{x})^2}{(N-1)}}}\)</span></p>
 <p><span class="math inline">\(\bar{x} = (4+3+5+5+2)/5 =
 3.8\)</span></p>
 <p>(4-3.8)^2 = 0.2^2 = 0.04<br />
@@ -663,7 +667,8 @@ sample):</p>
 (5-3.8)^2 = 1.44<br />
 (2-3.8)^2 = 3.24</p>
 <p>Sum these = 6.8<br />
-Divide by 4 = <span class="math inline">\(s\)</span> = 6.8/4 = 1.7</p>
+Divide by 4 = sample variance = 6.8/4 = 1.7<br />
+Take square root = <span class="math inline">\(s\)</span> = 1.30</p>
 <p>So the population sd is 1.36 whereas the sample sd is 1.7.</p>
 </div>
 <div id="aside-degrees-of-freedom" class="section level4">
@@ -672,9 +677,9 @@ Divide by 4 = <span class="math inline">\(s\)</span> = 6.8/4 = 1.7</p>
 vs. sample?</p>
 <p>Which is larger? Which are we less confident in?</p>
 <p>This has to do with a concept called <em>degrees of freedom</em>.</p>
-<p>Sigma is known. Since you have the entire population measured, you
-can compute a measure of dispersion for the population and that measure
-is perfect. It is not an estimate.</p>
+<p>Sigma can be computed with 100% accuracy. Since you have the entire
+population measured, you can compute a measure of dispersion for the
+population and that measure is perfect. It is not an estimate.</p>
 <p>The sample standard deviation <span class="math inline">\(s\)</span>,
 on the other hand, is an imperfect estimate of dispersion for a much
 larger population! In fact, if we used the population formula for a
@@ -699,10 +704,9 @@ computing the mean, next for computing the standard deviation!</p>
 </div>
 <div id="sampling-distributions" class="section level2">
 <h2>Sampling distributions</h2>
-<p>Statisticians have used probability calculus to work out the sampling
-distributions (often called the sampling variance- don’t confuse this
-with the ‘sample variance’ we discussed above!) for some common summary
-statistics.</p>
+<p>Statisticians worked out the sampling distributions (often called the
+sampling variance- don’t confuse this with the ‘sample variance’ we
+discussed above!) for some common summary statistics.</p>
 <div id="standard-error-of-the-mean" class="section level3">
 <h3>Standard error of the mean</h3>
 <p>Standard error of the mean = sample std deviation divided by the
@@ -738,14 +742,32 @@ confint &lt;- c(sample.mean+std.error*qt(0.025,n-1),sample.mean+std.error*qt(0.9
 abline(v=confint,col=&quot;blue&quot;,lty=2)</code></pre>
 <p><img src="LECTURE2_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>The vertical blue lines indicate the <em>confidence interval</em>
-around the mean with the <em>confidence level</em> set at 95%. We will
-talk about confidence intervals a lot more, but just know that the
+around the mean with the <em>confidence level</em> set at 95% - the
 confidence interval helps us visualize what might happen if we repeated
-our sampling over and over and over- how might our summary statistic
-change?</p>
+our sampling over and over and over- how might our result change?</p>
 <p>Note the use of the <em>t distribution</em> in the above code block.
 The t distribution is a theoretical sampling distribution representing
 sampling error in units of standard error.</p>
+</div>
+<div id="confidence-intervals" class="section level3">
+<h3>Confidence intervals</h3>
+<p>Confidence intervals, like p-values, are commonly misinterpreted!</p>
+<p>In classical frequentist statistics, the population parameter of
+interest is fixed- there is no uncertainty associated with the
+population parameter itself – it’s just that we can only collect and
+assess a small sample from the much larger population. So it does not
+make sense to say something like “the true parameter has a 90% chance of
+falling within the confidence interval”. The true parameter is either in
+the interval or it is not in the interval. All we can say is something
+more like “90% of confidence intervals generated from different random
+samples would contain the true parameter”.</p>
+<p><img src="confint1.png" style="width:40.0%" /></p>
+<p>We unfortunately have no idea if our particular confidence interval
+is one that includes the true parameter, or one that does not!!</p>
+<p>Don’t worry if you find this difficulty- everyone does! And
+practically speaking, just about everyone interprets a 95% confidence
+interval as having a 95% probability of including the true parameter -
+and it doesn’t really matter that much!</p>
 </div>
 </div>
 <div id="probability-distributions--the-basics-and-how-to-use-them-in-r"
@@ -1007,8 +1029,8 @@ rchisq(10,df)     # random numbers from the chi squared distribution</code></pre
 <pre class="r"><code>integrate(f=dchisq,lower=0,upper=Inf,df=df)    # just to make sure it integrates to 1!!</code></pre>
 <pre><code>## 1 with absolute error &lt; 2.3e-05</code></pre>
 </div>
-<div id="exercise-optional" class="section level4">
-<h4>Exercise (optional):</h4>
+<div id="exercise-in-class-not-graded" class="section level4">
+<h4>Exercise (in class, not graded):</h4>
 <p>Visualize (in R) the following distributions as above: Gamma,
 Exponential, Lognormal, Negative Binomial.</p>
 <p><a href="LECTURE3.html">–go to next lecture–</a></p>
