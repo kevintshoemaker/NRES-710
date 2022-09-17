@@ -386,14 +386,6 @@ integrate(f=dbeta,lower=0,upper=1,shape1=shape1,shape2=shape2)    # just to make
 ```
 
 
-### Parameters and parametric statistics
-
-**Parameters** are the arguments used to describe probability distributions - they describe the exact shape and location of the distribution. Different distribution families are associated with different parameters. For example, the normal distribution is described by 2 parameters: mean and stdev. The Poisson distribution has only one parameter (the mean). The binomial distribution is described by 2 parameters: size (number of trials) and prob (success probability for each trial).  
-
-*Parametric statistics* require assuming certain things about distributions & parameters, while *nonparametric statistics* do not require these assumptions. NOTE: nonparametric statistics still usually make the assumption that observations are independent!
-
-**Q** Given the CLT makes many classical tests robust to non-normal data distributions, why do we need non-parametric statistics? 
-
 ### Probability distributions in R
 
 #### Random number generators
