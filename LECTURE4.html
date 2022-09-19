@@ -12,22 +12,30 @@
 <meta name="author" content="NRES 710" />
 
 
-<title>Linear Regression (and ANOVA)</title>
+<title>t-tests and z-tests</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -39,11 +47,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -56,32 +59,8 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
+
 
 
 
@@ -91,10 +70,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -111,40 +86,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 45px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h2 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h3 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h4 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h5 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h6 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -172,7 +123,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -184,7 +135,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -195,10 +146,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -210,7 +174,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -336,7 +299,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -350,7 +313,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -366,7 +329,7 @@ div.tocify {
   <a href="schedule.html">Schedule</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Lectures
      
     <span class="caret"></span>
@@ -379,19 +342,22 @@ div.tocify {
       <a href="LECTURE1.html">Basic Concepts</a>
     </li>
     <li>
-      <a href="LECTURE2.html">Analysis- t test</a>
+      <a href="LECTURE2.html">Sampling uncertainty</a>
     </li>
     <li>
-      <a href="LECTURE3.html">Analysis- chi2 test</a>
+      <a href="LECTURE3.html">Taxonomy of common statistics</a>
     </li>
     <li>
-      <a href="LECTURE4.html">Analysis- linear regression</a>
+      <a href="LECTURE4.html">t-test and z-test</a>
     </li>
     <li>
-      <a href="LECTURE5.html">Analysis- ANOVA</a>
+      <a href="LECTURE5.html">chi-squared tests</a>
     </li>
     <li>
-      <a href="LECTURE6.html">Analysis- GLM and GLMM</a>
+      <a href="LECTURE6.html">Analysis- ANOVA</a>
+    </li>
+    <li>
+      <a href="LECTURE7.html">Analysis- GLM and GLMM</a>
     </li>
     <li>
       <a href="LECTURE7.html">Next steps</a>
@@ -399,7 +365,19 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Exercises
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="EXERCISE1.html">Exercise- data summary functions</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     More Resources
      
     <span class="caret"></span>
@@ -411,8 +389,17 @@ div.tocify {
     <li>
       <a href="FINALPROJ.html">Final Projects</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Datasets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="STUDYGUIDE.html">Study Guide</a>
+      <a href="Data1.dat">Data1</a>
     </li>
   </ul>
 </li>
@@ -424,679 +411,841 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
-<h1 class="title toc-ignore">Linear Regression (and ANOVA)</h1>
+<h1 class="title toc-ignore">t-tests and z-tests</h1>
 <h4 class="author">NRES 710</h4>
-<h4 class="date">Fall 2020</h4>
+<h4 class="date">Fall 2022</h4>
 
 </div>
 
 
 <div id="download-the-r-code-for-this-lecture" class="section level2">
 <h2>Download the R code for this lecture!</h2>
-<p>To follow along with the R-based lessons and demos, <a href="LECTURE4.R">right (or command) click on this link and save the script to your working directory</a></p>
+<p>To follow along with the R-based lessons and demos, <a
+href="LECTURE4.R">right (or command) click on this link and save the
+script to your working directory</a></p>
 </div>
-<div id="overview-linear-regression" class="section level2">
-<h2>Overview: Linear Regression</h2>
-<p>Classical linear regression involves testing for a relationship between a continuous response variable (dependent variable) and a continuous predictor variable (independent variable).</p>
-<p>You can have multiple explanatory variables… hence you can have multiple linear regression. We will focus on <em>simple linear regression</em> here.</p>
-<p>The null hypothesis is that there is no relationship between the response variable and the predictor variable in your population of interest. That is, observations with larger values for your predictor variable are not expected to be associated with larger or smaller values of the response variable on average.</p>
-<div id="simple-example" class="section level3">
-<h3>Simple example</h3>
-<p>Imagine we are testing for a relationship between the brightness of artificial lighting at long stretch of beach (e.g., from hotels and other forms of development) and the total number of hatchling sea turtles per nest that successfully make it to the ocean.</p>
-<p><em>Population</em>: All nests in this particular stretch of beach<br />
-<em>Parameter(s)</em>: The mean number of hatchlings per nest that successfully travel from their nest to the ocean and how this changes as a function of the brightness of artificial lighting.<br />
-<em>Sample</em>: All monitored nests<br />
-<em>Statistic(s)</em>: Slope and intercept of the linear relationship between the measured response variable (number of successful ocean-arrivers per nest) and the predictor variable (brightness of artificial lighting)</p>
-</div>
-<div id="some-more-specifics" class="section level3">
-<h3>Some more specifics!</h3>
-<p>We assume there is some true model out there describing the expected (mean) value of our response variable <em>y</em> as a linear function of our predictor variable <em>x</em>:</p>
-<p><span class="math inline">\(E(y)= \beta_0 + \beta_1\cdot x\)</span></p>
-<p>To interpret this equation: the true mean of our response variable (<span class="math inline">\(E(y)\)</span>) is computed by taking the true intercept (<span class="math inline">\(\beta_0\)</span>) and adding the product of the true slope term (<span class="math inline">\(\beta_1\)</span>) and our predictor variable. This is just another way of saying that the expected value of the response variable is computed as a linear function of the predictor variable. <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_0\)</span> are both <em>parameters</em> that we wish to estimate!</p>
-<p>To complete the thought, we also assume that there is some “noise” in the system. The “noise” term in regression and ANOVA is also known as the <em>residual error</em>. Specifically, we assume that the noise (residual error) is normally distributed with mean of zero and standard deviation of <span class="math inline">\(\sigma\)</span>.</p>
-<p>Mathematically, we are assuming that our data/sample was generated from this process:</p>
-<p><span class="math inline">\(y= \beta_0 + \beta_1\cdot x + \epsilon\)</span></p>
-<p>OR:</p>
-<p><span class="math inline">\(y= E(y) + \epsilon\)</span></p>
-<p>WHERE:</p>
-<p><span class="math inline">\(\epsilon \equiv Normal(0, \sigma)\)</span></p>
-<p>This is actually the same assumption we made for a one-sample t-test!</p>
-<p>For a t-test, we assume that there is a true population mean <span class="math inline">\(\mu\)</span> (equivalent to <span class="math inline">\(E(y)\)</span>) and that the true “noise” is normally distributed with standard deviation of <span class="math inline">\(\sigma\)</span>.</p>
-<p>As with a t-test, where we can only approximate the true population mean by computing the sample mean, we can only approximate the linear relationship between our response and predictor variables:</p>
-<p><span class="math inline">\(\bar{y} = \hat{B_0} + \hat{B_0}\cdot x\)</span></p>
-<p>Just like any other statistical test, we assume that our observed linear relationship (defined by test statistics <span class="math inline">\(\hat{B_0}\)</span> and <span class="math inline">\(\hat{B_1}\)</span>) is just one of many such possible relationships that <em>could have been derived</em> from random sampling from our population of interest. If we collected a different sample, we would get a different linear relationship.</p>
-<p>NOTE: in linear regression we are generally far more interested in the slope of the linear relationship (<span class="math inline">\(\hat{B_1}\)</span> rather than the intercept). So for now, we assume <span class="math inline">\(\hat{B_1}\)</span> (slope between response and predictor, computed from the sample) is the main test statistic of interest!</p>
-<p>So.. what is the sampling distribution for our test statistic <span class="math inline">\(\hat{B_1}\)</span> under the null hypothesis in this case? Well, the answer is that it (when converted to units of standard error) is t-distributed! Let’s look into this a bit more.</p>
-</div>
-<div id="regression-and-t-tests--the-link" class="section level3">
-<h3>Regression and t-tests- the link!</h3>
-<p>Our discussion of t-tests actually rolls us straight into linear regression. Why? How?</p>
-<p>In a one-sample t-test we are interested in estimating the true population mean, and we assume that our t-statistic (i.e., deviation of the sample mean from the null mean, in units of standard error) is t-distributed with degrees of freedom of one less than the sample size.</p>
-<p>What is the hypothesis of a typical one-sample t-test? (<span class="math inline">\(\mu = 0\)</span> - that is, the true mean is zero!)</p>
-<p>What is the hypothesis of a linear regression? (Slope = 0 - that is, the true relationship is zero).</p>
-<p>So already we are seeing a bit of a similarity.</p>
-<div id="t-test-recap" class="section level4">
-<h4>t-test recap</h4>
-<p>In a t-test we assume that the population mean is equal to the null mean and that the data are normally distributed around the true mean. We could write this as (using regression notation):</p>
-<p><span class="math inline">\(y = \beta_0 + \epsilon\)</span></p>
-<p>WHERE:</p>
-<p><span class="math inline">\(\epsilon \equiv Normal(0, \sigma)\)</span></p>
-<p>In the above equation, <span class="math inline">\(\beta_0\)</span> represents the population mean under the null hypothesis.</p>
-<p>We approximate our population mean using the sample mean <span class="math inline">\(\bar{\beta_0}\)</span> (formerly known as <span class="math inline">\(\bar{x}\)</span>) and we use the CLT and other statistical theories to show that the t-statistic:</p>
-<p><span class="math inline">\(t = \frac{\bar{\beta_0}-\beta_0}{StdErr(\beta_0)}\)</span></p>
-<p>Is t-distributed with df computed as the sample size minus the number of parameters estimated in the model (there is only one estimated parameter- the sample mean <span class="math inline">\(\bar{\beta_0}\)</span>).</p>
-</div>
-<div id="linear-regression-version" class="section level4">
-<h4>linear regression version</h4>
-<p>In linear regression we assume that the mean of our response is determined by two parameters- the intercept and the slope (linear relationship with the predictor variable). The null hypothesis (usually) is that the true mean is defined only by the intercept term and there is no relationship with the predictor variable (slope term is equal to zero).</p>
-<p>The slope term of the linear regression can be computed as:</p>
-<p><span class="math inline">\(\hat{\beta_1} = \frac{\sum_{i=1}^{n}{(x_i-\bar{x})(y_i-\bar{y})}}{\sum_{i-1}^{n}{(x_i-\bar{x})^2}}\)</span></p>
-<p>And the intercept term can be computed as:</p>
-<p><span class="math inline">\(\hat{\beta_0} = \bar{y} - \beta_1*\bar{x}\)</span></p>
-<p>Simple linear regression models (that is, the slope and intercept terms above) are fitted using “least squares”. The best fit model minimizes the sum of the squared residuals. DRAW THIS OUT.</p>
-<p>The standard error of the slope term (as opposed to the standard error of the mean) is computed as:</p>
-<p><span class="math inline">\(std.err_{\hat{\beta_1}} = \sqrt{\frac{\frac{1}{n-2}\sum_{i=1}^n{\hat\epsilon_i^2}}{\sum_{i=1}^n{(x_i-\bar{x})^2}}}\)</span></p>
-<p>Where the <span class="math inline">\(\hat\epsilon_i\)</span> refers to the residual errors.</p>
-<p>We can then compute a t-statistic for the slope term (difference from the sample slope term and the null slope term in units of standard error):</p>
-<p><span class="math inline">\(t=\frac{\hat{\beta_1}-\beta_{1null}}{std.err_{\hat{\beta_1}}}\)</span></p>
-<p>Just like with the t-test, we assume that this t-statistic is t-distributed under the null hypothesis. This time the degrees of freedom is 2 less than the sample size (since computing the residual error requires computing two parameters: mean and slope).</p>
-</div>
-</div>
-</div>
-<div id="simple-linear-regression-examples" class="section level2">
-<h2>Simple linear regression: examples</h2>
-<p>Okay let’s consider the sea turtle example from the beginning of lecture:</p>
-<p>Imagine we are testing for a relationship between the brightness of artificial lighting at long stretch of beach (e.g., from hotels and other forms of development) and the total number of hatchling sea turtles per nest that successfully make it to the ocean.</p>
-<p><em>Population</em>: All nests in this particular stretch of beach<br />
-<em>Parameter(s)</em>: The mean number of hatchlings per nest that successfully travel from their nest to the ocean and how this changes as a function of the brightness of artificial lighting.<br />
-<em>Sample</em>: All monitored nests<br />
-<em>Statistic(s)</em>: Slope and intercept of the linear relationship between the measured response variable (number of successful ocean-arrivers per nest) and the predictor variable (brightness of artificial lighting)</p>
-<p>First we will simulate some data under a known process model:</p>
-<pre class="r"><code>eggs.per.nest &lt;- 100
-n.nests &lt;- 15
-light &lt;- rnorm(n.nests,50,10)   # make up some light pollution values (predictor var)
+<div
+id="the-t-statistic-signal-to-noise-ratio-for-comparing-1-or-2-means"
+class="section level2">
+<h2>The t statistic: signal to noise ratio for comparing 1 or 2
+means</h2>
+<p>The <em>t statistic</em> is a useful summary statistic that we can
+calculate from a sample.</p>
+<p>The <em>t distribution</em> is the theoretical sampling distribution
+for the t-statistic under the null hypothesis. It describes the
+distribution of “false signals” that can arise under the null
+hypothesis, caused by random sampling.</p>
+<p>Mathematically, <em>t</em> is the ratio of the difference between the
+sample mean and the hypothesized population mean (<span
+class="math inline">\(\mu_0\)</span>), in units of standard error:</p>
+<p><span class="math inline">\(t =
+\frac{(\bar{x}-\mu_0)}{s.e.}\)</span></p>
+<p>Let’s assume that the null hypothesis is true (as we often do), and
+that our null hypothesis is that the sample mean is equal to zero.</p>
+<p>This is almost easier to conceptualize if we imagine a
+<em>paired</em> design in which, say, a set of individuals are monitored
+at two points in time: before a treatment and after.</p>
+<p>Let’s imagine we are researching the effectiveness of a weight loss
+drug. We sample 25 patients and weigh them before they start taking the
+drug and then weigh all of them 1 month after they start taking the
+drug. Never mind for now that this isn’t the best drug trial design!</p>
+<p>So for each patient we compute the change in weight between the first
+and second measurements. In the null universe, the drug is not effective
+and we would expect the change to be no greater than expected by random
+chance. Our task is to convince ourselves that the results (mean
+observed weight loss across all patients) are meaningful.</p>
+<p>Remember: - the t statistic is the difference between the sample mean
+and some hypothesized population mean, standardized in units of standard
+error. - in classical null hypothesis testing, the t-statistic
+represents the difference (in standard errors) between your sample mean
+and the hypothetical true mean (e.g., under the null hypothesis). - the
+t-distribution is the sampling distribution for the t statistic.</p>
+<p>Here is a worked example, in R:</p>
+<pre class="r"><code>## Paired t-test example -----------------
 
-probsucc &lt;- function(light){    # egg success as a function of light pollution
-  plogis(1.5-0.01*light)
-}
-
-hatchlings.successful &lt;- rbinom(n.nests,eggs.per.nest,probsucc(light))   # determine number of successful eggs (response var)
-
-#curve(probsucc,0,100)
-
-plot(hatchlings.successful~light)  # plot the data</code></pre>
+weightloss.data &lt;- c(-10.4,-11.6,3.9,1.5,-0.3,-3.5 -10.0,-6.7,-6.1,-2.4,-6.0,2.3,0.1,-4.1,-3.2, -11.3,-3.2,-9.3,-7.5,-5.7,-0.1,0.0,-9.8,1.0,-11.9)
+hist(weightloss.data,breaks=7)</code></pre>
 <p><img src="LECTURE4_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>Now that we have data, let’s run a linear regression!</p>
-<pre class="r"><code>slope &lt;- sum((light-mean(light))*(hatchlings.successful-mean(hatchlings.successful)))/sum((light-mean(light))^2)
-intercept &lt;- mean(hatchlings.successful) - slope*mean(light)
+<pre class="r"><code>mean.weightloss &lt;- mean(weightloss.data)
+null.weightloss &lt;- 0
+stdev.weightloss &lt;- sd(weightloss.data)
+sample.size &lt;- length(weightloss.data)
+std.error &lt;- stdev.weightloss/sqrt(sample.size)
 
-exp.successful &lt;- intercept+slope*light # expected number of eggs for each observation
-residuals &lt;- hatchlings.successful-exp.successful
+t.statistic &lt;- (mean.weightloss-null.weightloss)/std.error
+t.statistic</code></pre>
+<pre><code>## [1] -4.544623</code></pre>
+<pre class="r"><code>curve(dt(x,sample.size-1),-5.5,2)
+abline(v=t.statistic,col=&quot;green&quot;,lwd=3)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<pre class="r"><code>t.crit &lt;- qt(0.05,sample.size-1)    # &#39;critical value&#39; of the t statistic- you can reject the null if your value is more extreme than this!
 
-stderr &lt;- sqrt(((1/(n.nests-2))*sum(residuals^2))/(sum((light-mean(light))^2)))    # standard error
+p=pt(t.statistic,sample.size-1)    # p value
+p    # this is the p value</code></pre>
+<pre><code>## [1] 7.241049e-05</code></pre>
+<pre class="r"><code># Alternative: use R&#39;s built in t test
 
-t.stat &lt;- (slope-0)/stderr    # t statistic
-
-pval &lt;- 2*pt(t.stat,n.nests-2)    # p value
-
-
-############
-# use lm function instead (easy way!)
-
-model &lt;- lm(hatchlings.successful~light)
-
-summary(model)   # get the same t stat and p-value hopefully!</code></pre>
+t.test(weightloss.data,alternative = &quot;less&quot;)   # should get the same p=value!</code></pre>
 <pre><code>## 
-## Call:
-## lm(formula = hatchlings.successful ~ light)
+##  One Sample t-test
 ## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -11.1861  -1.9268  -0.3609   2.0089   7.7926 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  91.4235     9.0816  10.067 1.67e-07 ***
-## light        -0.3567     0.1839  -1.939   0.0745 .  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 5.147 on 13 degrees of freedom
-## Multiple R-squared:  0.2244, Adjusted R-squared:  0.1647 
-## F-statistic: 3.761 on 1 and 13 DF,  p-value: 0.07446</code></pre>
-<pre class="r"><code>############
-# plot regression line!
+## data:  weightloss.data
+## t = -4.5446, df = 23, p-value = 7.241e-05
+## alternative hypothesis: true mean is less than 0
+## 95 percent confidence interval:
+##       -Inf -2.966463
+## sample estimates:
+## mean of x 
+##   -4.7625</code></pre>
+<p><strong>Q</strong> Does a significant p-value here mean that everyone
+who takes the drug will lose weight? If not, what does it mean?</p>
+<p>NOTE: as the df gets large, the t distribution approximates a
+<em>standard normal</em> distribution.</p>
+<p>Fun fact: William Sealy Gosset – a student of Pearson, worked at
+Guinness brewery. He was hired to work out a way to determine the
+quality of stout. He published anonymously as ‘Student’ because Guinness
+prevented its employees from publishing. That’s why we call it the
+‘Student’s t-test’!</p>
+<p>[R demo: difference between t distribution and normal
+distribution]</p>
+<div id="z-tests" class="section level3">
+<h3>Z-tests</h3>
+<p>The Z-test is a simpler version of the t-test for when sample size is
+large enough so that we don’t really need the t distribution anymore
+(n&gt;50) or if the population dispersion is known (in which case we can
+assume the sample mean is normally distributed, following the CLT).</p>
+<p>The Z statistic is:</p>
+<p><span class="math inline">\(Z =
+\frac{(\bar{X}-\mu_0)}{s.e.}\)</span></p>
+<p>As you can see, this looks very much like the t statistic! Actually
+it is exactly the same! The difference is that we are now assuming that
+the sampling variation for this statistic is normally distributed
+instead of t-distributed, so we now call it the Z statistic!</p>
+<div id="example-z-test-golden-state-warriors-height"
+class="section level4">
+<h4>Example z-test: Golden State Warriors height</h4>
+<p>Tall basketball players are often successful. The Golden State
+Warriors are often successful. How tall are the Golden State Warriors
+relative to other basketball players in the NBA?</p>
+<p>We hypothesize that GSW players are taller than the NBA average! The
+null hypothesis is that they are essentially randomly sampled from the
+general pool of NBA players.</p>
+<p>What is the Population? Parameter? Sample? Statistic?</p>
+<p>The GSW are 15 players with an average height of 6’8” (80”). A large
+survey of NBA players suggests they are, on average, 6’7” tall (79”)
+with a standard deviation of 4 inches.</p>
+<p>NOTE: the z-test is only appropriate here because we know the
+population standard deviation. If this is the case, we know under the
+CLT that the sample means should follow a normal distribution. (the only
+reason the t-distribution differs from the normal distribution is that
+we also are estimating the sample standard deviation- it is not known
+with certainty!).</p>
+<p>NOTE: Dr. Sullivan (NRES) obtained those values from research into
+the height of NBA players.</p>
+<p>Here, the mean (mu) and the standard deviation (q) are coming from
+the population (all NBA players) instead of the sample. There are
+situations where you can use the sample standard deviation to compute
+standard error for a Z test, but those should be only when the sample
+size is very large. In general you should use a t-test when the
+population standard deviation is unknown.</p>
+<p>Use this link to download the data for this example: <a
+href="GSW_height.csv">link to GSW data</a></p>
+<pre class="r"><code># Z distribution --------------------
 
-plot(hatchlings.successful~light)  # plot the data
-abline(intercept,slope,col=&quot;blue&quot;)</code></pre>
+## Z test  
+
+df &lt;- read.csv(&quot;GSW_height.csv&quot;)
+GSWheight &lt;- df$Height
+GSWheight</code></pre>
+<pre><code>##  [1] 75 75 81 79 78 84 79 81 81 79 83 79 83 81 77</code></pre>
+<pre class="r"><code>mean.gsw &lt;- mean(GSWheight)
+sd.gsw &lt;- sd(GSWheight) 
+sd.pop &lt;- 4
+mean.pop &lt;- 79
+n &lt;- length(GSWheight)
+s.e. &lt;- sd.pop/sqrt(n)
+
+null.height &lt;- mean.pop   # null: GSW are sampled randomly from the pool of all NBA players. They are not fundamentally different!
+
+z.statistic &lt;- (mean.gsw-null.height)/s.e.
+z.statistic</code></pre>
+<pre><code>## [1] 0.6454972</code></pre>
+<pre class="r"><code>curve(dnorm(x),-3,3)    # we assume that the z statistic is normally distributed- standard normal!
+abline(v=z.statistic,col=&quot;green&quot;,lwd=3)</code></pre>
 <p><img src="LECTURE4_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>Of course, we can’t end with a single regression line, since there is sampling error associated with our best-fit regression line. There is error associated with the intercept and there is error associated with the slope term. To do this in r, we can use the ‘predict’ function:</p>
-<pre class="r"><code>######
-# add confidence interval on the regression line
-
-newdata &lt;- data.frame(    # make a data frame containing the light values we want to make predictions for (spanning the range of light values in our data)
-  light = seq(20,80,1)
-)
-
-my.predict &lt;- predict(model, newdata = newdata, interval = &quot;confidence&quot;)  # 95% conf int by default
-
-plot(hatchlings.successful~light)  # plot the data
-abline(intercept,slope,col=&quot;blue&quot;)
-lines(newdata$light,my.predict[,&quot;upr&quot;],col=&quot;red&quot;,lty=2)   # add upper bound
-lines(newdata$light,my.predict[,&quot;lwr&quot;],col=&quot;red&quot;,lty=2)   # add lower bound</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>This confidence interval loosely represents the range of plausible best-fit lines we could fit if we were to gather multiple alternative datasets. If some of the lines that fit within the upper and lower bounds of the confidence interval on the regression line have a positive slope and others have a negative slope, we might remain unconvinced that the relationship betwen the response and predictor variable is ‘statistically significant’!</p>
-<pre class="r"><code>#  use the lm function to regress tree volume on tree girth using the &#39;trees&#39; dataset
-
-mod &lt;- lm(Volume~Girth,data=trees)
-summary(mod)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = Volume ~ Girth, data = trees)
-## 
-## Residuals:
-##    Min     1Q Median     3Q    Max 
-## -8.065 -3.107  0.152  3.495  9.587 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -36.9435     3.3651  -10.98 7.62e-12 ***
-## Girth         5.0659     0.2474   20.48  &lt; 2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 4.252 on 29 degrees of freedom
-## Multiple R-squared:  0.9353, Adjusted R-squared:  0.9331 
-## F-statistic: 419.4 on 1 and 29 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>p &lt;- 1-pnorm(z.statistic)    # is the p value enough evidence to tell you that GSW players are taller than the NBA average??
+p       </code></pre>
+<pre><code>## [1] 0.2593025</code></pre>
+<pre class="r"><code>pnorm(z.statistic)</code></pre>
+<pre><code>## [1] 0.7406975</code></pre>
+<p><strong>Q</strong> That means that 74% of NBA players are shorter
+than the GSW average height, right?</p>
+<p>Wrong- but why??</p>
+<p><strong>Q</strong> Would you reject the null hypothesis and say that
+the GSW team is taller than expected by random chance?</p>
 </div>
-<div id="assumptions-of-simple-linear-regression" class="section level2">
-<h2>Assumptions of simple linear regression</h2>
-<div id="normal-distribution" class="section level3">
-<h3>Normal distribution</h3>
-<p>Simple linear regression assumes that the model <strong>residuals</strong> are normally distributed.</p>
-<p>Let’s quickly review what residuals are (see whiteboard exercise)</p>
-<p>Let’s look at the residuals for our sea turtle example:</p>
-<pre class="r"><code>my.intercept &lt;- model$coefficients[&quot;(Intercept)&quot;]
-my.slope &lt;- model$coefficients[&quot;light&quot;]
-expected.vals &lt;- my.intercept+my.slope*light 
-my.residuals &lt;- hatchlings.successful-expected.vals
-my.residuals</code></pre>
-<pre><code>##  [1]   1.9184018  -1.3888319  -0.7763980   1.5561769  -2.4648016  -0.9236137
-##  [7]  -0.3608579   7.7925980   7.0735228   5.9462566 -11.1860902   2.0994176
-## [13]  -6.2096460  -3.7434128   0.6672784</code></pre>
-<pre class="r"><code>### alternative way of getting residuals (best way!)
-
-my.residuals2 &lt;- model$residuals
-
-### alternative way using predict function
-
-my.residuals3 &lt;- hatchlings.successful-predict(model)
-
-### histogram of residuals
-
-hist(my.residuals)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<pre class="r"><code>### test for normality
-
-qqnorm(my.residuals)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
-<pre class="r"><code>shapiro.test(my.residuals)</code></pre>
-<pre><code>## 
-##  Shapiro-Wilk normality test
-## 
-## data:  my.residuals
-## W = 0.95855, p-value = 0.6672</code></pre>
-</div>
-<div id="linear-model" class="section level3">
-<h3>Linear model</h3>
-<p>The true relationship between the response and predictor variables is linear!</p>
-<p>Which one of the following plots violates this assumption?</p>
-<pre class="r"><code>layout(matrix(1:4,nrow=2,byrow = T))
-plot(anscombe$y1~anscombe$x1,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
-plot(anscombe$y2~anscombe$x2,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
-plot(anscombe$y3~anscombe$x3,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
-plot(anscombe$y4~anscombe$x4,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-</div>
-<div id="independence-of-observations" class="section level3">
-<h3>Independence of observations</h3>
-<p>Of course! All classical analyses make this assumption!</p>
-</div>
-<div id="equal-variance-homoscedasticity-or-lack-of-heteroscedasticity" class="section level3">
-<h3>Equal variance (homoscedasticity, or lack of heteroscedasticity)</h3>
-<p>In simple linear regression, we assume that the model residuals are normally distributed– and that the spread of that distribution does not change as your predictor variable or response variable goes from small to large. That is, the residuals are <strong>homoskedastic</strong> – which means they have equal variance across the range of the predictor and response variables.</p>
-<p>Let’s look at the sea turtle example:</p>
-<pre class="r"><code>my.residuals &lt;- model$residuals
-
-plot(my.residuals~light)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<pre class="r"><code>plot(my.residuals~predict(model))</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
-<p>Do you see any evidence for <strong>heteroskedasticity</strong>? Heteroskedasticity means non-homogeneity of variance across the range of the predictor variable. Serious violations of the equal variance assumption may warrant a <strong>transformation</strong> of your data, or you may choose to use an alternative analysis like a <strong>generalized linear model</strong>.</p>
-</div>
-<div id="predictor-variable-is-known-with-certainty" class="section level3">
-<h3>Predictor variable is known with certainty</h3>
-<p>That is, the observed (e.g., measured) values for your predictor variable are correct and known with perfect precision. In regression, the randomness in linear regression is associated only with the response variable - and that randomness is normally distributed.</p>
-</div>
-<div id="diagnostic-plots" class="section level3">
-<h3>Diagnostic plots</h3>
-<p>Simple linear regression analyses are generally accompanied by ‘diagnostic plots’, which are intended to diagnose potential violations of key assumptions, or other potential pitfalls of regression.</p>
-<p>When you use the ‘plot’ function in R to evaluate a model generated with the ‘lm’ function, R returns four diagnostic plots:</p>
-<pre class="r"><code>layout(matrix(1:4,2,byrow = T))
-plot(model)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>The first diagnostic plot (residuals vs fitted) lets you check for possible non-linear patterns. This plot should have no obvious pattern to it- it should look like random noise across the range of fitted values.</p>
-<p>The second diagnostic plot (normal Q-Q) lets you check for normality of residuals. You already know how to do this.</p>
-<p>The third diagnostic plot (scale-location) lets you check for homoskedascitiy. This plot should have no obvious pattern to it- it should look like random noise across the range of fitted values.</p>
-<p>The fourth diagnostic plot (residuals vs leverage) lets you check to make sure your regression model isn’t driven by a few <strong>influential points</strong>. Look for points that fall far to the right of the other points- these are high leverage points. Also look specifically at the upper and lower right hand side of this figure- points in these regions (with large values for “Cook’s distance”) have the property that if they were removed from the analysis the results would change substantially.</p>
-<p>These four figures, taken together, should be a guide to interpreting how robust your regression is. You need to be the scientist. Analyze these plots and make decisions about what you’re willing to accept.</p>
-</div>
-<div id="influential-points" class="section level3">
-<h3>Influential points</h3>
-<p>Which of the following plots has a highly influential point?</p>
-<pre class="r"><code>layout(matrix(1:4,nrow=2,byrow = T))
-plot(anscombe$y1~anscombe$x1,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
-plot(anscombe$y2~anscombe$x2,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
-plot(anscombe$y3~anscombe$x3,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
-plot(anscombe$y4~anscombe$x4,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p>Can you try to draw a regression line if this point was removed?</p>
-</div>
-</div>
-<div id="a-deeper-exploration" class="section level2">
-<h2>A deeper exploration</h2>
-<div id="r-squared" class="section level3">
-<h3>R-squared</h3>
-<p>The coefficient of determination, also known as R-squared, is a statistic that is commonly used to indicate the performance of a regression model. Specifically, R-squared tells you how much of the total variance in your response variable is explained by your predictor variable. The maximum value for R-squared is 1- values close to 1 indicate a very “good” model! An R-squared of zero indicates that the model with the predictor variable is no better than a model that simply predicts the overall mean of the response variable no matter what the predictor variable is.</p>
-<p>R-squared can be computed as:</p>
-<p><span class="math inline">\(R_2 = 1-\frac{SS_{res}}{SS_{tot}}\)</span></p>
-<p>where <span class="math inline">\(SS_{tot} = \sum(y_i-\bar{y})^2\)</span> and <span class="math inline">\(SS_{res} = \sum(y_i-y_{pred})^2\)</span>.</p>
-</div>
-<div id="regression-outcomes" class="section level3">
-<h3>Regression outcomes</h3>
-<p>Let’s explore some possible outcomes of linear regression:</p>
-<p>Try to come up with scenarios (with plots) for each of the following:</p>
+<div id="group-questions" class="section level4">
+<h4>Group questions</h4>
 <ol style="list-style-type: decimal">
-<li>Non-significant p, high R2<br />
+<li>For any normal distribution (e.g., the standard normal or z
+distribution) what is the probability of obtaining a random number
+within 1 standard deviation of the mean?<br />
 </li>
-<li>Significant p, low R2<br />
+<li>For any normal distribution (e.g., the standard normal or z
+distribution) what is the probability of obtaining a random number
+within 2 standard deviations of the mean?<br />
 </li>
-<li>Significant p, high R2<br />
-</li>
-<li>Non-significant p, low R2</li>
+<li>What is the 95% quantile of the standard normal distribution (z
+distribution)?</li>
 </ol>
 </div>
 </div>
-<div id="multiple-linear-regression" class="section level2">
-<h2>Multiple linear regression</h2>
-<p>Multiple, or multi-variable, linear regression simply refers to the case where you have more than one predictor variable.</p>
-<p>NOTE: avoid using the term ‘multivariate’ because that usually refers to the case where you have multiple <strong>response</strong> variables.</p>
-<div id="linear-regression-vs-correlation" class="section level3">
-<h3>Linear regression vs correlation</h3>
-<p>When you run a simple linear regression you are assuming that one variable is your response variable and the other variable is a predictor variable. You are essentially modeling only one of these variables (the response) as a random variable and the other (the predictor variable) as a set of fixed values (a fixed effect).</p>
 </div>
-<div id="assessing-correlation-in-r" class="section level3">
-<h3>Assessing correlation in R</h3>
-<p>In R you can use the ‘cor’ function (part of base R) to assess correlation. To run a correlation test (assess if the correlation is ‘significant’) you can use the ‘cor.test’ function. By default, the ‘cor.test’ function runs a Pearson correlation test, which is a parametric test that assumes both variables are normal, no outliers, etc. If you want you can run a non-parametric version- the Spearman correlation (or Kendall’s tau).</p>
-<pre class="r"><code>## load the &#39;mtcars&#39; data set
+<div id="t-tests" class="section level2">
+<h2>T-tests</h2>
+<p>Let’s face it. T-tests, are more commonly used than z-tests for data
+analysis. The reason: we usually don’t know the population mean or
+standard deviation. All we have is the sample!</p>
+<p>To review: we have a continuous response variable and either no
+predictor variable (one sample t-test) or a binary predictor variable
+(two-sample t-test).</p>
+<p>We have already performed simple versions of the t-test (one-sample
+t-tests). But t-tests are quite flexible and can be applied to a wide
+variety of null-hypothesis testing scenarios:</p>
+<div id="one-sample-t-test" class="section level3">
+<h3>One-sample t-test</h3>
+<p>A one-sample t-test tests the consistency of the sample data with the
+null hypothesis that the sample was generated from a population with a
+specified mean (often zero, but not necessarily). As we have seen
+before, the t-statistic in this case is expressed as:</p>
+<p><span class="math inline">\(t =
+\frac{(\bar{x}-\mu_0)}{s.e.}\)</span></p>
+<p>Where <span class="math inline">\(\bar{x}\)</span> is the sample
+mean, <span class="math inline">\(s.e.\)</span> is the standard error of
+the mean, and <span class="math inline">\(\mu_0\)</span> is the
+population mean under the null hypothesis.</p>
+<p>The t-statistic can be interpreted as the difference between the
+sample mean and the (null) population mean in units of standard
+error.</p>
+<p>Under the null hypothesis, the sampling distribution of the
+t-statistic should follow a t distribution with n-1 degrees of
+freedom.</p>
+<pre class="r"><code># one sample t-test (paired t-test is a type of one sample t-test)  -------------
 
-data(mtcars)
+sample.data &lt;- rgamma(10,2,.1)
+null.mean &lt;- 10
 
-## define which variables to assess correlation for.
+sample.size &lt;- length(sample.data)
+sample.mean &lt;- mean(sample.data)
+sample.sd &lt;- sd(sample.data)
+std.err &lt;- sample.sd/sqrt(sample.size)
+t.stat &lt;- (sample.mean-null.mean)/std.err
 
-myvars &lt;- c(&quot;disp&quot;,&quot;hp&quot;,&quot;wt&quot;)
+t.crit &lt;- abs(qt(0.025,sample.size-1))   # for 2-tailed test
 
-## grab only the variables of interest
+p.val &lt;- (1-pt(abs(t.stat),sample.size-1))*2   # 
 
-mtcars.reduced &lt;- mtcars[,myvars]
 
-## compute (pearson) correlations for all pairs of variables (correlation matrix)
+### alternatively use the t.test function:
 
-cor.mat &lt;- cor(mtcars.reduced)
-
-cor.mat</code></pre>
-<pre><code>##           disp        hp        wt
-## disp 1.0000000 0.7909486 0.8879799
-## hp   0.7909486 1.0000000 0.6587479
-## wt   0.8879799 0.6587479 1.0000000</code></pre>
-<pre class="r"><code>## visualize correlations with the &#39;pairs&#39; function
-
-pairs(mtcars.reduced)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<pre class="r"><code>## run a correlation test- with 95% confidence interval
-    # default is Pearson product-moment correlation.
-
-cor.test(mtcars$disp,mtcars$wt)</code></pre>
+t.test(sample.data,mu=null.mean)   # should get the same answer!</code></pre>
 <pre><code>## 
-##  Pearson&#39;s product-moment correlation
+##  One Sample t-test
 ## 
-## data:  mtcars$disp and mtcars$wt
-## t = 10.576, df = 30, p-value = 1.222e-11
-## alternative hypothesis: true correlation is not equal to 0
+## data:  sample.data
+## t = 1.5263, df = 9, p-value = 0.1613
+## alternative hypothesis: true mean is not equal to 10
 ## 95 percent confidence interval:
-##  0.7811586 0.9442902
+##   6.539107 27.819106
 ## sample estimates:
-##       cor 
-## 0.8879799</code></pre>
-<pre class="r"><code>## now try a non-parametric version
+## mean of x 
+##  17.17911</code></pre>
+<div id="paired-t-test" class="section level4">
+<h4>Paired t-test</h4>
+<p>A common version of the one-sample t-test is the ‘paired t-test’, in
+which a measurement is taken on a single individual before and after a
+treatment is applied. An example of a paired t-test is the ‘weight loss
+drug’ example from the opening of this lecture. In the weight-loss drug’
+example, we measured patients before and after taking a drug and
+measured the total weight change in each patient. Even though we have
+two measurements per patient (repeated measures!) we collapse the data
+for each patient into a single number (difference in weight) before
+running our t-test.</p>
+</div>
+</div>
+<div id="two-sample-t-test" class="section level3">
+<h3>Two-sample t-test</h3>
+<p>A two-sample t-test tests the consistency of the sample data with the
+null hypothesis that sample A was generated from the same underlying
+population as sample B. The t-statistic in this case is expressed
+as:</p>
+<p><span class="math inline">\(t =
+\frac{(\bar{x_A}-\bar{x_B})}{s.e._{pooled}}\)</span></p>
+<p>Where <span class="math inline">\(\bar{x_A}\)</span> is the sample
+mean for group A, <span class="math inline">\(\bar{x_B}\)</span> is the
+sample mean for group B, and <span
+class="math inline">\(s.e._{pooled}\)</span> is the pooled standard
+error of the mean across both samples.</p>
+<p>The t-statistic in the 2-sample case can be interpreted as the
+difference between the sample mean from population A and the sample mean
+from population B, in units of standard errors.</p>
+<p>The formula for the pooled standard deviation depends on whether your
+sample size is equal in the two samples and whether you are able to
+assume that the standard deviation is the same or similar in the two
+underlying populations.</p>
+<p>For example, the formula for the pooled standard deviation when we
+assume equal standard deviation in the two population but we have
+unequal sample size is:</p>
+<p><span class="math inline">\(\sqrt{((N_1-1)*\sigma_1^2 +
+(N_2-1)*\sigma_2^2)/(N_{pooled}-2)}\)</span></p>
+<p>For the 2-sample t-test, the degrees of freedom is equal to the total
+sample size across both samples minus 2.</p>
+<p>Can you think of why the df is two less than the pooled sample
+size?</p>
+<pre class="r"><code># two sample t-test -----------------
 
-cor.test(mtcars$disp,mtcars$wt, method = &quot;kendall&quot;) # or spearman</code></pre>
-<pre><code>## Warning in cor.test.default(mtcars$disp, mtcars$wt, method = &quot;kendall&quot;): Cannot
-## compute exact p-value with ties</code></pre>
+sample.data.1 &lt;- rnorm(15,55,10)
+sample.data.2 &lt;- rnorm(10,45,10)
+
+sample.size.1 &lt;- length(sample.data.1)
+sample.size.2 &lt;- length(sample.data.2)
+sample.size.pooled &lt;- length(sample.data.1) + length(sample.data.2)
+
+sample.mean1 &lt;- mean(sample.data.1)
+sample.mean2 &lt;- mean(sample.data.2)
+
+sample.sd1 &lt;- sd(sample.data.1)
+sample.sd2 &lt;- sd(sample.data.2)
+sample.sd.pooled &lt;- sqrt(((sample.size.1-1)*sample.sd1^2 + (sample.size.2-1)*sample.sd2^2)/(sample.size.pooled-2))
+
+std.err.pooled &lt;- sample.sd.pooled*sqrt(1/sample.size.1+1/sample.size.2)
+t.stat &lt;- (sample.mean1-sample.mean2)/std.err.pooled
+
+t.crit &lt;- abs(qt(0.025,sample.size-1))   # for 2-tailed test
+
+p.val &lt;- (1-pt(abs(t.stat),sample.size.pooled-2))*2   # 2-tailed test
+
+
+
+### alternatively use the t.test function:
+
+t.test(sample.data.1,sample.data.2,var.equal = T)   # should get the same answer!</code></pre>
 <pre><code>## 
-##  Kendall&#39;s rank correlation tau
+##  Two Sample t-test
 ## 
-## data:  mtcars$disp and mtcars$wt
-## z = 5.9278, p-value = 3.07e-09
-## alternative hypothesis: true tau is not equal to 0
+## data:  sample.data.1 and sample.data.2
+## t = 1.5652, df = 23, p-value = 0.1312
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -2.185865 15.776784
 ## sample estimates:
-##       tau 
-## 0.7433824</code></pre>
-<p>If we were running a multiple linear regression with these variables as predictor variables, we might be somewhat concerned about multicollinearity. What is that, you ask?</p>
+## mean of x mean of y 
+##  51.02035  44.22489</code></pre>
+<div id="one-tailed-vs-two-tailed-tests" class="section level4">
+<h4>One tailed vs two-tailed tests</h4>
+<p>Tailed-ness is a common point of confusion when running t-tests and
+z-tests, so it’s worth taking a little time to review.</p>
+<p>It all has to do with what we mean by ‘more extreme than the observed
+test statistic’ (from the definition of a p-value).</p>
+<p>In a one-tailed test in which our (alternative) hypothesis is that
+our sample mean is <em>greater than</em> than the null hypothesis, we
+mean ‘more positive than the observed test statistic’.</p>
+<p>In a one-tailed test in which our (alternative) hypothesis is that
+our sample mean is <em>less than</em> than the null hypothesis, we mean
+‘more negative than the observed test statistic’.</p>
+<p>In a two-tailed test, we mean ‘more positive or more negative than
+the absolute value of our observed test statistic’ (absolute value is
+more extreme)</p>
+<p>Here is an R demo to illustrate the concept:</p>
+<p>We have the following data:</p>
+<pre class="r"><code># one vs two tailed demo
+
+#my.data &lt;- rnorm(15, 0.5, 1)   # generate sample data
+my.data &lt;- c(0.20119786,1.41700898,-0.72426698,0.44006284,0.01487128,-0.19031680,1.75470699,-0.81992816,2.31978530,  2.71442595,-0.31461411,0.52086138,-0.50580117,1.52260888,0.76454698)
+samp.mean &lt;- mean(my.data)
+samp.sd &lt;- sd(my.data)
+samp.n &lt;- length(my.data)
+std.err &lt;- samp.sd/sqrt(samp.n)
+
+null.mean &lt;- 0
+
+t.statistic &lt;- (samp.mean-null.mean)/std.err
+
+### Two-tailed
+curve(dt(x,samp.n-1),-3,3, main=&quot;Meaning of more extreme (two tailed version)&quot;,
+      ylab=&quot;probability density&quot;,xlab=&quot;t statistic&quot;)    # visualize the sampling distribution of the t-statistic
+abline(v=t.statistic,lwd=2,col=&quot;blue&quot;)
+
+xs &lt;- seq(abs(t.statistic),10,0.05)                
+ys &lt;- dt(xs,samp.n-1)
+polygon(x=c(xs,rev(xs)),y=c(ys,rep(0,times=length(ys))),col=&quot;green&quot;,border=NA)
+polygon(x=c(-xs,rev(-xs)),y=c(ys,rep(0,times=length(ys))),col=&quot;green&quot;,border=NA)
+
+p.twosided &lt;- pt(-abs(t.statistic),samp.n-1)*2     # two-tailed p-value
+
+text(-2,0.3,paste(&quot;p =&quot;,round(p.twosided,4)))</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>### One-sided (alternative = &#39;greater&#39;)
+curve(dt(x,samp.n-1),-3,3, main=&quot;Meaning of more extreme (one tailed version: greater than)&quot;,
+      ylab=&quot;probability density&quot;,xlab=&quot;t statistic&quot;)    # visualize the sampling distribution of the t-statistic
+abline(v=t.statistic,lwd=2,col=&quot;blue&quot;)
+
+xs &lt;- seq(t.statistic,10,0.05)                
+ys &lt;- dt(xs,samp.n-1)
+polygon(x=c(xs,rev(xs)),y=c(ys,rep(0,times=length(ys))),col=&quot;green&quot;,border=NA)
+
+p.onesided &lt;- pt(-abs(t.statistic),samp.n-1)     # one-tailed p-value
+
+text(-2,0.3,paste(&quot;p =&quot;,round(p.onesided,4)))</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<p>In the same way, the critical value for a t-statistic is different
+for a two-tailed vs a one-tailed test:</p>
+<pre class="r"><code>### t-crit in one tailed vs two tailed test
+
+sample.size=7
+
+curve(dt(x,sample.size-1),-8,4, main=&quot;2-tailed vs 1-tailed critical value&quot;,
+      xlab=&quot;t-statistic&quot;,ylab=&quot;probability density&quot;)
+
+alpha &lt;- 0.1
+t.crit.twosided &lt;- qt(alpha/2,sample.size-1) 
+
+abline(v=c(t.crit.twosided,abs(t.crit.twosided)),col=&quot;red&quot;,lwd=2)
+
+
+t.crit.twosided &lt;- qt(alpha/2,sample.size-1) 
+
+abline(v=c(t.crit.twosided,abs(t.crit.twosided)),col=&quot;red&quot;,lwd=2)
+
+t.crit.onesided &lt;- qt(alpha,sample.size-1) 
+
+abline(v=abs(t.crit.onesided),col=&quot;green&quot;,lwd=2)
+abline(v=t.crit.onesided,col=&quot;blue&quot;,lwd=2)
+
+legend(&quot;topleft&quot;,lwd=c(2,2,2),col=c(&quot;red&quot;,&quot;green&quot;,&quot;blue&quot;),bty=&quot;n&quot;,legend=c(&quot;two-tailed crit value&quot;,&quot;one-tailed crit value (greater than)&quot;,&quot;one-tailed crit value (less than)&quot;))</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>All of these critical values have the same percentage of the sampling
+distribution that are more extreme than them (the percentage is alpha,
+which is set at 0.1 in this example)– but the definition of
+‘extremeness’ differs for the one-tailed and two-tailed cases!</p>
 </div>
-<div id="multicollinearity" class="section level3">
-<h3>Multicollinearity</h3>
-<p>If you have multiple predictor variables, you should first check that your predictor variables are not too correlated with one another. If the correlation between all pairs of covariates is less than around 0.7 or 0.8 you should generally not have a big problem with multicollinearity (although you might still check your variance inflation factors!). If you have a major problem with multicollinearity, you should generally use only one variable out of every pair of highly correlated variables for your final model.</p>
-<p>You might also consider “penalized regression” approaches like ‘ridge regression’. This, however, is outside the scope of this class!</p>
-<div id="variance-inflation-factors" class="section level4">
-<h4>Variance Inflation Factors</h4>
-<p>Variance Inflation Factors are a diagnostic tool to help you evaluate if you have a multicollinearity problem. In general VIFs less than 4 are considered okay. On the other hand, VIFs greater than 5 or 10 indicate serious problems!</p>
-<p>To compute variance inflation factors, you can use the ‘vif’ function in the ‘car’ package. Let’s try this using the trees dataset!</p>
-<pre class="r"><code>########
-# load the car package
-
-library(car)
-
-#######
-# load the trees dataset
-
-data(trees)
-
-######
-# visualize relationships among predictor vars
-
-pairs(trees[,c(&quot;Girth&quot;,&quot;Height&quot;)])</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<pre class="r"><code>######
-# check for correlation in predictor variables
-
-cor(trees[,c(&quot;Girth&quot;,&quot;Height&quot;)])   # predictor variables not highly correlated</code></pre>
-<pre><code>##            Girth    Height
-## Girth  1.0000000 0.5192801
-## Height 0.5192801 1.0000000</code></pre>
-<pre class="r"><code># run a multiple regression model
-
-my.mod &lt;- lm(Volume~Girth+Height,data=trees)
-
-
-# check variance inflation factors
-
-car::vif(my.mod)</code></pre>
-<pre><code>##   Girth  Height 
-## 1.36921 1.36921</code></pre>
-<p>Here it looks like we don’t have to worry!</p>
-<p>What about if we use the ‘mtcars’ dataset? It seemed there were stronger correlations among predictor variables in that case!</p>
-<pre class="r"><code>########
-## mtcars multicollinearity example
-
-mymod &lt;- lm(mpg~disp+hp+wt,data=mtcars) 
-
-vif(mymod)</code></pre>
-<pre><code>##     disp       hp       wt 
-## 7.324517 2.736633 4.844618</code></pre>
-<p>Now we are in the danger zone, and we might consider reducing our set of variables. First we might find our most highly correlated pair of variables and eliminate one of these!</p>
-<pre class="r"><code>cor(mtcars.reduced)</code></pre>
-<pre><code>##           disp        hp        wt
-## disp 1.0000000 0.7909486 0.8879799
-## hp   0.7909486 1.0000000 0.6587479
-## wt   0.8879799 0.6587479 1.0000000</code></pre>
-<pre class="r"><code>## let&#39;s remove the &#39;disp&#39; variable and keep weight...
-
-mymod &lt;- lm(mpg~hp+wt,data=mtcars) 
-
-vif(mymod)</code></pre>
-<pre><code>##       hp       wt 
-## 1.766625 1.766625</code></pre>
-<p>Looks much better now!!!</p>
+<div id="welchs-t-test" class="section level4">
+<h4>Welch’s t-test</h4>
+<p>Welch’s t-test allows for unequal sample sizes AND unequal variance
+in the two populations. The Welch’s t-test is like the two-sample t-test
+we already ran, but it is more flexible. Like other t-tests, this test
+is robust against violations of normality due to the CLT. <em>This is
+the DEFAULT version of a t-test in R</em>. If you want a classical
+Student’s t-test, you need to tell it to do so (otherwise it will do the
+Welch’s test; use the ‘var.equal = TRUE’ argument to run the classical
+test)!</p>
+<p>I won’t go through the math for the Welch’s t-test (you can look it
+up if you’d like) because the basic concepts and interpretation are the
+same. The differences lie in the computation of the pooled variance and
+the degrees of freedom.</p>
 </div>
 </div>
 </div>
-<div id="what-if-assumptions-are-violated" class="section level2">
-<h2>What if assumptions are violated?</h2>
-<p>Let’s look at what to do if some of the basic assumptions of linear regression are violated?</p>
-<div id="non-linearity" class="section level3">
-<h3>Non-linearity</h3>
-<p>If we suspect a non-linear functional relationship between our response and predictor variables, we might perform a <strong>non-linear regression</strong> analysis.</p>
-<p>We can perform a non-linear regression using the “nls” function in R (for non-linear least squares). Let’s use the “DNase” dataset in R to explore this.</p>
-<pre class="r"><code># ?nls
+<div id="t-tests-in-r" class="section level2">
+<h2>t-tests in R</h2>
+<p>Previously, we have mostly avoided using R’s built in ‘t-test’
+function. Let’s use it now!</p>
+<pre class="r"><code># More t-test examples
 
-data(DNase)
+# T-tests  ---------------
 
-plot(DNase$density~DNase$conc)   # looks non-linear!</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<pre class="r"><code>### run linear regression model
-
-model1 &lt;- lm(density~conc,data=DNase)
-
-### run diagnostic plots
-
-par(mfrow=c(2,2))
-plot(model1)     # clear non-linearity (and non-normal residuals, and heteroskedasticity!)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
-<pre class="r"><code>par(mfrow=c(1,1))      # plot data with regression line - obvious issues!
-plot(DNase$density~DNase$conc)
-abline(model1)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-3.png" width="672" /></p>
-<pre class="r"><code>### run non-linear regression model - use saturation curve
-
-model2 &lt;- nls(density ~ (max*conc)/(K+conc),data=DNase,start=list(max=2,K=1))
-summary(model2)</code></pre>
+# Are my data greater than zero? 
+Group0 &lt;- c(0.5, -0.03, 4, 2.5, 0.89, 2.2, 1.7, 1.125)
+hist(Group0)
+t.test(Group0,alternative=&quot;greater&quot;) # This gets at directionality</code></pre>
 <pre><code>## 
-## Formula: density ~ (max * conc)/(K + conc)
+##  One Sample t-test
 ## 
-## Parameters:
-##     Estimate Std. Error t value Pr(&gt;|t|)    
-## max  2.28032    0.02189  104.16   &lt;2e-16 ***
-## K    3.68241    0.08677   42.44   &lt;2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.04909 on 174 degrees of freedom
-## 
-## Number of iterations to convergence: 6 
-## Achieved convergence tolerance: 2.373e-06</code></pre>
-<pre class="r"><code>### run non-linear regression model - use logistic function 
-
-model3 &lt;- nls(density ~ Asym/(1 + exp((xmid - log(conc))/scal)),
-                 data = DNase,
-                 start = list(Asym = 3, xmid = 0, scal = 1))
-
-summary(model3)</code></pre>
+## data:  Group0
+## t = 3.5487, df = 7, p-value = 0.00468
+## alternative hypothesis: true mean is greater than 0
+## 95 percent confidence interval:
+##  0.7507388       Inf
+## sample estimates:
+## mean of x 
+##  1.610625</code></pre>
+<pre class="r"><code>#Are my data different than zero? 
+Group0 &lt;- c(0.5, -0.03, 4, 2.5, 0.89, 2.2, 1.7, 1.125)
+hist(Group0)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>t.test(Group0) # Okay, that&#39;s to zero. What about if it&#39;s different than 1? </code></pre>
 <pre><code>## 
-## Formula: density ~ Asym/(1 + exp((xmid - log(conc))/scal))
+##  One Sample t-test
 ## 
-## Parameters:
-##      Estimate Std. Error t value Pr(&gt;|t|)    
-## Asym  2.48532    0.06287   39.53   &lt;2e-16 ***
-## xmid  1.51812    0.06397   23.73   &lt;2e-16 ***
-## scal  1.09831    0.02442   44.98   &lt;2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## data:  Group0
+## t = 3.5487, df = 7, p-value = 0.00936
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  0.5374007 2.6838493
+## sample estimates:
+## mean of x 
+##  1.610625</code></pre>
+<pre class="r"><code># are my data different than 1? 
+t.test(Group0, mu=1)</code></pre>
+<pre><code>## 
+##  One Sample t-test
 ## 
-## Residual standard error: 0.04687 on 173 degrees of freedom
+## data:  Group0
+## t = 1.3454, df = 7, p-value = 0.2205
+## alternative hypothesis: true mean is not equal to 1
+## 95 percent confidence interval:
+##  0.5374007 2.6838493
+## sample estimates:
+## mean of x 
+##  1.610625</code></pre>
+<pre class="r"><code># Now let&#39;s test two groups. 
+# are the means equal? 
+group1 &lt;- c(7,9,6,6,6,11,6,3,8,7)
+group2 &lt;- c(11,13,8,6,14,11,13,13,10,11)
+t.test(group1, group2, var.equal=T) # Notice how we set equal variance? Look at the output - &quot;Two Sample t-test.&quot;</code></pre>
+<pre><code>## 
+##  Two Sample t-test
 ## 
-## Number of iterations to convergence: 6 
-## Achieved convergence tolerance: 4.739e-07</code></pre>
-<pre class="r"><code>plot(DNase$density~DNase$conc)
-abline(model1)
-concs.toplot &lt;- seq(0.01,14,0.1)
-densities.toplot &lt;- predict(model2,newdata=data.frame(conc=concs.toplot))
-lines(concs.toplot,densities.toplot,col=&quot;blue&quot;)
-densities.toplot &lt;- predict(model3,newdata=data.frame(conc=concs.toplot))
-lines(concs.toplot,densities.toplot,col=&quot;red&quot;)
+## data:  group1 and group2
+## t = -3.9513, df = 18, p-value = 0.000936
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -6.27997 -1.92003
+## sample estimates:
+## mean of x mean of y 
+##       6.9      11.0</code></pre>
+<pre class="r"><code># is this one-tail or two? 
 
-legend(&quot;topleft&quot;,lty=c(1,1,1),col=c(&quot;black&quot;,&quot;blue&quot;,&quot;red&quot;),legend=c(&quot;linear&quot;,
-                  &quot;saturation&quot;,&quot;logistic&quot;))</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-4.png" width="672" /> You can run residual plots with non-linear regression just like you can with ordinary linear regression:</p>
-<pre class="r"><code>## residual plots
+group1 &lt;- c(7,9,6,6,6,11,6,3,8,7)
+group2 &lt;- c(11,13,8,6,14,11,13,13,10,11)
+t.test(group1, group2) #  &quot;Welch&#39;s Two Sample t-test&quot;</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  group1 and group2
+## t = -3.9513, df = 17.573, p-value = 0.0009743
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -6.283771 -1.916229
+## sample estimates:
+## mean of x mean of y 
+##       6.9      11.0</code></pre>
+<pre class="r"><code># WELCH&#39;S TEST IS THE DEFAULT IN R</code></pre>
+</div>
+<div id="t-test-assumptions" class="section level2">
+<h2>t-test assumptions</h2>
+<div id="normality-of-the-data" class="section level3">
+<h3>Normality of the data</h3>
+<p>Like we have mentioned before, the t-test is quite robust to
+non-normality of the raw data – this is due to the Central Limit
+Theorem!</p>
+<p>However, if the data are strongly skewed or otherwise clearly
+non-normal you may want to go with a non-parametric alternative (see
+below)!</p>
+<div id="testing-for-normality" class="section level4">
+<h4>Testing for normality!</h4>
+<p>Before ‘accepting’ the results of a statistical test, we often want
+to run ‘goodness-of-fit’ tests to see if there is any reason to think we
+may be violating key assumptions of our statistical analyses. For the
+t-test and many other parametric tests, one ‘goodness-of-fit’ test we
+might want to run is a test for normality. For linear regression
+analyses, we test for normality of the residuals.</p>
+<p>For the t-test, we should test for normality of the data (or the
+paired differences, or test separately for each of the two groups).</p>
+<p>Here we will discuss two tests- one visual and one quantitative. The
+visual test is called a ‘quantile-quantile (Q-Q) plot’ and the
+quantitative test is called a Shapiro-Wilk test.</p>
+<p>The Q-Q plot compares the quantiles of the observed data (y axis)
+with the theoretical quantiles from a normal distribution (x axis). If
+the q-q plot is highly non-linear, your data are probably not normally
+distributed and you might want to run a non-parametric alternative.</p>
+<p>The Shapiro-Wilk test is a way of quantitatively assessing the
+linearity of the q-q plot such that you can get a p-value. The p-value
+here is interpreted the same as any other p-value. The catch is that the
+null hypothesis is that the data are normally distributed. If p&gt;alpha
+you fail to reject the null - that is, you can move forward assuming
+that the data are normally distributed!</p>
+<pre class="r"><code>## testing for normality ------------------
 
-resids &lt;- DNase$density-predict(model3)
+my.data.nonnorm &lt;- rgamma(20,0.1,0.1)    # simulate some non-normal data
+hist(my.data.nonnorm,main=&quot;non-normal&quot;)     # visualize the data distribution</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>my.data.norm &lt;- rnorm(20,6,0.9)    # simulate some normal data
+hist(my.data.norm,main=&quot;normal&quot;)     # visualize the data distribution</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<pre class="r"><code># visualize q-q plot
 
-residuals(model3)   # alternative method! This works for &#39;lm&#39; objects as well (and many other model objects)</code></pre>
-<pre><code>##   [1] -0.0222835640 -0.0212835640 -0.0124539463 -0.0094539463 -0.0335367172
-##   [6] -0.0245367172 -0.0380629138 -0.0410629138 -0.0662506055 -0.0712506055
-##  [11] -0.0115300720 -0.0295300720 -0.0853516109 -0.0553516109 -0.0458016613
-##  [16] -0.0658016613  0.0057164360  0.0107164360  0.0035460537 -0.0104539463
-##  [21] -0.0145367172 -0.0325367172 -0.0140629138 -0.0320629138 -0.0082506055
-##  [26]  0.0007493945  0.0854699280  0.0474699280  0.1346483891  0.1066483891
-##  [31]  0.1561983387  0.1381983387  0.0307164360  0.0287164360  0.0395460537
-##  [36]  0.0315460537  0.0374632828  0.0084632828  0.0189370862  0.0109370862
-##  [41]  0.0227493945  0.0087493945  0.0364699280  0.0464699280  0.2096483891
-##  [46]  0.0596483891  0.2271983387  0.1081983387 -0.0282835640 -0.0232835640
-##  [51] -0.0154539463 -0.0254539463 -0.0395367172 -0.0335367172 -0.0510629138
-##  [56] -0.0550629138 -0.0602506055 -0.0402506055 -0.0515300720 -0.0575300720
-##  [61]  0.0046483891 -0.0203516109 -0.0358016613 -0.0438016613 -0.0042835640
-##  [66] -0.0042835640 -0.0014539463  0.0015460537 -0.0155367172 -0.0195367172
-##  [71] -0.0300629138 -0.0250629138 -0.0222506055 -0.0332506055  0.0294699280
-##  [76]  0.0004699280  0.0056483891 -0.0103516109 -0.0258016613 -0.0378016613
-##  [81]  0.0467164360  0.0637164360  0.0575460537  0.0555460537  0.0324632828
-##  [86]  0.0374632828  0.0249370862  0.0109370862  0.0057493945 -0.0042506055
-##  [91]  0.0314699280  0.0414699280  0.0046483891  0.0396483891 -0.0078016613
-##  [96]  0.0301983387  0.0547164360  0.0527164360  0.0485460537  0.0485460537
-## [101]  0.0424632828  0.0334632828  0.0289370862  0.0239370862  0.0057493945
-## [106] -0.0122506055  0.0214699280  0.0044699280 -0.0103516109 -0.0273516109
-## [111] -0.0168016613 -0.0368016613  0.0147164360  0.0147164360  0.0185460537
-## [116]  0.0145460537 -0.0135367172 -0.0175367172 -0.0230629138 -0.0320629138
-## [121] -0.0222506055 -0.0362506055  0.0124699280 -0.0285300720  0.0466483891
-## [126] -0.0383516109 -0.0328016613 -0.0518016613 -0.0072835640  0.0037164360
-## [131]  0.0085460537  0.0215460537 -0.0005367172  0.0024632828  0.0049370862
-## [136] -0.0200629138 -0.0562506055  0.0247493945  0.0154699280 -0.0045300720
-## [141] -0.0213516109 -0.0143516109 -0.0828016613 -0.0468016613  0.0127164360
-## [146]  0.0547164360  0.0305460537  0.0325460537  0.0194632828  0.0164632828
-## [151]  0.0239370862  0.0239370862  0.0097493945  0.0207493945  0.0114699280
-## [156]  0.0444699280 -0.0793516109 -0.0133516109 -0.0768016613 -0.0678016613
-## [161]  0.0077164360  0.0177164360  0.0255460537  0.0215460537  0.0064632828
-## [166]  0.0124632828  0.0119370862 -0.0040629138  0.0237493945  0.0037493945
-## [171] -0.0365300720 -0.0505300720  0.0016483891 -0.0343516109 -0.0608016613
-## [176] -0.0548016613
-## attr(,&quot;label&quot;)
-## [1] &quot;Residuals&quot;</code></pre>
-<pre class="r"><code>## check for normality
+qqnorm(my.data.nonnorm,main=&quot;non-normal&quot;)   # visual test for normality</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
+<pre class="r"><code>qqnorm(my.data.norm,main=&quot;normal&quot;)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-9-4.png" width="672" /></p>
+<pre class="r"><code># run shapiro-wilk test
 
-qqnorm(resids)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
-<pre class="r"><code>shapiro.test(resids)</code></pre>
+shapiro.test(my.data.nonnorm)</code></pre>
 <pre><code>## 
 ##  Shapiro-Wilk normality test
 ## 
-## data:  resids
-## W = 0.90166, p-value = 1.978e-09</code></pre>
-<pre class="r"><code>## check for heteroskedasticity
-plot(resids~predict(model3))</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
-</div>
-<div id="heteroskedasticity" class="section level3">
-<h3>Heteroskedasticity</h3>
-<p>If you have severely heteroskedastic residuals, you can sometimes run a <strong>transformation</strong> of your response variable that improves the situation.</p>
-<p>Alternatively, you might run a <strong>generalized linear model (GLM)</strong> that doesn’t assume homoskedasticity (e.g., run a model that assumes the residuals are gamma distributed, or Poisson distributed). In a gamma or Poisson distribution, the residuals are expected to get larger as the expected mean value gets larger!</p>
-<p>We will talk more about GLM in an upcoming lecture. But for now, let’s run an example with a transformed response variable:</p>
-<pre class="r"><code>##########
-# heteroskedasticity
-
-##### first, simulate data with heteroskedastic residuals
-
-simulated.x &lt;- runif(100,0.1,5)
-simulated.y &lt;- exp(rnorm(100,1.1+0.3*simulated.x,0.7))
-
-plot(simulated.y~simulated.x)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-<pre class="r"><code>### run linear model
-
-model1 &lt;- lm(simulated.y~simulated.x)
-par(mfrow=c(2,2))
-plot(model1)  # run diagnostic plots    heteroskedasticity issues</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
-<pre class="r"><code>### Take a minute to test for normality of residuals!
-
-### run linear model with log transformation of response variable
-
-model2 &lt;- lm(log(simulated.y)~simulated.x)
-par(mfrow=c(2,2))
-plot(model2)  # run diagnostic plots - no issues!  </code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-17-3.png" width="672" /></p>
-</div>
-<div id="non-independence-of-observations" class="section level3">
-<h3>Non-independence of observations</h3>
-<p>If you have a known source of non-independence in your observations, you can try to thin (rarefy) your data by throwing away non-independent observations (e.g., keeping only one out of every set of known non-independent observerations).</p>
-<p>There are also more advanced regression models that explicitly account for sources of non-independence:</p>
-<p><em>Regression with phylogenetic correction</em> – use this if phylogenetic relatedness among your sampling units is the main source of non-independence</p>
-<p><em>Autoregression (more generally, time series modeling)</em> – use this if the main source of non-independence is temporal- observations taken closer together in time are more likely to be related</p>
-<p><em>Spatial autoregression</em> (more generally, spatial regression models) – use this if the main source of non-independence is spatial – observations taken closer together in space are more correlated.</p>
-<p>These models are outside the scope of this class, but it’s useful to know they exist!</p>
-</div>
-<div id="non-normality-of-residuals" class="section level3">
-<h3>Non-normality of residuals</h3>
-<p>First of all, regression analysis is somewhat robust to non-normality of the residuals- due to the CLT!</p>
-<p>But if your residuals are highly non-normal AND you can’t seem to correct this using non-linear regression, transformations, or GLM, you might need to use a non-parametric alternative.</p>
-<p>One such alternative is to run a non-parametric correlation analysis such as a Spearman rank correlation test.</p>
-</div>
-</div>
-<div id="regression-and-anova" class="section level2">
-<h2>Regression and ANOVA</h2>
-<p>Before we move on to ANOVA, I just wanted to point out the essential similarity between regression and ANOVA. The only difference between regression and ANOVA is that in regression, the response variable is numeric/continuous and in ANOVA your response variable(s) is categorical.</p>
-<p>How similar are regression and ANOVA? Well, we can fit regression and ANOVA models with the ‘lm’ functions, the assumptions are essentially the same, and the diagnostic plots are essentially the same.</p>
-<p>There are differences- we will touch on this in the next lecture- but for now let’s focus on the similarities. Let’s run an ANOVA in R using the same approaches we have just learned for linear regression!</p>
-<p>In this example we will use the famous iris dataset.</p>
-<pre class="r"><code>#### ANOVA as regression example
-
-data(iris)    # load the iris dataset
-
-plot(iris$Sepal.Length ~ iris$Species)   # r uses a boxplot by default for categorical predictor</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<pre class="r"><code>my.mod &lt;- lm(Sepal.Length~Species,data=iris)    # run an ANOVA!
-summary(my.mod)    # look at the results</code></pre>
+## data:  my.data.nonnorm
+## W = 0.55554, p-value = 1.054e-06</code></pre>
+<pre class="r"><code>shapiro.test(my.data.norm)</code></pre>
 <pre><code>## 
-## Call:
-## lm(formula = Sepal.Length ~ Species, data = iris)
+##  Shapiro-Wilk normality test
 ## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -1.6880 -0.3285 -0.0060  0.3120  1.3120 
-## 
-## Coefficients:
-##                   Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)         5.0060     0.0728  68.762  &lt; 2e-16 ***
-## Speciesversicolor   0.9300     0.1030   9.033 8.77e-16 ***
-## Speciesvirginica    1.5820     0.1030  15.366  &lt; 2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.5148 on 147 degrees of freedom
-## Multiple R-squared:  0.6187, Adjusted R-squared:  0.6135 
-## F-statistic: 119.3 on 2 and 147 DF,  p-value: &lt; 2.2e-16</code></pre>
-<pre class="r"><code>anova(my.mod)     # produce an analysis of variance table</code></pre>
-<pre><code>## Analysis of Variance Table
-## 
-## Response: Sepal.Length
-##            Df Sum Sq Mean Sq F value    Pr(&gt;F)    
-## Species     2 63.212  31.606  119.26 &lt; 2.2e-16 ***
-## Residuals 147 38.956   0.265                      
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>####
-# alternative!
+## data:  my.data.norm
+## W = 0.92261, p-value = 0.1112</code></pre>
+</div>
+</div>
+<div id="outliers" class="section level3">
+<h3>Outliers</h3>
+<p>The t-test can be highly affected by outliers. If you suspect your
+data contain highly influential outliers, you might want to run a
+non-parametric alternative, as non-parametric tests are much less
+influenced by outliers.</p>
+<p>To look for outliers, the first step is to simply visualize a
+histogram of the raw data and look for any observations that fall far
+from the others.</p>
+</div>
+</div>
+<div id="non-parametric-alternatives" class="section level2">
+<h2>Non-parametric alternatives</h2>
+<p>If your data are highly non-normal or contain obvious outliers, you
+probably want to run one of the non-parametric alternatives to the
+classical t-test. These tests do not assume normality of the data nor
+are they highly affected by outliers!</p>
+<div id="one-sample-t-test-1" class="section level3">
+<h3>One sample t-test</h3>
+<p>The non-parametric alternative to the one-sample t-test is called the
+<strong>one sample Wilcoxon signed rank test</strong>. This analysis
+first reduces the data to signs- negative 1 if the observation is
+greater than the null and -1 if the data are less than the null. Then,
+like many non-parametric tests, you sort the data from smallest to
+largest absolute value. You then multiply the ranks times the signs and
+sum across all observations. This test statistic (W) has a known
+sampling distribution (approximately anyway!) under the null hypothesis
+and therefore you can compute a p-value. The null hypothesis for the
+Wilcoxon test refers to the median of the distribution and not the mean
+(the null hypothesis for the t-test refers to the mean). Therefore the
+two tests are not strictly comparable!</p>
+<pre class="r"><code># Wilcoxon signed rank test
 
-my.mod &lt;- aov(Sepal.Length~Species,data=iris)   # same model!!
-summary(my.mod)     # but produces an anova table by default</code></pre>
-<pre><code>##              Df Sum Sq Mean Sq F value Pr(&gt;F)    
-## Species       2  63.21  31.606   119.3 &lt;2e-16 ***
-## Residuals   147  38.96   0.265                   
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+my.data &lt;- rgamma(20,0.1,0.1)-2
+
+hist(my.data)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>wilcox.test(my.data)</code></pre>
+<pre><code>## 
+##  Wilcoxon signed rank exact test
+## 
+## data:  my.data
+## V = 22, p-value = 0.001017
+## alternative hypothesis: true location is not equal to 0</code></pre>
+<pre class="r"><code>t.test(my.data)   # t-test for comparison</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  my.data
+## t = -0.79761, df = 19, p-value = 0.435
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  -2.613333  1.171146
+## sample estimates:
+##  mean of x 
+## -0.7210936</code></pre>
+</div>
+<div id="two-sample-t-test-1" class="section level3">
+<h3>Two sample t-test</h3>
+<p>The non-parametric alternative to the two-sample t-test is called the
+<strong>Mann Whitney U test (or Wilcoxon rank sum test)</strong>. This
+analysis first reduces the data to ranks- that is, you first sort the
+data from smallest to largest absolute value. You then essentially test
+to see if the ranks of one group are higher on average than the ranks of
+the other group. This test statistic (U) has a known sampling
+distribution (approximately anyway!) under the null hypothesis and
+therefore you can compute a p-value. The null hypothesis for the
+Mann-Whitney test is that there is a 50% probability that a single
+sample from one distribution is larger than a single sample drawn from
+the other distribution. The null hypothesis for the t-test is that the
+means of two distributions are the same. Therefore the two tests are not
+strictly comparable!</p>
+<pre class="r"><code># Wilcoxon signed rank test
+
+my.data1 &lt;- rgamma(20,0.1,0.1)-2
+my.data2 &lt;- rgamma(20,0.2,0.1)-2
+
+median(my.data1)</code></pre>
+<pre><code>## [1] -1.998589</code></pre>
+<pre class="r"><code>median(my.data2)</code></pre>
+<pre><code>## [1] -1.897251</code></pre>
+<pre class="r"><code>wilcox.test(my.data1,my.data2)</code></pre>
+<pre><code>## 
+##  Wilcoxon rank sum exact test
+## 
+## data:  my.data1 and my.data2
+## W = 151, p-value = 0.1918
+## alternative hypothesis: true location shift is not equal to 0</code></pre>
+<pre class="r"><code>t.test(my.data1,my.data2)   # t-test for comparison</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  my.data1 and my.data2
+## t = -1.4435, df = 22.328, p-value = 0.1628
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -3.8686699  0.6917454
+## sample estimates:
+##   mean of x   mean of y 
+## -1.50275404  0.08570818</code></pre>
+<pre class="r"><code>#### perform rank test from scratch!
+
+allobs &lt;- c(my.data1,my.data2)
+inorder &lt;- order(allobs)
+
+rank1 &lt;- inorder[1:20]
+rank2 &lt;- inorder[21:40]
+
+t.test(rank1,rank2,var.equal = T)    # perform t-test on the ranks (usually similar to Mann-Whitney test)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  rank1 and rank2
+## t = -1.6295, df = 38, p-value = 0.1115
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -13.229946   1.429946
+## sample estimates:
+## mean of x mean of y 
+##     17.55     23.45</code></pre>
+</div>
+</div>
+<div id="power-analysis-for-t-test" class="section level2">
+<h2>Power analysis for t-test</h2>
+<p>Okay, before we leave the t-test, let’s run a power analysis!
+Remember that a power analysis is a way of assessing whether you are
+likely to detect a signal given your null hypothesis is false (i.e.,
+there is a signal there to detect!). Power analyses can be a great way
+to assess if your sampling design is adequate to detect a signal. If
+not, you may want to alter your sampling design by adding more
+replicates!</p>
+<pre class="r"><code># Power analysis ----------------------
+
+# First we will set the population parameters:
+
+true.mean.A &lt;- 13.5
+true.mean.B &lt;- 13.9
+
+true.sd &lt;- 3.4
+
+# Assume a two-tailed test- alternative hypothesis is that the mean of A is different from the mean of B
+
+# Now let&#39;s set the sampling scenario
+
+sampsize.A &lt;- 10
+sampsize.B &lt;- 12
+
+# now we will simulate a single &#39;experiment&#39;
+
+samp.A &lt;- rnorm(sampsize.A,true.mean.A,true.sd)
+samp.B &lt;- rnorm(sampsize.B,true.mean.B,true.sd)
+
+# and now we can run a test!
+
+this.test &lt;- t.test(samp.A,samp.B,var.equal = T)
+
+# and determine if we rejected our null hypothesis (which we know is not true!)
+
+this.test$p.value &lt; 0.05</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>Okay, but if we really want to compute power we need to do this many
+times and see what percent of samples allow us to reject the null!</p>
+<pre class="r"><code># full power analysis:   ------------
+
+# First we will set the population parameters:
+
+true.mean.A &lt;- 13.5
+true.mean.B &lt;- 13.9
+
+true.sd &lt;- 3.4
+
+# Assume a two-tailed test- alternative hypothesis is that the mean of A is different from the mean of B
+
+# Now let&#39;s set the sampling scenario
+
+sampsize.A &lt;- 10
+sampsize.B &lt;- 12
+
+# now we will simulate LOTS of  &#39;experiments&#39;
+
+pvals &lt;- numeric(1000)
+
+for(i in 1:1000){
+  samp.A &lt;- rnorm(sampsize.A,true.mean.A,true.sd)
+  samp.B &lt;- rnorm(sampsize.B,true.mean.B,true.sd)
+  
+  # and now we can run a test!
+  
+  this.test &lt;- t.test(samp.A,samp.B,var.equal = T)
+  
+  # and determine if we rejected our null hypothesis (which we know is not true!)
+  
+  pvals[i] &lt;- this.test$p.value
+}
+
+ # hist(pvals)
+
+length(which(pvals&lt;0.05))/1000</code></pre>
+<pre><code>## [1] 0.066</code></pre>
+<p>Of course, if your power is not adequate, you may want to increase
+sample size. But what is the minimum sample size that gives you
+sufficient power? We can use simulation to answer this question!</p>
+<pre class="r"><code># full power analysis WITH SAMPLE SIZE DETERMINATION:   --------
+
+# First we will set the population parameters:
+
+true.mean.A &lt;- 13.5
+true.mean.B &lt;- 13.9
+
+true.sd &lt;- 3.4
+
+# Assume a two-tailed test- alternative hypothesis is that the mean of A is different from the mean of B
+
+
+# now we will simulate LOTS of  &#39;experiments&#39; under different sample sizes
+
+sampsize &lt;- seq(5,400,10)
+
+power &lt;- numeric(length(sampsize))
+
+for(j in 1:length(sampsize)){
+  
+  pvals &lt;- numeric(1000)
+  for(i in 1:1000){
+    samp.A &lt;- rnorm(sampsize[j],true.mean.A,true.sd)
+    samp.B &lt;- rnorm(sampsize[j],true.mean.B,true.sd)
+    
+    # and now we can run a test!
+    
+    this.test &lt;- t.test(samp.A,samp.B,var.equal = T)
+    
+    # and determine if we rejected our null hypothesis (which we know is not true!)
+    
+    pvals[i] &lt;- this.test$p.value
+  }
+
+ # hist(pvals)
+
+  power[j] &lt;- length(which(pvals&lt;0.05))/1000
+}
+
+names(power) &lt;- sampsize
+
+plot(power~sampsize)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>So what sample size would you need (in each of the two groups) to
+detect a signal in this case?</p>
 <p><a href="LECTURE5.html">–go to next lecture–</a></p>
 </div>
 
@@ -1129,7 +1278,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -1138,6 +1287,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

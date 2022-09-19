@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="NRES 710" />
+
+
+<title>Exercise 2: t-tests</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">NRES 710</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="schedule.html">Schedule</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="INTRO.html">Introduction to NRES 710</a>
+    </li>
+    <li>
+      <a href="LECTURE1.html">Basic Concepts</a>
+    </li>
+    <li>
+      <a href="LECTURE2.html">Sampling uncertainty</a>
+    </li>
+    <li>
+      <a href="LECTURE3.html">Taxonomy of common statistics</a>
+    </li>
+    <li>
+      <a href="LECTURE4.html">t-test and z-test</a>
+    </li>
+    <li>
+      <a href="LECTURE5.html">chi-squared tests</a>
+    </li>
+    <li>
+      <a href="LECTURE6.html">Analysis- ANOVA</a>
+    </li>
+    <li>
+      <a href="LECTURE7.html">Analysis- GLM and GLMM</a>
+    </li>
+    <li>
+      <a href="LECTURE7.html">Next steps</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Exercises
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="EXERCISE1.html">Exercise- data summary functions</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    More Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Links.html">Links</a>
+    </li>
+    <li>
+      <a href="FINALPROJ.html">Final Projects</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Datasets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Data1.dat">Data1</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Exercise 2: t-tests</h1>
+<h4 class="author">NRES 710</h4>
+<h4 class="date">Fall 2022</h4>
+
+</div>
+
+
+<p>Today’s exercises provide hands-on experience working with t-tests
+(and nonparametric alternatives) in R, with an emphasis on drawing valid
+statistical interpretations from your results.</p>
+<p>Please submit your responses individually on webcampus. But I
+encourage you to work in teams of three. This way, one team member can
+focus on a single problem, and then all team members can review their
+solution and results with other members of the team.</p>
+<p>Reports must be uploaded to Webcampus by the date indicated (see
+WebCampus).</p>
+<p>It is not expected that you will complete the whole process during
+the 50-minute class period.</p>
+<p>You are of course welcome to ask for help outside of your groups by
+using the Statistical Concepts Discussion Forum, or by asking the
+instructor for hints.</p>
+<p>Good luck!!</p>
+<div id="problem-1." class="section level3">
+<h3>Problem 1.</h3>
+<p>Your research team is tasked with testing whether tortoises move
+longer distances after translocation than before translocation. You
+measure average daily movement distances for one month pre-translocation
+and one month post-translocation. Here are your data:</p>
+<p><img src="tortoise_ttest.png" style="width:50.0%" /></p>
+<p>You can copy the following code to load this into R:</p>
+<pre class="r"><code>library(tidyverse)
+
+tortdf &lt;- tribble(
+  ~ name, ~ pre_trans, ~post_trans,
+  &quot;Helen&quot;,  120,    426,
+  &quot;Thomas&quot;, 601,    511,
+  &quot;Hayleigh&quot;,   90, 155,
+  &quot;Maximilian&quot;, 451,    510,
+  &quot;Adele&quot;,  339,    325,
+  &quot;Conner&quot;, 183,    388
+)
+
+# tortdf</code></pre>
+<p>With these data, use an appropriate type of t-test to assess whether
+tortoises move longer distances after translocation versus before
+translocation. Please copy your well-commented R code into the text box
+entry in WebCampus. Following the code, please report:</p>
+<ol style="list-style-type: decimal">
+<li>Mean difference in daily movement distance before vs after
+translocation</li>
+<li>Confidence interval on the value computed above (you choose the
+confidence level)</li>
+<li>t-statistic, p-value and degrees of freedom associated with the
+test</li>
+<li>Results from a normality test</li>
+<li>Results (p-value) from an analogous nonparametric test</li>
+<li>A concise statement of what you conclude from this test, concerning
+how translocation of tortoises affects their daily movement.</li>
+</ol>
+</div>
+<div id="problem-2." class="section level3">
+<h3>Problem 2.</h3>
+<p>Your research team is tasked with testing if a new cucumber hybrid
+grows bigger fruit in soil type B vs soil type A. You measure dry weight
+(g) for seven cucumbers grown in soil type A and 14 cucumbers grown in
+soil type B. Here are your data:</p>
+<p>Soil type A: 5.5, 7.1, 2.2, 11.1, 4.73, 8.9, 5.1<br />
+Soil type B: 2.7, 6.1, 11.3, 3.6, 8.6, 4.4, 3.8, 9.5, 8.8, 4.5, 7.0,
+12.2, 51.1, 5.2, 5.5, 3.0, 9.59</p>
+<p>And here are the same data in R- feel free to copy this chunk:</p>
+<pre class="r"><code>typeA &lt;- c(5.5, 7.1, 2.2, 11.1, 4.73, 8.9, 5.1)                       
+typeB &lt;- c(2.7, 6.1, 11.3, 3.6, 8.6, 4.4, 3.8, 9.5, 8.8, 4.5, 7.0, 12.2, 51.1, 5.2, 5.5, 3.0, 9.59) </code></pre>
+<p>With these data, use a two-sample t-test to assess whether cucumbers
+tend to be larger when grown in one soil type versus the other (is this
+a one-tailed or two-tailed test?). Plot the data as relevant (e.g. using
+a boxplot to compare results from the two soil types). Please provide
+your well-commented R code and report the following:</p>
+<ol style="list-style-type: decimal">
+<li>Mean cucumber weight in each soil type</li>
+<li>Confidence intervals on the means you computed above (you choose the
+confidence level)<br />
+</li>
+<li>t-statistic, p-value and degrees of freedom associated with the
+test</li>
+<li>A brief discussion of any potential outlier issue you may or may not
+have. Does your answer change if you remove the outlier? Why or why not?
+Should you remove the outlier?<br />
+</li>
+<li>Run any appropriate normality tests and report the results</li>
+<li>Results (p-value) from an analogous nonparametric test<br />
+</li>
+<li>A concise statement of what you conclude from this test, concerning
+how translocation of tortoises affects their daily movement.</li>
+</ol>
+</div>
+<div id="problem-3." class="section level3">
+<h3>Problem 3.</h3>
+<p>Your research team is tasked with testing if first-year tree
+seedlings of a drought-adapted pine species characteristic of the Great
+Basin Desert (singleleaf pinyon pine, or <em>Pinus monophylla</em>)
+exhibit plasticity in biomass allocation to belowground plant tissues as
+a function of water availability.</p>
+<p>You are given data for the root:shoot ratio for 23 seedlings given an
+abundant water supply that is maintained at close to field capacity over
+the course of the growing season (i.e., “Wettest Treatment”), and for
+another 23 seedlings that are maintained at close to the wilting point
+for the entire growing season after an initial pulse of water following
+germination (i.e., “Driest Treatment”). The seedlings are clustered
+according to different source populations throughout the range of the
+species, but we will ignore that for purposes of this class
+exercise.</p>
+<p>It is hypothesized that seedlings grown under conditions of severe
+water limitation will allocate a greater proportion of carbon (hence,
+biomass) to their root systems, and therefore will maintain a greater
+root:shoot ratio.</p>
+<p>Import the comma-delimited Excel spreadsheet, <a
+href="ShootRoot.csv">“ShootRoot.csv”</a>, which contains only two
+columns of data: Treatment (Wettest vs. Driest), and Root.Shoot (the
+root:shoot ratio).</p>
+<pre class="r"><code>shootroot &lt;- read_csv(&quot;ShootRoot.csv&quot;)
+shootroot</code></pre>
+<pre><code>## # A tibble: 46 × 2
+##    Treatment Root.Shoot
+##    &lt;chr&gt;          &lt;dbl&gt;
+##  1 Wettest        0.419
+##  2 Wettest        0.461
+##  3 Wettest        0.449
+##  4 Wettest        0.496
+##  5 Wettest        0.462
+##  6 Wettest        0.481
+##  7 Wettest        0.468
+##  8 Wettest        0.435
+##  9 Wettest        0.568
+## 10 Wettest        0.839
+## # … with 36 more rows</code></pre>
+<p>With these data, assess whether singleleaf pinyon pine seedlings
+exhibit greater root:shoot ratios when grown under drier conditions.</p>
+<p>Please provide your well-commented R code and report the
+following:</p>
+<ol style="list-style-type: decimal">
+<li>mean and median root:shoot ratios given both treatments</li>
+<li>confidence intervals on these means</li>
+<li>t-statistic and p-value for your t-test</li>
+<li>assessment and discussion of whether the assumptions of t-tests were
+met</li>
+<li>results of any alternative (e.g. non-parametric) analyses conducted
+as a result of violations of assumptions found in the previous step</li>
+<li>your final conclusions regarding the hypothesized relationship
+between watering treatment and seedling plasticity with respect to
+root:shoot ratios.</li>
+</ol>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

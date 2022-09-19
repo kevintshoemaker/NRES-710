@@ -15,344 +15,232 @@
 
 
 
-#######
-# Simple one-way ANOVA example
+## Chi squared goodness-of-fit example
 
-F1 <- c(1,2,2,3)     # plant height under fertilizer treatment 1
-F2 <- c(5,6,5,4)
-F3 <- c(2,1,2,2)
+birthdays.bymonth <- c(40,23,33,39,28,29,45,31,22,34,44,20)
+months <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
+names(birthdays.bymonth) <- months
 
-# combine into single dataframe for easier visualization and analysis
+sample.size <- sum(birthdays.bymonth)
+k = length(birthdays.bymonth)   # number of categories (months)
+exp.birthdays.bymonth <- sample.size*rep(1/k,times=k)   # compute the expected number under the null hypothesis.
 
-df <- data.frame(
-  Height = c(F1,F2,F3),
-  Treatment = rep(c("F1","F2","F3"),each=length(F1)),
-  stringsAsFactors = T
+Chisq.stat <- sum((birthdays.bymonth-exp.birthdays.bymonth)^2/exp.birthdays.bymonth)
+Chisq.stat
+
+
+## View the summary statistic along with its sampling distribution under the null hypothesis
+
+curve(dchisq(x,k-1),0,75)
+abline(v=Chisq.stat,col="green",lwd=3)
+
+p <- 1-pchisq(Chisq.stat,k-1)
+p
+
+
+### use R's built in chi squared function
+
+chisq.test(birthdays.bymonth)     # should get the same p value!
+
+
+## Chi squared goodness-of-fit example
+
+birthdays.bymonth <- c(40,23,33,39,28,29,45,31,22,34,44,20)
+months <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
+names(birthdays.bymonth) <- months
+
+sample.size <- sum(birthdays.bymonth)
+k = length(birthdays.bymonth)   # number of categories (months)
+exp.birthdays.bymonth <- sample.size*rep(1/k,times=k)   # compute the expected number under the null hypothesis.
+
+Chisq.stat <- sum((birthdays.bymonth-exp.birthdays.bymonth)^2/exp.birthdays.bymonth)
+Chisq.stat
+
+
+## View the summary statistic along with its sampling distribution under the null hypothesis
+
+curve(dchisq(x,k-1),0,75)
+abline(v=Chisq.stat,col="green",lwd=3)
+
+p <- 1-pchisq(Chisq.stat,k-1)
+p
+
+
+### use R's built in chi squared function
+
+chisq.test(birthdays.bymonth)     # should get the same p value!
+
+
+
+n.bunnies <- 112
+
+    # sample assuming null hypothesis is true
+all.bunnies <- data.frame(
+  ear_type = sample(c("floppy","pointy","mixed"),n.bunnies,replace = T),
+  coat_color = sample(c("white","brown","mixed"),n.bunnies,replace = T)
 )
 
-plot(Height~Treatment, data=df)
-
-
-
-grand.mean <- mean(df$Height)   # grand mean
-
-group.means <- by(df$Height,df$Treatment,mean)    # group means
-
-n.groups <- length(group.means)   # number of groups
-
-group.sample.size <- by(df$Height,df$Treatment,length)
-
-sample.size <- nrow(df)
-
-explained.var <- sum(group.sample.size*(group.means-grand.mean)^2/(n.groups-1))
-
-groups <- lapply(1:n.groups,function(t) df$Height[df$Treatment==levels(df$Treatment)[t]])
-
-residual.var <- sapply(1:n.groups,function(t) (groups[[t]]-group.means[t])^2/(sample.size-n.groups) )
-
-unexplained.var <- sum(residual.var)
-
-#######
-# now we can compute the F statistic!
-
-Fstat <- explained.var/unexplained.var
-Fstat
-
-
-#######
-# define degrees of freedom
-
-df1 <- n.groups-1
-df2 <- sample.size-n.groups
-
-#######
-# visualize the sampling distribution under null hypothesis
-
-curve(df(x,df1,df2),0,10)
-
+head(all.bunnies)
 
 ######
-# compute critical value of F statistic
+# make contingency table
 
-Fcrit <- qf(0.95,df1,df2)
-Fcrit
+con_table <- table(all.bunnies$ear_type,all.bunnies$coat_color)
 
 ######
-# compute p-value
+# generate expected values
 
-pval <- 1-pf(Fstat,df1,df2)
+prop.ears <- rowSums(con_table)/n.bunnies
+sum.coats <- colSums(con_table)
+exp_table <- sapply(1:ncol(con_table),function(t) sum.coats[t]*prop.ears)
+colnames(exp_table) <- colnames(con_table)
+
+#####
+# compute chi-squared statistic
+
+Chisq.stat <- sum((con_table-exp_table)^2/exp_table)
 
 
 #####
-# use aov function
+# Compare chi squared statistic with null sampling distribution
 
-model1 <- aov(Height~Treatment,data=df)
-summary(model1)
+curve(dchisq(x,4),0,10)
+abline(v=Chisq.stat,col="blue",lwd=2)
+
+p.value <- 1-pchisq(Chisq.stat,4)
+p.value
+
+text(7,0.15,paste0("p = ",round(p.value,3)))
+
+
+######
+# Compare with R's built in chi squared function
+
+chisq.test(con_table)
+
+
+
+######
+# Chi-squared test for normality
+
+normal.data <- rnorm(250,4,1.5)  # generate normal data
+nonnormal.data <-  runif(250,2,6)  # generate non-normal data
+
+hist(normal.data)
+hist(nonnormal.data)
 
 #####
-# use lm function
+# First bin the data (chi squared test must be on categorical data!)
 
-model1 <- lm(Height~Treatment,data=df)
-summary(model1)
+breaks <- c(-Inf,1,2,3,3.5,4,4.5,5,6,7,Inf)
 
-anova(model1)
+normal.data.binned <- cut(normal.data,breaks,labels=breaks[-1])
+nonnormal.data.binned <- cut(nonnormal.data,breaks,labels=breaks[-1])
 
+obs_table_norm <- table(normal.data.binned)
+obs_table_nonnorm <- table(nonnormal.data.binned)
 
+#####
+# Determine expected values in each cell if the underlying distribution were normal
 
-######
-# Tukey's test
+normal.probs <- sapply(2:length(breaks), function(t) pnorm(breaks[t],mean(normal.data),sd(normal.data))-pnorm(breaks[t-1],mean(normal.data),sd(normal.data))  )
+exp_table_norm <- length(normal.data)*normal.probs  # check that expected vals are greater than 5
 
-# find critical q-value for tukey test
-q.value <- qtukey(p=0.95,nmeans=n.groups,df=(sample.size-n.groups))
-
-# find honestly significant difference
-tukey.hsd <- q.value * sqrt(unexplained.var/(sample.size/n.groups))
-
-# if differences in group means are greater than this value then we can reject the null!
-
-## let's look at the difference between means
-
-all_means <- tapply(df$Height,df$Treatment,mean)
-all_levels <- levels(df$Treatment)
-pair_totry <- matrix(c(1,2,1,3,2,3),nrow=3,byrow = T)
-pair_totry     # these are the pairwise comparisons to make!
-
-thispair <- pair_totry[1,]    # run first pairwise comparison
-
-dif.between.means <- all_means[thispair[1]]-all_means[thispair[2]]
-dif.between.means   # since this is greater than tukey.hsd, we already know we can reject the null
-
-### compute p-value!
-sample.size.pergroup <- sample.size/n.groups
-std.err <- sqrt(unexplained.var / 2 * (2 / sample.size.pergroup))
-
- # first compute q statistic
-q.stat <- abs(dif.between.means)/std.err
-p.val <- 1-ptukey(q.stat,nmeans=n.groups,df=(sample.size-n.groups))
-p.val
-
-## run all pairwise comparisons
-
-results <- NULL
-i=1
-for(i in 1:nrow(pair_totry)){
-  thispair <- pair_totry[i,]
-  temp <- data.frame(
-    group1 = all_levels[thispair[1]],
-    group1 = all_levels[thispair[2]]
-  )
-  
-  temp$dif = all_means[thispair[1]]-all_means[thispair[2]]
-  temp$qstat = abs(temp$dif)/std.err
-  temp$pval = 1-ptukey(temp$qstat,nmeans=n.groups,df=(sample.size-n.groups))
-  
-  results <- rbind(results,temp)
-}
-
-results
-
-
-########  compare with R's built in tukey test function
-model1 <- aov(Height~Treatment,data=df)
-TukeyHSD(model1)
-
-
-#######  and finally, compare with 'emmeans'
-
-library(emmeans)
-model1 <- lm(Height~Treatment,data=df)
-emm <- emmeans(model1,specs=c("Treatment"))  # compute the treatment means with 'emmeans'
-pairs(emm)    # run tukey test!
-
-
-library(agricolae)
-data("PlantGrowth")
-
-plant.lm <- lm(weight ~ group, data = PlantGrowth)   #run the 'regression' model
-plant.av <- aov(plant.lm)  # run anova test and print anova table
-plant.av
-
-#######
-# evaluate goodness of fit (assumption violations etc)
-layout(matrix(1:4,nrow=2,byrow = T))
-plot(plant.av)
-
-#######
-# run pairwise comparisons
-
-tukeytest <- TukeyHSD(plant.av)
-tukeytest
-
-layout(matrix(1,nrow=1,byrow = T))
-plot(tukeytest)   #default plotting method for tukey test objects!
-
+normal.probs <- sapply(2:length(breaks), function(t) pnorm(breaks[t],mean(nonnormal.data),sd(nonnormal.data))-pnorm(breaks[t-1],mean(nonnormal.data),sd(nonnormal.data))  )
+exp_table_nonnorm <- length(normal.data)*normal.probs  # check that expected vals are greater than 5
 
 ######
-# alternative method
+# Chi squared stat for normality test on normal data
+
+chistat_norm <- sum((obs_table_norm-exp_table_norm)^2/exp_table_norm)
+pval_norm <- 1-pchisq(chistat_norm,length(exp_table_norm)-1)
+pval_norm
+
+chistat_nonnorm <- sum((obs_table_nonnorm-exp_table_nonnorm)^2/exp_table_nonnorm)
+pval_nonnorm <- 1-pchisq(chistat_nonnorm,length(exp_table_nonnorm)-1)
+pval_nonnorm
+
+####
+# Compare with shapiro wilk test (which is a MUCH better test!)
+
+shapiro.test(normal.data)
+shapiro.test(nonnormal.data)
 
 
- # run tukey test
-emm <- emmeans(plant.lm,specs=c("group"))  # compute the treatment means with 'emmeans'
-pairs(emm)    # run tukey test!
+n.bunnies <- 112
 
-toplot <- as.data.frame(summary(emm))[,c("group","emmean","lower.CL","upper.CL")]
-xvals <- barplot(toplot$emmean,names.arg = toplot$group,ylim=c(0,7))
-arrows(xvals,toplot$lower.CL,xvals,toplot$upper.CL,angle=90,code=3)
-text(xvals,c(6.4,6.4,6.4),labels = c("ab","a","b"),cex=1.5)
+    # sample assuming null hypothesis is true
+all.bunnies <- data.frame(
+  ear_type = sample(c("floppy","pointy","mixed"),n.bunnies,replace = T),
+  coat_color = sample(c("white","brown","mixed"),n.bunnies,replace = T)
+)
 
+head(all.bunnies)
 
+######
+# make contingency table
 
-## two way interaction example
+con_table <- table(all.bunnies$ear_type,all.bunnies$coat_color)
 
-data("ToothGrowth")
-summary(ToothGrowth)
+######
+# generate expected values
 
-table(ToothGrowth$supp,ToothGrowth$dose)   # three doses, two types of supplements
+prop.ears <- rowSums(con_table)/n.bunnies
+sum.coats <- colSums(con_table)
+exp_table <- sapply(1:ncol(con_table),function(t) sum.coats[t]*prop.ears)
+colnames(exp_table) <- colnames(con_table)
 
-ToothGrowth$dose <- ordered(ToothGrowth$dose)  # convert dose variable to factor (make it categorical)
+#####
+# compute chi-squared and G statistics
 
-model <- lm(len~supp+dose,data=ToothGrowth)  # two way anova with no interaction
-
-summary(model)
-anova(model)
-
-model_with_interaction <- lm(len~supp*dose,data=ToothGrowth)  # now try again with interactions
-summary(model_with_interaction)
-anova(model_with_interaction)
-
-
-
-# visualize the interaction
-
-# ?interaction.plot     # this base R function can be used to visualize interactions
-
-with(ToothGrowth, {   # the "with" function allows you to only specify the name of the data frame once, and then refer to the columns of the data frame as if they were variables in your main environment
-  interaction.plot(dose, supp, len, fixed = TRUE, col = c("red","blue"), leg.bty = "o")
-})
+Chisq.stat <- sum((con_table-exp_table)^2/exp_table)
+G.stat <- 2*sum(con_table*log(con_table/exp_table))   # slightly different!
 
 
+#####
+# Compare chi squared and G statistics with null sampling distribution
+
+curve(dchisq(x,4),0,10)
+abline(v=Chisq.stat,col="blue",lwd=1)
+abline(v=G.stat,col="red",lwd=1)
+legend("topright",lty=c(1,1),lwd=c(1,1),col=c("blue","red"),legend=c("Chi-squared","G stat"),bty="n")
+
+p.value.Chi <- 1-pchisq(Chisq.stat,4)
+p.value.G <- 1-pchisq(G.stat,4)
+
+text(7,0.12,paste0("p.Chi = ",round(p.value.Chi,3)))
+text(7,0.1,paste0("p.G = ",round(p.value.G,3)))
 
 
-TukeyHSD(aov(model), "dose")   # run tukey test for the 'dose' variable in the ToothGrowth model
-TukeyHSD(aov(model_with_interaction), "dose")   # run tukey test for the 'dose' variable in the ToothGrowth model
+n.bunnies <- 20
 
-library(emmeans)
-emm = emmeans(model_with_interaction,
-                      specs= pairwise ~ dose:supp)
-contrast(emm)
+    # sample assuming null hypothesis is true
+all.bunnies <- data.frame(
+  ear_type = sample(c("floppy","pointy","mixed"),n.bunnies,replace = T),
+  coat_color = sample(c("white","brown","mixed"),n.bunnies,replace = T)
+)
 
+head(all.bunnies)
 
-### Kruskal-Wallis example
+######
+# make contingency table
 
+con_table <- table(all.bunnies$ear_type,all.bunnies$coat_color)
 
-## read in data:
+######
+# generate expected values
 
-Input =("
-Group      Value
-Group.1      1
-Group.1      2
-Group.1      3
-Group.1      4
-Group.1      5
-Group.1      6
-Group.1      7
-Group.1      8
-Group.1      9
-Group.1     46
-Group.1     47
-Group.1     48
-Group.1     49
-Group.1     50
-Group.1     51
-Group.1     52
-Group.1     53
-Group.1    342
-Group.2     10
-Group.2     11
-Group.2     12
-Group.2     13
-Group.2     14
-Group.2     15
-Group.2     16
-Group.2     17
-Group.2     18
-Group.2     37
-Group.2     58
-Group.2     59
-Group.2     60
-Group.2     61
-Group.2     62
-Group.2     63
-Group.2     64
-Group.2    193
-Group.3     19
-Group.3     20
-Group.3     21
-Group.3     22
-Group.3     23
-Group.3     24
-Group.3     25
-Group.3     26
-Group.3     27
-Group.3     28
-Group.3     65
-Group.3     66
-Group.3     67
-Group.3     68
-Group.3     69
-Group.3     70
-Group.3     71
-Group.3     72
-")
+prop.ears <- rowSums(con_table)/n.bunnies
+sum.coats <- colSums(con_table)
+exp_table <- sapply(1:ncol(con_table),function(t) sum.coats[t]*prop.ears)
+colnames(exp_table) <- colnames(con_table)
 
-Data = read.table(textConnection(Input),header=TRUE)
+#####
+# run fisher exact test
 
-Data$Group = factor(Data$Group,levels=unique(Data$Group))    # transform predictor variable to factor
+#?fisher.test
 
-#summarize values by group
-
-groups <- unique(Data$Group)
-ngroups <- length(groups)
-sumry <- sapply(1:ngroups,function(i){temp <- subset(Data,Group==groups[i]); summary(temp$Value)}  )
-colnames(sumry) <- groups
-sumry
-
-
-# histograms by group
-
-library(ggplot2)
-
-ggplot(Data, aes(x=Value)) +
-  geom_histogram(bins=10,aes(color=Group,fill=Group)) +
-  facet_grid(~Group)
-
-# ## first install required packages if needed
-# 
-# if(!require(dplyr)){install.packages("dplyr")}
-# if(!require(FSA)){install.packages("FSA")}
-# if(!require(DescTools)){install.packages("DescTools")}
-# if(!require(multcompView)){install.packages("multcompView")}
-
-
-model <- lm(Value~Group,data=Data)
-
-summary(model)   # no treatment effects
-anova(model)   # looks a little weird
-
-layout(matrix(1:4,nrow=2,byrow=T))
-plot(model)   # notice the outliers! And violation of normality
-
-shapiro.test(residuals(model))
-
-
-
-# K-W test
-
-kruskal.test(Value ~ Group, data = Data)   # now there is a significant group effect!
-
-
-library(FSA)  # make sure you have this package installed!
-
-dt = dunnTest(Value ~ Group,data=Data,method="bh")
-dt
+chisq.test(con_table)
+fisher.test(con_table)   # better test
+fisher.test(con_table,simulate.p.value = T,B=5000)   # use simulated p-value - usually very similar answer
 

@@ -19,13 +19,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r echo=FALSE}
-
-#  NRES 710, Lecture 1                         
-#    University of Nevada, Reno     
-#    Basic Concepts of Probability and statistics      
-
-```
 
 ## EXERCISE 1: Data summaries and custom functions
 

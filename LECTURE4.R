@@ -1,17 +1,8 @@
 
-############################################################
-####                                                    ####  
-####  NRES 710, Lecture 4                               ####
-####                                                    ####
-####  Kevin Shoemaker and Ben Sullivan                  #### 
-####  University of Nevada, Reno                        ####
-####                                                    #### 
-############################################################
-
-
-############################################################
-####  Linear Regression and ANOVA                       ####
-############################################################
+#  NRES 710, Lecture 4                             
+#  University of Nevada, Reno    
+#
+#      t-tests and z-tests
 
 
 
@@ -70,7 +61,7 @@ p
 pnorm(z.statistic)
 
 
-### one sample t-test (paired t-test is a type of one sample t-test)
+# one sample t-test (paired t-test is a type of one sample t-test)  -------------
 
 sample.data <- rgamma(10,2,.1)
 null.mean <- 10
@@ -91,8 +82,7 @@ p.val <- (1-pt(abs(t.stat),sample.size-1))*2   #
 t.test(sample.data,mu=null.mean)   # should get the same answer!
 
 
-
-### two sample t-test 
+# two sample t-test -----------------
 
 sample.data.1 <- rnorm(15,55,10)
 sample.data.2 <- rnorm(10,45,10)
@@ -120,7 +110,6 @@ p.val <- (1-pt(abs(t.stat),sample.size.pooled-2))*2   # 2-tailed test
 ### alternatively use the t.test function:
 
 t.test(sample.data.1,sample.data.2,var.equal = T)   # should get the same answer!
-
 
 
 # one vs two tailed demo
@@ -190,15 +179,10 @@ abline(v=t.crit.onesided,col="blue",lwd=2)
 legend("topleft",lwd=c(2,2,2),col=c("red","green","blue"),bty="n",legend=c("two-tailed crit value","one-tailed crit value (greater than)","one-tailed crit value (less than)"))
 
 
-######
 # More t-test examples
 
+# T-tests  ---------------
 
-#### 
-# T-tests
-####
-
-#Ttest
 # Are my data greater than zero? 
 Group0 <- c(0.5, -0.03, 4, 2.5, 0.89, 2.2, 1.7, 1.125)
 hist(Group0)
@@ -227,7 +211,7 @@ t.test(group1, group2) #  "Welch's Two Sample t-test"
 
 
 
-## testing for normality
+## testing for normality ------------------
 
 my.data.nonnorm <- rgamma(20,0.1,0.1)    # simulate some non-normal data
 hist(my.data.nonnorm,main="non-normal")     # visualize the data distribution
@@ -285,7 +269,9 @@ rank2 <- inorder[21:40]
 t.test(rank1,rank2,var.equal = T)    # perform t-test on the ranks (usually similar to Mann-Whitney test)
   
 
-###### First we will set the population parameters:
+# Power analysis ----------------------
+
+# First we will set the population parameters:
 
 true.mean.A <- 13.5
 true.mean.B <- 13.9
@@ -294,30 +280,30 @@ true.sd <- 3.4
 
 # Assume a two-tailed test- alternative hypothesis is that the mean of A is different from the mean of B
 
-###### Now let's set the sampling scenario
+# Now let's set the sampling scenario
 
 sampsize.A <- 10
 sampsize.B <- 12
 
-###### now we will simulate a single 'experiment'
+# now we will simulate a single 'experiment'
 
 samp.A <- rnorm(sampsize.A,true.mean.A,true.sd)
 samp.B <- rnorm(sampsize.B,true.mean.B,true.sd)
 
-###### and now we can run a test!
+# and now we can run a test!
 
 this.test <- t.test(samp.A,samp.B,var.equal = T)
 
-###### and determine if we rejected our null hypothesis (which we know is not true!)
+# and determine if we rejected our null hypothesis (which we know is not true!)
 
 this.test$p.value < 0.05
 
 
 
 
-### full power analysis:
+# full power analysis:   ------------
 
-###### First we will set the population parameters:
+# First we will set the population parameters:
 
 true.mean.A <- 13.5
 true.mean.B <- 13.9
@@ -326,12 +312,12 @@ true.sd <- 3.4
 
 # Assume a two-tailed test- alternative hypothesis is that the mean of A is different from the mean of B
 
-###### Now let's set the sampling scenario
+# Now let's set the sampling scenario
 
 sampsize.A <- 10
 sampsize.B <- 12
 
-###### now we will simulate LOTS of  'experiments'
+# now we will simulate LOTS of  'experiments'
 
 pvals <- numeric(1000)
 
@@ -339,11 +325,11 @@ for(i in 1:1000){
   samp.A <- rnorm(sampsize.A,true.mean.A,true.sd)
   samp.B <- rnorm(sampsize.B,true.mean.B,true.sd)
   
-  ###### and now we can run a test!
+  # and now we can run a test!
   
   this.test <- t.test(samp.A,samp.B,var.equal = T)
   
-  ###### and determine if we rejected our null hypothesis (which we know is not true!)
+  # and determine if we rejected our null hypothesis (which we know is not true!)
   
   pvals[i] <- this.test$p.value
 }
@@ -353,9 +339,9 @@ for(i in 1:1000){
 length(which(pvals<0.05))/1000
 
 
-### full power analysis WITH SAMPLE SIZE DETERMINATION:
+# full power analysis WITH SAMPLE SIZE DETERMINATION:   --------
 
-###### First we will set the population parameters:
+# First we will set the population parameters:
 
 true.mean.A <- 13.5
 true.mean.B <- 13.9
@@ -365,7 +351,7 @@ true.sd <- 3.4
 # Assume a two-tailed test- alternative hypothesis is that the mean of A is different from the mean of B
 
 
-###### now we will simulate LOTS of  'experiments' under different sample sizes
+# now we will simulate LOTS of  'experiments' under different sample sizes
 
 sampsize <- seq(5,400,10)
 
@@ -378,11 +364,11 @@ for(j in 1:length(sampsize)){
     samp.A <- rnorm(sampsize[j],true.mean.A,true.sd)
     samp.B <- rnorm(sampsize[j],true.mean.B,true.sd)
     
-    ###### and now we can run a test!
+    # and now we can run a test!
     
     this.test <- t.test(samp.A,samp.B,var.equal = T)
     
-    ###### and determine if we rejected our null hypothesis (which we know is not true!)
+    # and determine if we rejected our null hypothesis (which we know is not true!)
     
     pvals[i] <- this.test$p.value
   }
