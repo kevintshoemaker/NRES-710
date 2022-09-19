@@ -424,60 +424,64 @@ div.tocify {
 
 <div id="overview-of-statistical-methods" class="section level2">
 <h2>Overview of statistical methods</h2>
-<p>Before we delve into common statistical tests, let’s first give a
-broad overview of the analyses we will cover in this class and in which
-cases they are most appropriate.</p>
+<p>Before we delve into common statistical tests, let’s first take a
+quick walk through the analyses we will cover in this class. As we do
+this, we will try to put these analysis into a framework - a field guide
+of sorts – that will help us to make sense of these methods and when to
+use them.</p>
 <p>And before we do that, let’s briefly talk about <em>parametric</em>
-vs <em>nonparametric</em> statstical tests…</p>
+vs <em>nonparametric</em> statistical tests…</p>
 <div id="aside-parametric-vs-nonparametric" class="section level3">
 <h3>Aside: parametric vs nonparametric</h3>
-<p>As we saw in the previous lecture, <strong>Parameters</strong> are
-the arguments used to describe probability distributions - they describe
-the exact shape and location of the distribution. Different distribution
-families are associated with different parameters. For example, the
+<p>As we saw in the last lecture, <strong>Parameters</strong> are the
+arguments used to describe probability distributions - they describe the
+exact shape and location of the distribution. Different probability
+distributions are associated with different parameters. For example, the
 normal distribution is described by 2 parameters: mean and standard
 deviation. The Poisson distribution has only one parameter (the Poisson
 mean, also known as Lambda). The binomial distribution is described by 2
 parameters: size (number of trials) and prob (success probability for
-each trial). The t distribution has one parameter (degrees of freedom) –
-the list goes on.</p>
+each trial).</p>
 <div id="parametric-statistics" class="section level4">
 <h4>Parametric statistics</h4>
-<p>In <em>parametric statistics</em>, our hypotheses involve running
-tests that directly relate to thee parameters of well-defined
-probability distributions. That is, we assume a priori that our test
-statistic (e.g., a t statistic) follows a certain sampling distribution
-(e.g., a t distribution), and then we run tests – for example we test to
-see if we can reject the null hypothesis.</p>
-<p>Because of the Central Limit Theorem, we have good reason (in many
-cases) to assume that our sampling distribution should follow a
-particular distribution (e.g., Normal, t, Chi-squared). However, this is
-not always a fair assumption, and we are fortunate that statisticians
-have developed a number of tests that do not depend on our data or data
-summaries following any defined probability distribution. These methods
-are the so-called <strong>distribution-free</strong> statistical tests,
-which are often referred to as <strong>non-parametric
-tests</strong>.</p>
+<p>In <em>parametric statistics</em>, our statistical tests relate
+directly to the parameters of well-defined probability distributions
+(e.g., the mean of a normal distribution). That is, we assume <em>a
+priori</em> that our population follows a certain well-defined
+distribution (e.g., a normal distribution) and we make hypothesis about
+one or more of these parameters (often the mean of a normal
+distribution).</p>
+<p>Because of the Central Limit Theorem (CLT), we have good reason (in
+many cases) to assume that our sampling distribution should follow a
+particular distribution (e.g., z, t, Chi-squared) even if the underlying
+data don’t perfectly match the underlying assumptions of the analysis.
+However, this is not always a fair assumption – sometimes the
+assumptions of parametric tests are clearly violated!!</p>
+<p>We are fortunate that statisticians have developed a number of tests
+that do not depend on our data or data summaries following any defined
+probability distribution. These methods are the so-called
+<strong>distribution-free</strong> statistical tests, which are often
+referred to as <strong>non-parametric tests</strong>.</p>
 </div>
 <div id="nonparametric-statistics" class="section level4">
 <h4>Nonparametric statistics</h4>
 <p>Unlike parametric statistics, <em>nonparametric statistics</em> do
-not require us to make strong assumptions, such as that our test
-statistic follows a t-distribution (like in a t-test) or that our
-residuals are normally distributed (like in regression). Using these
-methods, we can still test similar hypotheses even if our data do not
-meet standard parametric assumptions</p>
+not require us to make strong assumptions, such as that the underlying
+statistical population follows a normal error distribution (like in a
+t-test or linear regression). Using these methods, we can still test
+similar (but not identical) hypotheses even if our data do not meet
+standard parametric assumptions</p>
 <p>Confusingly, we often use the term “nonparametric” to refer to two
 different classes of statistical models:<br />
 1. Statistical tests that do not require any assumptions about the
 distribution of data or residuals. These methods are also known as
-<strong>distribution-free</strong>. 2. Statistical models that do not
-require assumptions about the <strong>shape</strong> of the relationship
-between two or more variables. These methods include generalized
-additive models, spline regressions, gaussian processes, and many
-methods collectively known as <strong>machine learning</strong>. These
-methods are often referred to as <strong>nonparametric
-regression</strong>.</p>
+<strong>distribution-free</strong> tests. 2. Statistical models that do
+not require assumptions about the <strong>shape</strong> of the
+relationship between two or more variables. These methods include
+generalized additive models, spline regressions, gaussian processes, and
+many methods collectively known as <strong>machine learning</strong>
+(e.g., random forest). These methods are often referred to as
+<strong>nonparametric regression</strong>.</p>
 </div>
 <div id="independence-of-data" class="section level4">
 <h4>Independence of data</h4>
@@ -490,29 +494,29 @@ type I error rates!</p>
 non-normal data distributions, why do we need non-parametric
 statistics?</p>
 <p>Okay, let’s get back to our main purpose, which is to provide a
-“dichotomous key” of sorts for determining which statistical analyses to
-run. This dichotomous key will involve characterizing the type of
-response variable and predictor variable we have at hand – most
-importantly, whether we have continuous or categorical data for our
-response and predictor variables.</p>
+“field guide” of sorts for determining which statistical analyses to
+run. This guide will involve characterizing the type of response
+variable and predictor variable we have at hand – most importantly,
+whether we have continuous or categorical data for our response and
+predictor variables.</p>
 </div>
 </div>
 <div id="continuous-response-variable" class="section level3">
 <h3>Continuous response variable</h3>
 <p>If your response variable is continuous, common classical statistical
 analyses include: t-tests, ANOVA, linear regression. Each of these tests
-is associated with non-parametric alternatives. In each case, we are
-interested in testing if the <em>population mean</em> of the continuous
-response variable is affected by the predictor variables (null
-hypothesis: nope, there is no effect!). Predictor variables, in turn,
-can be continuous or categorical (factor variables in R) – but as you
-suspected, different predictor variable types will lead us to choose
-different statistical models!</p>
+is associated with non-parametric alternatives. In each case (for the
+parametric tests, that is!), we are interested in testing if the
+<em>population mean</em> of the continuous response variable is affected
+by the predictor variables (null hypothesis: nope, there is no effect!).
+Predictor variables, in turn, can be continuous or categorical (factor
+variables in R) – but as you suspected, different predictor variable
+types will lead us to choose different statistical models!</p>
 <div id="continuous-response-binary-categorical-predictor"
 class="section level4">
 <h4>Continuous response, binary categorical predictor</h4>
-<p>If your categorical predictor is binary (two levels) and your
-response variable is continuous, you can use a <strong>two-sample
+<p>If your categorical predictor variable is binary (two levels) and
+your response variable is continuous, you can use a <strong>two-sample
 t-test</strong>.</p>
 <p>The non-parametric alternative is called the <strong>Mann-Whitney
 test</strong>.</p>
@@ -521,6 +525,10 @@ error bars.</p>
 <p><strong>Example</strong>: Are females larger than males? (null
 hypothesis: no difference). The response variable (body size) is
 continuous. The predictor variable (sex) is binary.</p>
+</div>
+<div id="continuous-response-multi-level-categorical-predictor"
+class="section level4">
+<h4>Continuous response, multi-level categorical predictor</h4>
 <p>If your categorical predictor has more than two levels, you can use
 an <strong>ANalysis Of Variance (ANOVA)</strong> followed by
 <em>pairwise comparisons</em> to test which categories differ from one
@@ -531,20 +539,25 @@ test</strong>.</p>
 barplot with error bars.</p>
 <p><strong>Example</strong> Do three different brands of nail polish
 differ in their durability? (null hypothesis: no effect). The predictor
-variable (nail polish brand) is categorical, the predictor variable
-(time until product wears off) is continuous.</p>
+variable (nail polish brand) is categorical, the response variable (time
+until product wears off) is continuous.</p>
 </div>
 <div id="continuous-response-continuous-predictor"
 class="section level4">
 <h4>Continuous response, continuous predictor</h4>
 <p>If your predictor variable and response variable are both continuous,
 you can use <strong>linear regression</strong> analysis.</p>
+<p>You can visualize the effect size using a scatterplot with a
+regression line and confidence “ribbon”.</p>
 <p>If you just want to know if two variables are correlated but you are
 not interested in modeling one (the response) as a function of another
 (the predictor) you can run a <strong>Pearson correlation
 test</strong>.</p>
-<p>The non-parametric alternative is a <strong>Spearman rank-correlation
-test</strong>.</p>
+<p>The non-parametric alternative to a Pearson correlation test is a
+<strong>Spearman rank-correlation test</strong>.</p>
+<p>If you don’t want to assume a linear relationship, you can use
+polynomial regression, spline fits (GAM), or machine learning
+methods.</p>
 <p><strong>Example</strong>: What is the relationship between tree
 diameter and age- can tree diameter be used to effectively predict the
 age of a tree? (null hypothesis: nope, there is no relationship). The
@@ -563,23 +576,27 @@ response – you can use <strong>Analysis of Covariance
 predictor variables that you hypothesize may be influencing your
 continuous response variable, you can use <strong>multiple linear
 regression</strong>.</p>
-<p>You can visualize these data using scatterplots with regression lines
-(and confidence intervals).</p>
+<p>You can visualize these relationships using boxplots and scatterplots
+with regression lines (and confidence intervals).</p>
 <p>Practically speaking, linear regression and ANOVA/ANCOVA are two
-sides of the same coin. Both involve modeling a continuous response as a
-function of one or more predictor variables. You can run all of these
-analyses using the workhorse of linear modeling in R, the
-<code>lm()</code> function. Basically, if you have a continuous response
-variable, you can use the ‘lm’ function!</p>
-<p>Linear regression is parametric, and assumes the resdiuals
+sides of the same coin. Both involve modeling the mean of a continuous
+response as a function of one or more predictor variables. Both assume
+an underlying normally distributed population.</p>
+<p>You can run all of these analyses using the workhorse of linear
+modeling in R, the <code>lm()</code> function. Basically, if you have a
+continuous response variable, you can use the <code>lm()</code>
+function!</p>
+<p>Linear regression is parametric, and assumes the residuals
 (differences between observed data and predictions) are normally
-distributed.</p>
+distributed. More generally, it assumes that the error distribution for
+the underlying population is normally distributed.</p>
 <p>The non-parametric alternative might be something like a
-<strong>distribution free regression tree</strong> analysis (which makes
-no assumptions about the distribution of residuals or the shape of the
-relationship) or a <strong>generalized additive model (GAM)</strong>
-(which assumes the residuals follow a defined distribution, but makes
-not assumption about the shape of the functional response).</p>
+<strong>distribution-free regression tree</strong> analysis (e.g.,
+<code>party()</code> in R, which makes no assumptions about the
+distribution of residuals or the shape of the relationship) or a
+<strong>generalized additive model (GAM)</strong> (which assumes the
+residuals follow a defined distribution, but makes not assumption about
+the shape of the functional response).</p>
 </div>
 </div>
 <div id="discrete-count-response-variable" class="section level3">
@@ -639,12 +656,12 @@ depend on elevation?</p>
 can use <strong>multinomial logistic regression</strong> (for
 categorical responses) or <strong>ordinal logistic regression</strong>
 (for ordinal responses). I don’t plan to explore these methods in this
-class, but it is useful to know they exist!</p>
+class, but it can still be useful to know they exist!</p>
 </div>
 </div>
 <div id="when-the-taxonomy-breaks-down" class="section level3">
 <h3>When the taxonomy breaks down</h3>
-<p>Not all statisical tests fall into this neat hierarchy. Take a
+<p>Not all statistical tests fall into this neat hierarchy. Take a
 one-sample t-test for example. Imagine you are asking the question: Is
 the sample mean equal to 32? What exactly is the predictor variable?</p>
 <p>Another example might be a normality test. We want to test if our
