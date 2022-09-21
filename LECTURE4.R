@@ -27,15 +27,32 @@ t.crit <- qt(0.05,sample.size-1)    # 'critical value' of the t statistic- you c
 p=pt(t.statistic,sample.size-1)    # p value
 p    # this is the p value
 
+options(scipen=100)   # if you don't like scientific notation!
+p     
 
 # Alternative: use R's built in t test
 
-t.test(weightloss.data,alternative = "less")   # should get the same p=value!
+t.test(weightloss.data,alternative = "less")   # should get the same p-value!
 
 
-# Z distribution --------------------
+# difference between t and standard normal
 
-## Z test  
+library(ggplot2)
+base = ggplot() + xlim(-5,5) + geom_function(aes(col="normal (z)"), fun=dnorm, lwd=2) + labs(y="density",x="potential fake signal")
+
+deg_free <- 1
+base + geom_function(aes(col=sprintf("t, df = %s",deg_free)), fun=dt, args=list(df=deg_free), lwd=2,alpha=0.5)
+
+
+# base r plotting alternative!:
+
+# curve(dnorm,-5,5,ylab="density",xlab="fake signal")
+# curve(dt(x,df=1),add=T,col="green")
+
+
+# z distribution --------------------
+
+## z test  
 
 df <- read.csv("GSW_height.csv")
 GSWheight <- df$Height

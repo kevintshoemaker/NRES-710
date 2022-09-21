@@ -427,23 +427,28 @@ div.tocify {
 <p>To follow along with the R-based lessons and demos, <a
 href="LECTURE4.R">right (or command) click on this link and save the
 script to your working directory</a></p>
+<p>Considering the “field guide” from the last lecture, we are talking
+about the t-test, which is appropriate when we have a quantitative
+response variable and either (1) no predictor variable (one sample
+t-test) or (2) a binary categorical predictor variable (two sample
+t-test).</p>
 </div>
-<div
-id="the-t-statistic-signal-to-noise-ratio-for-comparing-1-or-2-means"
+<div id="the-t-statistic-signal-to-noise-ratio-for-the-sample-mean"
 class="section level2">
-<h2>The t statistic: signal to noise ratio for comparing 1 or 2
-means</h2>
+<h2>The t statistic: signal to noise ratio for the sample mean</h2>
 <p>The <em>t statistic</em> is a useful summary statistic that we can
 calculate from a sample.</p>
 <p>The <em>t distribution</em> is the theoretical sampling distribution
 for the t-statistic under the null hypothesis. It describes the
-distribution of “false signals” that can arise under the null
-hypothesis, caused by random sampling.</p>
+distribution of “false signals” that can arise from random sampling
+error.</p>
 <p>Mathematically, <em>t</em> is the ratio of the difference between the
 sample mean and the hypothesized population mean (<span
 class="math inline">\(\mu_0\)</span>), in units of standard error:</p>
 <p><span class="math inline">\(t =
 \frac{(\bar{x}-\mu_0)}{s.e.}\)</span></p>
+<p><strong>Q</strong> what part of the above fraction (numerator or
+denominator) represents the signal? Which represents the “noise”?</p>
 <p>Let’s assume that the null hypothesis is true (as we often do), and
 that our null hypothesis is that the sample mean is equal to zero.</p>
 <p>This is almost easier to conceptualize if we imagine a
@@ -463,7 +468,7 @@ and some hypothesized population mean, standardized in units of standard
 error. - in classical null hypothesis testing, the t-statistic
 represents the difference (in standard errors) between your sample mean
 and the hypothetical true mean (e.g., under the null hypothesis). - the
-t-distribution is the sampling distribution for the t statistic.</p>
+t-distribution is the sampling distribution for the t-statistic.</p>
 <p>Here is a worked example, in R:</p>
 <pre class="r"><code>## Paired t-test example -----------------
 
@@ -487,14 +492,17 @@ abline(v=t.statistic,col=&quot;green&quot;,lwd=3)</code></pre>
 p=pt(t.statistic,sample.size-1)    # p value
 p    # this is the p value</code></pre>
 <pre><code>## [1] 7.241049e-05</code></pre>
+<pre class="r"><code>options(scipen=100)   # if you don&#39;t like scientific notation!
+p     </code></pre>
+<pre><code>## [1] 0.00007241049</code></pre>
 <pre class="r"><code># Alternative: use R&#39;s built in t test
 
-t.test(weightloss.data,alternative = &quot;less&quot;)   # should get the same p=value!</code></pre>
+t.test(weightloss.data,alternative = &quot;less&quot;)   # should get the same p-value!</code></pre>
 <pre><code>## 
 ##  One Sample t-test
 ## 
 ## data:  weightloss.data
-## t = -4.5446, df = 23, p-value = 7.241e-05
+## t = -4.5446, df = 23, p-value = 0.00007241
 ## alternative hypothesis: true mean is less than 0
 ## 95 percent confidence interval:
 ##       -Inf -2.966463
@@ -510,27 +518,45 @@ Guinness brewery. He was hired to work out a way to determine the
 quality of stout. He published anonymously as ‘Student’ because Guinness
 prevented its employees from publishing. That’s why we call it the
 ‘Student’s t-test’!</p>
-<p>[R demo: difference between t distribution and normal
-distribution]</p>
+<div id="aside-difference-between-t-and-normal-distribution"
+class="section level4">
+<h4>Aside: difference between t and normal distribution</h4>
+<p>You can use this code to explore the difference between the
+t-distribution and the standard normal distribution:</p>
+<pre class="r"><code># difference between t and standard normal
+
+library(ggplot2)
+base = ggplot() + xlim(-5,5) + geom_function(aes(col=&quot;normal (z)&quot;), fun=dnorm, lwd=2) + labs(y=&quot;density&quot;,x=&quot;potential fake signal&quot;)
+
+deg_free &lt;- 1
+base + geom_function(aes(col=sprintf(&quot;t, df = %s&quot;,deg_free)), fun=dt, args=list(df=deg_free), lwd=2,alpha=0.5)</code></pre>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code># base r plotting alternative!:
+
+# curve(dnorm,-5,5,ylab=&quot;density&quot;,xlab=&quot;fake signal&quot;)
+# curve(dt(x,df=1),add=T,col=&quot;green&quot;)</code></pre>
+</div>
 <div id="z-tests" class="section level3">
-<h3>Z-tests</h3>
-<p>The Z-test is a simpler version of the t-test for when sample size is
+<h3>z-tests</h3>
+<p>The z-test is a simpler version of the t-test for when sample size is
 large enough so that we don’t really need the t distribution anymore
 (n&gt;50) or if the population dispersion is known (in which case we can
 assume the sample mean is normally distributed, following the CLT).</p>
-<p>The Z statistic is:</p>
+<p>The z statistic is:</p>
 <p><span class="math inline">\(Z =
 \frac{(\bar{X}-\mu_0)}{s.e.}\)</span></p>
-<p>As you can see, this looks very much like the t statistic! Actually
-it is exactly the same! The difference is that we are now assuming that
-the sampling variation for this statistic is normally distributed
-instead of t-distributed, so we now call it the Z statistic!</p>
+<p>As you can see, this looks very much like the t statistic. In fact it
+is exactly the same!</p>
+<p>The difference is that we are now assuming that the sampling
+variation for this statistic is normally distributed instead of
+t-distributed, so we now call it the z statistic!</p>
 <div id="example-z-test-golden-state-warriors-height"
 class="section level4">
 <h4>Example z-test: Golden State Warriors height</h4>
 <p>Tall basketball players are often successful. The Golden State
-Warriors are often successful. How tall are the Golden State Warriors
-relative to other basketball players in the NBA?</p>
+Warriors are often successful.</p>
+<p>How tall are the Golden State Warriors (GSW) relative to other
+basketball players in the NBA?</p>
 <p>We hypothesize that GSW players are taller than the NBA average! The
 null hypothesis is that they are essentially randomly sampled from the
 general pool of NBA players.</p>
@@ -540,23 +566,26 @@ survey of NBA players suggests they are, on average, 6’7” tall (79”)
 with a standard deviation of 4 inches.</p>
 <p>NOTE: the z-test is only appropriate here because we know the
 population standard deviation. If this is the case, we know under the
-CLT that the sample means should follow a normal distribution. (the only
-reason the t-distribution differs from the normal distribution is that
-we also are estimating the sample standard deviation- it is not known
-with certainty!).</p>
+CLT that the sample means should follow a normal distribution (not a
+t-distribution).</p>
+<p>The reason the t-distribution differs from the normal distribution is
+that we also are usually estimating the standard deviation from our
+sample. The population standard deviation is therefore not known with
+certainty most of the time!.</p>
 <p>NOTE: Dr. Sullivan (NRES) obtained those values from research into
 the height of NBA players.</p>
-<p>Here, the mean (mu) and the standard deviation (q) are coming from
-the population (all NBA players) instead of the sample. There are
-situations where you can use the sample standard deviation to compute
-standard error for a Z test, but those should be only when the sample
-size is very large. In general you should use a t-test when the
-population standard deviation is unknown.</p>
+<p>Here, the mean (mu) and the standard deviation (sigma) are coming
+from the population (all NBA players) instead of the sample. And we can
+measure the whole population!</p>
+<p>There are situations where you can use the sample standard deviation
+to compute standard error for a z-test, but those should be only when
+the sample size is <em>very large</em>. In general you should use a
+t-test when the population standard deviation is unknown.</p>
 <p>Use this link to download the data for this example: <a
 href="GSW_height.csv">link to GSW data</a></p>
-<pre class="r"><code># Z distribution --------------------
+<pre class="r"><code># z distribution --------------------
 
-## Z test  
+## z test  
 
 df &lt;- read.csv(&quot;GSW_height.csv&quot;)
 GSWheight &lt;- df$Height
@@ -576,7 +605,7 @@ z.statistic</code></pre>
 <pre><code>## [1] 0.6454972</code></pre>
 <pre class="r"><code>curve(dnorm(x),-3,3)    # we assume that the z statistic is normally distributed- standard normal!
 abline(v=z.statistic,col=&quot;green&quot;,lwd=3)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <pre class="r"><code>p &lt;- 1-pnorm(z.statistic)    # is the p value enough evidence to tell you that GSW players are taller than the NBA average??
 p       </code></pre>
 <pre><code>## [1] 0.2593025</code></pre>
@@ -588,8 +617,8 @@ than the GSW average height, right?</p>
 <p><strong>Q</strong> Would you reject the null hypothesis and say that
 the GSW team is taller than expected by random chance?</p>
 </div>
-<div id="group-questions" class="section level4">
-<h4>Group questions</h4>
+<div id="in-class-questions-not-to-be-turned-in" class="section level4">
+<h4>In-class questions (not to be turned in)</h4>
 <ol style="list-style-type: decimal">
 <li>For any normal distribution (e.g., the standard normal or z
 distribution) what is the probability of obtaining a random number
@@ -606,22 +635,23 @@ distribution)?</li>
 </div>
 </div>
 <div id="t-tests" class="section level2">
-<h2>T-tests</h2>
-<p>Let’s face it. T-tests, are more commonly used than z-tests for data
-analysis. The reason: we usually don’t know the population mean or
-standard deviation. All we have is the sample!</p>
+<h2>t-tests</h2>
+<p>Let’s face it. T-tests are more commonly used than z-tests for data
+analysis.</p>
+<p>The reason: we usually don’t know the population mean or standard
+deviation. All we have is the sample!</p>
 <p>To review: we have a continuous response variable and either no
 predictor variable (one sample t-test) or a binary predictor variable
 (two-sample t-test).</p>
 <p>We have already performed simple versions of the t-test (one-sample
-t-tests). But t-tests are quite flexible and can be applied to a wide
-variety of null-hypothesis testing scenarios:</p>
+t-tests- see above). But t-tests are quite flexible and can be applied
+to a wide variety of null-hypothesis testing scenarios:</p>
 <div id="one-sample-t-test" class="section level3">
 <h3>One-sample t-test</h3>
-<p>A one-sample t-test tests the consistency of the sample data with the
-null hypothesis that the sample was generated from a population with a
-specified mean (often zero, but not necessarily). As we have seen
-before, the t-statistic in this case is expressed as:</p>
+<p>Quick review: a one-sample t-test tests the consistency of the sample
+data with the null hypothesis that the sample was generated from a
+population with a specified mean (often zero, but not necessarily). As
+we have seen before, the t-statistic in this case is expressed as:</p>
 <p><span class="math inline">\(t =
 \frac{(\bar{x}-\mu_0)}{s.e.}\)</span></p>
 <p>Where <span class="math inline">\(\bar{x}\)</span> is the sample
@@ -657,13 +687,13 @@ t.test(sample.data,mu=null.mean)   # should get the same answer!</code></pre>
 ##  One Sample t-test
 ## 
 ## data:  sample.data
-## t = 1.5263, df = 9, p-value = 0.1613
+## t = 2.5356, df = 9, p-value = 0.03194
 ## alternative hypothesis: true mean is not equal to 10
 ## 95 percent confidence interval:
-##   6.539107 27.819106
+##  11.18081 30.71919
 ## sample estimates:
 ## mean of x 
-##  17.17911</code></pre>
+##     20.95</code></pre>
 <div id="paired-t-test" class="section level4">
 <h4>Paired t-test</h4>
 <p>A common version of the one-sample t-test is the ‘paired t-test’, in
@@ -738,13 +768,13 @@ t.test(sample.data.1,sample.data.2,var.equal = T)   # should get the same answer
 ##  Two Sample t-test
 ## 
 ## data:  sample.data.1 and sample.data.2
-## t = 1.5652, df = 23, p-value = 0.1312
+## t = 4.0266, df = 23, p-value = 0.0005266
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -2.185865 15.776784
+##   7.615085 23.706624
 ## sample estimates:
 ## mean of x mean of y 
-##  51.02035  44.22489</code></pre>
+##  54.74747  39.08662</code></pre>
 <div id="one-tailed-vs-two-tailed-tests" class="section level4">
 <h4>One tailed vs two-tailed tests</h4>
 <p>Tailed-ness is a common point of confusion when running t-tests and
@@ -788,7 +818,7 @@ polygon(x=c(-xs,rev(-xs)),y=c(ys,rep(0,times=length(ys))),col=&quot;green&quot;,
 p.twosided &lt;- pt(-abs(t.statistic),samp.n-1)*2     # two-tailed p-value
 
 text(-2,0.3,paste(&quot;p =&quot;,round(p.twosided,4)))</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <pre class="r"><code>### One-sided (alternative = &#39;greater&#39;)
 curve(dt(x,samp.n-1),-3,3, main=&quot;Meaning of more extreme (one tailed version: greater than)&quot;,
       ylab=&quot;probability density&quot;,xlab=&quot;t statistic&quot;)    # visualize the sampling distribution of the t-statistic
@@ -801,7 +831,7 @@ polygon(x=c(xs,rev(xs)),y=c(ys,rep(0,times=length(ys))),col=&quot;green&quot;,bo
 p.onesided &lt;- pt(-abs(t.statistic),samp.n-1)     # one-tailed p-value
 
 text(-2,0.3,paste(&quot;p =&quot;,round(p.onesided,4)))</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
 <p>In the same way, the critical value for a t-statistic is different
 for a two-tailed vs a one-tailed test:</p>
 <pre class="r"><code>### t-crit in one tailed vs two tailed test
@@ -827,26 +857,30 @@ abline(v=abs(t.crit.onesided),col=&quot;green&quot;,lwd=2)
 abline(v=t.crit.onesided,col=&quot;blue&quot;,lwd=2)
 
 legend(&quot;topleft&quot;,lwd=c(2,2,2),col=c(&quot;red&quot;,&quot;green&quot;,&quot;blue&quot;),bty=&quot;n&quot;,legend=c(&quot;two-tailed crit value&quot;,&quot;one-tailed crit value (greater than)&quot;,&quot;one-tailed crit value (less than)&quot;))</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>All of these critical values have the same percentage of the sampling
 distribution that are more extreme than them (the percentage is alpha,
 which is set at 0.1 in this example)– but the definition of
 ‘extremeness’ differs for the one-tailed and two-tailed cases!</p>
 </div>
-<div id="welchs-t-test" class="section level4">
-<h4>Welch’s t-test</h4>
+<div id="welchs-t-test-default-t-test-in-r" class="section level4">
+<h4>Welch’s t-test (default t-test in R)</h4>
 <p>Welch’s t-test allows for unequal sample sizes AND unequal variance
 in the two populations. The Welch’s t-test is like the two-sample t-test
 we already ran, but it is more flexible. Like other t-tests, this test
-is robust against violations of normality due to the CLT. <em>This is
-the DEFAULT version of a t-test in R</em>. If you want a classical
-Student’s t-test, you need to tell it to do so (otherwise it will do the
-Welch’s test; use the ‘var.equal = TRUE’ argument to run the classical
-test)!</p>
+is fairly robust against violations of normality due to the CLT.
+<em>This is the DEFAULT version of a t-test in R</em>. If you want a
+classical Student’s t-test, you need to tell it to do so (otherwise it
+will do the Welch’s test; use the ‘var.equal = TRUE’ argument to run the
+classical test)!</p>
 <p>I won’t go through the math for the Welch’s t-test (you can look it
 up if you’d like) because the basic concepts and interpretation are the
 same. The differences lie in the computation of the pooled variance and
 the degrees of freedom.</p>
+<p>Because the Welch’s t-test is robust to unequal variance
+(heteroskedasticity) it can be more robust than the <code>lm()</code>
+function, which will assume equal variance among the residuals for the
+two groups.</p>
 </div>
 </div>
 </div>
@@ -876,7 +910,7 @@ t.test(Group0,alternative=&quot;greater&quot;) # This gets at directionality</co
 <pre class="r"><code>#Are my data different than zero? 
 Group0 &lt;- c(0.5, -0.03, 4, 2.5, 0.89, 2.2, 1.7, 1.125)
 hist(Group0)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <pre class="r"><code>t.test(Group0) # Okay, that&#39;s to zero. What about if it&#39;s different than 1? </code></pre>
 <pre><code>## 
 ##  One Sample t-test
@@ -954,8 +988,9 @@ may be violating key assumptions of our statistical analyses. For the
 t-test and many other parametric tests, one ‘goodness-of-fit’ test we
 might want to run is a test for normality. For linear regression
 analyses, we test for normality of the residuals.</p>
-<p>For the t-test, we should test for normality of the data (or the
-paired differences, or test separately for each of the two groups).</p>
+<p>For the t-test, we should test for normality of the data (one-sample
+t-test) or test separately for each of the two groups (two-sample
+t-test).</p>
 <p>Here we will discuss two tests- one visual and one quantitative. The
 visual test is called a ‘quantile-quantile (Q-Q) plot’ and the
 quantitative test is called a Shapiro-Wilk test.</p>
@@ -973,16 +1008,16 @@ that the data are normally distributed!</p>
 
 my.data.nonnorm &lt;- rgamma(20,0.1,0.1)    # simulate some non-normal data
 hist(my.data.nonnorm,main=&quot;non-normal&quot;)     # visualize the data distribution</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <pre class="r"><code>my.data.norm &lt;- rnorm(20,6,0.9)    # simulate some normal data
 hist(my.data.norm,main=&quot;normal&quot;)     # visualize the data distribution</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
 <pre class="r"><code># visualize q-q plot
 
 qqnorm(my.data.nonnorm,main=&quot;non-normal&quot;)   # visual test for normality</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-10-3.png" width="672" /></p>
 <pre class="r"><code>qqnorm(my.data.norm,main=&quot;normal&quot;)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-9-4.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-10-4.png" width="672" /></p>
 <pre class="r"><code># run shapiro-wilk test
 
 shapiro.test(my.data.nonnorm)</code></pre>
@@ -990,13 +1025,13 @@ shapiro.test(my.data.nonnorm)</code></pre>
 ##  Shapiro-Wilk normality test
 ## 
 ## data:  my.data.nonnorm
-## W = 0.55554, p-value = 1.054e-06</code></pre>
+## W = 0.51579, p-value = 0.0000004431</code></pre>
 <pre class="r"><code>shapiro.test(my.data.norm)</code></pre>
 <pre><code>## 
 ##  Shapiro-Wilk normality test
 ## 
 ## data:  my.data.norm
-## W = 0.92261, p-value = 0.1112</code></pre>
+## W = 0.95002, p-value = 0.3674</code></pre>
 </div>
 </div>
 <div id="outliers" class="section level3">
@@ -1016,48 +1051,49 @@ from the others.</p>
 probably want to run one of the non-parametric alternatives to the
 classical t-test. These tests do not assume normality of the data nor
 are they highly affected by outliers!</p>
-<div id="one-sample-t-test-1" class="section level3">
-<h3>One sample t-test</h3>
-<p>The non-parametric alternative to the one-sample t-test is called the
-<strong>one sample Wilcoxon signed rank test</strong>. This analysis
-first reduces the data to signs- negative 1 if the observation is
-greater than the null and -1 if the data are less than the null. Then,
-like many non-parametric tests, you sort the data from smallest to
-largest absolute value. You then multiply the ranks times the signs and
-sum across all observations. This test statistic (W) has a known
-sampling distribution (approximately anyway!) under the null hypothesis
-and therefore you can compute a p-value. The null hypothesis for the
-Wilcoxon test refers to the median of the distribution and not the mean
-(the null hypothesis for the t-test refers to the mean). Therefore the
-two tests are not strictly comparable!</p>
+<div id="wilcoxon-signed-rank-test" class="section level3">
+<h3>Wilcoxon signed-rank test</h3>
+<p>The non-parametric (distribution-free) alternative to the one-sample
+t-test is called the <strong>one sample Wilcoxon signed rank
+test</strong>. This analysis first reduces the data to signs- negative 1
+if the observation is greater than the null and -1 if the data are less
+than the null. Then, like many non-parametric tests, you sort the data
+from smallest to largest absolute value. You then multiply the ranks
+times the signs and sum across all observations. This test statistic (W)
+has a known sampling distribution (approximately anyway!) under the null
+hypothesis and therefore you can compute a p-value. The null hypothesis
+for the Wilcoxon test refers to the median of the distribution and not
+the mean (the null hypothesis for the t-test refers to the mean).
+Therefore the two tests are not strictly comparable!</p>
 <pre class="r"><code># Wilcoxon signed rank test
 
 my.data &lt;- rgamma(20,0.1,0.1)-2
 
 hist(my.data)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <pre class="r"><code>wilcox.test(my.data)</code></pre>
+<pre><code>## Warning in wilcox.test.default(my.data): cannot compute exact p-value with ties</code></pre>
 <pre><code>## 
-##  Wilcoxon signed rank exact test
+##  Wilcoxon signed rank test with continuity correction
 ## 
 ## data:  my.data
-## V = 22, p-value = 0.001017
+## V = 91, p-value = 0.6142
 ## alternative hypothesis: true location is not equal to 0</code></pre>
 <pre class="r"><code>t.test(my.data)   # t-test for comparison</code></pre>
 <pre><code>## 
 ##  One Sample t-test
 ## 
 ## data:  my.data
-## t = -0.79761, df = 19, p-value = 0.435
+## t = 0.36876, df = 19, p-value = 0.7164
 ## alternative hypothesis: true mean is not equal to 0
 ## 95 percent confidence interval:
-##  -2.613333  1.171146
+##  -1.739000  2.482826
 ## sample estimates:
-##  mean of x 
-## -0.7210936</code></pre>
+## mean of x 
+##  0.371913</code></pre>
 </div>
-<div id="two-sample-t-test-1" class="section level3">
-<h3>Two sample t-test</h3>
+<div id="mann-whitney-u-test" class="section level3">
+<h3>Mann-Whitney U test</h3>
 <p>The non-parametric alternative to the two-sample t-test is called the
 <strong>Mann Whitney U test (or Wilcoxon rank sum test)</strong>. This
 analysis first reduces the data to ranks- that is, you first sort the
@@ -1077,28 +1113,28 @@ my.data1 &lt;- rgamma(20,0.1,0.1)-2
 my.data2 &lt;- rgamma(20,0.2,0.1)-2
 
 median(my.data1)</code></pre>
-<pre><code>## [1] -1.998589</code></pre>
+<pre><code>## [1] -1.990913</code></pre>
 <pre class="r"><code>median(my.data2)</code></pre>
-<pre><code>## [1] -1.897251</code></pre>
+<pre><code>## [1] -1.934051</code></pre>
 <pre class="r"><code>wilcox.test(my.data1,my.data2)</code></pre>
 <pre><code>## 
 ##  Wilcoxon rank sum exact test
 ## 
 ## data:  my.data1 and my.data2
-## W = 151, p-value = 0.1918
+## W = 138, p-value = 0.0965
 ## alternative hypothesis: true location shift is not equal to 0</code></pre>
 <pre class="r"><code>t.test(my.data1,my.data2)   # t-test for comparison</code></pre>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
 ## data:  my.data1 and my.data2
-## t = -1.4435, df = 22.328, p-value = 0.1628
+## t = -0.82194, df = 36.193, p-value = 0.4165
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -3.8686699  0.6917454
+##  -4.182745  1.769844
 ## sample estimates:
-##   mean of x   mean of y 
-## -1.50275404  0.08570818</code></pre>
+##  mean of x  mean of y 
+## -0.5950182  0.6114325</code></pre>
 <pre class="r"><code>#### perform rank test from scratch!
 
 allobs &lt;- c(my.data1,my.data2)
@@ -1112,13 +1148,13 @@ t.test(rank1,rank2,var.equal = T)    # perform t-test on the ranks (usually simi
 ##  Two Sample t-test
 ## 
 ## data:  rank1 and rank2
-## t = -1.6295, df = 38, p-value = 0.1115
+## t = -0.78051, df = 38, p-value = 0.4399
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -13.229946   1.429946
+##  -10.421653   4.621653
 ## sample estimates:
 ## mean of x mean of y 
-##     17.55     23.45</code></pre>
+##     19.05     21.95</code></pre>
 </div>
 </div>
 <div id="power-analysis-for-t-test" class="section level2">
@@ -1197,7 +1233,7 @@ for(i in 1:1000){
  # hist(pvals)
 
 length(which(pvals&lt;0.05))/1000</code></pre>
-<pre><code>## [1] 0.066</code></pre>
+<pre><code>## [1] 0.059</code></pre>
 <p>Of course, if your power is not adequate, you may want to increase
 sample size. But what is the minimum sample size that gives you
 sufficient power? We can use simulation to answer this question!</p>
@@ -1243,7 +1279,7 @@ for(j in 1:length(sampsize)){
 names(power) &lt;- sampsize
 
 plot(power~sampsize)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>So what sample size would you need (in each of the two groups) to
 detect a signal in this case?</p>
 <p><a href="LECTURE5.html">–go to next lecture–</a></p>

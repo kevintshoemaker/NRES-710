@@ -29,16 +29,20 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](LECTURE4.R)
 
+Considering the "field guide" from the last lecture, we are talking about the t-test, which is appropriate when we have a quantitative response variable and either (1) no predictor variable (one sample t-test) or (2) a binary categorical predictor variable (two sample t-test).
 
-## The t statistic: signal to noise ratio for comparing 1 or 2 means
+
+## The t statistic: signal to noise ratio for the sample mean
 
 The *t statistic* is a useful summary statistic that we can calculate from a sample. 
 
-The *t distribution* is the theoretical sampling distribution for the t-statistic under the null hypothesis. It describes the distribution of "false signals" that can arise under the null hypothesis, caused by random sampling. 
+The *t distribution* is the theoretical sampling distribution for the t-statistic under the null hypothesis. It describes the distribution of "false signals" that can arise from random sampling error. 
 
 Mathematically, *t* is the ratio of the difference between the sample mean and the hypothesized population mean ($\mu_0$), in units of standard error:
 
 $t = \frac{(\bar{x}-\mu_0)}{s.e.}$
+
+**Q** what part of the above fraction (numerator or denominator) represents the signal? Which represents the "noise"?
 
 Let's assume that the null hypothesis is true (as we often do), and that our null hypothesis is that the sample mean is equal to zero. 
 
@@ -51,7 +55,7 @@ So for each patient we compute the change in weight between the first and second
 Remember:
     - the t statistic is the difference between the sample mean and some hypothesized population mean, standardized in units of standard error.
     - in classical null hypothesis testing, the t-statistic represents the difference (in standard errors) between your sample mean and the hypothetical true mean (e.g., under the null hypothesis).
-    - the t-distribution is the sampling distribution for the t statistic.    
+    - the t-distribution is the sampling distribution for the t-statistic.    
 
 Here is a worked example, in R:
 
@@ -78,10 +82,12 @@ t.crit <- qt(0.05,sample.size-1)    # 'critical value' of the t statistic- you c
 p=pt(t.statistic,sample.size-1)    # p value
 p    # this is the p value
 
+options(scipen=100)   # if you don't like scientific notation!
+p     
 
 # Alternative: use R's built in t test
 
-t.test(weightloss.data,alternative = "less")   # should get the same p=value!
+t.test(weightloss.data,alternative = "less")   # should get the same p-value!
 
 ```
 
@@ -91,21 +97,46 @@ NOTE: as the df gets large, the t distribution approximates a *standard normal* 
 
 Fun fact: William Sealy Gosset – a student of Pearson, worked at Guinness brewery. He was hired to work out a way to determine the quality of stout. He published anonymously as 'Student' because Guinness prevented its employees from publishing. That's why we call it the 'Student's t-test'!
 
-[R demo: difference between t distribution and normal distribution]
+#### Aside: difference between t and normal distribution
 
-### Z-tests
+You can use this code to explore the difference between the t-distribution and the standard normal distribution:
 
-The Z-test is a simpler version of the t-test for when sample size is large enough so that we don't really need the t distribution anymore (n>50) or if the population dispersion is known (in which case we can assume the sample mean is normally distributed, following the CLT). 
+```{r}
 
-The Z statistic is:
+# difference between t and standard normal
+
+library(ggplot2)
+base = ggplot() + xlim(-5,5) + geom_function(aes(col="normal (z)"), fun=dnorm, lwd=2) + labs(y="density",x="potential fake signal")
+
+deg_free <- 1
+base + geom_function(aes(col=sprintf("t, df = %s",deg_free)), fun=dt, args=list(df=deg_free), lwd=2,alpha=0.5)
+
+
+# base r plotting alternative!:
+
+# curve(dnorm,-5,5,ylab="density",xlab="fake signal")
+# curve(dt(x,df=1),add=T,col="green")
+
+```
+
+
+### z-tests
+
+The z-test is a simpler version of the t-test for when sample size is large enough so that we don't really need the t distribution anymore (n>50) or if the population dispersion is known (in which case we can assume the sample mean is normally distributed, following the CLT). 
+
+The z statistic is:
 
 $Z = \frac{(\bar{X}-\mu_0)}{s.e.}$
 
-As you can see, this looks very much like the t statistic! Actually it is exactly the same! The difference is that we are now assuming that the sampling variation for this statistic is normally distributed instead of t-distributed, so we now call it the Z statistic! 
+As you can see, this looks very much like the t statistic. In fact it is exactly the same! 
+
+The difference is that we are now assuming that the sampling variation for this statistic is normally distributed instead of t-distributed, so we now call it the z statistic! 
 
 #### Example z-test: Golden State Warriors height
 
-Tall basketball players are often successful. The Golden State Warriors are often successful. How tall are the Golden State Warriors relative to other basketball players in the NBA? 
+Tall basketball players are often successful. The Golden State Warriors are often successful. 
+
+How tall are the Golden State Warriors (GSW) relative to other basketball players in the NBA? 
 
 We hypothesize that GSW players are taller than the NBA average! The null hypothesis is that they are essentially randomly sampled from the general pool of NBA players. 
 
@@ -114,19 +145,23 @@ What is the Population? Parameter? Sample? Statistic?
 The GSW are 15 players with an average height of 6’8” (80”). 
 A large survey of NBA players suggests they are, on average, 6’7” tall (79") with a standard deviation of 4 inches.
 
-NOTE: the z-test is only appropriate here because we know the population standard deviation. If this is the case, we know under the CLT that the sample means should follow a normal distribution. (the only reason the t-distribution differs from the normal distribution is that we also are estimating the sample standard deviation- it is not known with certainty!). 
+NOTE: the z-test is only appropriate here because we know the population standard deviation. If this is the case, we know under the CLT that the sample means should follow a normal distribution (not a t-distribution). 
+
+The reason the t-distribution differs from the normal distribution is that we also are usually estimating the standard deviation from our sample. The population standard deviation is therefore not known with certainty most of the time!. 
 
 NOTE: Dr. Sullivan (NRES) obtained those values from research into the height of NBA players. 
 
-Here, the mean (mu) and the standard deviation (q) are coming from the population (all NBA players) instead of the sample. There are situations where you can use the sample standard deviation to compute standard error for a Z test, but those should be only when the sample size is very large. In general you should use a t-test when the population standard deviation is unknown. 
+Here, the mean (mu) and the standard deviation (sigma) are coming from the population (all NBA players) instead of the sample. And we can measure the whole population! 
+
+There are situations where you can use the sample standard deviation to compute standard error for a z-test, but those should be only when the sample size is *very large*. In general you should use a t-test when the population standard deviation is unknown. 
 
 Use this link to download the data for this example: [link to GSW data](GSW_height.csv)
 
 ```{r}
 
-# Z distribution --------------------
+# z distribution --------------------
 
-## Z test  
+## z test  
 
 df <- read.csv("GSW_height.csv")
 GSWheight <- df$Height
@@ -160,23 +195,25 @@ Wrong- but why??
 **Q** Would you reject the null hypothesis and say that the GSW team is taller than expected by random chance?
 
 
-#### Group questions
+#### In-class questions (not to be turned in)
 1. For any normal distribution (e.g., the standard normal or z distribution) what is the probability of obtaining a random number within 1 standard deviation of the mean?  
 2. For any normal distribution (e.g., the standard normal or z distribution) what is the probability of obtaining a random number within 2 standard deviations of the mean?  
 3. What is the 95% quantile of the standard normal distribution (z distribution)?
 
 
-## T-tests
+## t-tests
 
-Let's face it. T-tests, are more commonly used than z-tests for data analysis. The reason: we usually don't know the population mean or standard deviation. All we have is the sample!
+Let's face it. T-tests are more commonly used than z-tests for data analysis. 
+
+The reason: we usually don't know the population mean or standard deviation. All we have is the sample!
 
 To review: we have a continuous response variable and either no predictor variable (one sample t-test) or a binary predictor variable (two-sample t-test).
 
-We have already performed simple versions of the t-test (one-sample t-tests). But t-tests are quite flexible and can be applied to a wide variety of null-hypothesis testing scenarios:
+We have already performed simple versions of the t-test (one-sample t-tests- see above). But t-tests are quite flexible and can be applied to a wide variety of null-hypothesis testing scenarios:
 
 ### One-sample t-test 
 
-A one-sample t-test tests the consistency of the sample data with the null hypothesis that the sample was generated from a population with a specified mean (often zero, but not necessarily). As we have seen before, the t-statistic in this case is expressed as:
+Quick review: a one-sample t-test tests the consistency of the sample data with the null hypothesis that the sample was generated from a population with a specified mean (often zero, but not necessarily). As we have seen before, the t-statistic in this case is expressed as:
 
 $t = \frac{(\bar{x}-\mu_0)}{s.e.}$
 
@@ -364,11 +401,13 @@ All of these critical values have the same percentage of the sampling distributi
 
 
 
-#### Welch's t-test
+#### Welch's t-test (default t-test in R)
 
-Welch’s t-test allows for unequal sample sizes AND unequal variance in the two populations. The Welch's t-test is like the two-sample t-test we already ran, but it is more flexible. Like other t-tests, this test is robust against violations of normality due to the CLT. *This is the DEFAULT version of a t-test in R*. If you want a classical Student's t-test, you need to tell it to do so (otherwise it will do the Welch's test; use the 'var.equal = TRUE' argument to run the classical test)! 
+Welch’s t-test allows for unequal sample sizes AND unequal variance in the two populations. The Welch's t-test is like the two-sample t-test we already ran, but it is more flexible. Like other t-tests, this test is fairly robust against violations of normality due to the CLT. *This is the DEFAULT version of a t-test in R*. If you want a classical Student's t-test, you need to tell it to do so (otherwise it will do the Welch's test; use the 'var.equal = TRUE' argument to run the classical test)! 
 
 I won't go through the math for the Welch's t-test (you can look it up if you'd like) because the basic concepts and interpretation are the same. The differences lie in the computation of the pooled variance and the degrees of freedom.
+
+Because the Welch's t-test is robust to unequal variance (heteroskedasticity) it can be more robust than the `lm()` function, which will assume equal variance among the residuals for the two groups. 
 
 ## t-tests in R
 
@@ -409,7 +448,6 @@ t.test(group1, group2) #  "Welch's Two Sample t-test"
 
 ```
 
-
 ## t-test assumptions
 
 ### Normality of the data
@@ -423,7 +461,7 @@ However, if the data are strongly skewed or otherwise clearly non-normal you may
 
 Before 'accepting' the results of a statistical test, we often want to run 'goodness-of-fit' tests to see if there is any reason to think we may be violating key assumptions of our statistical analyses. For the t-test and many other parametric tests, one 'goodness-of-fit' test we might want to run is a test for normality. For linear regression analyses, we test for normality of the residuals. 
 
-For the t-test, we should test for normality of the data (or the paired differences, or test separately for each of the two groups).
+For the t-test, we should test for normality of the data (one-sample t-test) or test separately for each of the two groups (two-sample t-test).
 
 Here we will discuss two tests- one visual and one quantitative. The visual test is called a 'quantile-quantile (Q-Q) plot' and the quantitative test is called a Shapiro-Wilk test. 
 
@@ -467,9 +505,9 @@ To look for outliers, the first step is to simply visualize a histogram of the r
 
 If your data are highly non-normal or contain obvious outliers, you probably want to run one of the non-parametric alternatives to the classical t-test. These tests do not assume normality of the data nor are they highly affected by outliers!
 
-### One sample t-test
+### Wilcoxon signed-rank test
 
-The non-parametric alternative to the one-sample t-test is called the **one sample Wilcoxon signed rank test**. This analysis first reduces the data to signs- negative 1 if the observation is greater than the null and -1 if the data are less than the null. Then, like many non-parametric tests, you sort the data from smallest to largest absolute value. You then multiply the ranks times the signs and sum across all observations. This test statistic (W) has a known sampling distribution (approximately anyway!) under the null hypothesis and therefore you can compute a p-value. The null hypothesis for the Wilcoxon test refers to the median of the distribution and not the mean (the null hypothesis for the t-test refers to the mean). Therefore the two tests are not strictly comparable!
+The non-parametric (distribution-free) alternative to the one-sample t-test is called the **one sample Wilcoxon signed rank test**. This analysis first reduces the data to signs- negative 1 if the observation is greater than the null and -1 if the data are less than the null. Then, like many non-parametric tests, you sort the data from smallest to largest absolute value. You then multiply the ranks times the signs and sum across all observations. This test statistic (W) has a known sampling distribution (approximately anyway!) under the null hypothesis and therefore you can compute a p-value. The null hypothesis for the Wilcoxon test refers to the median of the distribution and not the mean (the null hypothesis for the t-test refers to the mean). Therefore the two tests are not strictly comparable!
 
 ```{r}
 
@@ -487,7 +525,7 @@ t.test(my.data)   # t-test for comparison
 ```
 
  
-### Two sample t-test
+### Mann-Whitney U test
 
 The non-parametric alternative to the two-sample t-test is called the **Mann Whitney U test (or Wilcoxon rank sum test)**. This analysis first reduces the data to ranks- that is, you first sort the data from smallest to largest absolute value. You then essentially test to see if the ranks of one group are higher on average than the ranks of the other group. This test statistic (U) has a known sampling distribution (approximately anyway!) under the null hypothesis and therefore you can compute a p-value. The null hypothesis for the Mann-Whitney test is that there is a 50% probability that a single sample from one distribution is larger than a single sample drawn from the other distribution. The null hypothesis for the t-test is that the means of two distributions are the same. Therefore the two tests are not strictly comparable!
 
