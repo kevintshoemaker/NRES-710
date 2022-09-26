@@ -250,6 +250,17 @@ shapiro.test(my.data.nonnorm)
 shapiro.test(my.data.norm)
 
 
+# test for equal variances
+
+# are the variances equal? 
+group1 <- c(7,9,6,6,6,11,6,3,8,7)
+group2 <- c(11,13,8,6,14,11,13,13,10,11)
+
+bartlett.test(list(group1,group2))   # Bartlett's test has stong assumption of normality
+
+car::leveneTest(c(group1,group2),rep(c("group1","group2"),each=10))    # Levene's test is less reliant on normality
+
+
 # Wilcoxon signed rank test
 
 my.data <- rgamma(20,0.1,0.1)-2

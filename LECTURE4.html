@@ -737,14 +737,14 @@ sample size is equal in the two samples and whether you are able to
 assume that the standard deviation is the same or similar in the two
 underlying populations.</p>
 <p>For example, the formula for the pooled standard deviation when we
-assume equal standard deviation in the two population but we have
-unequal sample size is:</p>
+assume equal standard deviation in the two populations (equal variance
+assumption) but we have unequal sample size is:</p>
 <p><span class="math inline">\(\sqrt{((N_1-1)*\sigma_1^2 +
 (N_2-1)*\sigma_2^2)/(N_{pooled}-2)}\)</span></p>
 <p>For the 2-sample t-test, the degrees of freedom is equal to the total
 sample size across both samples minus 2.</p>
-<p>Can you think of why the df is two less than the pooled sample
-size?</p>
+<p><em>Q</em>: Can you think of why the df is two less than the pooled
+sample size?</p>
 <pre class="r"><code># two sample t-test -----------------
 
 sample.data.1 &lt;- rnorm(15,55,10)
@@ -1053,6 +1053,34 @@ influenced by outliers.</p>
 histogram of the raw data and look for any observations that fall far
 from the others.</p>
 </div>
+<div id="equal-variance" class="section level3">
+<h3>Equal variance</h3>
+<p>Some versions of the two-sample t-test assume equal variance. I
+generally recommend using the Welch’s t-test, which is robust to unequal
+variances. But, it’s useful to know how to test for unequal variances.
+Bartlett’s test and Levene’s test are both useful for assessing the
+equality of variances in two or more groups. These tests are also useful
+for ANOVA.</p>
+<pre class="r"><code># test for equal variances
+
+# are the variances equal? 
+group1 &lt;- c(7,9,6,6,6,11,6,3,8,7)
+group2 &lt;- c(11,13,8,6,14,11,13,13,10,11)
+
+bartlett.test(list(group1,group2))   # Bartlett&#39;s test has stong assumption of normality</code></pre>
+<pre><code>## 
+##  Bartlett test of homogeneity of variances
+## 
+## data:  list(group1, group2)
+## Bartlett&#39;s K-squared = 0.2096, df = 1, p-value = 0.6471</code></pre>
+<pre class="r"><code>car::leveneTest(c(group1,group2),rep(c(&quot;group1&quot;,&quot;group2&quot;),each=10))    # Levene&#39;s test is less reliant on normality</code></pre>
+<pre><code>## Warning in leveneTest.default(c(group1, group2), rep(c(&quot;group1&quot;, &quot;group2&quot;), :
+## rep(c(&quot;group1&quot;, &quot;group2&quot;), each = 10) coerced to factor.</code></pre>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
+##       Df F value Pr(&gt;F)
+## group  1  0.1858 0.6716
+##       18</code></pre>
+</div>
 </div>
 <div id="non-parametric-alternatives" class="section level2">
 <h2>Non-parametric alternatives</h2>
@@ -1069,17 +1097,17 @@ if the observation is greater than the null and -1 if the data are less
 than the null. Then, like many non-parametric tests, you sort the data
 from smallest to largest absolute value. You then multiply the ranks
 times the signs and sum across all observations. This test statistic (W)
-has a known sampling distribution (approximately anyway!) under the null
-hypothesis and therefore you can compute a p-value. The null hypothesis
-for the Wilcoxon test refers to the median of the distribution and not
-the mean (the null hypothesis for the t-test refers to the mean).
-Therefore the two tests are not strictly comparable!</p>
+has a known sampling distribution (approximately anyway!) and therefore
+you can compute a p-value. The null hypothesis for the Wilcoxon test
+refers to the median of the distribution and not the mean (the null
+hypothesis for the t-test refers to the mean). Therefore the two tests
+are not strictly comparable!</p>
 <pre class="r"><code># Wilcoxon signed rank test
 
 my.data &lt;- rgamma(20,0.1,0.1)-2
 
 hist(my.data)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <pre class="r"><code>wilcox.test(my.data)</code></pre>
 <pre><code>## Warning in wilcox.test.default(my.data): cannot compute exact p-value with ties</code></pre>
 <pre><code>## 
@@ -1288,7 +1316,7 @@ for(j in 1:length(sampsize)){
 names(power) &lt;- sampsize
 
 plot(power~sampsize)</code></pre>
-<p><img src="LECTURE4_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="LECTURE4_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>So what sample size would you need (in each of the two groups) to
 detect a signal in this case?</p>
 <p><a href="LECTURE5.html">–go to next lecture–</a></p>

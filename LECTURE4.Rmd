@@ -264,13 +264,13 @@ The t-statistic in the 2-sample case can be interpreted as the difference betwee
 
 The formula for the pooled standard deviation depends on whether your sample size is equal in the two samples and whether you are able to assume that the standard deviation is the same or similar in the two underlying populations.
 
-For example, the formula for the pooled standard deviation when we assume equal standard deviation in the two population but we have unequal sample size is:
+For example, the formula for the pooled standard deviation when we assume equal standard deviation in the two populations (equal variance assumption) but we have unequal sample size is:
 
 $\sqrt{((N_1-1)*\sigma_1^2 + (N_2-1)*\sigma_2^2)/(N_{pooled}-2)}$
 
 For the 2-sample t-test, the degrees of freedom is equal to the total sample size across both samples minus 2. 
 
-Can you think of why the df is two less than the pooled sample size?
+*Q*: Can you think of why the df is two less than the pooled sample size?
 
 
 ```{r}
@@ -502,13 +502,33 @@ The t-test can be highly affected by outliers. If you suspect your data contain 
 
 To look for outliers, the first step is to simply visualize a histogram of the raw data and look for any observations that fall far from the others. 
 
+
+### Equal variance
+
+Some versions of the two-sample t-test assume equal variance. I generally recommend using the Welch's t-test, which is robust to unequal variances. But, it's useful to know how to test for unequal variances. Bartlett's test and Levene's test are both useful for assessing the equality of variances in two or more groups. These tests are also useful for ANOVA. 
+
+```{r}
+
+# test for equal variances
+
+# are the variances equal? 
+group1 <- c(7,9,6,6,6,11,6,3,8,7)
+group2 <- c(11,13,8,6,14,11,13,13,10,11)
+
+bartlett.test(list(group1,group2))   # Bartlett's test has stong assumption of normality
+
+car::leveneTest(c(group1,group2),rep(c("group1","group2"),each=10))    # Levene's test is less reliant on normality
+
+```
+
+
 ## Non-parametric alternatives
 
 If your data are highly non-normal or contain obvious outliers, you probably want to run one of the non-parametric alternatives to the classical t-test. These tests do not assume normality of the data nor are they highly affected by outliers!
 
 ### Wilcoxon signed-rank test
 
-The non-parametric (distribution-free) alternative to the one-sample t-test is called the **one sample Wilcoxon signed rank test**. This analysis first reduces the data to signs- negative 1 if the observation is greater than the null and -1 if the data are less than the null. Then, like many non-parametric tests, you sort the data from smallest to largest absolute value. You then multiply the ranks times the signs and sum across all observations. This test statistic (W) has a known sampling distribution (approximately anyway!) under the null hypothesis and therefore you can compute a p-value. The null hypothesis for the Wilcoxon test refers to the median of the distribution and not the mean (the null hypothesis for the t-test refers to the mean). Therefore the two tests are not strictly comparable!
+The non-parametric (distribution-free) alternative to the one-sample t-test is called the **one sample Wilcoxon signed rank test**. This analysis first reduces the data to signs- negative 1 if the observation is greater than the null and -1 if the data are less than the null. Then, like many non-parametric tests, you sort the data from smallest to largest absolute value. You then multiply the ranks times the signs and sum across all observations. This test statistic (W) has a known sampling distribution (approximately anyway!) and therefore you can compute a p-value. The null hypothesis for the Wilcoxon test refers to the median of the distribution and not the mean (the null hypothesis for the t-test refers to the mean). Therefore the two tests are not strictly comparable!
 
 ```{r}
 
