@@ -50,8 +50,8 @@ We are fortunate that statisticians have developed a number of tests that do not
 Unlike parametric statistics, *nonparametric statistics* do not require us to make strong assumptions, such as that the underlying statistical population follows a normal error distribution (like in a t-test or linear regression). Using these methods, we can still test similar (but not identical) hypotheses even if our data do not meet standard parametric assumptions
 
 Confusingly, we often use the term "nonparametric" to refer to two different classes of statistical models:     
-1. Statistical tests that do not require any assumptions about the distribution of data or residuals. These methods are also known as **distribution-free** tests.
-2. Statistical models that do not require assumptions about the **shape** of the relationship between two or more variables. These methods include generalized additive models, spline regressions, gaussian processes, and many methods collectively known as **machine learning** (e.g., random forest). These methods are often referred to as **nonparametric regression**. 
+1. Statistical tests that do not require any assumptions about the distribution of data or residuals. These methods are also known as **distribution-free** tests.     
+2. Statistical models that do not require assumptions about the **shape** of the relationship between two or more variables. These methods include generalized additive models, spline regressions, gaussian processes, and many methods collectively known as **machine learning** (e.g., random forest). These methods are often referred to as **nonparametric regression**.    
 
 #### Independence of data
 

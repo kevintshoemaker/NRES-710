@@ -39,10 +39,10 @@ To follow along with the R-based lessons and demos, [right (or command) click on
 Consider the following example:
 
 Yellow-Legged frog example:    
-*Population*: all yellow-legged frogs in ponds in the central Sierra Nevada     
-*Parameter*: mean body size (SVL) of adult yellow-legged frogs in all ponds in the central Sierra Nevada    
-*Sample*: As many frogs are captured and measured as possible in 10 ponds randomly sampled from the central Sierra Nevada   
-*Statistic*: Sample mean    
+*Population*: all yellow-legged frogs in ponds in the central Sierra Nevada       
+*Parameter*: mean body size (SVL) of adult yellow-legged frogs in all ponds in the central Sierra Nevada     
+*Sample*: As many frogs are captured and measured as possible in 10 ponds randomly sampled from the central Sierra Nevada     
+*Statistic*: Sample mean      
 
 ![](statistics1.png){width=40%}
 
@@ -192,7 +192,7 @@ The larger the sample size, the more closely the sampling distribution (number o
 
 Pretty much all of classical null hypothesis testing (NHT) works like this: 
 
-1. We compute a summary statistic from our data. This statistic represents the "signal" in your data.
+1. We compute a summary statistic from our data. This statistic represents the "signal" in your data.      
 2. Using the known (theoretical) sampling distribution for our summary statistic under the null hypothesis (worked out by statisticians!), we inquire whether or not our summary statistic (signal) could have been a result of random sampling error under the null hypothesis. 
 3. If it is implausble that random noise could have produced our result (if $p\le\alpha$) then we reject the null hypothesis. Otherwise we fail to reject the null...
 
@@ -201,7 +201,7 @@ Sampling distributions that are commonly used include:
 - t distribution (sampling distribution for the t statistic under the null hypothesis)
 - z distribution (assume your test statistic is a standard normal distribution)
 - Chi-squared distribution (sampling distribution for the Chi-squared statistic under the null hypothesis)
-- F distribution (sampling distribution for the F statistic under the null hypothesis- used in ANOVA and regression)
+- F distribution (sampling distribution for the F statistic under the null hypothesis- used in ANOVA and regression)    
 
 Sampling distributions are thought experiments! What would our test statistic look like under repeated sampling from a population (e.g., under the null hypothesis)?
 

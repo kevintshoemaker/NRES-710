@@ -31,6 +31,8 @@ navbar:
     menu:
     - text: Exercise- data summary functions
       href: EXERCISE1.html
+    - text: Exercise- t-tests
+      href: EXERCISE2.html
   - text: More Resources
     menu:
     - text: Links 

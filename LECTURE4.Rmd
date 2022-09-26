@@ -53,9 +53,10 @@ Let's imagine we are researching the effectiveness of a weight loss drug. We sam
 So for each patient we compute the change in weight between the first and second measurements. In the null universe, the drug is not effective and we would expect the change to be no greater than expected by random chance. Our task is to convince ourselves that the results (mean observed weight loss across all patients) are meaningful.
 
 Remember:
-    - the t statistic is the difference between the sample mean and some hypothesized population mean, standardized in units of standard error.
-    - in classical null hypothesis testing, the t-statistic represents the difference (in standard errors) between your sample mean and the hypothetical true mean (e.g., under the null hypothesis).
-    - the t-distribution is the sampling distribution for the t-statistic.    
+
+  - the t statistic is the difference between the sample mean and some hypothesized population mean, standardized in units of standard error.      
+  - in classical null hypothesis testing, the t-statistic represents the difference (in standard errors) between your sample mean and the hypothetical true mean (e.g., under the null hypothesis).
+  - the t-distribution is the sampling distribution for the t-statistic.    
 
 Here is a worked example, in R:
 

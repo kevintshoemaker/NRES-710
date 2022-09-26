@@ -374,6 +374,9 @@ div.tocify {
     <li>
       <a href="EXERCISE1.html">Exercise- data summary functions</a>
     </li>
+    <li>
+      <a href="EXERCISE2.html">Exercise- t-tests and z-tests</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -583,7 +586,8 @@ class="section level2">
 this:</p>
 <ol style="list-style-type: decimal">
 <li>We compute a summary statistic from our data. This statistic
-represents the “signal” in your data.</li>
+represents the “signal” in your data.<br />
+</li>
 <li>Using the known (theoretical) sampling distribution for our summary
 statistic under the null hypothesis (worked out by statisticians!), we
 inquire whether or not our summary statistic (signal) could have been a
@@ -833,24 +837,6 @@ rbeta(10,shape1,shape2)   # generate 10 random numbers from a continuous distrib
 <p><img src="LECTURE2_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
 <pre class="r"><code>integrate(f=dbeta,lower=0,upper=1,shape1=shape1,shape2=shape2)    # just to make sure it integrates to 1!!</code></pre>
 <pre><code>## 1 with absolute error &lt; 3e-06</code></pre>
-</div>
-<div id="parameters-and-parametric-statistics" class="section level3">
-<h3>Parameters and parametric statistics</h3>
-<p><strong>Parameters</strong> are the arguments used to describe
-probability distributions - they describe the exact shape and location
-of the distribution. Different distribution families are associated with
-different parameters. For example, the normal distribution is described
-by 2 parameters: mean and stdev. The Poisson distribution has only one
-parameter (the mean). The binomial distribution is described by 2
-parameters: size (number of trials) and prob (success probability for
-each trial).</p>
-<p><em>Parametric statistics</em> require assuming certain things about
-distributions &amp; parameters, while <em>nonparametric statistics</em>
-do not require these assumptions. NOTE: nonparametric statistics still
-usually make the assumption that observations are independent!</p>
-<p><strong>Q</strong> Given the CLT makes many classical tests robust to
-non-normal data distributions, why do we need non-parametric
-statistics?</p>
 </div>
 <div id="probability-distributions-in-r" class="section level3">
 <h3>Probability distributions in R</h3>
