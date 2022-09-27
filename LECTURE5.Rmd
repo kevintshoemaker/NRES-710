@@ -11,25 +11,21 @@ output:
 
 ```{r setup, include=FALSE}
 
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
-
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
 ```
 
 ```{r echo=FALSE}
 
-############################################################
-####                                                    ####  
-####  NRES 710, Lecture 5                               ####
-####                                                    ####
-####  Kevin Shoemaker and Ben Sullivan                  #### 
-####  University of Nevada, Reno                        ####
-####                                                    #### 
-############################################################
 
+#  NRES 710, Lecture 5 -----------------------
+#   University of Nevada, Reno                       
 
-############################################################
-####  ANOVA                                             ####
-############################################################
+#   ANOVA                                          
 
 
 ```
@@ -37,29 +33,17 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ## Download the R code for this lecture!
 
-To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](LECTURE3.R)
+To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](LECTURE5.R)
 
 ## Overview: Chi-squared-tests
 
+### Assumptions of Chi-squared tests
 
-### Chi-square goodness-of-fit test.
-
-This test asks the question “do the observations sort into categories according to your (usually null) hypothesis?”
-
-Karl Pearson – Founded the first statistics dept, was a socialist and social Darwinist… and became a eugenicist.    
-
-*Example*: Are grad students more likely to be born some months versus other months?
-
-**Q**: what is the statistical population? Parameter? Sample? Statistic? 
-
-#### Assumptions
-
-* Response variable and predictor variable must be *categorical* (data can be summarized as contingency table)         
+* Response variable (and predictor variable, for test for independence) must be *categorical* (data can be summarized as **contingency table**)         
 * Samples must be independent (this is almost always an assumption of our classical statistical tests)   
-* Sampled must be representative of the population of interest (again, this is always a key assumption)   
+* Samples must be representative of the population of interest (again, this is always a key assumption)   
 * There must be a sufficient sample size such that the *expected number of observations* in each element of the contingency table is at least 5! 
 
-The Chi-squared statistic is computed from the data. The sampling distribution for the statistic is called the *Chi-squared distribution*. 
 
 #### The Chi-squared statistic:   
 
@@ -78,6 +62,16 @@ If you are performing a goodness-of-fit test, the degrees of freedom for this te
 
 If you are performing a test for independence of two categorical variables, the degrees of freedom is computed as $(r-1)(c-1)$ where r and c are the number of categories in each of the two categorical variables, respectively.
 
+
+### Chi-square goodness-of-fit test.
+
+As you recall from the 'basic concepts' lecture, this test asks the question “do the observations sort into categories according to your (null) hypothesis?” In a Chi-square goodness-of-fit test, the response variable of interest is categorical. Like the one-sample t-test, there is no predictor variable. 
+
+*Example*: Are graduate students more likely to be born some months versus other months?
+
+What is the population? sample? parameter? statistic?
+
+In this example, the response variable of interest is the birth month- which is best considered a categorical variable. You can run this test on non-categorical variables (e.g., continuous numeric), but you have to turn your variable into a categorical variable (e.g., by "binning") prior to conducting this analysis.  
 
 #### Example in R
 
@@ -113,88 +107,59 @@ chisq.test(birthdays.bymonth)     # should get the same p value!
 
 ```
 
+Here is another example- this time we use a Chi-squared goodness of fit test to assess normality of a continuous variable. This example is meant to enhance understanding of the chi-squared goodness of fit test-- I don't suggest running this test to assess normality, since the shipiro-wilks test is a much better test!
 
+```{r}
 
-### Chi-square goodness-of-fit test.
+# Chi-squared test for normality
 
-As you recall from the 'basic concepts' lecture, this test asks the question “do the observations sort into categories according to your (null) hypothesis?” In a Chi-square goodness-of-fit test, the response variable of interest is categorical. Like the one-sample t-test, there is no predictor variable. 
+normal.data <- rnorm(250,4,1.5)  # generate normal data
+nonnormal.data <-  runif(250,2,6)  # generate non-normal data
 
-*Example*: Are graduate students more likely to be born some months versus other months?
+hist(normal.data)
+hist(nonnormal.data)
 
-In this example, the response variable of interest is the birth month- which is best considered a categorical variable. You can run this test on non-categorical variables (e.g., continuous numeric), but you have to turn your variable into a categorical variable (e.g., by "binning") prior to conducting this analysis.  
+# First bin the data (chi squared test must be on categorical data!)
+
+breaks <- c(-Inf,1,2,3,3.5,4,4.5,5,6,7,Inf)
+
+normal.data.binned <- cut(normal.data,breaks,labels=breaks[-1])
+nonnormal.data.binned <- cut(nonnormal.data,breaks,labels=breaks[-1])
+
+obs_table_norm <- table(normal.data.binned)
+obs_table_nonnorm <- table(nonnormal.data.binned)
+
+# Determine expected values in each cell if the underlying distribution were normal
+
+normal.probs <- sapply(2:length(breaks), function(t) pnorm(breaks[t],mean(normal.data),sd(normal.data))-pnorm(breaks[t-1],mean(normal.data),sd(normal.data))  )
+exp_table_norm <- length(normal.data)*normal.probs  # check that expected vals are greater than 5
+
+normal.probs <- sapply(2:length(breaks), function(t) pnorm(breaks[t],mean(nonnormal.data),sd(nonnormal.data))-pnorm(breaks[t-1],mean(nonnormal.data),sd(nonnormal.data))  )
+exp_table_nonnorm <- length(normal.data)*normal.probs  # check that expected vals are greater than 5
+
+# Chi squared stat for normality test on normal data
+
+chistat_norm <- sum((obs_table_norm-exp_table_norm)^2/exp_table_norm)
+pval_norm <- 1-pchisq(chistat_norm,length(exp_table_norm)-1)
+pval_norm
+
+chistat_nonnorm <- sum((obs_table_nonnorm-exp_table_nonnorm)^2/exp_table_nonnorm)
+pval_nonnorm <- 1-pchisq(chistat_nonnorm,length(exp_table_nonnorm)-1)
+pval_nonnorm
+
+# Compare with shapiro wilk test (which is a MUCH better test!)
+
+shapiro.test(normal.data)
+shapiro.test(nonnormal.data)
+
+```
+
 
 ### Chi-square test for independence
 
 In the chi-square test for independence, we are testing for a relationship between two categorical variables. That is, both your response variable and predictor variables are categorical. For example, we might test if rabbit ear type (floppy, pointy, mixed) is associated with rabbit coat color (white, brown, mixed) (e.g., are floppy eared rabbits more likely to be white than bunnies with pointy ears).     
 
-## Assumptions of Chi-squared tests
-
-* Response variable (and predictor variable, for test for independence) must be *categorical* (data can be summarized as **contingency table**)         
-* Samples must be independent (this is almost always an assumption of our classical statistical tests)   
-* Samples must be representative of the population of interest (again, this is always a key assumption)   
-* There must be a sufficient sample size such that the *expected number of observations* in each element of the contingency table is at least 5! 
-
-The Chi-squared statistic is computed from the data. The sampling distribution for the statistic is called the *Chi-squared distribution*. 
-
-## The Chi-squared statistic:   
-
-$\chi^2 = \sum_{i=1}^k\frac{(x_i-exp_i)^2}{exp_i}$
-
-Here, $exp_i$ is the expected number of observations in category i under the null hypothesis. $x_i$ is the observed number in category i. So the Chi-squared statistic basically summarizes the extent to which the count of observations in each category disagrees with the expected (null) count across all categories. 
-
-Why is the numerator squared? First, this makes all deviations positive- negatives and positives can't cancel each other out. Second (and trust the statisticians here), by computing our test statistic this way it allows us to use the well-described Chi-squared distribution to approximate our sampling distribution (for assessing the inconsistency of the observed data with the null hypothesis)!
-
-
-## The Chi-squared distribution
-
-The Chi-squared distribution is described (like the *t* distribution) by a certain degrees of freedom ('degrees of freedom' is the *parameter* needed to describe the distribution -- just like mean and standard deviation are parameters of the normal distribution). 
-
-If you are performing a goodness-of-fit test, the degrees of freedom for this test is one less than the number of categories. 
-
-**Q** Can you state why the degrees of freedom for this test is one less than the number of categories? 
-
-If you are performing a test for independence of two categorical variables, the degrees of freedom is computed as $(r-1)(c-1)$ where r and c are the number of categories in each of the two categorical variables, respectively.
-
-
-## Examples in R
-
-
-### Chi squared goodness-of-fit example
-
-```{r}
-## Chi squared goodness-of-fit example
-
-birthdays.bymonth <- c(40,23,33,39,28,29,45,31,22,34,44,20)
-months <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
-names(birthdays.bymonth) <- months
-
-sample.size <- sum(birthdays.bymonth)
-k = length(birthdays.bymonth)   # number of categories (months)
-exp.birthdays.bymonth <- sample.size*rep(1/k,times=k)   # compute the expected number under the null hypothesis.
-
-Chisq.stat <- sum((birthdays.bymonth-exp.birthdays.bymonth)^2/exp.birthdays.bymonth)
-Chisq.stat
-
-
-## View the summary statistic along with its sampling distribution under the null hypothesis
-
-curve(dchisq(x,k-1),0,75)
-abline(v=Chisq.stat,col="green",lwd=3)
-
-p <- 1-pchisq(Chisq.stat,k-1)
-p
-
-
-### use R's built in chi squared function
-
-chisq.test(birthdays.bymonth)     # should get the same p value!
-
-
-```
-
-
-
-### Chi squared test for independence example
+#### Example in R
 
 Here we are testing if bunnies ear type is related to coat color. First we summarize the number of bunnies with each possible combination of coat color and ear type (this is our contingency table). Then we determine what number would be expected in each category if the null hypothesis were true. Finally we can compute the chi-squared statistic and compare with the null sampling distribution (chi squared distribution). Here is the code:
 
@@ -210,12 +175,10 @@ all.bunnies <- data.frame(
 
 head(all.bunnies)
 
-######
 # make contingency table
 
 con_table <- table(all.bunnies$ear_type,all.bunnies$coat_color)
 
-######
 # generate expected values
 
 prop.ears <- rowSums(con_table)/n.bunnies
@@ -223,13 +186,11 @@ sum.coats <- colSums(con_table)
 exp_table <- sapply(1:ncol(con_table),function(t) sum.coats[t]*prop.ears)
 colnames(exp_table) <- colnames(con_table)
 
-#####
 # compute chi-squared statistic
 
 Chisq.stat <- sum((con_table-exp_table)^2/exp_table)
 
 
-#####
 # Compare chi squared statistic with null sampling distribution
 
 curve(dchisq(x,4),0,10)
@@ -240,72 +201,12 @@ p.value
 
 text(7,0.15,paste0("p = ",round(p.value,3)))
 
-
-######
 # Compare with R's built in chi squared function
 
 chisq.test(con_table)
 
 
 ```
-
-
-Here is another example- this time we use a Chi-squared goodness of fit test to assess normality of a continuous variable. This example is meant to enhance understanding of the chi-squared goodness of fit test-- I don't suggest running this test to assess normality, since the shipiro-wilks test is a much better test!
-
-```{r}
-
-######
-# Chi-squared test for normality
-
-normal.data <- rnorm(250,4,1.5)  # generate normal data
-nonnormal.data <-  runif(250,2,6)  # generate non-normal data
-
-hist(normal.data)
-hist(nonnormal.data)
-
-#####
-# First bin the data (chi squared test must be on categorical data!)
-
-breaks <- c(-Inf,1,2,3,3.5,4,4.5,5,6,7,Inf)
-
-normal.data.binned <- cut(normal.data,breaks,labels=breaks[-1])
-nonnormal.data.binned <- cut(nonnormal.data,breaks,labels=breaks[-1])
-
-obs_table_norm <- table(normal.data.binned)
-obs_table_nonnorm <- table(nonnormal.data.binned)
-
-#####
-# Determine expected values in each cell if the underlying distribution were normal
-
-normal.probs <- sapply(2:length(breaks), function(t) pnorm(breaks[t],mean(normal.data),sd(normal.data))-pnorm(breaks[t-1],mean(normal.data),sd(normal.data))  )
-exp_table_norm <- length(normal.data)*normal.probs  # check that expected vals are greater than 5
-
-normal.probs <- sapply(2:length(breaks), function(t) pnorm(breaks[t],mean(nonnormal.data),sd(nonnormal.data))-pnorm(breaks[t-1],mean(nonnormal.data),sd(nonnormal.data))  )
-exp_table_nonnorm <- length(normal.data)*normal.probs  # check that expected vals are greater than 5
-
-######
-# Chi squared stat for normality test on normal data
-
-chistat_norm <- sum((obs_table_norm-exp_table_norm)^2/exp_table_norm)
-pval_norm <- 1-pchisq(chistat_norm,length(exp_table_norm)-1)
-pval_norm
-
-chistat_nonnorm <- sum((obs_table_nonnorm-exp_table_nonnorm)^2/exp_table_nonnorm)
-pval_nonnorm <- 1-pchisq(chistat_nonnorm,length(exp_table_nonnorm)-1)
-pval_nonnorm
-
-####
-# Compare with shapiro wilk test (which is a MUCH better test!)
-
-shapiro.test(normal.data)
-shapiro.test(nonnormal.data)
-
-```
-
-
-
-
-
 
 
 ## G test
@@ -330,12 +231,10 @@ all.bunnies <- data.frame(
 
 head(all.bunnies)
 
-######
 # make contingency table
 
 con_table <- table(all.bunnies$ear_type,all.bunnies$coat_color)
 
-######
 # generate expected values
 
 prop.ears <- rowSums(con_table)/n.bunnies
@@ -343,14 +242,12 @@ sum.coats <- colSums(con_table)
 exp_table <- sapply(1:ncol(con_table),function(t) sum.coats[t]*prop.ears)
 colnames(exp_table) <- colnames(con_table)
 
-#####
 # compute chi-squared and G statistics
 
 Chisq.stat <- sum((con_table-exp_table)^2/exp_table)
 G.stat <- 2*sum(con_table*log(con_table/exp_table))   # slightly different!
 
 
-#####
 # Compare chi squared and G statistics with null sampling distribution
 
 curve(dchisq(x,4),0,10)
@@ -387,12 +284,10 @@ all.bunnies <- data.frame(
 
 head(all.bunnies)
 
-######
 # make contingency table
 
 con_table <- table(all.bunnies$ear_type,all.bunnies$coat_color)
 
-######
 # generate expected values
 
 prop.ears <- rowSums(con_table)/n.bunnies
@@ -400,7 +295,6 @@ sum.coats <- colSums(con_table)
 exp_table <- sapply(1:ncol(con_table),function(t) sum.coats[t]*prop.ears)
 colnames(exp_table) <- colnames(con_table)
 
-#####
 # run fisher exact test
 
 #?fisher.test
@@ -410,9 +304,6 @@ fisher.test(con_table)   # better test
 fisher.test(con_table,simulate.p.value = T,B=5000)   # use simulated p-value - usually very similar answer
 
 ```
-
-
-
 
 
 

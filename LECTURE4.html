@@ -354,13 +354,16 @@ div.tocify {
       <a href="LECTURE5.html">chi-squared tests</a>
     </li>
     <li>
-      <a href="LECTURE6.html">Analysis- ANOVA</a>
+      <a href="LECTURE6.html">Linear Regression</a>
     </li>
     <li>
-      <a href="LECTURE7.html">Analysis- GLM and GLMM</a>
+      <a href="LECTURE7.html">ANOVA</a>
     </li>
     <li>
-      <a href="LECTURE7.html">Next steps</a>
+      <a href="LECTURE8.html">GLM and GLMM</a>
+    </li>
+    <li>
+      <a href="LECTURE9.html">Next steps</a>
     </li>
   </ul>
 </li>
@@ -764,7 +767,7 @@ sample.sd.pooled &lt;- sqrt(((sample.size.1-1)*sample.sd1^2 + (sample.size.2-1)*
 std.err.pooled &lt;- sample.sd.pooled*sqrt(1/sample.size.1+1/sample.size.2)
 t.stat &lt;- (sample.mean1-sample.mean2)/std.err.pooled
 
-t.crit &lt;- abs(qt(0.025,sample.size-1))   # for 2-tailed test
+t.crit &lt;- abs(qt(0.025,sample.size.pooled-2))   # for 2-tailed test
 
 p.val &lt;- (1-pt(abs(t.stat),sample.size.pooled-2))*2   # 2-tailed test
 

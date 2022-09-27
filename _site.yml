@@ -21,12 +21,14 @@ navbar:
       href: LECTURE4.html
     - text: chi-squared tests
       href: LECTURE5.html
-    - text: Analysis- ANOVA
+    - text: Linear Regression
       href: LECTURE6.html
-    - text: Analysis- GLM and GLMM
+    - text: ANOVA
       href: LECTURE7.html
+    - text: GLM and GLMM
+      href: LECTURE8.html
     - text: Next steps
-      href: LECTURE7.html
+      href: LECTURE9.html
   - text: Exercises
     menu:
     - text: Exercise- data summary functions

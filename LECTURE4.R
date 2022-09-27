@@ -118,7 +118,7 @@ sample.sd.pooled <- sqrt(((sample.size.1-1)*sample.sd1^2 + (sample.size.2-1)*sam
 std.err.pooled <- sample.sd.pooled*sqrt(1/sample.size.1+1/sample.size.2)
 t.stat <- (sample.mean1-sample.mean2)/std.err.pooled
 
-t.crit <- abs(qt(0.025,sample.size-1))   # for 2-tailed test
+t.crit <- abs(qt(0.025,sample.size.pooled-2))   # for 2-tailed test
 
 p.val <- (1-pt(abs(t.stat),sample.size.pooled-2))*2   # 2-tailed test
 
