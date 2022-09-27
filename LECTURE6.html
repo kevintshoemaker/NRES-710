@@ -12,22 +12,30 @@
 <meta name="author" content="NRES 710" />
 
 
-<title>Generalized Linear Mixed Models (GLMM)</title>
+<title>Linear Regression</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -39,11 +47,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -56,32 +59,8 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
+
 
 
 
@@ -91,10 +70,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -111,40 +86,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 45px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h2 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h3 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h4 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h5 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h6 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -172,7 +123,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -184,7 +135,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -195,10 +146,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -210,7 +174,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -336,7 +299,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -350,7 +313,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -366,7 +329,7 @@ div.tocify {
   <a href="schedule.html">Schedule</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Lectures
      
     <span class="caret"></span>
@@ -379,27 +342,48 @@ div.tocify {
       <a href="LECTURE1.html">Basic Concepts</a>
     </li>
     <li>
-      <a href="LECTURE2.html">Analysis- t test</a>
+      <a href="LECTURE2.html">Sampling uncertainty</a>
     </li>
     <li>
-      <a href="LECTURE3.html">Analysis- chi2 test</a>
+      <a href="LECTURE3.html">Taxonomy of common statistics</a>
     </li>
     <li>
-      <a href="LECTURE4.html">Analysis- linear regression</a>
+      <a href="LECTURE4.html">t-test and z-test</a>
     </li>
     <li>
-      <a href="LECTURE5.html">Analysis- ANOVA</a>
+      <a href="LECTURE5.html">chi-squared tests</a>
     </li>
     <li>
-      <a href="LECTURE6.html">Analysis- GLM and GLMM</a>
+      <a href="LECTURE6.html">Linear Regression</a>
     </li>
     <li>
-      <a href="LECTURE7.html">Next steps</a>
+      <a href="LECTURE7.html">ANOVA</a>
+    </li>
+    <li>
+      <a href="LECTURE8.html">GLM and GLMM</a>
+    </li>
+    <li>
+      <a href="LECTURE9.html">Next steps</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Exercises
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="EXERCISE1.html">Exercise- data summary functions</a>
+    </li>
+    <li>
+      <a href="EXERCISE2.html">Exercise- t-tests</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     More Resources
      
     <span class="caret"></span>
@@ -411,8 +395,17 @@ div.tocify {
     <li>
       <a href="FINALPROJ.html">Final Projects</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Datasets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="STUDYGUIDE.html">Study Guide</a>
+      <a href="Data1.dat">Data1</a>
     </li>
   </ul>
 </li>
@@ -424,747 +417,912 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
-<h1 class="title toc-ignore">Generalized Linear Mixed Models (GLMM)</h1>
+<h1 class="title toc-ignore">Linear Regression</h1>
 <h4 class="author">NRES 710</h4>
-<h4 class="date">Fall 2020</h4>
+<h4 class="date">Fall 2022</h4>
 
 </div>
 
 
 <div id="download-the-r-code-for-this-lecture" class="section level2">
 <h2>Download the R code for this lecture!</h2>
-<p>To follow along with the R-based lessons and demos, <a href="LECTURE6.R">right (or command) click on this link and save the script to your working directory</a></p>
+<p>To follow along with the R-based lessons and demos, <a
+href="LECTURE4.R">right (or command) click on this link and save the
+script to your working directory</a></p>
 </div>
-<div id="overview-generalized-linear-models" class="section level2">
-<h2>Overview: Generalized Linear Models</h2>
-<p>Generalized Linear Models (GLM) are not generally covered in intro stats classes, but they are so flexible and so common in ecology and environmental science that you really need to at least know that these models exist!</p>
-<p>The real data sets that we deal with as ecologists and environmental scientists tend to violate some key assumptions of classical linear regression and ANOVA. In particular, residuals are often decidedly non-normal and variance is decidedly non-equal (heteroskedastic) across the range of predictions.</p>
-<p>Generalized linear models allow us to model response variables that are not amenable to classical linear regression – but allows us to use a model structure that closely resembles linear regression. Pretty much everything about running a GLM is like linear regression. The primary function for running GLM models (‘glm’) even looks very similar to the regression function ‘lm’.</p>
-<p>GLMs are parametric analyses – it’s just that (1) we don’t need to assume our response variable is normally distributed and (2) we don’t need to assume the relationship between the response variable and the predictor variable(s) is linear on the scale of the untransformed response variable. Let’s look into each of these in more detail:</p>
-<div id="alternative-distributions" class="section level3">
-<h3>Alternative distributions</h3>
-<p>So we don’t need to assume the response variable is normally distributed – but we do need to assume it is distributed according to some known probability distribution – and we need to specify what distribution we ARE assuming. We can assume that the response process is Poisson distributed, or gamma distributed, or beta distributed, or any of a host of other distributions. But again, we have to specify which distribution!</p>
+<div id="overview-linear-regression" class="section level2">
+<h2>Overview: Linear Regression</h2>
+<p>Classical linear regression involves testing for a relationship
+between a continuous response variable (dependent variable) and a
+continuous predictor variable (independent variable).</p>
+<p>You can have multiple explanatory variables… hence you can have
+multiple linear regression. We will focus on <em>simple linear
+regression</em> here.</p>
+<p>The null hypothesis is that there is no relationship between the
+response variable and the predictor variable in your population of
+interest. That is, observations with larger values for your predictor
+variable are not expected to be associated with larger or smaller values
+of the response variable on average.</p>
+<div id="simple-example" class="section level3">
+<h3>Simple example</h3>
+<p>Imagine we are testing for a relationship between the brightness of
+artificial lighting at long stretch of beach (e.g., from hotels and
+other forms of development) and the total number of hatchling sea
+turtles per nest that successfully make it to the ocean.</p>
+<p><em>Population</em>: All nests in this particular stretch of
+beach<br />
+<em>Parameter(s)</em>: The mean number of hatchlings per nest that
+successfully travel from their nest to the ocean and how this changes as
+a function of the brightness of artificial lighting.<br />
+<em>Sample</em>: All monitored nests<br />
+<em>Statistic(s)</em>: Slope and intercept of the linear relationship
+between the measured response variable (number of successful
+ocean-arrivers per nest) and the predictor variable (brightness of
+artificial lighting)</p>
 </div>
-<div id="link-functions" class="section level3">
-<h3>Link functions</h3>
-<p>So we don’t need to assume the relationship between the mean of the response variable and the predictor variable(s) is linear on the scale of the untransformed response variable – but the hypothesized relationship must be linear on some transformation of the response variable – and we need to specify what transformed version of the response process we wish to assume linearity for. This is called the ‘link function’.</p>
-<p>In the general case, a GLM can be described by the following pseudo-equations:</p>
-<p><span class="math inline">\(f(\bar{y})=\beta_0+\beta_1\cdot x_1+\beta_2 \cdot x_2 \ldots\)</span></p>
-<p>The left side of this equation is the mean of the response variable, transformed according to the specified link function. The right side of this equation is called the <strong>linear predictor</strong> and describes how the (transformed) mean response varies as a function of the predictor variable(s).</p>
-<p>To complete the picture, we need to represent the error/variability. To do this we represent the raw response as being distributed according to a distribution we specify:</p>
-<p><span class="math inline">\(y \sim My.Dist(\ldots)\)</span></p>
-<p>My.Dist can be the binomial distribution, Poisson distribution, or a number of other possibilities. The mean of the distribution is described by the covariates (preditor variables) as described in the top equation.</p>
+<div id="some-more-specifics" class="section level3">
+<h3>Some more specifics!</h3>
+<p>We assume there is some true model out there describing the expected
+(mean) value of our response variable <em>y</em> as a linear function of
+our predictor variable <em>x</em>:</p>
+<p><span class="math inline">\(E(y)= \beta_0 + \beta_1\cdot
+x\)</span></p>
+<p>To interpret this equation: the true mean of our response variable
+(<span class="math inline">\(E(y)\)</span>) is computed by taking the
+true intercept (<span class="math inline">\(\beta_0\)</span>) and adding
+the product of the true slope term (<span
+class="math inline">\(\beta_1\)</span>) and our predictor variable. This
+is just another way of saying that the expected value of the response
+variable is computed as a linear function of the predictor variable.
+<span class="math inline">\(\beta_0\)</span> and <span
+class="math inline">\(\beta_0\)</span> are both <em>parameters</em> that
+we wish to estimate!</p>
+<p>To complete the thought, we also assume that there is some “noise” in
+the system. The “noise” term in regression and ANOVA is also known as
+the <em>residual error</em>. Specifically, we assume that the noise
+(residual error) is normally distributed with mean of zero and standard
+deviation of <span class="math inline">\(\sigma\)</span>.</p>
+<p>Mathematically, we are assuming that our data/sample was generated
+from this process:</p>
+<p><span class="math inline">\(y= \beta_0 + \beta_1\cdot x +
+\epsilon\)</span></p>
+<p>OR:</p>
+<p><span class="math inline">\(y= E(y) + \epsilon\)</span></p>
+<p>WHERE:</p>
+<p><span class="math inline">\(\epsilon \equiv Normal(0,
+\sigma)\)</span></p>
+<p>This is actually the same assumption we made for a one-sample
+t-test!</p>
+<p>For a t-test, we assume that there is a true population mean <span
+class="math inline">\(\mu\)</span> (equivalent to <span
+class="math inline">\(E(y)\)</span>) and that the true “noise” is
+normally distributed with standard deviation of <span
+class="math inline">\(\sigma\)</span>.</p>
+<p>As with a t-test, where we can only approximate the true population
+mean by computing the sample mean, we can only approximate the linear
+relationship between our response and predictor variables:</p>
+<p><span class="math inline">\(\bar{y} = \hat{B_0} + \hat{B_0}\cdot
+x\)</span></p>
+<p>Just like any other statistical test, we assume that our observed
+linear relationship (defined by test statistics <span
+class="math inline">\(\hat{B_0}\)</span> and <span
+class="math inline">\(\hat{B_1}\)</span>) is just one of many such
+possible relationships that <em>could have been derived</em> from random
+sampling from our population of interest. If we collected a different
+sample, we would get a different linear relationship.</p>
+<p>NOTE: in linear regression we are generally far more interested in
+the slope of the linear relationship (<span
+class="math inline">\(\hat{B_1}\)</span> rather than the intercept). So
+for now, we assume <span class="math inline">\(\hat{B_1}\)</span> (slope
+between response and predictor, computed from the sample) is the main
+test statistic of interest!</p>
+<p>So.. what is the sampling distribution for our test statistic <span
+class="math inline">\(\hat{B_1}\)</span> under the null hypothesis in
+this case? Well, the answer is that it (when converted to units of
+standard error) is t-distributed! Let’s look into this a bit more.</p>
 </div>
-<div id="a-simple-example-logistic-regression" class="section level3">
-<h3>A simple example (logistic regression)</h3>
-<p>For example, we might have a binary response variable and a continuous predictor variable. Making the assumption of linearity would not necessarily make sense in this case.</p>
-<p>Let’s first make up an example:</p>
-<pre class="r"><code>## made up data for glm #1 (logistic regression)
+<div id="regression-and-t-tests--the-link" class="section level3">
+<h3>Regression and t-tests- the link!</h3>
+<p>Our discussion of t-tests actually rolls us straight into linear
+regression. Why? How?</p>
+<p>In a one-sample t-test we are interested in estimating the true
+population mean, and we assume that our t-statistic (i.e., deviation of
+the sample mean from the null mean, in units of standard error) is
+t-distributed with degrees of freedom of one less than the sample
+size.</p>
+<p>What is the hypothesis of a typical one-sample t-test? (<span
+class="math inline">\(\mu = 0\)</span> - that is, the true mean is
+zero!)</p>
+<p>What is the hypothesis of a linear regression? (Slope = 0 - that is,
+the true relationship is zero).</p>
+<p>So already we are seeing a bit of a similarity.</p>
+<div id="t-test-recap" class="section level4">
+<h4>t-test recap</h4>
+<p>In a t-test we assume that the population mean is equal to the null
+mean and that the data are normally distributed around the true mean. We
+could write this as (using regression notation):</p>
+<p><span class="math inline">\(y = \beta_0 + \epsilon\)</span></p>
+<p>WHERE:</p>
+<p><span class="math inline">\(\epsilon \equiv Normal(0,
+\sigma)\)</span></p>
+<p>In the above equation, <span class="math inline">\(\beta_0\)</span>
+represents the population mean under the null hypothesis.</p>
+<p>We approximate our population mean using the sample mean <span
+class="math inline">\(\bar{\beta_0}\)</span> (formerly known as <span
+class="math inline">\(\bar{x}\)</span>) and we use the CLT and other
+statistical theories to show that the t-statistic:</p>
+<p><span class="math inline">\(t =
+\frac{\bar{\beta_0}-\beta_0}{StdErr(\beta_0)}\)</span></p>
+<p>Is t-distributed with df computed as the sample size minus the number
+of parameters estimated in the model (there is only one estimated
+parameter- the sample mean <span
+class="math inline">\(\bar{\beta_0}\)</span>).</p>
+</div>
+<div id="linear-regression-version" class="section level4">
+<h4>linear regression version</h4>
+<p>In linear regression we assume that the mean of our response is
+determined by two parameters- the intercept and the slope (linear
+relationship with the predictor variable). The null hypothesis (usually)
+is that the true mean is defined only by the intercept term and there is
+no relationship with the predictor variable (slope term is equal to
+zero).</p>
+<p>The slope term of the linear regression can be computed as:</p>
+<p><span class="math inline">\(\hat{\beta_1} =
+\frac{\sum_{i=1}^{n}{(x_i-\bar{x})(y_i-\bar{y})}}{\sum_{i-1}^{n}{(x_i-\bar{x})^2}}\)</span></p>
+<p>And the intercept term can be computed as:</p>
+<p><span class="math inline">\(\hat{\beta_0} = \bar{y} -
+\beta_1*\bar{x}\)</span></p>
+<p>Simple linear regression models (that is, the slope and intercept
+terms above) are fitted using “least squares”. The best fit model
+minimizes the sum of the squared residuals. DRAW THIS OUT.</p>
+<p>The standard error of the slope term (as opposed to the standard
+error of the mean) is computed as:</p>
+<p><span class="math inline">\(std.err_{\hat{\beta_1}} =
+\sqrt{\frac{\frac{1}{n-2}\sum_{i=1}^n{\hat\epsilon_i^2}}{\sum_{i=1}^n{(x_i-\bar{x})^2}}}\)</span></p>
+<p>Where the <span class="math inline">\(\hat\epsilon_i\)</span> refers
+to the residual errors.</p>
+<p>We can then compute a t-statistic for the slope term (difference from
+the sample slope term and the null slope term in units of standard
+error):</p>
+<p><span
+class="math inline">\(t=\frac{\hat{\beta_1}-\beta_{1null}}{std.err_{\hat{\beta_1}}}\)</span></p>
+<p>Just like with the t-test, we assume that this t-statistic is
+t-distributed under the null hypothesis. This time the degrees of
+freedom is 2 less than the sample size (since computing the residual
+error requires computing two parameters: mean and slope).</p>
+</div>
+</div>
+</div>
+<div id="simple-linear-regression-examples" class="section level2">
+<h2>Simple linear regression: examples</h2>
+<p>Okay let’s consider the sea turtle example from the beginning of
+lecture:</p>
+<p>Imagine we are testing for a relationship between the brightness of
+artificial lighting at long stretch of beach (e.g., from hotels and
+other forms of development) and the total number of hatchling sea
+turtles per nest that successfully make it to the ocean.</p>
+<p><em>Population</em>: All nests in this particular stretch of
+beach<br />
+<em>Parameter(s)</em>: The mean number of hatchlings per nest that
+successfully travel from their nest to the ocean and how this changes as
+a function of the brightness of artificial lighting.<br />
+<em>Sample</em>: All monitored nests<br />
+<em>Statistic(s)</em>: Slope and intercept of the linear relationship
+between the measured response variable (number of successful
+ocean-arrivers per nest) and the predictor variable (brightness of
+artificial lighting)</p>
+<p>First we will simulate some data under a known process model:</p>
+<pre class="r"><code>eggs.per.nest &lt;- 100
+n.nests &lt;- 15
+light &lt;- rnorm(n.nests,50,10)   # make up some light pollution values (predictor var)
 
-predictor &lt;- runif(100,0,50)
-response &lt;- rbinom(100,1, plogis(-5 + 0.26*predictor) )
+probsucc &lt;- function(light){    # egg success as a function of light pollution
+  plogis(1.5-0.01*light)
+}
 
-plot(response~predictor,ylim=c(-2,2))
-abline(lm(response~predictor),col=&quot;red&quot;)   # overlay regression line</code></pre>
+hatchlings.successful &lt;- rbinom(n.nests,eggs.per.nest,probsucc(light))   # determine number of successful eggs (response var)
+
+#curve(probsucc,0,100)
+
+plot(hatchlings.successful~light)  # plot the data</code></pre>
 <p><img src="LECTURE6_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<pre class="r"><code>layout(matrix(1:4,nrow=2,byrow=2))
-plot(lm(response~predictor))</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
-<p>Note that the predicted mean response at high values of the predictor exceed 1- which is impossible for a binary response. Clearly we can’t make the assumption of linearity on the untransformed binary response. Furthermore, the other diagnostic plots also do not look great…</p>
-<p>Another way of saying this is that a binary response cannot go below zero or above 1, whereas a linear function of predictor variables (linear predictor) can do both!</p>
-<p>One transformation that makes sense for a regression with a binary response is the <strong>logit transformation</strong>. The logit transformation is commonly used to take probabilities (which are constrained between 0 and 1) and transform them to values that can vary between -Inf and Inf.</p>
-<p>That way, the linear predictor (which is not constrained and can therefore vary between -Inf and Inf) will always be interpretable as a probability!</p>
-<p>For example, take the following probabilities:</p>
-<pre class="r"><code>probs &lt;- runif(10)
-probs</code></pre>
-<pre><code>##  [1] 0.2932703 0.2762224 0.2110966 0.8579968 0.4781018 0.5652622 0.3387000
-##  [8] 0.3628480 0.8153420 0.7444351</code></pre>
-<p>Here’s what happens if we apply the logit transformation:</p>
-<p><span class="math inline">\(logit(p) = log(\frac{p}{(1-p)})\)</span></p>
-<pre class="r"><code>data.frame(
-  p = probs,
-  logit.p=log(probs/(1-probs))
-)</code></pre>
-<pre><code>##            p     logit.p
-## 1  0.2932703 -0.87955345
-## 2  0.2762224 -0.96327777
-## 3  0.2110966 -1.31832775
-## 4  0.8579968  1.79875055
-## 5  0.4781018 -0.08764869
-## 6  0.5652622  0.26254673
-## 7  0.3387000 -0.66909266
-## 8  0.3628480 -0.56302438
-## 9  0.8153420  1.48510217
-## 10 0.7444351  1.06914925</code></pre>
-<p>If our response variable is binary and we want to assume that the mean response (on some transformed scale) is linearly dependent on our predictor variable, the logit transformation is a good candidate for our link function, because this way the mean response will never go below zero or above one.</p>
-<p>So instead of:</p>
-<p><span class="math inline">\(\bar{y} = \beta_0 + \beta_1\cdot x\)</span></p>
-<p>We can use the <strong>logit link</strong> and assume instead that:</p>
-<p><span class="math inline">\(logit(\bar{y}) = \beta_0 + \beta_1\cdot x\)</span></p>
-<p>If we solve for y, this equation becomes:</p>
-<p><span class="math inline">\(\bar{y} = \frac{e^{\beta_0 + \beta_1\cdot x}}{1+e^{\beta_0 + \beta_1\cdot x}}\)</span></p>
-<p>This is what we do when we conduct a <em>logistic regression</em>! Specifically, in a logistic regression we assume the following:</p>
-<p><strong>Response distribution</strong>: binomial with size=1 (can only be zero or 1; also known as a Bernoulli distribution)</p>
-<p><strong>Link function</strong>: logit (mean of the response is a linear function of the predictor variable(s), on the logit scale)</p>
-<p>We use a binomial response distribution because our response variable is discrete, just like a binomial distribution. If you flip one coin you can get only a zero or a one, just like the response variable. The binomial distribution matches the response variable, so it is an appropriate distribution to assume!</p>
-<p>NOTE: it may not seem obvious, but the mean of a binary random variable is the probability of success (probability of getting a one). That is, if you repeatedly sampled from a random binary process many many times, the expected mean of those numbers (fraction of the total number of samples that are equal to one) is the same thing as the probability of success.</p>
-<pre class="r"><code>  ## conduct logistic regression:
+<p>Now that we have data, let’s run a linear regression!</p>
+<pre class="r"><code>slope &lt;- sum((light-mean(light))*(hatchlings.successful-mean(hatchlings.successful)))/sum((light-mean(light))^2)
+intercept &lt;- mean(hatchlings.successful) - slope*mean(light)
 
-model &lt;- glm(response~predictor,family=binomial(link=&quot;logit&quot;))    # logistic regression in R
-summary(model)   # summary looks similar to ordinary linear regression!</code></pre>
+exp.successful &lt;- intercept+slope*light # expected number of eggs for each observation
+residuals &lt;- hatchlings.successful-exp.successful
+
+stderr &lt;- sqrt(((1/(n.nests-2))*sum(residuals^2))/(sum((light-mean(light))^2)))    # standard error
+
+t.stat &lt;- (slope-0)/stderr    # t statistic
+
+pval &lt;- 2*pt(t.stat,n.nests-2)    # p value
+
+
+############
+# use lm function instead (easy way!)
+
+model &lt;- lm(hatchlings.successful~light)
+
+summary(model)   # get the same t stat and p-value hopefully!</code></pre>
 <pre><code>## 
 ## Call:
-## glm(formula = response ~ predictor, family = binomial(link = &quot;logit&quot;))
+## lm(formula = hatchlings.successful ~ light)
 ## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -3.3119  -0.3701   0.0710   0.2598   2.1498  
-## 
-## Coefficients:
-##             Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept) -4.35746    0.93991  -4.636 3.55e-06 ***
-## predictor    0.23741    0.04976   4.771 1.83e-06 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## (Dispersion parameter for binomial family taken to be 1)
-## 
-##     Null deviance: 130.684  on 99  degrees of freedom
-## Residual deviance:  53.208  on 98  degrees of freedom
-## AIC: 57.208
-## 
-## Number of Fisher Scoring iterations: 7</code></pre>
-<pre class="r"><code>newdat &lt;- data.frame(        # make predictions for plotting regression line and approx conf bounds
-  predictor = seq(0,50,1)
-)
-
-mypred &lt;- predict(model,type=&quot;response&quot;,se.fit=T,newdata = newdat)
-
-plot(response~predictor)
-lines(newdat$predictor,mypred$fit,col=&quot;blue&quot;)
-lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
-lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>Note that the relationship between the response and predictor looks non-linear. But this is not the same thing as non-linear regression. GLM is a type of linear model for a reason. It’s just that the relationship is assumed to be linear on the logit scale. Here is another visualization of the same exact model:</p>
-<pre class="r"><code>par(mfcol=c(1,2))
-
-mypred &lt;- predict(model,type=&quot;link&quot;,se.fit=T,newdata = newdat)
-
-plot(newdat$predictor,mypred$fit,col=&quot;blue&quot;,type=&quot;l&quot;,ylab=&quot;mean response(logit scale)&quot;,xlab=&quot;predictor&quot;)
-lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
-lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
-
-
-mypred &lt;- predict(model,type=&quot;response&quot;,se.fit=T,newdata = newdat)
-
-plot(newdat$predictor,mypred$fit,col=&quot;blue&quot;,type=&quot;l&quot;,ylab=&quot;mean response&quot;,xlab=&quot;predictor&quot;)
-lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
-lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-</div>
-<div id="another-simple-example-poisson-count-regression" class="section level3">
-<h3>Another simple example (Poisson count regression)</h3>
-<p>Sometimes our measured response is a <em>count</em> of something (e.g., number of stems in a plot). In such cases, our response variable cannot go below zero- and the response variable should ideally come from a discrete distribution that only allows integers. The simplest way to model this is:</p>
-<p><strong>Response distribution:</strong> Poisson<br />
-<strong>Link function:</strong> Natural logarithm</p>
-<p>The Poisson distribution (with only one parameter) is the simplest discrete probability distribution, and the (natural) log is the simplest link function that maps a quantity with a lower bound of zero to a quantity with a lower bound of -Inf. After all, a count cannot go below zero, whereas a linear function of predictor variables can!</p>
-<p>Let’s make up some count data:</p>
-<pre class="r"><code># Count regression example
-
-predictor = runif(30,-2,2)
-response = rnbinom(30,mu=exp(3-0.5*predictor),size=2)     # make up data!
-
-plot(response~predictor)
-abline(lm(response~predictor))</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<pre class="r"><code>par(mfrow=c(2,2))
-plot(lm(response~predictor))</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
-<p>Here we see some potential issues with ordinary linear regression and we might consider Poisson count regression instead!</p>
-<pre class="r"><code>## try Poisson count regression model!
-
-model &lt;- glm(response~predictor,family=poisson(link=&quot;log&quot;))
-summary(model)</code></pre>
-<pre><code>## 
-## Call:
-## glm(formula = response ~ predictor, family = poisson(link = &quot;log&quot;))
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -4.5186  -2.3991  -0.4442   1.7086   5.7962  
-## 
-## Coefficients:
-##             Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)  2.96237    0.04340   68.25   &lt;2e-16 ***
-## predictor   -0.37438    0.03729  -10.04   &lt;2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## (Dispersion parameter for poisson family taken to be 1)
-## 
-##     Null deviance: 326.28  on 29  degrees of freedom
-## Residual deviance: 214.70  on 28  degrees of freedom
-## AIC: 357.06
-## 
-## Number of Fisher Scoring iterations: 5</code></pre>
-<pre class="r"><code>plot(response~predictor)
-
-newdat &lt;- data.frame(
-  predictor = seq(-3,3,0.1)
-)
-
-mypred &lt;- predict(model,type=&quot;response&quot;,se.fit = T,newdata=newdat)
-
-lines(newdat$predictor,mypred$fit,col=&quot;blue&quot;)
-lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
-lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-</div>
-</div>
-<div id="diagnostic-testing-with-glm" class="section level2">
-<h2>Diagnostic testing with GLM</h2>
-<p>Obviously, the standard diagnostic plots don’t make much sense for GLM– after all, they are testing assumptions that we are no longer making! We don’t need to test for normality of residuals if we are assuming our response variable is binomially distributed! We don’t need to test for homogeneity of variance if our assumed probability distribution is heteroskedastic!</p>
-<p>The Poisson distribution, for example, does not have homogeneous variance- in fact, the variance of the Poisson distribution is equal to the mean. So the larger the expected value, the larger the variance!</p>
-<p>However, we need some way of testing whether the distribution we selected is a reasonable fit to our data. We could use so-called deviance residuals here (which is the default in r) but I prefer to use the DHARMa package in R.</p>
-<p>NOTE: the DHARMa package also works for GLMM models (generalized linear mixed-effects models- see below!)</p>
-<pre class="r"><code>residuals(model)  # compute the deviance residuals for the poisson regression model</code></pre>
-<pre><code>##           1           2           3           4           5           6 
-## -2.42978608 -2.50052900 -1.65007105 -3.05661566  2.48675116  2.00642043 
-##           7           8           9          10          11          12 
-## -2.24376499  1.20446543  5.79618066 -3.44455501  0.63339176  0.02407597 
-##          13          14          15          16          17          18 
-## -1.45936015  1.73130667  1.64065607 -2.55764308  2.19660667  0.79822060 
-##          19          20          21          22          23          24 
-## -4.51857418 -4.41659884 -2.30685647  5.38416382 -3.01904933  2.37912388 
-##          25          26          27          28          29          30 
-##  0.47458305  3.27017286 -1.61064806  0.27575427 -0.91243271 -2.16081383</code></pre>
-<pre class="r"><code>summary(residuals(model))   # median should be near zero</code></pre>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-## -4.5186 -2.3991 -0.4442 -0.2662  1.7086  5.7962</code></pre>
-<pre class="r"><code>paste0(c(&quot;Null deviance: &quot;, &quot;Residual deviance: &quot;),     # null deviance should be much higher than residual deviance
-       round(c(model$null.deviance, deviance(model)), 2))</code></pre>
-<pre><code>## [1] &quot;Null deviance: 326.28&quot;    &quot;Residual deviance: 214.7&quot;</code></pre>
-<pre class="r"><code>paste0(c(&quot;model df: &quot;, &quot;Residual deviance: &quot;),     # resid deviance should be close to residual df
-       round(c(model$df.residual, deviance(model)), 2))</code></pre>
-<pre><code>## [1] &quot;model df: 28&quot;             &quot;Residual deviance: 214.7&quot;</code></pre>
-<p>So using the deviance residuals we’re starting to get a picture that the Poisson distribution may not be a great fit. Let’s use the DHARMa package now…</p>
-<pre class="r"><code>library(DHARMa)</code></pre>
-<pre><code>## This is DHARMa 0.3.3.0. For overview type &#39;?DHARMa&#39;. For recent changes, type news(package = &#39;DHARMa&#39;) Note: Syntax of plotResiduals has changed in 0.3.0, see ?plotResiduals for details</code></pre>
-<pre class="r"><code>simresids &lt;- simulateResiduals(model,n=250,plot=T)   # clearly this is a bad fit!</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<pre class="r"><code>plotResiduals(simresids,predictor)   # look for patterns across a predictor variable</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
-<pre class="r"><code>testResiduals(simresids)  # run tests on the residuals!</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-10-3.png" width="672" /><img src="LECTURE6_files/figure-html/unnamed-chunk-10-4.png" width="672" /></p>
-<pre><code>## $uniformity
-## 
-##  One-sample Kolmogorov-Smirnov test
-## 
-## data:  simulationOutput$scaledResiduals
-## D = 0.40017, p-value = 0.0001343
-## alternative hypothesis: two-sided
-## 
-## 
-## $dispersion
-## 
-##  DHARMa nonparametric dispersion test via sd of residuals fitted vs.
-##  simulated
-## 
-## data:  simulationOutput
-## ratioObsSim = 2.9138, p-value &lt; 2.2e-16
-## alternative hypothesis: two.sided
-## 
-## 
-## $outliers
-## 
-##  DHARMa bootstrapped outlier test
-## 
-## data:  simulationOutput
-## outliers at both margin(s) = 6, observations = 30, p-value &lt; 2.2e-16
-## alternative hypothesis: two.sided
-##  percent confidence interval:
-##  0.00000000 0.06666667
-## sample estimates:
-## outlier frequency (expected: 0.008 ) 
-##                                  0.2</code></pre>
-<pre><code>## $uniformity
-## 
-##  One-sample Kolmogorov-Smirnov test
-## 
-## data:  simulationOutput$scaledResiduals
-## D = 0.40017, p-value = 0.0001343
-## alternative hypothesis: two-sided
-## 
-## 
-## $dispersion
-## 
-##  DHARMa nonparametric dispersion test via sd of residuals fitted vs.
-##  simulated
-## 
-## data:  simulationOutput
-## ratioObsSim = 2.9138, p-value &lt; 2.2e-16
-## alternative hypothesis: two.sided
-## 
-## 
-## $outliers
-## 
-##  DHARMa bootstrapped outlier test
-## 
-## data:  simulationOutput
-## outliers at both margin(s) = 6, observations = 30, p-value &lt; 2.2e-16
-## alternative hypothesis: two.sided
-##  percent confidence interval:
-##  0.00000000 0.06666667
-## sample estimates:
-## outlier frequency (expected: 0.008 ) 
-##                                  0.2</code></pre>
-<p>Okay so the DHARMa package diagnostics seem to indicate that the Poisson regression was a poor fit to the data (you will find this is usually true with Poisson regression). Let’s try running a negative binomial regression instead!</p>
-<pre class="r"><code>## try NegBinom count regression model!
-
-library(MASS)
-
-## NOTE: in reality you should use glm.nb because you don&#39;t know the additional parameter theta!
-model &lt;- glm(response~predictor,family=negative.binomial(link=&quot;log&quot;,theta = 2))
-summary(model)</code></pre>
-<pre><code>## 
-## Call:
-## glm(formula = response ~ predictor, family = negative.binomial(link = &quot;log&quot;, 
-##     theta = 2))
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -1.3720  -0.8412  -0.1491   0.3567   1.4563  
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -6.2311 -4.0450 -0.3991  3.4574  7.5226 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  2.95740    0.11424  25.887  &lt; 2e-16 ***
-## predictor   -0.39653    0.09609  -4.127 0.000299 ***
+## (Intercept)  82.3525     5.6187  14.657 1.84e-09 ***
+## light        -0.2424     0.1108  -2.188   0.0475 *  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## (Dispersion parameter for Negative Binomial(2) family taken to be 0.7018831)
-## 
-##     Null deviance: 30.812  on 29  degrees of freedom
-## Residual deviance: 19.895  on 28  degrees of freedom
-## AIC: 230.94
-## 
-## Number of Fisher Scoring iterations: 5</code></pre>
-<pre class="r"><code>model &lt;- glm.nb(response~predictor)
+## Residual standard error: 4.569 on 13 degrees of freedom
+## Multiple R-squared:  0.2691, Adjusted R-squared:  0.2129 
+## F-statistic: 4.787 on 1 and 13 DF,  p-value: 0.04754</code></pre>
+<pre class="r"><code>############
+# plot regression line!
 
-plot(response~predictor)
-
-newdat &lt;- data.frame(
-  predictor = seq(-3,3,0.1)
-)
-
-mypred &lt;- predict(model,type=&quot;response&quot;,se.fit = T,newdata=newdat)
-
-lines(newdat$predictor,mypred$fit,col=&quot;blue&quot;)
-lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
-lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p>Now let’s check the model fit!</p>
-<pre class="r"><code>simresids &lt;- simulateResiduals(model,n=250,plot=T)   # looks a lot better!</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<pre class="r"><code>testResiduals(simresids)  # run tests on the residuals!</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-12-2.png" width="672" /><img src="LECTURE6_files/figure-html/unnamed-chunk-12-3.png" width="672" /></p>
-<pre><code>## $uniformity
-## 
-##  One-sample Kolmogorov-Smirnov test
-## 
-## data:  simulationOutput$scaledResiduals
-## D = 0.12595, p-value = 0.6816
-## alternative hypothesis: two-sided
-## 
-## 
-## $dispersion
-## 
-##  DHARMa nonparametric dispersion test via sd of residuals fitted vs.
-##  simulated
-## 
-## data:  simulationOutput
-## ratioObsSim = 1.0025, p-value = 0.96
-## alternative hypothesis: two.sided
-## 
-## 
-## $outliers
-## 
-##  DHARMa bootstrapped outlier test
-## 
-## data:  simulationOutput
-## outliers at both margin(s) = 0, observations = 30, p-value = 1
-## alternative hypothesis: two.sided
-##  percent confidence interval:
-##  0.00000000 0.06666667
-## sample estimates:
-## outlier frequency (expected: 0.00933333333333333 ) 
-##                                                  0</code></pre>
-<pre><code>## $uniformity
-## 
-##  One-sample Kolmogorov-Smirnov test
-## 
-## data:  simulationOutput$scaledResiduals
-## D = 0.12595, p-value = 0.6816
-## alternative hypothesis: two-sided
-## 
-## 
-## $dispersion
-## 
-##  DHARMa nonparametric dispersion test via sd of residuals fitted vs.
-##  simulated
-## 
-## data:  simulationOutput
-## ratioObsSim = 1.0025, p-value = 0.96
-## alternative hypothesis: two.sided
-## 
-## 
-## $outliers
-## 
-##  DHARMa bootstrapped outlier test
-## 
-## data:  simulationOutput
-## outliers at both margin(s) = 0, observations = 30, p-value = 1
-## alternative hypothesis: two.sided
-##  percent confidence interval:
-##  0.00000000 0.06666667
-## sample estimates:
-## outlier frequency (expected: 0.00933333333333333 ) 
-##                                                  0</code></pre>
-<p>And this time our count regression model fits the data well, and we can report the results of this model with confidence!</p>
-<p>NOTE: you should always run goodness-of-fit tests for any model you fit to data. But it is especially important in the case of Poisson regression, because in general most count data has much more variance that a Poisson distribution allows. This can lead to inflated type 1 error and can be a huge problem. You should always be wary of reported Poisson regression results with no goodness of fit checks!</p>
-</div>
-<div id="model-selection-with-aic" class="section level2">
-<h2>Model selection with AIC</h2>
-<p>Often we have multiple <strong>candidate models</strong> for describing how our response variable relates to one or more of our predictor variables. This is true for multiple linear regression and GLM models, and mixed-effects models (see below) and non-linear regression models.</p>
-<p>Information-theoretic criteria like <strong>Akaike’s Information Criterion</strong> provide a common currency that allows us to compare and rank multiple models.</p>
-<p>In general, the models with the lowest AIC are better than models with higher AIC.</p>
-<p>AIC is defined as:</p>
-<p><span class="math inline">\(AIC = -2\cdot ln(Likelihood) + 2\cdot k\)</span></p>
-<p>Where <em>k</em> is the number of fitted parameters in the model and <em>Likelihood</em> is the maximum likelihood of the data (probability of the observed data set under the fitted model).</p>
-<p>There is a commonly used correction for small sample size called <em>AICc</em>:</p>
-<p><span class="math inline">\(AICc = AIC + \frac{2k^2+2k}{n-k-1}\)</span></p>
-<p>Comparing multiple GLM models using AIC is relatively simple!</p>
+plot(hatchlings.successful~light)  # plot the data
+abline(intercept,slope,col=&quot;blue&quot;)</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Of course, we can’t end with a single regression line, since there is
+sampling error associated with our best-fit regression line. There is
+error associated with the intercept and there is error associated with
+the slope term. To do this in r, we can use the ‘predict’ function:</p>
 <pre class="r"><code>######
-# Make up data!
+# add confidence interval on the regression line
 
-predictor1 = runif(30,-2,2)
-predictor2 &lt;- runif(30,-100,100)
-predictor3 &lt;- rnorm(30)   # useless predictor
-response = rnbinom(30,mu=exp(3-0.5*predictor1+0.01*predictor2),size=2)
-
-
-###
-# fit a bunch of candidate models
-
-model.pois.all &lt;- glm(response~predictor1+predictor2+predictor3,family=&quot;poisson&quot;)
-model.nb.all &lt;- glm.nb(response~predictor1+predictor2+predictor3)
-model.nb.1 &lt;- glm.nb(response~predictor1)
-model.nb.12 &lt;- glm.nb(response~predictor1+predictor2)
-model.nb.2 &lt;- glm.nb(response~predictor2)
-
-cand.set &lt;- list(
-  Poisson=model.pois.all,
-  NegBin_allvars = model.nb.all,
-  NegBin_pred1 = model.nb.2,
-  NegBin_preds1and2 = model.nb.12,
-  NegBin_pred2 = model.nb.2
+newdata &lt;- data.frame(    # make a data frame containing the light values we want to make predictions for (spanning the range of light values in our data)
+  light = seq(20,80,1)
 )
 
-### Make AIC table
+my.predict &lt;- predict(model, newdata = newdata, interval = &quot;confidence&quot;)  # 95% conf int by default
 
-AICtab &lt;- data.frame(
-  ModelName = names(cand.set),
-  LogLikelihood = sapply(cand.set,logLik),
-  AIC = sapply(cand.set,AIC)
-)
+plot(hatchlings.successful~light)  # plot the data
+abline(intercept,slope,col=&quot;blue&quot;)
+lines(newdata$light,my.predict[,&quot;upr&quot;],col=&quot;red&quot;,lty=2)   # add upper bound
+lines(newdata$light,my.predict[,&quot;lwr&quot;],col=&quot;red&quot;,lty=2)   # add lower bound</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>This confidence interval loosely represents the range of plausible
+best-fit lines we could fit if we were to gather multiple alternative
+datasets. If some of the lines that fit within the upper and lower
+bounds of the confidence interval on the regression line have a positive
+slope and others have a negative slope, we might remain unconvinced that
+the relationship betwen the response and predictor variable is
+‘statistically significant’!</p>
+<pre class="r"><code>#  use the lm function to regress tree volume on tree girth using the &#39;trees&#39; dataset
 
-AICtab$DeltaAIC &lt;- abs(AICtab$AIC-min(AICtab$AIC))
-
-AICtab[order(AICtab$DeltaAIC,decreasing = F),]</code></pre>
-<pre><code>##                           ModelName LogLikelihood      AIC   DeltaAIC
-## NegBin_preds1and2 NegBin_preds1and2     -111.4196 230.8392   0.000000
-## NegBin_allvars       NegBin_allvars     -111.2916 232.5831   1.743961
-## NegBin_pred1           NegBin_pred1     -118.0889 242.1777  11.338580
-## NegBin_pred2           NegBin_pred2     -118.0889 242.1777  11.338580
-## Poisson                     Poisson     -173.5860 355.1720 124.332889</code></pre>
-<p>NOTE: for AIC model comparison to make sense, the response variable must be exactly the same (note: you can’t compare different transformations of the response variable) and the number of observations must be exactly the same. Careful with missing data here!</p>
-</div>
-<div id="overview-mixed-effects-models" class="section level2">
-<h2>Overview: Mixed-effects models</h2>
-<p>Remember the assumption of independent observations? Every single one of the models we have considered so far makes that assumption. If that assumption is violated, we are committing pseudoreplication. If pseudoreplication is relatively minor we may be able to ignore it for modeling (but still reporting the potential issue). But in many cases the issue is too large to ignore.</p>
-<p>Mixed models allow us to build more realistic models that incorporate some known potential sources of non-independence in our data.</p>
-<p>The term <strong>mixed-effects models</strong> refers to the fact that these models have two kinds of predictor variables: <em>fixed effects</em> and <em>random effects</em>. The random effects are what allow us to incorporate potential inter-dependencies among our observations.</p>
-<div id="is-it-a-fixed-effect-or-a-random-effect" class="section level3">
-<h3>Is it a fixed effect or a random effect?</h3>
-<p>One point of confusion that quickly bubbles up around mixed-effects models is the question of whether you should include a predictor variable as a random or a fixed effect.</p>
-<p>It might help to consider some typical random effects and some typical fixed effects:</p>
-<div id="fixed-effects" class="section level4">
-<h4>Fixed effects</h4>
-<p>Typical fixed effects include:</p>
-<ul>
-<li>Temperature (continuous fixed effect- e.g., linear regression)</li>
-<li>Treatment (categorical fixed effect- e.g., ANOVA)</li>
-<li>Interaction between temperature and treatment (interaction fixed effect)</li>
-</ul>
-<p>Fixed effects are what we have been calling ‘predictor variables’ in this class. They usually represent the variables that we want to relate to our response variable. Ideally, our observations span the full range of our fixed effects (predictor variables) such that we can use our data to make inference about the relationship between our response and predictor variables across the range of values that we might encounter in our entire population of interest.</p>
-<p>There is no assumption that our predictor variables are normally distributed- in fact, the only assumption we make about the predictor variables (usually) are that (1) they are measured with certainty and (2) we ideally want them to be distributed evenly across the range of values across which we want to make inference about our response process.</p>
-<p>For example, if we want to make inference about the relationship between tree diameter and volume, we would like to take measurements of trees that vary from the smallest-diameter trees we wish to make inference about to the largest-diameter trees that we’d like to make inference about. To ensure that our sample includes the full range of diameters, we might specifically select trees that cover the entire range of interest. That is, we could <strong>fix</strong> the set of trees in our samples to include the full range of our predictor variable. There is no rule stating that we have to select our predictor variable levels from a random process. In fact, experimental design is all about pre-determining our predictor variable levels!</p>
-<p>The term <strong>fixed effect</strong> comes from experimental design, where we literally arrange (fix) our observations into specific treatment and control groups. For example, we might take 100 otherwise interchangeable sapling trees and subject them randomly to different treatments of <strong>fixed</strong> levels of some factor that might influence growth (say nitrogen concentrations)- and then we can make inference about the effect of nitrogen across the range of concentrations that we determined.</p>
-<p><strong>SIDE NOTE</strong>: we can (and often do) make inferences about our response variable for levels of our predictor variables that are outside the range of values in our data set. This is called <strong>extrapolation</strong> and can be a dangerous practice because we lack empirical support for this type of inference, especially when the predictions are far outside the bounds of our data set.</p>
-</div>
-<div id="random-effects" class="section level4">
-<h4>Random effects</h4>
-<p>Typical Random effects include:</p>
-<ul>
-<li>Block ID (blocks are a small subset of the units about which you want to make inference, multiple observations per block)</li>
-<li>Site ID (sites are a small subset of the units about which you want to make inference, multiple observations per site)</li>
-<li>Year (study years are a small subset of the years about which you want to make inference, multiple observations per year)</li>
-<li>Individual (individuals studied are randomly selected from the population of interest, each individual subjected to repeated measurements)</li>
-</ul>
-<p>First of all, most random effects will be categorical.</p>
-<p>Second, random effects are a random sample or otherwise a small subset of the units about which you want to make inference.</p>
-<p>Third, random effects variables must have multiple (usually &gt;3) observations per level. If you only have one observation per random effect level, it is not a random effect- it’s just a replicate observation in an ordinary linear regression!</p>
-</div>
-</div>
-<div id="mixed-effects-models-in-regression-notation" class="section level3">
-<h3>Mixed effects models in regression notation</h3>
-<p>Before we run examples in R, let’s look at linear mixed-effects regression models in regression notation.</p>
-<p>The equation should look familiar- the only difference is that there is more than one error term. Each random effect is now associated with a new error term…</p>
-<p>Let’s say we are fitting the following mixed-effects model:</p>
-<p><strong>Response variable:</strong> Tortoise clutch size<br />
-<strong>Predictor variables: fixed effects:</strong> Annual winter precipitation, Annual spring temperature<br />
-<strong>Predictor variables: random effects:</strong> Site, year</p>
-<p>The simplest way to model random effects is to include them as <strong>random intercepts</strong>– that is, the intercept term changes randomly with each factor level.</p>
-<p>In many cases, simply adding a random intercept term for each random effect is appropriate for accounting for sources of non-independence in your data set- but in many cases it is not sufficient. That is because the slope (the relationship between your response and predictor– the thing you are usually most interested in making inference about) can itself vary depending on your random effect levels. This is called a <strong>random slopes</strong> model.</p>
-<p>Here is an equation to represent the simpler random-intercept analysis:</p>
-<p><span class="math inline">\(Clutch \space size = \beta_0 + \beta_1 \cdot precip_t + \beta_2 \cdot temp_t + \gamma_{site} + \gamma_{year} + \epsilon_{obs}\)</span></p>
-<p>Here we now have three sources of ‘error’: a random (normally distributed) term for each site (<span class="math inline">\(\gamma_{site}\)</span>), a random (normally distributed) term for each year, and a normally distributed residual error term (<span class="math inline">\(\epsilon_{obs}\)</span>).</p>
-<p>If we want to include random slope and random intercept terms (which is often the most appropriate model), the equation gets a bit more complicated:</p>
-<p><span class="math inline">\(Clutch \space size = \beta_0 + \beta_1 \cdot precip_t + \beta_2 \cdot temp_t + \gamma_{site} + \gamma_{year} + \gamma_{site, \beta_1}\cdot precip_t + \gamma_{site, \beta_2}\cdot temp_t + \epsilon_{obs}\)</span></p>
-<p>Here we have two addition “error” terms that allow the slope terms (beta1 and beta2) to vary randomly with each site and year.</p>
-</div>
-<div id="nested-random-effects" class="section level3">
-<h3>Nested random effects</h3>
-<p>You will often read descriptions of mixed-effects models saying things like “Individual and Site were included as random effects, with Individual nested within Site”.</p>
-<p>Let’s imagine we randomly selected 10 sites and within each site we capture a random sample of tortoises and we measure tortoise clutch size for 4 consecutive years for each tortoise.</p>
-<p>In this case, we have two potential random effects: site (random subset of a much larger set of potential sites) and individual (random subset of a much larger set of individuals within each site). Individual #1 from Site #1 is obviously a different individual than Individual #1 from Site #2. So we can’t simply include a simple random effect term for “Individual #1”. Since there are many “Individual #1”s, each “Individual #1” must get its own random effect! In this case, Individual is nested within Site!</p>
-<p>Let’s contrast this with a non-nested random effect- let’s say site and year.</p>
-<p>In this case, Year “2014” in site #1 is the same as Year “2014” in site #2. Therefore the random effect associated with year “2014” does not differ depending on site. In this case, site and year are independent, non-nested random effects!</p>
-</div>
-<div id="assumptions-of-mixed-effects-regression" class="section level3">
-<h3>Assumptions of mixed-effects regression</h3>
-<p>The assumptions of mixed-effects regression are the same as in classical linear regression (for mixed-effects regression models) or generalized linear models (for generalized linear mixed models; GLMM). The only additional assumption is this:</p>
-<ul>
-<li>All random effects are normally distributed!</li>
-</ul>
-<p>In some more complex models you might encounter models that assume random effects take other distributions- but this is still rare to see!</p>
-</div>
-<div id="example-mixed-effects-regression-in-r" class="section level3">
-<h3>Example: mixed-effects regression in R</h3>
-<p>The ‘workhorse’ package in R for fitting mixed-effects regression models (and GLMM) is the ‘lme4’ package. However, there are some other packages you should be aware of that can make your life easier. One such package is “glmmTMB”- I have found this package has more flexibility and tends to have less trouble fitting complex mixed-effects models.</p>
-<p>We will use <a href="tundra2.csv">this dataset</a> as our example - this is a data set on carbon balance in the tundra. This example is taken from <a href="https://bbolker.github.io/mixedmodels-misc/ecostats_chap.html">this website</a>.</p>
-<pre class="r"><code>#########
-# TUNDRA EXAMPLE
-#########
-
-##### Read in the data
-
-mc1 &lt;- read.csv(&quot;tundra2.csv&quot;,sep=&quot;,&quot;,na.strings=c(&quot;-&quot;,&quot;NA&quot;))
-
-summary(mc1)</code></pre>
-<pre><code>##        X              Year          Site               GS.NEE        
-##  Min.   : 1.00   Min.   :1966   Length:82          Min.   :-153.000  
-##  1st Qu.:21.25   1st Qu.:1993   Class :character   1st Qu.: -55.350  
-##  Median :41.50   Median :1998   Mode  :character   Median : -20.867  
-##  Mean   :41.50   Mean   :1998                      Mean   : -10.012  
-##  3rd Qu.:61.75   3rd Qu.:2005                      3rd Qu.:   3.275  
-##  Max.   :82.00   Max.   :2010                      Max.   : 390.000  
-##        n             cYear         
-##  Min.   :1.000   Min.   :-31.8698  
-##  1st Qu.:1.000   1st Qu.: -4.8698  
-##  Median :1.000   Median :  0.6302  
-##  Mean   :1.829   Mean   : -0.1015  
-##  3rd Qu.:2.750   3rd Qu.:  7.1302  
-##  Max.   :6.000   Max.   : 12.1302</code></pre>
-<pre class="r"><code>table(mc1$Year)  # some years have many observations</code></pre>
+mod &lt;- lm(Volume~Girth,data=trees)
+summary(mod)</code></pre>
 <pre><code>## 
-##   1966   1970   1971   1972   1983   1984   1985   1987   1990   1991   1992 
-##      1      1      1      1      1      1      1      1      4      5      2 
-##   1993   1994   1995   1996   1997   1998   1999   2000   2001   2002 2002.5 
-##      4      4      6      4      3      1      2      2      3      2      1 
-##   2003 2003.5   2004 2004.5   2005   2006   2007   2008 2008.5   2009   2010 
-##      2      1      3      1      4      5      4      4      1      3      3</code></pre>
-<pre class="r"><code>table(mc1$Site)  # some sites have many observations</code></pre>
-<pre><code>## 
-##       Anajtyvuk River, AK               APL-133, AK               Atqasuk, AK 
-##                         1                         3                         1 
-##          Barrow Peninsula                Barrow, AK           Daring Lake, CA 
-##                         1                        12                         7 
-##             Halmer-Yu, RU          Happy Valley, AK                 Healy, AK 
-##                         1                         5                         7 
-##        Imnavait Creek, AK                Ivotuk, AK       Kytalyk Reserve, RU 
-##                         4                         2                         1 
-##           Lek Vorkuta, RU           Meade River, AK    Pituffik Peninsula, GL 
-##                         2                         1                         2 
-##           Prudhoe Bay, AK                Sagwon, AK       Samoylov Island, RU 
-##                         7                         1                         1 
-##                Talnik, RU Toolik &amp; Happy Valley, AK                Toolik, AK 
-##                         1                         1                        12 
-##                U-PAD, AK      West Dock &amp; U-PAD, AK            Zachenberg, GL 
-##                         2                         1                         6</code></pre>
-<pre class="r"><code>library(ggplot2)
-
-## visualize net ecosystem exchange by year- varying by site
-
-ggplot(mc1,aes(x=Year,y=GS.NEE,colour=Site))+geom_point()+
-    geom_smooth(method=&quot;lm&quot;,alpha=0.3)+
-    scale_y_continuous(limits=c(-150,400),oob=scales::squish)</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning in qt((1 - level)/2, df): NaNs produced
-
-## Warning in qt((1 - level)/2, df): NaNs produced
-
-## Warning in qt((1 - level)/2, df): NaNs produced
-
-## Warning in qt((1 - level)/2, df): NaNs produced</code></pre>
-<pre><code>## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning -
-## Inf
-
-## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning -
-## Inf
-
-## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning -
-## Inf
-
-## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning -
-## Inf</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<p>Okay now let’s fit a mixed-effects regression model with Net Ecosystem Exchange (NEE) as the response variable and Year as the fixed-effect (covariate). For our random effect we will have site- and the intercept and trend (slope term) can vary with site. That is, we have random intercept terms and random slope terms for each site.</p>
-<p>Fitting a mixed model in ‘lme4’ (using the ‘lmer’ function) looks a lot like fitting a linear model in ‘lm’.</p>
-<pre class="r"><code>library(lme4)</code></pre>
-<pre><code>## Loading required package: Matrix</code></pre>
-<pre class="r"><code>cmod_lmer &lt;- lmer(GS.NEE ~ cYear + (1+cYear|Site),
-                data=mc1, weights=n)</code></pre>
-<pre><code>## boundary (singular) fit: see ?isSingular</code></pre>
-<p>A couple notes: first of all, the ‘weights’ term is there because some observations are aggregated- that is, there are multiple observations for a given site/year combination- those observations that aggregate 3 observations get triple the weight of a site/year combination with only one observation. (Technically, we are using an inverse-variance weighting scheme!)</p>
-<p>Secondly, note that year is treated as a fixed effect in this model. That is- we are looking for a trend in our response variable over time!</p>
-<p>Third, note the warning of a ‘singular fit’. This is fairly common to see, and doesn’t necessarily mean you can’t use the model. But it means that lme4 struggled to fit the model and some of the parameters may have very wide confidence bounds!</p>
-<p>Let’s look at the model results using ‘summary’:</p>
-<pre class="r"><code>summary(cmod_lmer)</code></pre>
-<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
-## Formula: GS.NEE ~ cYear + (1 + cYear | Site)
-##    Data: mc1
-## Weights: n
+## Call:
+## lm(formula = Volume ~ Girth, data = trees)
 ## 
-## REML criterion at convergence: 874.2
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -8.065 -3.107  0.152  3.495  9.587 
 ## 
-## Scaled residuals: 
-##      Min       1Q   Median       3Q      Max 
-## -2.90221 -0.35038 -0.07972  0.30155  2.93141 
-## 
-## Random effects:
-##  Groups   Name        Variance Std.Dev. Corr 
-##  Site     (Intercept)  116.05  10.773        
-##           cYear         19.95   4.467   -1.00
-##  Residual             3355.16  57.924        
-## Number of obs: 82, groups:  Site, 24
-## 
-## Fixed effects:
-##             Estimate Std. Error t value
-## (Intercept)  -16.296      7.338  -2.221
-## cYear         -3.745      1.341  -2.792
-## 
-## Correlation of Fixed Effects:
-##       (Intr)
-## cYear -0.417
-## convergence code: 0
-## boundary (singular) fit: see ?isSingular</code></pre>
-<p>The results from the ‘summary’ function should look somewhat familiar! But note that there are no p-values associated with your fixed effects (regression coefficients)- just t-statistics! This is because it is really hard to know what the degrees of freedom are for the test! Is it the number of observations? Is it the number of sites?</p>
-<p>Also note that the summary now includes a summary of the random effects. One red flag here is that the random intercept term and random slope terms are perfectly (negagively) correlated (Corr=-1). This is the reason for the ‘singular’ warning in this case.</p>
-<p>From the random effects summary we can see that site explains a relatively small percent of the total variance among observations.</p>
-<p>To fit the model using glmmTMB we can use the following code:</p>
-<pre class="r"><code>library(glmmTMB)
-cmod_glmmTMB &lt;- glmmTMB(GS.NEE ~ cYear + (1+cYear|Site),
-                data=mc1,
-                weights=n)</code></pre>
-<pre><code>## Warning in fitTMB(TMBStruc): Model convergence problem; non-positive-definite
-## Hessian matrix. See vignette(&#39;troubleshooting&#39;)</code></pre>
-<pre class="r"><code>summary(cmod_glmmTMB)</code></pre>
-<pre><code>##  Family: gaussian  ( identity )
-## Formula:          GS.NEE ~ cYear + (1 + cYear | Site)
-## Data: mc1
-## Weights: n
-## 
-##      AIC      BIC   logLik deviance df.resid 
-##       NA       NA       NA       NA       76 
-## 
-## Random effects:
-## 
-## Conditional model:
-##  Groups   Name        Variance  Std.Dev. Corr  
-##  Site     (Intercept) 3.841e-02  0.196         
-##           cYear       3.148e+01  5.611   -0.79 
-##  Residual             1.543e+03 39.280         
-## Number of obs: 82, groups:  Site, 24
-## 
-## Dispersion estimate for gaussian family (sigma^2): 1.54e+03 
-## 
-## Conditional model:
-##             Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)  -22.347      5.579  -4.005 6.19e-05 ***
-## cYear         -3.706      1.416  -2.617  0.00887 ** 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -36.9435     3.3651  -10.98 7.62e-12 ***
+## Girth         5.0659     0.2474   20.48  &lt; 2e-16 ***
 ## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>The summary looks similar- but one difference you see is that there are p-values on the regression coefficients now.</p>
-<p>Let’s perform some model diagnostics to test goodness-of-fit!</p>
-<p>Since the standard linear regression assumptions apply, we could look at our standard diagnostic plots:</p>
-<pre class="r"><code>plot(cmod_lmer,type=c(&quot;p&quot;,&quot;smooth&quot;))</code></pre>
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 4.252 on 29 degrees of freedom
+## Multiple R-squared:  0.9353, Adjusted R-squared:  0.9331 
+## F-statistic: 419.4 on 1 and 29 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="assumptions-of-simple-linear-regression"
+class="section level2">
+<h2>Assumptions of simple linear regression</h2>
+<div id="normal-distribution" class="section level3">
+<h3>Normal distribution</h3>
+<p>Simple linear regression assumes that the model
+<strong>residuals</strong> are normally distributed.</p>
+<p>Let’s quickly review what residuals are (see whiteboard exercise)</p>
+<p>Let’s look at the residuals for our sea turtle example:</p>
+<pre class="r"><code>my.intercept &lt;- model$coefficients[&quot;(Intercept)&quot;]
+my.slope &lt;- model$coefficients[&quot;light&quot;]
+expected.vals &lt;- my.intercept+my.slope*light 
+my.residuals &lt;- hatchlings.successful-expected.vals
+my.residuals</code></pre>
+<pre><code>##  [1] -3.7078444 -1.1400824  2.8841280  4.6505125 -0.3990564  3.1933707
+##  [7] -5.3976210  1.3952091 -4.3820730  7.5225817 -1.8215103  5.0105733
+## [13] -5.2985472  3.7214595 -6.2311001</code></pre>
+<pre class="r"><code>### alternative way of getting residuals (best way!)
+
+my.residuals2 &lt;- model$residuals
+
+### alternative way using predict function
+
+my.residuals3 &lt;- hatchlings.successful-predict(model)
+
+### histogram of residuals
+
+hist(my.residuals)</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>### test for normality
+
+qqnorm(my.residuals)</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<pre class="r"><code>shapiro.test(my.residuals)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  my.residuals
+## W = 0.94168, p-value = 0.404</code></pre>
+</div>
+<div id="linear-model" class="section level3">
+<h3>Linear model</h3>
+<p>The true relationship between the response and predictor variables is
+linear!</p>
+<p>Which one of the following plots violates this assumption?</p>
+<pre class="r"><code>layout(matrix(1:4,nrow=2,byrow = T))
+plot(anscombe$y1~anscombe$x1,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y2~anscombe$x2,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y3~anscombe$x3,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y4~anscombe$x4,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="independence-of-observations" class="section level3">
+<h3>Independence of observations</h3>
+<p>Of course! All classical analyses make this assumption!</p>
+</div>
+<div id="equal-variance-homoscedasticity-or-lack-of-heteroscedasticity"
+class="section level3">
+<h3>Equal variance (homoscedasticity, or lack of
+heteroscedasticity)</h3>
+<p>In simple linear regression, we assume that the model residuals are
+normally distributed– and that the spread of that distribution does not
+change as your predictor variable or response variable goes from small
+to large. That is, the residuals are <strong>homoskedastic</strong> –
+which means they have equal variance across the range of the predictor
+and response variables.</p>
+<p>Let’s look at the sea turtle example:</p>
+<pre class="r"><code>my.residuals &lt;- model$residuals
+
+plot(my.residuals~light)</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>plot(my.residuals~predict(model))</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<p>Do you see any evidence for <strong>heteroskedasticity</strong>?
+Heteroskedasticity means non-homogeneity of variance across the range of
+the predictor variable. Serious violations of the equal variance
+assumption may warrant a <strong>transformation</strong> of your data,
+or you may choose to use an alternative analysis like a
+<strong>generalized linear model</strong>.</p>
+</div>
+<div id="predictor-variable-is-known-with-certainty"
+class="section level3">
+<h3>Predictor variable is known with certainty</h3>
+<p>That is, the observed (e.g., measured) values for your predictor
+variable are correct and known with perfect precision. In regression,
+the randomness in linear regression is associated only with the response
+variable - and that randomness is normally distributed.</p>
+</div>
+<div id="diagnostic-plots" class="section level3">
+<h3>Diagnostic plots</h3>
+<p>Simple linear regression analyses are generally accompanied by
+‘diagnostic plots’, which are intended to diagnose potential violations
+of key assumptions, or other potential pitfalls of regression.</p>
+<p>When you use the ‘plot’ function in R to evaluate a model generated
+with the ‘lm’ function, R returns four diagnostic plots:</p>
+<pre class="r"><code>layout(matrix(1:4,2,byrow = T))
+plot(model)</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>The first diagnostic plot (residuals vs fitted) lets you check for
+possible non-linear patterns. This plot should have no obvious pattern
+to it- it should look like random noise across the range of fitted
+values.</p>
+<p>The second diagnostic plot (normal Q-Q) lets you check for normality
+of residuals. You already know how to do this.</p>
+<p>The third diagnostic plot (scale-location) lets you check for
+homoskedascitiy. This plot should have no obvious pattern to it- it
+should look like random noise across the range of fitted values.</p>
+<p>The fourth diagnostic plot (residuals vs leverage) lets you check to
+make sure your regression model isn’t driven by a few
+<strong>influential points</strong>. Look for points that fall far to
+the right of the other points- these are high leverage points. Also look
+specifically at the upper and lower right hand side of this figure-
+points in these regions (with large values for “Cook’s distance”) have
+the property that if they were removed from the analysis the results
+would change substantially.</p>
+<p>These four figures, taken together, should be a guide to interpreting
+how robust your regression is. You need to be the scientist. Analyze
+these plots and make decisions about what you’re willing to accept.</p>
+</div>
+<div id="influential-points" class="section level3">
+<h3>Influential points</h3>
+<p>Which of the following plots has a highly influential point?</p>
+<pre class="r"><code>layout(matrix(1:4,nrow=2,byrow = T))
+plot(anscombe$y1~anscombe$x1,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y2~anscombe$x2,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y3~anscombe$x3,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
+plot(anscombe$y4~anscombe$x4,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Can you try to draw a regression line if this point was removed?</p>
+</div>
+</div>
+<div id="a-deeper-exploration" class="section level2">
+<h2>A deeper exploration</h2>
+<div id="r-squared" class="section level3">
+<h3>R-squared</h3>
+<p>The coefficient of determination, also known as R-squared, is a
+statistic that is commonly used to indicate the performance of a
+regression model. Specifically, R-squared tells you how much of the
+total variance in your response variable is explained by your predictor
+variable. The maximum value for R-squared is 1- values close to 1
+indicate a very “good” model! An R-squared of zero indicates that the
+model with the predictor variable is no better than a model that simply
+predicts the overall mean of the response variable no matter what the
+predictor variable is.</p>
+<p>R-squared can be computed as:</p>
+<p><span class="math inline">\(R_2 =
+1-\frac{SS_{res}}{SS_{tot}}\)</span></p>
+<p>where <span class="math inline">\(SS_{tot} =
+\sum(y_i-\bar{y})^2\)</span> and <span class="math inline">\(SS_{res} =
+\sum(y_i-y_{pred})^2\)</span>.</p>
+</div>
+<div id="regression-outcomes" class="section level3">
+<h3>Regression outcomes</h3>
+<p>Let’s explore some possible outcomes of linear regression:</p>
+<p>Try to come up with scenarios (with plots) for each of the
+following:</p>
+<ol style="list-style-type: decimal">
+<li>Non-significant p, high R2<br />
+</li>
+<li>Significant p, low R2<br />
+</li>
+<li>Significant p, high R2<br />
+</li>
+<li>Non-significant p, low R2</li>
+</ol>
+</div>
+</div>
+<div id="multiple-linear-regression" class="section level2">
+<h2>Multiple linear regression</h2>
+<p>Multiple, or multi-variable, linear regression simply refers to the
+case where you have more than one predictor variable.</p>
+<p>NOTE: avoid using the term ‘multivariate’ because that usually refers
+to the case where you have multiple <strong>response</strong>
+variables.</p>
+<div id="linear-regression-vs-correlation" class="section level3">
+<h3>Linear regression vs correlation</h3>
+<p>When you run a simple linear regression you are assuming that one
+variable is your response variable and the other variable is a predictor
+variable. You are essentially modeling only one of these variables (the
+response) as a random variable and the other (the predictor variable) as
+a set of fixed values (a fixed effect).</p>
+</div>
+<div id="assessing-correlation-in-r" class="section level3">
+<h3>Assessing correlation in R</h3>
+<p>In R you can use the ‘cor’ function (part of base R) to assess
+correlation. To run a correlation test (assess if the correlation is
+‘significant’) you can use the ‘cor.test’ function. By default, the
+‘cor.test’ function runs a Pearson correlation test, which is a
+parametric test that assumes both variables are normal, no outliers,
+etc. If you want you can run a non-parametric version- the Spearman
+correlation (or Kendall’s tau).</p>
+<pre class="r"><code>## load the &#39;mtcars&#39; data set
+
+data(mtcars)
+
+## define which variables to assess correlation for.
+
+myvars &lt;- c(&quot;disp&quot;,&quot;hp&quot;,&quot;wt&quot;)
+
+## grab only the variables of interest
+
+mtcars.reduced &lt;- mtcars[,myvars]
+
+## compute (pearson) correlations for all pairs of variables (correlation matrix)
+
+cor.mat &lt;- cor(mtcars.reduced)
+
+cor.mat</code></pre>
+<pre><code>##           disp        hp        wt
+## disp 1.0000000 0.7909486 0.8879799
+## hp   0.7909486 1.0000000 0.6587479
+## wt   0.8879799 0.6587479 1.0000000</code></pre>
+<pre class="r"><code>## visualize correlations with the &#39;pairs&#39; function
+
+pairs(mtcars.reduced)</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code>## run a correlation test- with 95% confidence interval
+    # default is Pearson product-moment correlation.
+
+cor.test(mtcars$disp,mtcars$wt)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  mtcars$disp and mtcars$wt
+## t = 10.576, df = 30, p-value = 1.222e-11
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.7811586 0.9442902
+## sample estimates:
+##       cor 
+## 0.8879799</code></pre>
+<pre class="r"><code>## now try a non-parametric version
+
+cor.test(mtcars$disp,mtcars$wt, method = &quot;kendall&quot;) # or spearman</code></pre>
+<pre><code>## Warning in cor.test.default(mtcars$disp, mtcars$wt, method = &quot;kendall&quot;): Cannot
+## compute exact p-value with ties</code></pre>
+<pre><code>## 
+##  Kendall&#39;s rank correlation tau
+## 
+## data:  mtcars$disp and mtcars$wt
+## z = 5.9278, p-value = 3.07e-09
+## alternative hypothesis: true tau is not equal to 0
+## sample estimates:
+##       tau 
+## 0.7433824</code></pre>
+<p>If we were running a multiple linear regression with these variables
+as predictor variables, we might be somewhat concerned about
+multicollinearity. What is that, you ask?</p>
+</div>
+<div id="multicollinearity" class="section level3">
+<h3>Multicollinearity</h3>
+<p>If you have multiple predictor variables, you should first check that
+your predictor variables are not too correlated with one another. If the
+correlation between all pairs of covariates is less than around 0.7 or
+0.8 you should generally not have a big problem with multicollinearity
+(although you might still check your variance inflation factors!). If
+you have a major problem with multicollinearity, you should generally
+use only one variable out of every pair of highly correlated variables
+for your final model.</p>
+<p>You might also consider “penalized regression” approaches like ‘ridge
+regression’. This, however, is outside the scope of this class!</p>
+<div id="variance-inflation-factors" class="section level4">
+<h4>Variance Inflation Factors</h4>
+<p>Variance Inflation Factors are a diagnostic tool to help you evaluate
+if you have a multicollinearity problem. In general VIFs less than 4 are
+considered okay. On the other hand, VIFs greater than 5 or 10 indicate
+serious problems!</p>
+<p>To compute variance inflation factors, you can use the ‘vif’ function
+in the ‘car’ package. Let’s try this using the trees dataset!</p>
+<pre class="r"><code>########
+# load the car package
+
+library(car)
+
+#######
+# load the trees dataset
+
+data(trees)
+
+######
+# visualize relationships among predictor vars
+
+pairs(trees[,c(&quot;Girth&quot;,&quot;Height&quot;)])</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code>######
+# check for correlation in predictor variables
+
+cor(trees[,c(&quot;Girth&quot;,&quot;Height&quot;)])   # predictor variables not highly correlated</code></pre>
+<pre><code>##            Girth    Height
+## Girth  1.0000000 0.5192801
+## Height 0.5192801 1.0000000</code></pre>
+<pre class="r"><code># run a multiple regression model
+
+my.mod &lt;- lm(Volume~Girth+Height,data=trees)
+
+
+# check variance inflation factors
+
+car::vif(my.mod)</code></pre>
+<pre><code>##   Girth  Height 
+## 1.36921 1.36921</code></pre>
+<p>Here it looks like we don’t have to worry!</p>
+<p>What about if we use the ‘mtcars’ dataset? It seemed there were
+stronger correlations among predictor variables in that case!</p>
+<pre class="r"><code>########
+## mtcars multicollinearity example
+
+mymod &lt;- lm(mpg~disp+hp+wt,data=mtcars) 
+
+vif(mymod)</code></pre>
+<pre><code>##     disp       hp       wt 
+## 7.324517 2.736633 4.844618</code></pre>
+<p>Now we are in the danger zone, and we might consider reducing our set
+of variables. First we might find our most highly correlated pair of
+variables and eliminate one of these!</p>
+<pre class="r"><code>cor(mtcars.reduced)</code></pre>
+<pre><code>##           disp        hp        wt
+## disp 1.0000000 0.7909486 0.8879799
+## hp   0.7909486 1.0000000 0.6587479
+## wt   0.8879799 0.6587479 1.0000000</code></pre>
+<pre class="r"><code>## let&#39;s remove the &#39;disp&#39; variable and keep weight...
+
+mymod &lt;- lm(mpg~hp+wt,data=mtcars) 
+
+vif(mymod)</code></pre>
+<pre><code>##       hp       wt 
+## 1.766625 1.766625</code></pre>
+<p>Looks much better now!!!</p>
+</div>
+</div>
+</div>
+<div id="what-if-assumptions-are-violated" class="section level2">
+<h2>What if assumptions are violated?</h2>
+<p>Let’s look at what to do if some of the basic assumptions of linear
+regression are violated?</p>
+<div id="non-linearity" class="section level3">
+<h3>Non-linearity</h3>
+<p>If we suspect a non-linear functional relationship between our
+response and predictor variables, we might perform a <strong>non-linear
+regression</strong> analysis.</p>
+<p>We can perform a non-linear regression using the “nls” function in R
+(for non-linear least squares). Let’s use the “DNase” dataset in R to
+explore this.</p>
+<pre class="r"><code># ?nls
+
+data(DNase)
+
+plot(DNase$density~DNase$conc)   # looks non-linear!</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<pre class="r"><code>### run linear regression model
+
+model1 &lt;- lm(density~conc,data=DNase)
+
+### run diagnostic plots
+
+par(mfrow=c(2,2))
+plot(model1)     # clear non-linearity (and non-normal residuals, and heteroskedasticity!)</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
+<pre class="r"><code>par(mfrow=c(1,1))      # plot data with regression line - obvious issues!
+plot(DNase$density~DNase$conc)
+abline(model1)</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-15-3.png" width="672" /></p>
+<pre class="r"><code>### run non-linear regression model - use saturation curve
+
+model2 &lt;- nls(density ~ (max*conc)/(K+conc),data=DNase,start=list(max=2,K=1))
+summary(model2)</code></pre>
+<pre><code>## 
+## Formula: density ~ (max * conc)/(K + conc)
+## 
+## Parameters:
+##     Estimate Std. Error t value Pr(&gt;|t|)    
+## max  2.28032    0.02189  104.16   &lt;2e-16 ***
+## K    3.68241    0.08677   42.44   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.04909 on 174 degrees of freedom
+## 
+## Number of iterations to convergence: 6 
+## Achieved convergence tolerance: 2.373e-06</code></pre>
+<pre class="r"><code>### run non-linear regression model - use logistic function 
+
+model3 &lt;- nls(density ~ Asym/(1 + exp((xmid - log(conc))/scal)),
+                 data = DNase,
+                 start = list(Asym = 3, xmid = 0, scal = 1))
+
+summary(model3)</code></pre>
+<pre><code>## 
+## Formula: density ~ Asym/(1 + exp((xmid - log(conc))/scal))
+## 
+## Parameters:
+##      Estimate Std. Error t value Pr(&gt;|t|)    
+## Asym  2.48532    0.06287   39.53   &lt;2e-16 ***
+## xmid  1.51812    0.06397   23.73   &lt;2e-16 ***
+## scal  1.09831    0.02442   44.98   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.04687 on 173 degrees of freedom
+## 
+## Number of iterations to convergence: 6 
+## Achieved convergence tolerance: 4.739e-07</code></pre>
+<pre class="r"><code>plot(DNase$density~DNase$conc)
+abline(model1)
+concs.toplot &lt;- seq(0.01,14,0.1)
+densities.toplot &lt;- predict(model2,newdata=data.frame(conc=concs.toplot))
+lines(concs.toplot,densities.toplot,col=&quot;blue&quot;)
+densities.toplot &lt;- predict(model3,newdata=data.frame(conc=concs.toplot))
+lines(concs.toplot,densities.toplot,col=&quot;red&quot;)
+
+legend(&quot;topleft&quot;,lty=c(1,1,1),col=c(&quot;black&quot;,&quot;blue&quot;,&quot;red&quot;),legend=c(&quot;linear&quot;,
+                  &quot;saturation&quot;,&quot;logistic&quot;))</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-15-4.png" width="672" />
+You can run residual plots with non-linear regression just like you can
+with ordinary linear regression:</p>
+<pre class="r"><code>## residual plots
+
+resids &lt;- DNase$density-predict(model3)
+
+residuals(model3)   # alternative method! This works for &#39;lm&#39; objects as well (and many other model objects)</code></pre>
+<pre><code>##   [1] -0.0222835640 -0.0212835640 -0.0124539463 -0.0094539463 -0.0335367172
+##   [6] -0.0245367172 -0.0380629138 -0.0410629138 -0.0662506055 -0.0712506055
+##  [11] -0.0115300720 -0.0295300720 -0.0853516109 -0.0553516109 -0.0458016613
+##  [16] -0.0658016613  0.0057164360  0.0107164360  0.0035460537 -0.0104539463
+##  [21] -0.0145367172 -0.0325367172 -0.0140629138 -0.0320629138 -0.0082506055
+##  [26]  0.0007493945  0.0854699280  0.0474699280  0.1346483891  0.1066483891
+##  [31]  0.1561983387  0.1381983387  0.0307164360  0.0287164360  0.0395460537
+##  [36]  0.0315460537  0.0374632828  0.0084632828  0.0189370862  0.0109370862
+##  [41]  0.0227493945  0.0087493945  0.0364699280  0.0464699280  0.2096483891
+##  [46]  0.0596483891  0.2271983387  0.1081983387 -0.0282835640 -0.0232835640
+##  [51] -0.0154539463 -0.0254539463 -0.0395367172 -0.0335367172 -0.0510629138
+##  [56] -0.0550629138 -0.0602506055 -0.0402506055 -0.0515300720 -0.0575300720
+##  [61]  0.0046483891 -0.0203516109 -0.0358016613 -0.0438016613 -0.0042835640
+##  [66] -0.0042835640 -0.0014539463  0.0015460537 -0.0155367172 -0.0195367172
+##  [71] -0.0300629138 -0.0250629138 -0.0222506055 -0.0332506055  0.0294699280
+##  [76]  0.0004699280  0.0056483891 -0.0103516109 -0.0258016613 -0.0378016613
+##  [81]  0.0467164360  0.0637164360  0.0575460537  0.0555460537  0.0324632828
+##  [86]  0.0374632828  0.0249370862  0.0109370862  0.0057493945 -0.0042506055
+##  [91]  0.0314699280  0.0414699280  0.0046483891  0.0396483891 -0.0078016613
+##  [96]  0.0301983387  0.0547164360  0.0527164360  0.0485460537  0.0485460537
+## [101]  0.0424632828  0.0334632828  0.0289370862  0.0239370862  0.0057493945
+## [106] -0.0122506055  0.0214699280  0.0044699280 -0.0103516109 -0.0273516109
+## [111] -0.0168016613 -0.0368016613  0.0147164360  0.0147164360  0.0185460537
+## [116]  0.0145460537 -0.0135367172 -0.0175367172 -0.0230629138 -0.0320629138
+## [121] -0.0222506055 -0.0362506055  0.0124699280 -0.0285300720  0.0466483891
+## [126] -0.0383516109 -0.0328016613 -0.0518016613 -0.0072835640  0.0037164360
+## [131]  0.0085460537  0.0215460537 -0.0005367172  0.0024632828  0.0049370862
+## [136] -0.0200629138 -0.0562506055  0.0247493945  0.0154699280 -0.0045300720
+## [141] -0.0213516109 -0.0143516109 -0.0828016613 -0.0468016613  0.0127164360
+## [146]  0.0547164360  0.0305460537  0.0325460537  0.0194632828  0.0164632828
+## [151]  0.0239370862  0.0239370862  0.0097493945  0.0207493945  0.0114699280
+## [156]  0.0444699280 -0.0793516109 -0.0133516109 -0.0768016613 -0.0678016613
+## [161]  0.0077164360  0.0177164360  0.0255460537  0.0215460537  0.0064632828
+## [166]  0.0124632828  0.0119370862 -0.0040629138  0.0237493945  0.0037493945
+## [171] -0.0365300720 -0.0505300720  0.0016483891 -0.0343516109 -0.0608016613
+## [176] -0.0548016613
+## attr(,&quot;label&quot;)
+## [1] &quot;Residuals&quot;</code></pre>
+<pre class="r"><code>## check for normality
+
+qqnorm(resids)</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>shapiro.test(resids)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  resids
+## W = 0.90166, p-value = 1.978e-09</code></pre>
+<pre class="r"><code>## check for heteroskedasticity
+plot(resids~predict(model3))</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+</div>
+<div id="heteroskedasticity" class="section level3">
+<h3>Heteroskedasticity</h3>
+<p>If you have severely heteroskedastic residuals, you can sometimes run
+a <strong>transformation</strong> of your response variable that
+improves the situation.</p>
+<p>Alternatively, you might run a <strong>generalized linear model
+(GLM)</strong> that doesn’t assume homoskedasticity (e.g., run a model
+that assumes the residuals are gamma distributed, or Poisson
+distributed). In a gamma or Poisson distribution, the residuals are
+expected to get larger as the expected mean value gets larger!</p>
+<p>We will talk more about GLM in an upcoming lecture. But for now,
+let’s run an example with a transformed response variable:</p>
+<pre class="r"><code>##########
+# heteroskedasticity
+
+##### first, simulate data with heteroskedastic residuals
+
+simulated.x &lt;- runif(100,0.1,5)
+simulated.y &lt;- exp(rnorm(100,1.1+0.3*simulated.x,0.7))
+
+plot(simulated.y~simulated.x)</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<pre class="r"><code>### run linear model
+
+model1 &lt;- lm(simulated.y~simulated.x)
+par(mfrow=c(2,2))
+plot(model1)  # run diagnostic plots    heteroskedasticity issues</code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+<pre class="r"><code>### Take a minute to test for normality of residuals!
+
+### run linear model with log transformation of response variable
+
+model2 &lt;- lm(log(simulated.y)~simulated.x)
+par(mfrow=c(2,2))
+plot(model2)  # run diagnostic plots - no issues!  </code></pre>
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-17-3.png" width="672" /></p>
+</div>
+<div id="non-independence-of-observations" class="section level3">
+<h3>Non-independence of observations</h3>
+<p>If you have a known source of non-independence in your observations,
+you can try to thin (rarefy) your data by throwing away non-independent
+observations (e.g., keeping only one out of every set of known
+non-independent observerations).</p>
+<p>There are also more advanced regression models that explicitly
+account for sources of non-independence:</p>
+<p><em>Regression with phylogenetic correction</em> – use this if
+phylogenetic relatedness among your sampling units is the main source of
+non-independence</p>
+<p><em>Autoregression (more generally, time series modeling)</em> – use
+this if the main source of non-independence is temporal- observations
+taken closer together in time are more likely to be related</p>
+<p><em>Spatial autoregression</em> (more generally, spatial regression
+models) – use this if the main source of non-independence is spatial –
+observations taken closer together in space are more correlated.</p>
+<p>These models are outside the scope of this class, but it’s useful to
+know they exist!</p>
+</div>
+<div id="non-normality-of-residuals" class="section level3">
+<h3>Non-normality of residuals</h3>
+<p>First of all, regression analysis is somewhat robust to non-normality
+of the residuals- due to the CLT!</p>
+<p>But if your residuals are highly non-normal AND you can’t seem to
+correct this using non-linear regression, transformations, or GLM, you
+might need to use a non-parametric alternative.</p>
+<p>One such alternative is to run a non-parametric correlation analysis
+such as a Spearman rank correlation test.</p>
+</div>
+</div>
+<div id="regression-and-anova" class="section level2">
+<h2>Regression and ANOVA</h2>
+<p>Before we move on to ANOVA, I just wanted to point out the essential
+similarity between regression and ANOVA. The only difference between
+regression and ANOVA is that in regression, the response variable is
+numeric/continuous and in ANOVA your response variable(s) is
+categorical.</p>
+<p>How similar are regression and ANOVA? Well, we can fit regression and
+ANOVA models with the ‘lm’ functions, the assumptions are essentially
+the same, and the diagnostic plots are essentially the same.</p>
+<p>There are differences- we will touch on this in the next lecture- but
+for now let’s focus on the similarities. Let’s run an ANOVA in R using
+the same approaches we have just learned for linear regression!</p>
+<p>In this example we will use the famous iris dataset.</p>
+<pre class="r"><code>#### ANOVA as regression example
+
+data(iris)    # load the iris dataset
+
+plot(iris$Sepal.Length ~ iris$Species)   # r uses a boxplot by default for categorical predictor</code></pre>
 <p><img src="LECTURE6_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<pre class="r"><code>plot(cmod_lmer,sqrt(abs(resid(.)))~fitted(.),
-                  type=c(&quot;p&quot;,&quot;smooth&quot;),ylab=expression(sqrt(abs(resid))))</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
-<pre class="r"><code>plot(cmod_lmer,resid(.,type=&quot;pearson&quot;)~cYear,
-                  type=c(&quot;p&quot;,&quot;smooth&quot;))</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-18-3.png" width="672" /></p>
-<pre class="r"><code>qqnorm(residuals(cmod_lmer,type=&quot;pearson&quot;,scaled=T))</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-18-4.png" width="672" /></p>
-<p>The diagnostics look, well, okay!. If you look into it more deeply, you see that that ‘Toolik’ site is the one causing most of the issues.</p>
-<p>Okay let’s visualize the random effects (both intercept and random slope terms):</p>
-<pre class="r"><code>library(lattice)
-dotplot(ranef(cmod_lmer,condVar=TRUE),
-          lattice.options=list(layout=c(1,2)))</code></pre>
-<pre><code>## $Site</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-<p>If we want to test to see if year is explaining any of the variance, we can run an F-test (ANOVA):</p>
-<pre class="r"><code>library(car)</code></pre>
-<pre><code>## Loading required package: carData</code></pre>
-<pre><code>## Registered S3 methods overwritten by &#39;car&#39;:
-##   method                          from
-##   influence.merMod                lme4
-##   cooks.distance.influence.merMod lme4
-##   dfbeta.influence.merMod         lme4
-##   dfbetas.influence.merMod        lme4</code></pre>
-<pre class="r"><code>Anova(cmod_lmer)</code></pre>
-<pre><code>## Analysis of Deviance Table (Type II Wald chisquare tests)
+<pre class="r"><code>my.mod &lt;- lm(Sepal.Length~Species,data=iris)    # run an ANOVA!
+summary(my.mod)    # look at the results</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Sepal.Length ~ Species, data = iris)
 ## 
-## Response: GS.NEE
-##        Chisq Df Pr(&gt;Chisq)   
-## cYear 7.7956  1   0.005237 **
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.6880 -0.3285 -0.0060  0.3120  1.3120 
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)         5.0060     0.0728  68.762  &lt; 2e-16 ***
+## Speciesversicolor   0.9300     0.1030   9.033 8.77e-16 ***
+## Speciesvirginica    1.5820     0.1030  15.366  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.5148 on 147 degrees of freedom
+## Multiple R-squared:  0.6187, Adjusted R-squared:  0.6135 
+## F-statistic: 119.3 on 2 and 147 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>anova(my.mod)     # produce an analysis of variance table</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Sepal.Length
+##            Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## Species     2 63.212  31.606  119.26 &lt; 2.2e-16 ***
+## Residuals 147 38.956   0.265                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Note that if we had a categorical variable and wanted to run pairwise comparisons, we could- using the ‘emmeans’ package (just like with standard ANOVA).</p>
-<p>If we want confidence intervals on our fixed effects, we can use the ‘confint’ function, just like in ordinary linear regression. Here we use the Wald method (simplified version) and only extract confidence intervals for the fixed effects.</p>
-<p>I had to use ‘suppressWarnings’ to avoid lots of warning messages here!</p>
-<pre class="r"><code>confint(cmod_lmer,parm=&quot;beta_&quot;,method=&quot;Wald&quot;)</code></pre>
-<pre><code>##                  2.5 %    97.5 %
-## (Intercept) -30.677776 -1.914152
-## cYear        -6.374309 -1.116174</code></pre>
+<pre class="r"><code>####
+# alternative!
+
+my.mod &lt;- aov(Sepal.Length~Species,data=iris)   # same model!!
+summary(my.mod)     # but produces an anova table by default</code></pre>
+<pre><code>##              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+## Species       2  63.21  31.606   119.3 &lt;2e-16 ***
+## Residuals   147  38.96   0.265                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p><a href="LECTURE7.html">–go to next lecture–</a></p>
-</div>
 </div>
 
 
@@ -1196,7 +1354,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -1205,6 +1363,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

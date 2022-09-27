@@ -12,22 +12,30 @@
 <meta name="author" content="NRES 710" />
 
 
-<title>Next Steps</title>
+<title>ANOVA</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -39,11 +47,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -56,32 +59,8 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
+
 
 
 
@@ -91,10 +70,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -111,40 +86,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 45px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h2 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h3 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h4 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h5 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h6 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -172,7 +123,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -184,7 +135,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -195,10 +146,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -210,7 +174,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -336,7 +299,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -350,7 +313,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -366,7 +329,7 @@ div.tocify {
   <a href="schedule.html">Schedule</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Lectures
      
     <span class="caret"></span>
@@ -379,27 +342,48 @@ div.tocify {
       <a href="LECTURE1.html">Basic Concepts</a>
     </li>
     <li>
-      <a href="LECTURE2.html">Analysis- t test</a>
+      <a href="LECTURE2.html">Sampling uncertainty</a>
     </li>
     <li>
-      <a href="LECTURE3.html">Analysis- chi2 test</a>
+      <a href="LECTURE3.html">Taxonomy of common statistics</a>
     </li>
     <li>
-      <a href="LECTURE4.html">Analysis- linear regression</a>
+      <a href="LECTURE4.html">t-test and z-test</a>
     </li>
     <li>
-      <a href="LECTURE5.html">Analysis- ANOVA</a>
+      <a href="LECTURE5.html">chi-squared tests</a>
     </li>
     <li>
-      <a href="LECTURE6.html">Analysis- GLM and GLMM</a>
+      <a href="LECTURE6.html">Linear Regression</a>
     </li>
     <li>
-      <a href="LECTURE7.html">Next steps</a>
+      <a href="LECTURE7.html">ANOVA</a>
+    </li>
+    <li>
+      <a href="LECTURE8.html">GLM and GLMM</a>
+    </li>
+    <li>
+      <a href="LECTURE9.html">Next steps</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Exercises
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="EXERCISE1.html">Exercise- data summary functions</a>
+    </li>
+    <li>
+      <a href="EXERCISE2.html">Exercise- t-tests</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     More Resources
      
     <span class="caret"></span>
@@ -411,8 +395,17 @@ div.tocify {
     <li>
       <a href="FINALPROJ.html">Final Projects</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Datasets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="STUDYGUIDE.html">Study Guide</a>
+      <a href="Data1.dat">Data1</a>
     </li>
   </ul>
 </li>
@@ -424,72 +417,922 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
-<h1 class="title toc-ignore">Next Steps</h1>
+<h1 class="title toc-ignore">ANOVA</h1>
 <h4 class="author">NRES 710</h4>
-<h4 class="date">Fall 2020</h4>
+<h4 class="date">Fall 2022</h4>
 
 </div>
 
 
-<p>We’ve reached the end of the course, congratulations!!</p>
-<p>But this is not the end of your statistical training - learning statistics and modeling (informally or formally) is an ongoing part of your growth as a scientist!</p>
-<p>The types of analytical approaches you decide to learn (informally or formally) depends on a lot of factors:</p>
-<ul>
-<li>the type of data you will be analyzing (both responses and predictors)</li>
-<li>whether your data are primarily coming from controlled experiments or uncontrolled field-based studies</li>
-<li>whether you are interested in understanding mechanisms or making predictions (or both)</li>
-<li>whether you have one predictor variable or multiple predictor variables.</li>
-<li>whether you have one response variable or multiple response variables.</li>
-<li>whether you are testing hypotheses or generating hypotheses</li>
-<li>whether you have key sources of non-independence like phylogenetic dependencies or spatiotemporal dependencies.</li>
-<li>whether you align philosophically more with Bayesian or frequentist inference</li>
-</ul>
-<p>Here are some final thoughts to help you think through your next steps as a data analyst!</p>
-<div id="bayesian-vs-frequentist" class="section level2">
-<h2>Bayesian vs frequentist</h2>
-<p>This course has been entirely grounded in frequentist inference- which is a bit strange for me, as someone who tends to gravitate toward Bayesian inference!</p>
-<p>In both Bayesian inference and frequentist inference, the truth is unknown. But the two approaches differ in how they treat probability and uncertainty.</p>
-<p>In frequentist inference, the truth is fixed but unknown, and incomplete sampling prevents us from knowing the full truth. Sampling variance is the only source of uncertainty. Therefore there is uncertainty associated with sample statistics- but no uncertainty associated with population parameters. It is not appropriate to think of the truth itself (the population parameter) as uncertain.</p>
-<p>In Bayesian inference, probability is treated as a <em>degree of belief</em>, and not as a reflection of sampling uncertainty. In this way, we treat the population parameters themselves as uncertain, which reflects incomplete knowledge of the truth. We can therefore assign probability distributions to the population parameters- more “peaked” distributions represent more precise knowledge and flatter, spread-out distributions represent less precise knowledge (often due to insufficient data).</p>
-<p>Many of you are likely to find Bayesian statistics more intuitive than frequentist statistics- I certainly do!</p>
-<p>For example, you can interpret confidence intervals as (e.g.) “I am 95 confident that the true value is between this lower bound and this upper bound”. This is the way most of us WISH we could interpret confidence intervals.</p>
-<p>NOTE: in Bayesian inference, confidence intervals are often called ‘credible intervals’ to differentiate them from frequentist confidence intervals.</p>
+<div id="download-the-r-code-for-this-lecture" class="section level2">
+<h2>Download the R code for this lecture!</h2>
+<p>To follow along with the R-based lessons and demos, <a
+href="LECTURE5.R">right (or command) click on this link and save the
+script to your working directory</a></p>
 </div>
-<div id="parametric-vs-nonparametric-tests" class="section level2">
-<h2>Parametric vs nonparametric tests</h2>
-<p>If you are running statistical tests and you want to be sure your results are not compromised by a failure to meet parametric assumptions, then you might want to dive deeper into nonparametric statistics. The most powerful and flexible family of nonparametric tests are called <strong>permutation tests</strong>. These tests rely on dissociating your response and predictor variables by “scrambling” the information, repeating this procedure hundreds of times, and seeing if your observed level of signal exceeds the expected level of signal from these “scrambled” datasets. If so, you can reject your null!</p>
+<div id="overview-anova" class="section level2">
+<h2>Overview: ANOVA</h2>
+<p>ANOVA is short for “ANalysis Of VAriance”. An ANOVA test is designed
+to assess whether the mean value is the same across groups defined by
+one or more categorical predictor variables. Which is another way of
+saying that ANOVA is a regression model where the predictor variable(s)
+is categorical.</p>
+<p>In a simple linear regression, we are testing whether the mean of our
+response variable changes linearly across the range of our
+(continuous/numeric) predictor variable.</p>
+<p>In ANOVA, we are testing whether the mean of our response variable
+changes across the different levels (bins) of our categorical
+variable.</p>
+<p>The null hypothesis in ANOVA is that the mean of the response
+variable is the same across all levels/bins of your categorical variable
+– i.e. <span class="math inline">\(\mu_1=\mu_2=\mu_3=\mu_i\)</span></p>
+<p>Note that if you’re facing a situation where your categorical
+variable has two groups, you can use EITHER a t-test or an ANOVA. But
+you should use the t-test – first of all, the t-test works with unequal
+variance, and second of all, it would just seem strange to run an ANOVA
+in this case!</p>
+<p>In ANOVA, the test statistic is called the F statistic. This is
+analogous to the t-statistic and the Chi-squared statistic in that it is
+computed from the data, and that it has a known sampling distribution
+under the null hypothesis.</p>
+<p>Let’s explore this statistic in a little more detail!</p>
+<div id="the-f-statistic" class="section level3">
+<h3>The F Statistic</h3>
+<p>Remember that the t statistic is essentially a <em>signal to noise
+ratio</em>: you take the signal (difference between the sample mean and
+the null mean) and divide it by the noise (standard error of the
+mean).</p>
+<p>The F-statistic is also a signal to noise ratio. The F statistic
+represents the signal (differences among the group means; explained
+variance) divided by the noise (within-group variability; unexplained
+variance).</p>
+<p>Specifically, the F statistic is defined as:</p>
+<p><span class="math inline">\(F = \frac{between-group \space
+variability}{within-group \space variability}\)</span></p>
+<p>The explained variance is defined by:</p>
+<p><span class="math inline">\(\sum_{i=1}^{K}n_i\cdot
+(\bar{Y_i}-\bar{Y})^2/(K-1)\)</span></p>
+<p>Where K is the number of groups, <span
+class="math inline">\(n_i\)</span> is the number of observations in the
+ith group, <span class="math inline">\(\bar{Y_i}\)</span> is the sample
+mean in the <em>i</em>th group, and <span
+class="math inline">\(\bar{Y}\)</span> is the overall mean.</p>
+<p>The unexplained variance is defined by:</p>
+<p><span
+class="math inline">\(\sum_{i=1}^{K}\sum_{j=1}^{n_i}(Y_{ij}-\bar{Y_i})^2/(N-K)\)</span></p>
+<p>You won’t generally need to compute the F statistic yourself but it
+is useful to know how to do it! We will go though one example where we
+compute the F statistic ‘by hand’ (in R), but after that we will let R
+functions do the job for us!</p>
 </div>
-<div id="learning-to-bootstrap" class="section level2">
-<h2>Learning to bootstrap</h2>
-<p><strong>Bootstrap</strong> methods allow you to generate confidence intervals and sampling distributions for pretty much any test statistic you’d like, without relying on known distributions like the t-distribution, F-distribution, Chi-square distribution, etc. The bootstrap techniques simply involve repeatedly running the analysis on datasets sampled with replacement from your actual dataset. Learning to bootstrap is well worth the time for almost any aspiring data analyst.</p>
+<div id="the-f-distribution" class="section level3">
+<h3>The F Distribution</h3>
+<p>The F distribution was developed by George Snedecor (founder of the
+first US statistics department – at Iowa State. The “F” is in honor of
+Ronald Fisher, who developed the ANOVA testing framework.</p>
+<p>Just like the t distribution and the Chi-squared distribution, the F
+distribution is the approximate sampling distribution of the F statistic
+under the null hypothesis.</p>
+<p>Interesting fact: in the case where the categorical variable has only
+two levels, the F distribution is just the t distribution, squared!</p>
+<p>The F distribution has two parameters: the numerator degrees of
+freedom (df1; also known as the ‘treatment’ degrees of freedom) and the
+denominator degrees of freedom (df2; also known as the residual degrees
+of freedom). The numerator degrees of freedom for a one-way ANOVA is
+K-1, and the denominator degrees of freedom is N-K.</p>
+<div id="regression-and-the-f-distributionstatistic"
+class="section level4">
+<h4>Regression and the F distribution/statistic</h4>
+<p>What is the F-distribution commonly associated with (besides ANOVA)?
+That’s right – Linear Regression!</p>
+<p>ANOVA is a special case of regression where the predictor variable is
+categorical – there is one independent variable and one or more
+dependent variables that are categorical.</p>
 </div>
-<div id="machine-learning" class="section level2">
-<h2>Machine learning</h2>
-<p>Machine learning techniques are very diverse approaches for detecting signals in datasets. Machine learning methods tend to impose far fewer assumptions about the data than classical statistical and modeling approaches. For example, <strong>random forest</strong> methods enable detection of non-linear responses and complex interactions without having to specify these non-linear functions and interactions in advance. We just provide the algorithm with a response variable and a bunch of predictor variables and let the random forest algorithm find the signals. In addition, supervised machine learning methods like random forest allow you to rank your predictor variables in order of their importance (degree of useful predictive power).</p>
-<p>Machine learning methods are often useful for performing variable selection (identifying a small set of important predictor variables), and for identifying important non-linear responses or interactions.</p>
-<p>Supervised machine learning (e.g., random forest) involves giving the algorithm a bunch of observations with known response and known predictor variables and letting the algorithm find the relationships between the response and predictor – just like multiple linear regression.</p>
-<p>Unsupervised machine learning (e.g., clustering algorithms) involve giving the algorithm a bunch of observations, each associated with a bunch of measurements, and allowing the algorithm to identify key differences and similarities (patterns) in the data. For example, the algorithm my divide the observations into groups that share certain similarities. These groups (clusters) can then enable researchers to identify key ‘hidden’ similarities between observations.</p>
 </div>
-<div id="multivariate-statistics" class="section level2">
-<h2>Multivariate statistics</h2>
-<p>Multivariate statistics involves trying to interpret multiple response processes at the same time. For example, community ecologists often want to understand the presence/absence and population dynamics of multiple species in a single ecological community. These researchers therefore are dealing with muliple response variables at the same time - for example, they may wish to model the presence or absence of species A, B, C, and D as a function of three environmental covariates (x1, x2 and x3) and inter-species competitive exclusion. Such an analysis would be called a <strong>multivariate analysis</strong>.</p>
-<p>I will try to post more on multivariate statistics later - and definitely in the next iteration of this class!</p>
-<div id="dimensionality-reduction" class="section level3">
-<h3>Dimensionality reduction</h3>
-<p>Often classified as a type of multivariate statistical analysis, <strong>principal components analysis (PCA)</strong> and other dimensionality reduction methods (e.g., non-metric multidimensional scaling, or NMDA) are useful for taking a large set of variables and trying to summarize the variation among observations according to a smaller set of derived variables (often known as “axes” – for example, “PCA axis 1”). This can enable visualization of similarities and differences among observations – eg., by plotting PC1 vs PC2.</p>
-<p>Some analysts will run a PCA on all their observations (e.g., all 100 predictor variables) in order to reduce their set of inter-correlated predictor variables from a very large number to a set of just a few (often 2 or 3) uncorrelated predictor variables. This is one way of dealing with <strong>multicollinearity</strong>. However, it introduces a new problem- how to interpret your new variables!</p>
+<div id="assumptions-of-anova" class="section level3">
+<h3>Assumptions of ANOVA</h3>
+<p>Since ANOVA and regression are basically the same thing, the
+assumptions are also basically the same!</p>
+<p>Also note that, like regression and t-tests, ANOVA is reasonably
+robust against violations of the normal distribution assumption.</p>
+<div id="normality" class="section level4">
+<h4>Normality</h4>
+<p>Each sample group is drawn from a normally distributed
+population.</p>
+</div>
+<div id="independence" class="section level4">
+<h4>Independence</h4>
+<p>Samples are independent of each other (as always!)</p>
+</div>
+<div id="equal-variance" class="section level4">
+<h4>Equal variance</h4>
+<p>All sample groups have the same variance. Note that this is
+equivalent to the homoskedasticity assumption from linear
+regression!</p>
+<p>NOTE: you don’t really need to worry so much about ‘high influence’
+points in ANOVA. However, ANOVA works best if there are similar numbers
+of observations in each group - this is a ‘balanced’ design.</p>
 </div>
 </div>
-<div id="last-words" class="section level2">
-<h2>Last words</h2>
-<p>I will try to add to this ‘next steps’ lecture in the future. In the meantime, I wish you all the best as you continue your journey as creative, effective data analysts.</p>
-<p>As always, your feedback is very much appreciated.</p>
-<p>Thanks for bearing with me this semester!!!</p>
-<p>–End of lectures–</p>
+</div>
+<div id="examples" class="section level2">
+<h2>Examples</h2>
+<div id="one-way-anova-by-hand" class="section level3">
+<h3>One-way ANOVA ‘by hand’</h3>
+<p>Let’s look at the following example: we measure the height of some
+plants under the effect of 3 different fertilizer treatments.</p>
+<p>Here the individual observations (<span
+class="math inline">\(y_{ij}\)</span>) are a function of the average
+height of the plants (<span class="math inline">\(\mu\)</span>) plus the
+effect of the fertilizer (Ai) plus an error term (Eij)</p>
+<p>In comparison with linear regression (using the ‘language’ of linear
+regression), let’s write out this model as a linear equation!</p>
+<p><span class="math inline">\(height_i = \beta_0 + \beta_1\cdot
+fertilizer2 + \beta_2\cdot fertilizer3 + \epsilon_i\)</span></p>
+<p>Where i is the observation number, beta0 is the intercept, beta1 and
+beta2 are ‘regression’ coefficients, and fertilizer2 and fertilizer3 are
+<strong>dummy variables</strong> or <strong>indicator variables</strong>
+that take the value 0 or 1. For example, if observation 11 was treated
+with fertilizer #2, then the value for ‘fertilizer2’ would be 1 and the
+value for ‘fertilizer3’ would be zero.</p>
+<p>What happened to fertilizer #1 in this example? Well, if observation
+5 was treated with fertilizer #1, then the value for ‘fertilizer2’ would
+be 0 and the value for ‘fertilizer3’ would also be zero. That is, the
+intercept (beta0) represents the expected mean for observations treated
+with fertilizer 1!</p>
+<p>[draw on whiteboard]</p>
+<p>[demonstration with ‘model.matrix’]</p>
+<p>Our goal here is to test if the regression coefficients beta1 and
+beta2 are zero- that is, that mean plant height is the same across all
+three treatments.</p>
+<pre class="r"><code>#######
+# Simple one-way ANOVA example
+
+F1 &lt;- c(1,2,2,3)     # plant height under fertilizer treatment 1
+F2 &lt;- c(5,6,5,4)
+F3 &lt;- c(2,1,2,2)
+
+# combine into single dataframe for easier visualization and analysis
+
+df &lt;- data.frame(
+  Height = c(F1,F2,F3),
+  Treatment = rep(c(&quot;F1&quot;,&quot;F2&quot;,&quot;F3&quot;),each=length(F1)),
+  stringsAsFactors = T
+)
+
+plot(Height~Treatment, data=df)</code></pre>
+<p><img src="LECTURE7_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Our goal is to assess the plausibility of the null hypothesis that
+the group means are equal.</p>
+<pre class="r"><code>grand.mean &lt;- mean(df$Height)   # grand mean
+
+group.means &lt;- by(df$Height,df$Treatment,mean)    # group means
+
+n.groups &lt;- length(group.means)   # number of groups
+
+group.sample.size &lt;- by(df$Height,df$Treatment,length)
+
+sample.size &lt;- nrow(df)
+
+explained.var &lt;- sum(group.sample.size*(group.means-grand.mean)^2/(n.groups-1))
+
+groups &lt;- lapply(1:n.groups,function(t) df$Height[df$Treatment==levels(df$Treatment)[t]])
+
+residual.var &lt;- sapply(1:n.groups,function(t) (groups[[t]]-group.means[t])^2/(sample.size-n.groups) )
+
+unexplained.var &lt;- sum(residual.var)
+
+#######
+# now we can compute the F statistic!
+
+Fstat &lt;- explained.var/unexplained.var
+Fstat</code></pre>
+<pre><code>## [1] 24.78947</code></pre>
+<pre class="r"><code>#######
+# define degrees of freedom
+
+df1 &lt;- n.groups-1
+df2 &lt;- sample.size-n.groups
+
+#######
+# visualize the sampling distribution under null hypothesis
+
+curve(df(x,df1,df2),0,10)</code></pre>
+<p><img src="LECTURE7_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>######
+# compute critical value of F statistic
+
+Fcrit &lt;- qf(0.95,df1,df2)
+Fcrit</code></pre>
+<pre><code>## [1] 4.256495</code></pre>
+<pre class="r"><code>######
+# compute p-value
+
+pval &lt;- 1-pf(Fstat,df1,df2)
+
+
+#####
+# use aov function
+
+model1 &lt;- aov(Height~Treatment,data=df)
+summary(model1)</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## Treatment    2  26.17  13.083   24.79 0.000218 ***
+## Residuals    9   4.75   0.528                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>#####
+# use lm function
+
+model1 &lt;- lm(Height~Treatment,data=df)
+summary(model1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Height ~ Treatment, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.0000 -0.1875  0.0000  0.2500  1.0000 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   2.0000     0.3632   5.506 0.000377 ***
+## TreatmentF2   3.0000     0.5137   5.840 0.000247 ***
+## TreatmentF3  -0.2500     0.5137  -0.487 0.638128    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.7265 on 9 degrees of freedom
+## Multiple R-squared:  0.8464, Adjusted R-squared:  0.8122 
+## F-statistic: 24.79 on 2 and 9 DF,  p-value: 0.0002184</code></pre>
+<pre class="r"><code>anova(model1)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Height
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## Treatment  2 26.167 13.0833   24.79 0.0002184 ***
+## Residuals  9  4.750  0.5278                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+</div>
+<div id="pairwise-comparisons" class="section level2">
+<h2>Pairwise comparisons</h2>
+<p>The ANOVA test is a <em>global test</em>, meaning that if our p-value
+is less than our alpha level we are able to reject the null hypothesis
+that all of the group means are equal to one another. But if we reject
+our null hypothesis we can’t say <em>which</em> of the group means are
+different.</p>
+<p>This is where <em>pairwise comparison</em> comes in. Pairwise
+comparisons allow you to determine which pairs of means are different
+from one another.</p>
+<p>Remember that if we are unable to reject our null hypothesis, there
+is no point in performing pairwise comparisons- we already know that the
+variation in group means is consistent with the null hypothesis that the
+true population means are not actually different from one another.</p>
+<p>There are several ways to perform pairwise comparisons in R. One of
+the most powerful and flexible functions for doing this is the ‘emmeans’
+function (in the ‘emmeans’ package).</p>
+<p>For classical ANOVA tests, the most common method for pairwise
+comparison is called ‘Tukey’s test’. This can be done using the
+‘TukeyHSD’ function in R or the ‘emmeans’ function.</p>
+<div id="tukeys-test" class="section level3">
+<h3>Tukey’s test</h3>
+<p>Tukey’s test (or Tukey’s Honestly Significant Differences [HSD])
+compares all possible pairs of group means and determines if each pair
+is more different than could reasonably be expected under the null
+hypothesis.</p>
+<p>Tukey’s test assumes that observations are normally distributed. In
+addition, Tukey’s test assumes independence of observations (of course!)
+and homogeneity of variance among groups.</p>
+<p>The test statistic for Tukey’s test is called <em>q</em>, and is
+computed as:</p>
+<p><span class="math inline">\(q = \frac{Y_A-Y_B}{SE}\)</span>, where Y
+sub A is the larger of the two means being compared.</p>
+<p>Does this look like any other familiar test statistic? Yes, that’s
+right- Tukey’s test is essentially a t-test! The only difference is that
+it is maintaining an <em>experimentwise error rate</em> that matches the
+alpha level you set. So you <em>could</em> run multiple independent
+t-tests- one for each pair of factor levels. BUT if you did that, the
+more tests you ran, the higher your risk of committing a type-I error.
+If we use Tukey’s test, we keep that risk equal to alpha regardless of
+how many tests we perform.</p>
+<p>The standard error for Tukey’s test is computed as:</p>
+<p><span
+class="math inline">\(\sqrt{(\frac{MSE}{2})(\frac{1}{n_i}+\frac{1}{n_j})}\)</span></p>
+<p>With unequal sample sizes, the test is called a <em>Tukey-Kramer
+test</em>.</p>
+</div>
+<div id="tukey-test-example" class="section level3">
+<h3>Tukey test example</h3>
+<p>Lets’ try it!</p>
+<pre class="r"><code>######
+# Tukey&#39;s test
+
+# find critical q-value for tukey test
+q.value &lt;- qtukey(p=0.95,nmeans=n.groups,df=(sample.size-n.groups))
+
+# find honestly significant difference
+tukey.hsd &lt;- q.value * sqrt(unexplained.var/(sample.size/n.groups))
+
+# if differences in group means are greater than this value then we can reject the null!
+
+## let&#39;s look at the difference between means
+
+all_means &lt;- tapply(df$Height,df$Treatment,mean)
+all_levels &lt;- levels(df$Treatment)
+pair_totry &lt;- matrix(c(1,2,1,3,2,3),nrow=3,byrow = T)
+pair_totry     # these are the pairwise comparisons to make!</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    2
+## [2,]    1    3
+## [3,]    2    3</code></pre>
+<pre class="r"><code>thispair &lt;- pair_totry[1,]    # run first pairwise comparison
+
+dif.between.means &lt;- all_means[thispair[1]]-all_means[thispair[2]]
+dif.between.means   # since this is greater than tukey.hsd, we already know we can reject the null</code></pre>
+<pre><code>## F1 
+## -3</code></pre>
+<pre class="r"><code>### compute p-value!
+sample.size.pergroup &lt;- sample.size/n.groups
+std.err &lt;- sqrt(unexplained.var / 2 * (2 / sample.size.pergroup))
+
+ # first compute q statistic
+q.stat &lt;- abs(dif.between.means)/std.err
+p.val &lt;- 1-ptukey(q.stat,nmeans=n.groups,df=(sample.size-n.groups))
+p.val</code></pre>
+<pre><code>##           F1 
+## 0.0006459124</code></pre>
+<pre class="r"><code>## run all pairwise comparisons
+
+results &lt;- NULL
+i=1
+for(i in 1:nrow(pair_totry)){
+  thispair &lt;- pair_totry[i,]
+  temp &lt;- data.frame(
+    group1 = all_levels[thispair[1]],
+    group1 = all_levels[thispair[2]]
+  )
+  
+  temp$dif = all_means[thispair[1]]-all_means[thispair[2]]
+  temp$qstat = abs(temp$dif)/std.err
+  temp$pval = 1-ptukey(temp$qstat,nmeans=n.groups,df=(sample.size-n.groups))
+  
+  results &lt;- rbind(results,temp)
+}
+
+results</code></pre>
+<pre><code>##   group1 group1.1   dif     qstat         pval
+## 1     F1       F2 -3.00 8.2589664 0.0006459124
+## 2     F1       F3  0.25 0.6882472 0.8792868263
+## 3     F2       F3  3.25 8.9472136 0.0003591856</code></pre>
+<pre class="r"><code>########  compare with R&#39;s built in tukey test function
+model1 &lt;- aov(Height~Treatment,data=df)
+TukeyHSD(model1)</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = Height ~ Treatment, data = df)
+## 
+## $Treatment
+##        diff       lwr       upr     p adj
+## F2-F1  3.00  1.565743  4.434257 0.0006459
+## F3-F1 -0.25 -1.684257  1.184257 0.8792868
+## F3-F2 -3.25 -4.684257 -1.815743 0.0003592</code></pre>
+<pre class="r"><code>#######  and finally, compare with &#39;emmeans&#39;
+
+library(emmeans)
+model1 &lt;- lm(Height~Treatment,data=df)
+emm &lt;- emmeans(model1,specs=c(&quot;Treatment&quot;))  # compute the treatment means with &#39;emmeans&#39;
+pairs(emm)    # run tukey test!</code></pre>
+<pre><code>##  contrast estimate    SE df t.ratio p.value
+##  F1 - F2     -3.00 0.514  9  -5.840  0.0006
+##  F1 - F3      0.25 0.514  9   0.487  0.8793
+##  F2 - F3      3.25 0.514  9   6.327  0.0004
+## 
+## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
+<p>Note that the last method (‘emmeans’) is the most flexible, since you
+can use this function for all kinds of models, including mixed
+models!</p>
+<p>The ‘general’ way to think about pairwise comparisons is that you are
+using the model to make predictions under different “what if” scenarios
+(e.g., what is the expected response if treatment is A, temperature is
+25C, soil type is “X”) and then testing to see if those differences are
+consistent with the null hypothesis of zero differences. If you think
+about it this way, performing pairwise comparisons can make sense even
+for complex models with multiple continuous and categorical predictor
+variables!</p>
+</div>
+</div>
+<div id="another-simple-example" class="section level2">
+<h2>Another simple example</h2>
+<p>Here we run another simple example of a one-way ANOVA followed by
+Tukey’s pairwise comparison tests (drawn from <a
+href="https://aaronschlegel.me/tukeys-test-post-hoc-analysis.html">this
+site</a>), just using R’s built in functions (no more ‘by hand’
+calculations!):</p>
+<pre class="r"><code>library(agricolae)
+data(&quot;PlantGrowth&quot;)
+
+plant.lm &lt;- lm(weight ~ group, data = PlantGrowth)   #run the &#39;regression&#39; model
+plant.av &lt;- aov(plant.lm)  # run anova test and print anova table
+plant.av</code></pre>
+<pre><code>## Call:
+##    aov(formula = plant.lm)
+## 
+## Terms:
+##                    group Residuals
+## Sum of Squares   3.76634  10.49209
+## Deg. of Freedom        2        27
+## 
+## Residual standard error: 0.6233746
+## Estimated effects may be unbalanced</code></pre>
+<pre class="r"><code>#######
+# evaluate goodness of fit (assumption violations etc)
+layout(matrix(1:4,nrow=2,byrow = T))
+plot(plant.av)</code></pre>
+<p><img src="LECTURE7_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>#######
+# run pairwise comparisons
+
+tukeytest &lt;- TukeyHSD(plant.av)
+tukeytest</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = plant.lm)
+## 
+## $group
+##             diff        lwr       upr     p adj
+## trt1-ctrl -0.371 -1.0622161 0.3202161 0.3908711
+## trt2-ctrl  0.494 -0.1972161 1.1852161 0.1979960
+## trt2-trt1  0.865  0.1737839 1.5562161 0.0120064</code></pre>
+<pre class="r"><code>layout(matrix(1,nrow=1,byrow = T))
+plot(tukeytest)   #default plotting method for tukey test objects!</code></pre>
+<p><img src="LECTURE7_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<pre class="r"><code>######
+# alternative method
+
+
+ # run tukey test
+emm &lt;- emmeans(plant.lm,specs=c(&quot;group&quot;))  # compute the treatment means with &#39;emmeans&#39;
+pairs(emm)    # run tukey test!</code></pre>
+<pre><code>##  contrast    estimate    SE df t.ratio p.value
+##  ctrl - trt1    0.371 0.279 27   1.331  0.3909
+##  ctrl - trt2   -0.494 0.279 27  -1.772  0.1980
+##  trt1 - trt2   -0.865 0.279 27  -3.103  0.0120
+## 
+## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
+<pre class="r"><code>toplot &lt;- as.data.frame(summary(emm))[,c(&quot;group&quot;,&quot;emmean&quot;,&quot;lower.CL&quot;,&quot;upper.CL&quot;)]
+xvals &lt;- barplot(toplot$emmean,names.arg = toplot$group,ylim=c(0,7))
+arrows(xvals,toplot$lower.CL,xvals,toplot$upper.CL,angle=90,code=3)
+text(xvals,c(6.4,6.4,6.4),labels = c(&quot;ab&quot;,&quot;a&quot;,&quot;b&quot;),cex=1.5)</code></pre>
+<p><img src="LECTURE7_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
+<p>In the above figure, we use the convention of adding letter codes to
+our plot to illustrate the results of the pairwise comparison. Pairs of
+treatments/groups with different labels are different according to the
+pairwise comparison test. Pairs that share a common label are not
+different. In the above figure, treatment 1 and treatment 2 are
+different from one another, but the control is not different from either
+treatment. You can also see this visually based on the overlapping in
+the confidence intervals (trt1 and trt2 do not overlap, whereas both
+treatments overlap with the control).</p>
+</div>
+<div id="two-way-anova" class="section level2">
+<h2>Two-way ANOVA</h2>
+<p>When you have more than one categorical predictor variable in your
+ANOVA model, you are performing a <em>multiple factor ANOVA</em>. The
+simplest case is when you have two categorical variables (or factors)–
+this is called two-factor ANOVA (or two-way ANOVA). Multiple factor
+ANOVA is analogous to multi-variable linear regression.</p>
+<p>In a two-way ANOVA, your global null hypothesis is that the mean of
+the response variable is not affected by either of the two factors.
+Secondarily, you can test the individual null hypotheses that the mean
+response does not vary across the levels of factor 1 or 2
+separately.</p>
+<div id="interactions" class="section level3">
+<h3>Interactions</h3>
+<p>The concept of interactions is fundamental to both multiple linear
+regression and multiple factor ANOVA.</p>
+<p>The basic idea is that the relationship between your response
+variable (e.g., fruit dry weight) and your first predictor variable
+(e.g., fertilizer type) varies depending on your second predictor
+variable (e.g., soil type). For example, maybe your plants tend to
+produce larger fruits when fertilized in soil type A, but do not respond
+to fertilization in soil type B.</p>
+<p>In regression terminology, interaction terms look similar to any
+other regression coefficient. Here’s an example, continuing with the
+fertilizer/soil example (3 fertilization treatments, 2 soil
+treatments):</p>
+<p><span class="math inline">\(height_i = \beta_0 + \beta_1\cdot
+fertilizer2 + \beta_2\cdot fertilizer3 + \beta_3\cdot soil2 +
+\beta_4\cdot fertilizer2\times soil2 + \beta_5\cdot fertilizer3\times
+soil2 + \epsilon_i\)</span></p>
+<p>In the above equation, <span class="math inline">\(\beta_0\)</span>
+is the intercept term, <span class="math inline">\(\beta_1\)</span> and
+<span class="math inline">\(\beta_2\)</span> are the <strong>main effect
+terms</strong> for the “fertilizer” factor variable (same as we saw
+above- recall that the intercept term represents fertilizer 1) –
+“fertilizer2” and “fertilizer3” are dummy variables (either zero or one)
+indicating whether or not observations belong to these respective
+treatments. Similarly, the <span class="math inline">\(\beta_3\)</span>
+term is the main effect of soil treatment 2 (the intercept now refers to
+fertilizer treatment 1, soil treatment 1).</p>
+<p>The <span class="math inline">\(\beta_4\)</span> and <span
+class="math inline">\(\beta_5\)</span> terms are <strong>interaction
+coefficients</strong>. <span class="math inline">\(\beta_4\)</span>
+represents the effect of fertilizer2 on plants growing in the soil2
+treatment only. <span class="math inline">\(\beta_5\)</span> represents
+the effect of fertilizer3 on plants growing in the soil2 treatment only.
+Note that the term <span class="math inline">\(fertilizer2\times
+soil2\)</span> is essentially a dummy variable indicating whether or not
+an observation was treated with fertilizer2 AND grown in soil2.
+Multiplying two dummy variables together essentially results in a new,
+more specific dummy variable!</p>
+<div id="interaction-example" class="section level4">
+<h4>Interaction example</h4>
+<pre class="r"><code>## two way interaction example
+
+data(&quot;ToothGrowth&quot;)
+summary(ToothGrowth)</code></pre>
+<pre><code>##       len        supp         dose      
+##  Min.   : 4.20   OJ:30   Min.   :0.500  
+##  1st Qu.:13.07   VC:30   1st Qu.:0.500  
+##  Median :19.25           Median :1.000  
+##  Mean   :18.81           Mean   :1.167  
+##  3rd Qu.:25.27           3rd Qu.:2.000  
+##  Max.   :33.90           Max.   :2.000</code></pre>
+<pre class="r"><code>table(ToothGrowth$supp,ToothGrowth$dose)   # three doses, two types of supplements</code></pre>
+<pre><code>##     
+##      0.5  1  2
+##   OJ  10 10 10
+##   VC  10 10 10</code></pre>
+<pre class="r"><code>ToothGrowth$dose &lt;- ordered(ToothGrowth$dose)  # convert dose variable to factor (make it categorical)
+
+model &lt;- lm(len~supp+dose,data=ToothGrowth)  # two way anova with no interaction
+
+summary(model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = len ~ supp + dose, data = ToothGrowth)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -7.085 -2.751 -0.800  2.446  9.650 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  20.6633     0.6988  29.569  &lt; 2e-16 ***
+## suppVC       -3.7000     0.9883  -3.744 0.000429 ***
+## dose.L       10.9566     0.8559  12.802  &lt; 2e-16 ***
+## dose.Q       -1.1288     0.8559  -1.319 0.192573    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.828 on 56 degrees of freedom
+## Multiple R-squared:  0.7623, Adjusted R-squared:  0.7496 
+## F-statistic: 59.88 on 3 and 56 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>anova(model)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: len
+##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## supp       1  205.35  205.35  14.017 0.0004293 ***
+## dose       2 2426.43 1213.22  82.811 &lt; 2.2e-16 ***
+## Residuals 56  820.43   14.65                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>model_with_interaction &lt;- lm(len~supp*dose,data=ToothGrowth)  # now try again with interactions
+summary(model_with_interaction)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = len ~ supp * dose, data = ToothGrowth)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##  -8.20  -2.72  -0.27   2.65   8.27 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    20.6633     0.6630  31.166  &lt; 2e-16 ***
+## suppVC         -3.7000     0.9376  -3.946 0.000231 ***
+## dose.L          9.0722     1.1484   7.900 1.43e-10 ***
+## dose.Q         -2.4944     1.1484  -2.172 0.034254 *  
+## suppVC:dose.L   3.7689     1.6240   2.321 0.024108 *  
+## suppVC:dose.Q   2.7312     1.6240   1.682 0.098394 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.631 on 54 degrees of freedom
+## Multiple R-squared:  0.7937, Adjusted R-squared:  0.7746 
+## F-statistic: 41.56 on 5 and 54 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>anova(model_with_interaction)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: len
+##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## supp       1  205.35  205.35  15.572 0.0002312 ***
+## dose       2 2426.43 1213.22  92.000 &lt; 2.2e-16 ***
+## supp:dose  2  108.32   54.16   4.107 0.0218603 *  
+## Residuals 54  712.11   13.19                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>NOTE: if an interaction term is ‘significant’ but the main effects
+terms are not significant, the standard practice is to include the main
+effects terms anyway! That is, it is not common practice to fit
+regression/ANOVA models with only interaction terms (although this is
+appropriate in some rare cases).</p>
+<p>Here the results suggest that there is a significant interaction
+between dose and supplement type. As always, a plot can help. Let’s
+visualize this interaction!</p>
+<pre class="r"><code># visualize the interaction
+
+# ?interaction.plot     # this base R function can be used to visualize interactions
+
+with(ToothGrowth, {   # the &quot;with&quot; function allows you to only specify the name of the data frame once, and then refer to the columns of the data frame as if they were variables in your main environment
+  interaction.plot(dose, supp, len, fixed = TRUE, col = c(&quot;red&quot;,&quot;blue&quot;), leg.bty = &quot;o&quot;)
+})</code></pre>
+<p><img src="LECTURE7_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+</div>
+<div id="pairwise-comparisons-1" class="section level3">
+<h3>Pairwise comparisons</h3>
+<p>Pairwise comparisons for two-way ANOVA are similar to in one-way
+ANOVA- you just have to specify which categorical predictor variable(s)
+you want to run pairwise comparisons for! Or you might want to run
+pairwise comparisons for all combinations of levels across both
+categorical predictors… If you want to do the latter (e.g., to examine
+which interactions are significant), you might consider using the
+‘emmeans’ function in the ‘emmeans’ package</p>
+<pre class="r"><code>TukeyHSD(aov(model), &quot;dose&quot;)   # run tukey test for the &#39;dose&#39; variable in the ToothGrowth model</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = model)
+## 
+## $dose
+##         diff       lwr       upr p adj
+## 1-0.5  9.130  6.215909 12.044091 0e+00
+## 2-0.5 15.495 12.580909 18.409091 0e+00
+## 2-1    6.365  3.450909  9.279091 7e-06</code></pre>
+<pre class="r"><code>TukeyHSD(aov(model_with_interaction), &quot;dose&quot;)   # run tukey test for the &#39;dose&#39; variable in the ToothGrowth model</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = model_with_interaction)
+## 
+## $dose
+##         diff       lwr       upr   p adj
+## 1-0.5  9.130  6.362488 11.897512 0.0e+00
+## 2-0.5 15.495 12.727488 18.262512 0.0e+00
+## 2-1    6.365  3.597488  9.132512 2.7e-06</code></pre>
+<pre class="r"><code>library(emmeans)
+emm = emmeans(model_with_interaction,
+                      specs= pairwise ~ dose:supp)
+contrast(emm)</code></pre>
+<pre><code>## I bet you wanted to call this with just object[[1]] - use &#39;[[]]&#39; or which&#39; if I&#39;m wrong.
+## See &#39;? emm_list&#39; for more information</code></pre>
+<pre><code>##  contrast          estimate   SE df t.ratio p.value
+##  dose0.5 OJ effect    -5.58 1.05 54  -5.326  &lt;.0001
+##  dose1 OJ effect       3.89 1.05 54   3.708  0.0006
+##  dose2 OJ effect       7.25 1.05 54   6.913  &lt;.0001
+##  dose0.5 VC effect   -10.83 1.05 54 -10.334  &lt;.0001
+##  dose1 VC effect      -2.04 1.05 54  -1.949  0.0565
+##  dose2 VC effect       7.33 1.05 54   6.989  &lt;.0001
+## 
+## P value adjustment: fdr method for 6 tests</code></pre>
+</div>
+</div>
+<div id="non-parametric-anova-kruskal-wallis-test"
+class="section level2">
+<h2>Non-parametric ANOVA (Kruskal-Wallis test)</h2>
+<p>If your residuals are highly non-normal and heteroskedastic (or you
+have severe outliers) and transformations don’t seem to help, you might
+want to try a non-parametric test.</p>
+<p>The most common non-parametric version of the classical one-way ANOVA
+test is the Kruskal-Wallis test (K-W). Similar to a one-way ANOVA, the
+null hypothesis here is that all samples (regardless of group) come from
+the same underlying distribution. The difference is that we don’t assume
+that distribution is Gaussian (normally distributed)! If we reject our
+null hypothesis in the K-W test, we can conclude that the median value
+for at least one group differs from the others.</p>
+<p>The test statistic for the K-W test is called H, and like other
+common non-parametric tests, it involves <em>ranking</em> the
+observations. The distribution of the H statistic is often approximated
+by a chi-squared distribution!</p>
+<p>The following example comes from <a
+href="https://rcompanion.org/rcompanion/d_06.html">this site</a>:</p>
+<pre class="r"><code>### Kruskal-Wallis example
+
+
+## read in data:
+
+Input =(&quot;
+Group      Value
+Group.1      1
+Group.1      2
+Group.1      3
+Group.1      4
+Group.1      5
+Group.1      6
+Group.1      7
+Group.1      8
+Group.1      9
+Group.1     46
+Group.1     47
+Group.1     48
+Group.1     49
+Group.1     50
+Group.1     51
+Group.1     52
+Group.1     53
+Group.1    342
+Group.2     10
+Group.2     11
+Group.2     12
+Group.2     13
+Group.2     14
+Group.2     15
+Group.2     16
+Group.2     17
+Group.2     18
+Group.2     37
+Group.2     58
+Group.2     59
+Group.2     60
+Group.2     61
+Group.2     62
+Group.2     63
+Group.2     64
+Group.2    193
+Group.3     19
+Group.3     20
+Group.3     21
+Group.3     22
+Group.3     23
+Group.3     24
+Group.3     25
+Group.3     26
+Group.3     27
+Group.3     28
+Group.3     65
+Group.3     66
+Group.3     67
+Group.3     68
+Group.3     69
+Group.3     70
+Group.3     71
+Group.3     72
+&quot;)
+
+Data = read.table(textConnection(Input),header=TRUE)
+
+Data$Group = factor(Data$Group,levels=unique(Data$Group))    # transform predictor variable to factor
+
+#summarize values by group
+
+groups &lt;- unique(Data$Group)
+ngroups &lt;- length(groups)
+sumry &lt;- sapply(1:ngroups,function(i){temp &lt;- subset(Data,Group==groups[i]); summary(temp$Value)}  )
+colnames(sumry) &lt;- groups
+sumry</code></pre>
+<pre><code>##         Group.1 Group.2 Group.3
+## Min.       1.00   10.00   19.00
+## 1st Qu.    5.25   14.25   23.25
+## Median    27.50   27.50   27.50
+## Mean      43.50   43.50   43.50
+## 3rd Qu.   49.75   60.75   67.75
+## Max.     342.00  193.00   72.00</code></pre>
+<pre class="r"><code># histograms by group
+
+library(ggplot2)
+
+ggplot(Data, aes(x=Value)) +
+  geom_histogram(bins=10,aes(color=Group,fill=Group)) +
+  facet_grid(~Group)</code></pre>
+<p><img src="LECTURE7_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code># ## first install required packages if needed
+# 
+# if(!require(dplyr)){install.packages(&quot;dplyr&quot;)}
+# if(!require(FSA)){install.packages(&quot;FSA&quot;)}
+# if(!require(DescTools)){install.packages(&quot;DescTools&quot;)}
+# if(!require(multcompView)){install.packages(&quot;multcompView&quot;)}</code></pre>
+<p>Note that the equal variance assumption seems to be violated here as
+well as the normality assumption.</p>
+<p>Let’s first try a one-way ANOVA and verify these assumption
+violations.</p>
+<pre class="r"><code>model &lt;- lm(Value~Group,data=Data)
+
+summary(model)   # no treatment effects</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Value ~ Group, data = Data)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -42.50 -29.25 -16.00  17.25 298.50 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)  4.350e+01  1.254e+01   3.468  0.00107 **
+## GroupGroup.2 3.553e-15  1.774e+01   0.000  1.00000   
+## GroupGroup.3 7.105e-15  1.774e+01   0.000  1.00000   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 53.21 on 51 degrees of freedom
+## Multiple R-squared:  1.017e-31,  Adjusted R-squared:  -0.03922 
+## F-statistic: 2.594e-30 on 2 and 51 DF,  p-value: 1</code></pre>
+<pre class="r"><code>anova(model)   # looks a little weird</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Value
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Group      2      0     0.0       0      1
+## Residuals 51 144413  2831.6</code></pre>
+<pre class="r"><code>layout(matrix(1:4,nrow=2,byrow=T))
+plot(model)   # notice the outliers! And violation of normality</code></pre>
+<p><img src="LECTURE7_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>shapiro.test(residuals(model))</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuals(model)
+## W = 0.59012, p-value = 4.93e-11</code></pre>
+<p>Okay let’s run a K-W test then!</p>
+<pre class="r"><code># K-W test
+
+kruskal.test(Value ~ Group, data = Data)   # now there is a significant group effect!</code></pre>
+<pre><code>## 
+##  Kruskal-Wallis rank sum test
+## 
+## data:  Value by Group
+## Kruskal-Wallis chi-squared = 7.3553, df = 2, p-value = 0.02528</code></pre>
+<p>Of course, now you’d want to know which groups differ from which
+other groups. For this we need pairwise comparisons. The most common
+pairwise comparison test to accompany the K-W test is the <strong>Dunn
+test</strong>.</p>
+<pre class="r"><code>library(FSA)  # make sure you have this package installed!</code></pre>
+<pre><code>## ## FSA v0.9.3. See citation(&#39;FSA&#39;) if used in publication.
+## ## Run fishR() for related website and fishR(&#39;IFAR&#39;) for related book.</code></pre>
+<pre class="r"><code>dt = dunnTest(Value ~ Group,data=Data,method=&quot;bh&quot;)
+dt</code></pre>
+<pre><code>## Dunn (1964) Kruskal-Wallis multiple comparison</code></pre>
+<pre><code>##   p-values adjusted with the Benjamini-Hochberg method.</code></pre>
+<pre><code>##          Comparison         Z    P.unadj      P.adj
+## 1 Group.1 - Group.2 -1.356036 0.17508782 0.17508782
+## 2 Group.1 - Group.3 -2.712071 0.00668642 0.02005926
+## 3 Group.2 - Group.3 -1.356036 0.17508782 0.26263172</code></pre>
+<p>Now we could add our compact letter display- in which case we would
+want to indicate that group 3 differs from group 1. So group 1 could get
+an “a”, group 2 could get an “ab”, and group 3 could get a “b”.</p>
+<p>An alternative to the Dunn test is to use pairwise Mann-Whitney U
+(MWU) tests and then to use a Bonferroni correction (or another similar
+correction) to control the experimentwise error rate.</p>
+<p>In the above example, we would run three MWU tests- one for each
+pairwise comparison- and would reject the null if any of the p-values
+was less than <span class="math inline">\(\frac{\alpha}{3}\)</span>
+(applying the Bonferroni correction).</p>
+</div>
+<div id="power-analysis" class="section level2">
+<h2>Power analysis?</h2>
+<p>Perhaps we can run a power analysis example in a future iteration of
+this class. In the meantime let’s move on to generalized linear models
+and mixed-effects models.</p>
+</div>
+<div id="final-note-design-based-vs-model-based-inference"
+class="section level2">
+<h2>FINAL NOTE: design-based vs model-based inference</h2>
+<p>In this class I have emphasized the equivalence between ANOVA and
+regression. This is because I lean on the side of ‘model-based
+inference’ vs ‘design-based inference’.</p>
+<p>ANOVA is closely linked with experimental design. If you control for
+all confounding variables so that your categorical “treatment” is the
+only factor that could influence your response process, you can run an
+ANOVA and you are home free- there is nothing left to do- you have your
+answer in hand. This is called <strong>design-based inference</strong>
+because you designed your experiment to control for nuisance variables
+that could limit your inference. This makes the statistical analyses
+easy! <em>Design based inference uses careful experimental design to
+control for nuisance factors.</em></p>
+<p>However, in observational studies we often can’t control for nuisance
+factors using experimental design. Instead we often need to control for
+nuisance factors within our model. This process is called
+<strong>model-based inference</strong>. Model based inference is often
+not as satisfying, much more difficult, and often much less powerful,
+and prone to subtle and pernicious errors, and requiring more complex
+statistics, etc., BUT it is often the best we can do!! Because this
+class is for ecologists and environmental scietists, I tend to emphasize
+model-based inference over design-based inference. And this is why I
+de-emphasize ANOVA and instead emphasize linear regression, glm, and
+mixed models (lmer, glmm).</p>
+<p>This is the subject of the next lecture.</p>
+<p><a href="LECTURE8.html">–go to next lecture–</a></p>
 </div>
 
 
@@ -521,7 +1364,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -530,6 +1373,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
