@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 #  NRES 710, Lecture 5 -----------------------
 #   University of Nevada, Reno                       
 
-#   ANOVA                                          
+#   Chi-squared tests                                          
 
 
 ```
@@ -65,7 +65,7 @@ If you are performing a test for independence of two categorical variables, the 
 
 ### Chi-square goodness-of-fit test.
 
-As you recall from the 'basic concepts' lecture, this test asks the question “do the observations sort into categories according to your (null) hypothesis?” In a Chi-square goodness-of-fit test, the response variable of interest is categorical. Like the one-sample t-test, there is no predictor variable. 
+This test asks the question “do the observations sort into categories according to your (null) hypothesis?” In a Chi-square goodness-of-fit test, the response variable of interest is categorical. Like the one-sample t-test, there is no predictor variable. 
 
 *Example*: Are graduate students more likely to be born some months versus other months?
 
@@ -107,7 +107,7 @@ chisq.test(birthdays.bymonth)     # should get the same p value!
 
 ```
 
-Here is another example- this time we use a Chi-squared goodness of fit test to assess normality of a continuous variable. This example is meant to enhance understanding of the chi-squared goodness of fit test-- I don't suggest running this test to assess normality, since the shipiro-wilks test is a much better test!
+Here is another example- this time we use a Chi-squared goodness of fit test to assess normality of a continuous variable. This example is meant to enhance understanding of the chi-squared goodness of fit test-- I don't suggest running this test to assess normality, since the shipiro-wilks test is a better test!
 
 ```{r}
 

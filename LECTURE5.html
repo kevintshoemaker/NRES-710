@@ -485,11 +485,10 @@ respectively.</p>
 </div>
 <div id="chi-square-goodness-of-fit-test." class="section level3">
 <h3>Chi-square goodness-of-fit test.</h3>
-<p>As you recall from the ‘basic concepts’ lecture, this test asks the
-question “do the observations sort into categories according to your
-(null) hypothesis?” In a Chi-square goodness-of-fit test, the response
-variable of interest is categorical. Like the one-sample t-test, there
-is no predictor variable.</p>
+<p>This test asks the question “do the observations sort into categories
+according to your (null) hypothesis?” In a Chi-square goodness-of-fit
+test, the response variable of interest is categorical. Like the
+one-sample t-test, there is no predictor variable.</p>
 <p><em>Example</em>: Are graduate students more likely to be born some
 months versus other months?</p>
 <p>What is the population? sample? parameter? statistic?</p>
@@ -533,7 +532,7 @@ chisq.test(birthdays.bymonth)     # should get the same p value!</code></pre>
 fit test to assess normality of a continuous variable. This example is
 meant to enhance understanding of the chi-squared goodness of fit test–
 I don’t suggest running this test to assess normality, since the
-shipiro-wilks test is a much better test!</p>
+shipiro-wilks test is a better test!</p>
 <pre class="r"><code># Chi-squared test for normality
 
 normal.data &lt;- rnorm(250,4,1.5)  # generate normal data
