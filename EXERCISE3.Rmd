@@ -1,0 +1,203 @@
+---
+title: "Exercise 3: regression"
+author: "NRES 710"
+date: "Fall 2022"
+output: 
+  html_document: 
+    theme: yeti
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
+```
+
+## Regression Analysis in R
+
+Today's exercises provide hands-on experience working with linear regression in R. By running through some R code and interpreting statistical outputs, as a class and in small groups, we will gain some valuable initial exposure to the regression modeling problem (as well as more practice coding in R). 
+
+I encourage you to work in teams. This way, one team member can focus on a subset of problems, and then all team members can review their solutions and results with other team members. 
+
+Please submit your responses individually on WebCampus. If you worked with a team, please include the names of your team members at the top of your submission. 
+
+Reports must be uploaded to WebCampus by the date indicated (see WebCampus).
+
+You are of course welcome to ask for help outside of your groups by using the Statistical Concepts Discussion Forum, or by asking the instructor for hints. 
+
+Good luck!!
+
+### Problem 1. Initial data exploration. 
+
+Objectives: explore the `airquality` built-in dataset in R, through its documentation, and using descriptive functions such as head and summary. 
+
+1. Use the `pairs()` function to show a matrix of scatterplots, useful for simultaneously exploring relationships among the predictor variables, as well as bivariate relationships between each of the predictors and the response. Note that we will use the `Ozone` variable as our response when fitting our regression models. 
+
+2. Re-run the `pairs()` function, this time using the `lower.panel=panel.smooth` argument (explore the help for the pairs function for more details) to display a loess function (i.e. a local weighted regression to fit a smoothed curve), useful for exploring possible nonlinear relationships among variables. 
+
+3. The help documentation for pairs also provides an example of a function that can be used for plotting histograms along the diagonal of the scatterplot matrix (using the argument `diag.panel = panel.hist`) – see if you can get this to work!
+
+4. Use the `cor()` function to create a (Pearson’s) correlation matrix for all predictor variables (all columns except for `Ozone`). You will note that there are many missing values in the correlation matrix because of missing observations in the data. Specify the argument `use=”pairwise.complete.obs”` so that correlations are calculated using all complete pairs of observations between each pair of variables.
+
+Please copy your well-commented R code for answering the above questions into the text box entry in WebCampus. Following the code, please record any reservations you might have about running a linear regression analysis with these data- based only on the above visualizations (you don't need to run additional analyses or visualizations). Are there non-linear effects? Violations of normality? Other issues? 
+
+--start here--
+
+### Problem 2. Omit missing values. 
+
+By now you’ve noticed that the dataset has missing data values! We will deal with this bluntly and in one fell swoop by deleting all cases for which any one of the variables has a missing value. For example,
+air.cleaned <- na.omit(airquality)  # now in my example code, I will refer to the new data frame just created, “air.cleaned”
+
+Following the code, please report: 
+
+1. Mean difference in daily movement distance before vs after translocation
+2. Confidence interval on the value computed above (you choose the confidence level) 
+3. t-statistic, p-value and degrees of freedom associated with the test
+4. Results from a normality test
+5. Results (p-value) from an analogous nonparametric test 
+6. A concise statement of what you conclude from this test, concerning how translocation of tortoises affects their daily movement.
+
+### Problem 3. Simple linear regression. 
+
+Simple linear regression involves testing for a relationship between a continuous response variable (dependent variable) and a continuous predictor variable (independent variable). The null hypothesis is that there is no relationship between the response variable and the predictor variable in your population of interest. We assume there is some true model out there describing the expected (mean) value of our response variable y as a linear function of our predictor variable x:
+
+E(y) = β0 + β1⋅x 
+
+To interpret this equation: the true mean of our response variable E(y) is computed by taking the true intercept (β0) and adding the product of the true slope term (β1) and our predictor variable. This is just another way of saying that the expected value of the response variable is computed as a linear function of the predictor variable. β0 and β1 are both parameters that we wish to estimate.
+
+To complete the thought, we also assume that there is some “noise” in the system. The “noise” term in regression and ANOVA is also known as the "residual error". Specifically, we assume that the noise (residual error) is normally distributed with mean of zero and standard deviation of σ.
+
+Mathematically, we are assuming that our data/sample was generated from this process:
+
+y = β0 + β1⋅x + ϵ
+
+OR:
+
+y = E(y) + ϵ
+
+WHERE:
+
+ϵ ≡ Normal(0,σ)
+
+As with a t-test, where we can only approximate the true population mean by computing the sample mean, we can only approximate the linear relationship between our response and predictor variables:
+ 
+Just like any other statistical test, we assume that our observed linear relationship (defined by test statistics B0 and B1) is just one of many such possible relationships that could have been derived from random sampling from our population of interest. If we collected a different sample, we would get a different linear relationship.
+
+NOTE: in linear regression we are generally far more interested in the slope of the linear relationship (B1) rather than the intercept. So for now, we assume B1 (slope between response and predictor, computed from the sample) is the main test statistic of interest. 
+
+So.. what is the sampling distribution for our test statistic B1 under the null hypothesis in this case? Well, the answer is that it (when converted to units of standard error) is t-distributed! 
+
+Let’s go back to our airquality dataset, calculate a simple linear regression model, and explore the outputs. For starters, consider the relationship between Ozone concentration and air temperature. 
+
+Our knowledge of atmospheric chemistry tells us that ozone concentration should increase with increasing air temperature. Is that what we find? Is the relationship a linear one? 
+
+First, explore the relationship graphically (scatter plot), then use the `lm()` function to fit a regression model using the ordinary least squares method. For example:
+
+
+?lm
+Ozone.temp.lm <- lm(Ozone ~ Temp, data=air.cleaned)   # you can name the model something else if you want
+summary(Ozone.temp.lm)
+anova(Ozone.temp.lm)
+
+
+Ask the instructor to explain the regression outputs reported in the summary and anova tables. 
+
+Then plot the data with the regression line. Does it seem like a good fit?
+
+```{r}
+
+plot(Ozone ~ Temp, data=air.cleaned)
+abline(Ozone.temp.lm, col="blue")
+
+```
+
+
+We can use the predict function to generate a 95% confidence interval around our predictions, since there will be sampling error associated with our best-fit regression line (i.e. there is error associated with both regression parameters). 
+
+```{r}
+newdata <- data.frame(    # make a data frame containing the temperature values we want to make predictions for, spanning the range of temperature values in our data
+  Temp = seq(50,100,1)
+)
+
+my.predict <- predict(Ozone.temp.lm, newdata = newdata, interval = "confidence")  # 95% conf int by default
+
+plot(Ozone ~ Temp, data=air.cleaned)
+abline(Ozone.temp.lm, col="blue")   # change the model name to match your own
+lines(newdata$Temp,my.predict[,"upr"],col="red",lty=2)   # add upper bound
+lines(newdata$Temp,my.predict[,"lwr"],col="red",lty=2)   # add lower bound
+
+
+```
+
+
+Let’s examine some regression diagnostics. Are the residual errors normally distributed?  
+
+```{r}
+layout(matrix(1:2, nrow=1,byrow = T))
+hist(residuals(Ozone.temp.lm))
+qqnorm(residuals(Ozone.temp.lm))
+qqline(Ozone.temp.lm)
+layout(matrix(1:4, nrow=2, byrow = T))
+plot(Ozone.temp.lm)    # default diagnostic plots – we will cover these in next week’s lecture!
+```
+
+
+### Problem 4. Multiple linear regression. 
+
+Now repeat the above steps on your own, but after adding at least one additional predictor variable to the model equation. 
+
+- Do the regression coefficients change? Are you surprised by this?
+- What happens to the R2 statistic? Are you surprised by this?
+- You can compare nested regression models using an F-Test
+
+```
+anova(model 1, model 2)  # ask the instructor to help with interpretation
+```
+
+### Problem 5. Graph the modeled effects
+
+Use the effects package in R to effortlessly visualize the fitted effects, along with partial residuals.
+
+First you must install the effects package, in R studio, if you have not already installed it on your computer.
+
+```{r}
+library(effects)   
+
+plot(allEffects(Ozone.full.lm, partial.residuals=FALSE))
+plot(allEffects(Ozone.full.lm, partial.residuals=TRUE), partial.residual=list(cex=0.4, col="red"))
+```
+
+You can ask the instructor to explain the graphs. 
+
+From the graphs showing fitted relationships along with partial residuals, does it appear that your model is well specified?
+
+### Optional additional questions 
+
+These questions are optional- we will cover all of these in lecture and in future in-class exercises.
+
+a.	Z-standardizing (normalizing) your predictor variables prior to fitting the model, to obtain standardized regression coefficients that are all in standard deviate units, and hence comparable. From these you can determine which of your variables have stronger vs. weaker effects.
+b.	Transforming predictor variables (e.g. log transform) to try to improve model fit.
+c.	Fitting interaction terms as appropriate to try to improve model fit. 
+d.	Fitting nonlinear relationships by including polynomial terms in your model, as appropriate to improve model fit.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
