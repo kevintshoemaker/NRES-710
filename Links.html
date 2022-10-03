@@ -14,20 +14,28 @@
 
 <title>Links</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -39,11 +47,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -56,32 +59,8 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
+
 
 
 
@@ -91,10 +70,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -111,40 +86,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 45px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h2 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h3 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h4 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h5 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h6 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -172,7 +123,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -184,7 +135,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -195,10 +146,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -210,7 +174,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -336,7 +299,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -350,7 +313,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -366,7 +329,7 @@ div.tocify {
   <a href="schedule.html">Schedule</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Lectures
      
     <span class="caret"></span>
@@ -379,19 +342,22 @@ div.tocify {
       <a href="LECTURE1.html">Basic Concepts</a>
     </li>
     <li>
-      <a href="LECTURE2.html">Analysis- t test</a>
+      <a href="LECTURE2.html">Sampling uncertainty</a>
     </li>
     <li>
-      <a href="LECTURE3.html">Analysis- chi2 test</a>
+      <a href="LECTURE3.html">Taxonomy of common statistics</a>
     </li>
     <li>
-      <a href="LECTURE4.html">Analysis- linear regression</a>
+      <a href="LECTURE4.html">t-test and z-test</a>
     </li>
     <li>
-      <a href="LECTURE5.html">Analysis- ANOVA</a>
+      <a href="LECTURE5.html">chi-squared tests</a>
     </li>
     <li>
-      <a href="LECTURE6.html">Analysis- GLM and GLMM</a>
+      <a href="LECTURE6.html">Analysis- ANOVA</a>
+    </li>
+    <li>
+      <a href="LECTURE7.html">Analysis- GLM and GLMM</a>
     </li>
     <li>
       <a href="LECTURE7.html">Next steps</a>
@@ -399,7 +365,22 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Exercises
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="EXERCISE1.html">Exercise- data summary functions</a>
+    </li>
+    <li>
+      <a href="EXERCISE2.html">Exercise- t-tests</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     More Resources
      
     <span class="caret"></span>
@@ -411,8 +392,17 @@ div.tocify {
     <li>
       <a href="FINALPROJ.html">Final Projects</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Datasets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="STUDYGUIDE.html">Study Guide</a>
+      <a href="Data1.dat">Data1</a>
     </li>
   </ul>
 </li>
@@ -424,19 +414,21 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
 <h1 class="title toc-ignore">Links</h1>
 <h4 class="author">NRES 710</h4>
-<h4 class="date">Fall 2020</h4>
+<h4 class="date">Fall 2022</h4>
 
 </div>
 
 
-<p>Please let me know if there are other links that you think should be included on this page!</p>
-<p><a href="https://kevintshoemaker.github.io/StatsChats/">Weekly math/bio “Stats chats”</a></p>
+<p>Please let me know if there are other links that you think should be
+included on this page!</p>
+<p><a href="https://kevintshoemaker.github.io/StatsChats/">Weekly
+math/bio “Stats chats”</a></p>
 <div id="methods-links" class="section level1">
 <h1>Methods links</h1>
 <div id="download-r" class="section level2">
@@ -446,138 +438,298 @@ div.tocify {
 <div id="download-r-studio" class="section level2">
 <h2>Download R Studio:</h2>
 <p><a href="https://www.rstudio.com/">Rstudio main site</a><br />
-<a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">R projects (useful feature of RStudio)</a><br />
-<a href="https://www.rstudio.com/online-learning/">Rstudio online learning resources</a></p>
+<a
+href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">R
+projects (useful feature of RStudio)</a><br />
+<a href="https://www.rstudio.com/online-learning/">Rstudio online
+learning resources</a></p>
 </div>
 <div id="r-introductory-tutorials-and-courses" class="section level2">
 <h2>R Introductory Tutorials and Courses</h2>
-<p><a href="https://www.datacamp.com/home">Datacamp’s- “Intro to R”</a><br />
+<p><a href="https://www.datacamp.com/home">Datacamp’s- “Intro to
+R”</a><br />
 <a href="https://preludeinr.com">Prelude in R</a><br />
-<a href="https://cran.r-project.org/doc/contrib/Paradis-rdebuts_en.pdf">R for beginners</a><br />
-<a href="http://r4ds.had.co.nz/index.html">Hadley Wickhams “R for Data Science”</a> <a href="https://ismayc.github.io/moderndiver-book/">Modern Dive</a><br />
-<a href="http://www.datacarpentry.org/semester-biology/">Data carpentry course</a> <a href="https://cran.r-project.org/other-docs.html">Many other resources</a> <a href="http://rbasicsworkshop.weebly.com/books.html">Many R Books (and other useful resources)</a><br />
-<a href="https://www.nceas.ucsb.edu/files/scicomp/Dloads/RProgramming/BestFirstRTutorial.pdf">NCEAS tutorial- oldie but goodie</a></p>
+<a
+href="https://cran.r-project.org/doc/contrib/Paradis-rdebuts_en.pdf">R
+for beginners</a><br />
+<a href="http://r4ds.had.co.nz/index.html">Hadley Wickhams “R for Data
+Science”</a> <a href="https://ismayc.github.io/moderndiver-book/">Modern
+Dive</a><br />
+<a href="http://www.datacarpentry.org/semester-biology/">Data carpentry
+course</a> <a href="https://cran.r-project.org/other-docs.html">Many
+other resources</a> <a
+href="http://rbasicsworkshop.weebly.com/books.html">Many R Books (and
+other useful resources)</a><br />
+<a
+href="https://www.nceas.ucsb.edu/files/scicomp/Dloads/RProgramming/BestFirstRTutorial.pdf">NCEAS
+tutorial- oldie but goodie</a></p>
 </div>
-<div id="r-examples-some-people-learn-best-by-just-playing-with-existing-code" class="section level2">
-<h2>R Examples (some people learn best by just playing with existing code!)</h2>
+<div
+id="r-examples-some-people-learn-best-by-just-playing-with-existing-code"
+class="section level2">
+<h2>R Examples (some people learn best by just playing with existing
+code!)</h2>
 <p><a href="http://www.mayin.org/ajayshah/KB/R/">R by example</a></p>
 </div>
-<div id="r-reference-cards-print-em-out-and-hang-by-your-office-desk" class="section level2">
+<div id="r-reference-cards-print-em-out-and-hang-by-your-office-desk"
+class="section level2">
 <h2>R reference cards (print ’em out and hang by your office desk!)</h2>
-<p><a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">Short Reference Card</a><br />
-<a href="https://cran.r-project.org/doc/contrib/Baggott-refcard-v2.pdf">More comprehensive reference card</a><br />
-<a href="https://sites.ualberta.ca/~ahamann/teaching/renr690/R_Cheat_Data.pdf">Data management reference card</a><br />
-<a href="https://www.rstudio.com/resources/cheatsheets/">RStudio cheatsheets- very useful!</a><br />
-Includes cheatsheets for R markdown, shiny, data wrangling with “dplyr” and much more!</p>
+<p><a
+href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">Short
+Reference Card</a><br />
+<a
+href="https://cran.r-project.org/doc/contrib/Baggott-refcard-v2.pdf">More
+comprehensive reference card</a><br />
+<a
+href="https://sites.ualberta.ca/~ahamann/teaching/renr690/R_Cheat_Data.pdf">Data
+management reference card</a><br />
+<a href="https://www.rstudio.com/resources/cheatsheets/">RStudio
+cheatsheets- very useful!</a><br />
+Includes cheatsheets for R markdown, shiny, data wrangling with “dplyr”
+and much more!</p>
 </div>
-<div id="r-markdown-for-publishing-and-communicating-in-r.-this-website-was-built-in-r-markdown" class="section level2">
-<h2>R Markdown (for publishing and communicating in R. This website was built in R Markdown!)</h2>
-<p><a href="http://rmarkdown.rstudio.com/authoring_pandoc_markdown.html">Guide for Pandoc Markdown</a><br />
-<a href="http://rmarkdown.rstudio.com/rmarkdown_websites.html">Website development for RMarkdown</a><br />
+<div
+id="r-markdown-for-publishing-and-communicating-in-r.-this-website-was-built-in-r-markdown"
+class="section level2">
+<h2>R Markdown (for publishing and communicating in R. This website was
+built in R Markdown!)</h2>
+<p><a
+href="http://rmarkdown.rstudio.com/authoring_pandoc_markdown.html">Guide
+for Pandoc Markdown</a><br />
+<a href="http://rmarkdown.rstudio.com/rmarkdown_websites.html">Website
+development for RMarkdown</a><br />
 <a href="http://yaml.org/">YAML: YAML Ain’t Markup Language!</a><br />
-<a href="https://confluence.atlassian.com/bitbucketserver/markdown-syntax-guide-776639995.html">a nice simple Markdown syntax guide</a></p>
+<a
+href="https://confluence.atlassian.com/bitbucketserver/markdown-syntax-guide-776639995.html">a
+nice simple Markdown syntax guide</a></p>
 </div>
-<div id="git-for-sharing-your-code-and-collaborating-with-others" class="section level2">
+<div id="git-for-sharing-your-code-and-collaborating-with-others"
+class="section level2">
 <h2>GIT (for sharing your code and collaborating with others!)</h2>
 <p><a href="https://try.github.io/">Excellent intro GIT tutorial</a></p>
 </div>
 <div id="bayesian-statistics" class="section level2">
 <h2>Bayesian Statistics</h2>
 <p><a href="http://mcmc-jags.sourceforge.net/">Install JAGS</a><br />
-<a href="http://twiecki.github.io/blog/2015/11/10/mcmc-sampling/">MCMC for Dummies…</a> (basis of MCMC lecture…)<br />
-<a href="http://www.mrc-bsu.cam.ac.uk/wp-content/uploads/manual14.pdf">BUGS online manual</a><br />
-<a href="http://users.aims.ac.za/~mackay/BUGS/Manuals/Tricks.html">secret BUGS tricks</a><br />
-<a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002803">Approximate Bayesian Computation: overview</a><br />
-<a href="http://camdavidsonpilon.github.io/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/">Bayesian Methods for Hackers!</a><br />
-<a href="https://r-nimble.org/">NIMBLE (alternative implementation of BUGS language for R)</a></p>
+<a href="http://twiecki.github.io/blog/2015/11/10/mcmc-sampling/">MCMC
+for Dummies…</a> (basis of MCMC lecture…)<br />
+<a
+href="http://www.mrc-bsu.cam.ac.uk/wp-content/uploads/manual14.pdf">BUGS
+online manual</a><br />
+<a
+href="http://users.aims.ac.za/~mackay/BUGS/Manuals/Tricks.html">secret
+BUGS tricks</a><br />
+<a
+href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002803">Approximate
+Bayesian Computation: overview</a><br />
+<a
+href="http://camdavidsonpilon.github.io/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/">Bayesian
+Methods for Hackers!</a><br />
+<a href="https://r-nimble.org/">NIMBLE (alternative implementation of
+BUGS language for R)</a></p>
 </div>
 <div id="generalized-linear-mixed-models" class="section level2">
 <h2>Generalized Linear Mixed Models</h2>
-<p><a href="https://rstudio-pubs-static.s3.amazonaws.com/33653_57fc7b8e5d484c909b615d8633c01d51.html">Solving convergence issues</a></p>
+<p><a
+href="https://rstudio-pubs-static.s3.amazonaws.com/33653_57fc7b8e5d484c909b615d8633c01d51.html">Solving
+convergence issues</a></p>
 </div>
 <div id="time-series-analysis" class="section level2">
 <h2>Time Series Analysis</h2>
-<p><a href="http://node101.psych.cornell.edu/Darlington/series/series0.htm">A regression approach to time series analysis</a></p>
+<p><a
+href="http://node101.psych.cornell.edu/Darlington/series/series0.htm">A
+regression approach to time series analysis</a></p>
 </div>
 <div id="ordination" class="section level2">
 <h2>Ordination</h2>
-<p><a href="http://ordination.okstate.edu/index.html">Practical guide to ordination for Ecologists</a></p>
+<p><a href="http://ordination.okstate.edu/index.html">Practical guide to
+ordination for Ecologists</a></p>
 </div>
 <div id="tree-based-machine-learning" class="section level2">
 <h2>Tree-based machine learning</h2>
-<p><a href="http://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm">Breiman’s guide to Random Forest</a><br />
-<a href="https://cran.r-project.org/web/packages/dismo/vignettes/brt.pdf">Vignette: boosted regression trees for species distribution modeling</a></p>
+<p><a
+href="http://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm">Breiman’s
+guide to Random Forest</a><br />
+<a
+href="https://cran.r-project.org/web/packages/dismo/vignettes/brt.pdf">Vignette:
+boosted regression trees for species distribution modeling</a></p>
 </div>
-<div id="structural-equation-modeling-and-bayes-nets" class="section level2">
+<div id="structural-equation-modeling-and-bayes-nets"
+class="section level2">
 <h2>Structural Equation Modeling and Bayes Nets</h2>
-<p><a href="http://blog.efpsa.org/2015/12/14/structural-equation-modeling-what-is-it-what-does-it-have-in-common-with-hippie-music-and-why-does-it-eat-cake-to-get-rid-of-measurement-error/">Random but relevant blog post</a><br />
-<a href="http://www.bnlearn.com/">“bnlearn” package documentation for Bayes nets</a></p>
+<p><a
+href="http://blog.efpsa.org/2015/12/14/structural-equation-modeling-what-is-it-what-does-it-have-in-common-with-hippie-music-and-why-does-it-eat-cake-to-get-rid-of-measurement-error/">Random
+but relevant blog post</a><br />
+<a href="http://www.bnlearn.com/">“bnlearn” package documentation for
+Bayes nets</a></p>
 </div>
 <div id="spatial-analysis-in-r" class="section level2">
 <h2>Spatial Analysis in R</h2>
-<p><a href="https://cran.r-project.org/web/packages/raster/vignettes/Raster.pdf">“raster” package vignette</a></p>
+<p><a
+href="https://cran.r-project.org/web/packages/raster/vignettes/Raster.pdf">“raster”
+package vignette</a></p>
 </div>
 <div id="spatial-capture-recapture-secr" class="section level2">
 <h2>Spatial Capture Recapture (secr)</h2>
-<p><a href="https://groups.google.com/forum/#!forum/secrgroup">‘secr’ Google Group</a><br />
-<a href="http://www.mikemeredith.net/blog/1309_SECR_in_JAGS_patchy_habitat.htm">BUGS code for secr</a></p>
+<p><a href="https://groups.google.com/forum/#!forum/secrgroup">‘secr’
+Google Group</a><br />
+<a
+href="http://www.mikemeredith.net/blog/1309_SECR_in_JAGS_patchy_habitat.htm">BUGS
+code for secr</a></p>
 </div>
 </div>
 <div id="data-links" class="section level1">
 <h1>Data links</h1>
-<div id="publicly-available-datasets-potentially-for-final-project" class="section level2">
+<div id="publicly-available-datasets-potentially-for-final-project"
+class="section level2">
 <h2>Publicly available datasets, potentially for final project…</h2>
 <p>(many links courtesy Tom Langen)</p>
 <div id="government-agency-data-portals" class="section level3">
 <h3>GOVERNMENT AGENCY DATA PORTALS</h3>
-<p><a href="https://nationalmap.gov/">National Map</a> (Geospatial data on the environment, economy, and people of the US).</p>
-<p><a href="http://www.agcensus.usda.gov/">US Department of Agriculture Census of Agricultural Data</a> (Authoritative data on all aspects of agriculture in the US.)</p>
-<p><a href="http://www.cdc.gov/datastatistics/">Center for Disease Control &amp; Prevention Data &amp; Statistics</a> (Comprehensive data on all aspects of disease epidemiology.)</p>
-<p><a href="https://wwwn.cdc.gov/arbonet/maps/ADB_Diseases_Map/index.html">CDC ArboNet Disease Maps</a> (US County-scale maps of incidence patterns of various vectored diseases)</p>
-<p><a href="http://waterdata.usgs.gov/nwis">USGS Water Data for the Nation</a> (Hydrological and water-quality data from across the US.)</p>
-<p><a href="https://www.epa.gov/national-aquatic-resource-surveys/nrsa">EPA National Rivers and Streams Assessment</a>(Downloadable data on a national survey of stream water quality)</p>
-<p><a href="https://edg.epa.gov/metadata/catalog/main/home.page">EPA Environmental Dataset Gateway</a> (EPA environmental data portal)</p>
-<p><a href="http://www.mrlc.gov/">The Multi-resolution Land Characteristics Consortium (MRLC) National Land Cover Database</a> (Land cover or land use, canopy cover, and impermeable surface area of the entire US, at a resolution of 30 m x 30 m, based on remote sensing data from satellite imagery.)</p>
-<p><a href="http://www.fws.gov/wetlands/">US Fish &amp; Wildlife Service National Wetlands Inventory</a> (Wetlands greater than 1 acre are mapped and classified throughout the US, Puerto Rico and US territories. Data can be examined using the <a href="http://www.fws.gov/wetlands/Data/Mapper.html">Wetland Mapper</a> and then downloaded for use by a GIS application, or can by inspected directly using <a href="http://www.fws.gov/wetlands/Data/GoogleEarth.html">Google Earth</a>)</p>
-<p><a href="http://fia.fs.fed.us/">USDA Forest Inventory and Analysis National Program</a></p>
-<p><a href="http://fia.fs.fed.us/tools-data/default.asp">Forest Inventory Data Online (FIDO)</a> (Highly-detailed periodic surveys of forest composition at sites throughout the US.)</p>
-<p><a href="http://www.usgs.gov/">US Geological Survey</a> (Reports, data analysis, maps, and raw data on a diversity of topics related to environmental science, including biodiversity and emerging diseases.)</p>
-<p><a href="http://www.ncdc.noaa.gov/oa/ncdc.html">NOAA National Climate Data Center</a> (Extensive data archives of climate data, including paleoclimate.)</p>
-<p><a href="http://gcmd.nasa.gov/index.html">NASA Global Change Master Directory</a> (Data on all aspects of global change, includes data on climate, land use, biodiversity and human dimensions.)</p>
-<p><a href="https://daac.ornl.gov/get_data/">Oak Ridge National Laboratory Distributed Active Archive Center for Biogeochemical Dynamics(ORNL DAAC)</a> (A NASA-sponsored source for biogeochemical and ecological data and models useful in environmental research.)</p>
+<p><a href="https://nationalmap.gov/">National Map</a> (Geospatial data
+on the environment, economy, and people of the US).</p>
+<p><a href="http://www.agcensus.usda.gov/">US Department of Agriculture
+Census of Agricultural Data</a> (Authoritative data on all aspects of
+agriculture in the US.)</p>
+<p><a href="http://www.cdc.gov/datastatistics/">Center for Disease
+Control &amp; Prevention Data &amp; Statistics</a> (Comprehensive data
+on all aspects of disease epidemiology.)</p>
+<p><a
+href="https://wwwn.cdc.gov/arbonet/maps/ADB_Diseases_Map/index.html">CDC
+ArboNet Disease Maps</a> (US County-scale maps of incidence patterns of
+various vectored diseases)</p>
+<p><a href="http://waterdata.usgs.gov/nwis">USGS Water Data for the
+Nation</a> (Hydrological and water-quality data from across the US.)</p>
+<p><a
+href="https://www.epa.gov/national-aquatic-resource-surveys/nrsa">EPA
+National Rivers and Streams Assessment</a>(Downloadable data on a
+national survey of stream water quality)</p>
+<p><a href="https://edg.epa.gov/metadata/catalog/main/home.page">EPA
+Environmental Dataset Gateway</a> (EPA environmental data portal)</p>
+<p><a href="http://www.mrlc.gov/">The Multi-resolution Land
+Characteristics Consortium (MRLC) National Land Cover Database</a> (Land
+cover or land use, canopy cover, and impermeable surface area of the
+entire US, at a resolution of 30 m x 30 m, based on remote sensing data
+from satellite imagery.)</p>
+<p><a href="http://www.fws.gov/wetlands/">US Fish &amp; Wildlife Service
+National Wetlands Inventory</a> (Wetlands greater than 1 acre are mapped
+and classified throughout the US, Puerto Rico and US territories. Data
+can be examined using the <a
+href="http://www.fws.gov/wetlands/Data/Mapper.html">Wetland Mapper</a>
+and then downloaded for use by a GIS application, or can by inspected
+directly using <a
+href="http://www.fws.gov/wetlands/Data/GoogleEarth.html">Google
+Earth</a>)</p>
+<p><a href="http://fia.fs.fed.us/">USDA Forest Inventory and Analysis
+National Program</a></p>
+<p><a href="http://fia.fs.fed.us/tools-data/default.asp">Forest
+Inventory Data Online (FIDO)</a> (Highly-detailed periodic surveys of
+forest composition at sites throughout the US.)</p>
+<p><a href="http://www.usgs.gov/">US Geological Survey</a> (Reports,
+data analysis, maps, and raw data on a diversity of topics related to
+environmental science, including biodiversity and emerging
+diseases.)</p>
+<p><a href="http://www.ncdc.noaa.gov/oa/ncdc.html">NOAA National Climate
+Data Center</a> (Extensive data archives of climate data, including
+paleoclimate.)</p>
+<p><a href="http://gcmd.nasa.gov/index.html">NASA Global Change Master
+Directory</a> (Data on all aspects of global change, includes data on
+climate, land use, biodiversity and human dimensions.)</p>
+<p><a href="https://daac.ornl.gov/get_data/">Oak Ridge National
+Laboratory Distributed Active Archive Center for Biogeochemical
+Dynamics(ORNL DAAC)</a> (A NASA-sponsored source for biogeochemical and
+ecological data and models useful in environmental research.)</p>
 <p><a href="https://lpdaac.usgs.gov/">Land Processes DAAC</a></p>
-<p><a href="https://ghrc.nsstc.nasa.gov/home/">Global Hydrology DAAC</a></p>
-<p><a href="http://sedac.ciesin.columbia.edu/">Socioeconomic DAAC</a></p>
+<p><a href="https://ghrc.nsstc.nasa.gov/home/">Global Hydrology
+DAAC</a></p>
+<p><a href="http://sedac.ciesin.columbia.edu/">Socioeconomic
+DAAC</a></p>
 </div>
 <div id="environmental-data-clearinghouses" class="section level3">
 <h3>ENVIRONMENTAL DATA CLEARINGHOUSES</h3>
-<p><a href="http://www.p2erls.net/">Pole to Pole Ecological Research Lattice of Sites (P2ERLS)</a> (Portal to research stations and research networks, including their data archives.)</p>
-<p><a href="http://weatherspark.com/">Weatherspark</a> (Visualized time-series data on local climate at sites around the globe.)</p>
-<p><a href="http://www.lternet.edu/">Long Term Ecological Research (LTER) Network</a> (Network of research stations that have standardized monitoring programs as well as site-specific research. Sites are mandated to make data publicly available on the web.)</p>
-<p><a href="http://www.prism.oregonstate.edu/">PRISM Climate Data</a> (one of the most widely-used sites for downloading interpolated climate records for the USA)</p>
-<p><a href="https://www.landfire.gov/">LANDFIRE Program</a> (Great US-based site for obtaining GIS layers relevant for fire modeling)</p>
-<p><a href="http://www.worldclim.org/">WorldClim</a> (global climate layers (gridded climate data) with a spatial resolution of about 1 km2)</p>
-<p><a href="https://daymet.ornl.gov/dataaccess.html">DayMet</a> (gridded estimates of daily weather parameters for North America)</p>
+<p><a href="http://www.p2erls.net/">Pole to Pole Ecological Research
+Lattice of Sites (P2ERLS)</a> (Portal to research stations and research
+networks, including their data archives.)</p>
+<p><a href="http://weatherspark.com/">Weatherspark</a> (Visualized
+time-series data on local climate at sites around the globe.)</p>
+<p><a href="http://www.lternet.edu/">Long Term Ecological Research
+(LTER) Network</a> (Network of research stations that have standardized
+monitoring programs as well as site-specific research. Sites are
+mandated to make data publicly available on the web.)</p>
+<p><a href="http://www.prism.oregonstate.edu/">PRISM Climate Data</a>
+(one of the most widely-used sites for downloading interpolated climate
+records for the USA)</p>
+<p><a href="https://www.landfire.gov/">LANDFIRE Program</a> (Great
+US-based site for obtaining GIS layers relevant for fire modeling)</p>
+<p><a href="http://www.worldclim.org/">WorldClim</a> (global climate
+layers (gridded climate data) with a spatial resolution of about 1
+km2)</p>
+<p><a href="https://daymet.ornl.gov/dataaccess.html">DayMet</a> (gridded
+estimates of daily weather parameters for North America)</p>
 </div>
-<div id="biodiversity-data-clearinghouses-archives" class="section level3">
+<div id="biodiversity-data-clearinghouses-archives"
+class="section level3">
 <h3>BIODIVERSITY DATA CLEARINGHOUSES /ARCHIVES</h3>
-<p><a href="http://www.iucnredlist.org/">International Union for the Conservation of Nature (IUCN) Redlist</a> (Searchable list of the world’s threatened and endangered plants and animal species on the IUCN Redlist.)</p>
-<p><a href="http://www.nbii.gov/">National Biological Information Infrastructure</a> (Data archive and clearinghouse for biological data from the US. Also provides standards for metadata.)</p>
-<p><a href="http://www.ice.ucdavis.edu/bioinventory/bioinventory.html">Biological Inventories of the World’s Protected Areas</a> (databases containing documented, taxonomically harmonized species inventories of plants and animals reported from the world’s protected areas.)</p>
-<p><a href="http://data.gbif.org/welcome.htm">Global Biodiversity Information Facility</a> (international network and research infrastructure funded by the world’s governments and aimed at providing anyone, anywhere, open access to data about all types of life on Earth.)</p>
-<p><a href="http://www3.imperial.ac.uk/cpb/research/patternsandprocesses/gpdd">Global Population Dynamics Data Base</a> (5000 population size time series for 1400 species, most of which have at least ten years of data. There are data on the natural history of the organism and the location &amp; method of sampling.)</p>
-<p><a href="http://www.pwrc.usgs.gov/BBS/">USGS Breeding Bird Survey</a> (The BBS is a long-term, large-scale, international avian monitoring program initiated in 1966 to track the status and trends of North American bird populations.)</p>
-<p><a href="http://www.bsc-eoc.org/birdmon/default/main.jsp">Bird Studies Canada Nature Counts</a> (Bird survey data archive for Canada, includes point counts and many other types of surveys.)</p>
-<p><a href="http://www.avianknowledge.net/content/datasets">Avian Knowledge Network</a> (Archive of aggregated bird surveys from many organizations and studies across throughout the western hemisphere, including Latin America.)</p>
-<p><a href="http://www.natureserve.org/getData/index.jsp">NatureServe</a> (Data on species of plants and animals in the Western Hemisphere, including detailed range maps)</p>
-<p><a href="https://www.neonscience.org/">NEON: National Ecological Observatory Network</a> (NEON collects and provides open data from 81 field sites across the United States that characterize and quantify how our nation’s ecosystems are changing)</p>
+<p><a href="http://www.iucnredlist.org/">International Union for the
+Conservation of Nature (IUCN) Redlist</a> (Searchable list of the
+world’s threatened and endangered plants and animal species on the IUCN
+Redlist.)</p>
+<p><a href="http://www.nbii.gov/">National Biological Information
+Infrastructure</a> (Data archive and clearinghouse for biological data
+from the US. Also provides standards for metadata.)</p>
+<p><a
+href="http://www.ice.ucdavis.edu/bioinventory/bioinventory.html">Biological
+Inventories of the World’s Protected Areas</a> (databases containing
+documented, taxonomically harmonized species inventories of plants and
+animals reported from the world’s protected areas.)</p>
+<p><a href="http://data.gbif.org/welcome.htm">Global Biodiversity
+Information Facility</a> (international network and research
+infrastructure funded by the world’s governments and aimed at providing
+anyone, anywhere, open access to data about all types of life on
+Earth.)</p>
+<p><a
+href="http://www3.imperial.ac.uk/cpb/research/patternsandprocesses/gpdd">Global
+Population Dynamics Data Base</a> (5000 population size time series for
+1400 species, most of which have at least ten years of data. There are
+data on the natural history of the organism and the location &amp;
+method of sampling.)</p>
+<p><a href="http://www.pwrc.usgs.gov/BBS/">USGS Breeding Bird Survey</a>
+(The BBS is a long-term, large-scale, international avian monitoring
+program initiated in 1966 to track the status and trends of North
+American bird populations.)</p>
+<p><a href="http://www.bsc-eoc.org/birdmon/default/main.jsp">Bird
+Studies Canada Nature Counts</a> (Bird survey data archive for Canada,
+includes point counts and many other types of surveys.)</p>
+<p><a href="http://www.avianknowledge.net/content/datasets">Avian
+Knowledge Network</a> (Archive of aggregated bird surveys from many
+organizations and studies across throughout the western hemisphere,
+including Latin America.)</p>
+<p><a
+href="http://www.natureserve.org/getData/index.jsp">NatureServe</a>
+(Data on species of plants and animals in the Western Hemisphere,
+including detailed range maps)</p>
+<p><a href="https://www.neonscience.org/">NEON: National Ecological
+Observatory Network</a> (NEON collects and provides open data from 81
+field sites across the United States that characterize and quantify how
+our nation’s ecosystems are changing)</p>
 </div>
 <div id="research-project-data-archives" class="section level3">
 <h3>RESEARCH PROJECT DATA ARCHIVES</h3>
-<p><a href="http://datadryad.org/">Dryad</a> (Data archives for bioscience data from peer-reviewed journal articles from a large consortium of journals)</p>
-<p><a href="https://data.esa.org/esa/style/skins/esa/index.jsp">Ecological Society of America (ESA) Data Registry</a> Archive of ecological and environmental data from ESA publications)</p>
-<p><a href="http://knb.ecoinformatics.org/knb/style/skins/nceas/index.jsp">National Center for Ecological Assessment &amp; Synthesis (NCEAS) Data Repository</a> (Data archive of contributed data sets of all types of ecological data.)</p>
-<p><a href="https://portal.edirepository.org/nis/home.jsp">EDI Data Portal</a> (NSF-funded iniative to archive data from NSF DEB funded research projects)</p>
+<p><a href="http://datadryad.org/">Dryad</a> (Data archives for
+bioscience data from peer-reviewed journal articles from a large
+consortium of journals)</p>
+<p><a
+href="https://data.esa.org/esa/style/skins/esa/index.jsp">Ecological
+Society of America (ESA) Data Registry</a> Archive of ecological and
+environmental data from ESA publications)</p>
+<p><a
+href="http://knb.ecoinformatics.org/knb/style/skins/nceas/index.jsp">National
+Center for Ecological Assessment &amp; Synthesis (NCEAS) Data
+Repository</a> (Data archive of contributed data sets of all types of
+ecological data.)</p>
+<p><a href="https://portal.edirepository.org/nis/home.jsp">EDI Data
+Portal</a> (NSF-funded iniative to archive data from NSF DEB funded
+research projects)</p>
 </div>
 </div>
 </div>
@@ -611,7 +763,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -620,6 +772,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
