@@ -3,7 +3,7 @@
 #  NRES 710, Lecture 5 -----------------------
 #   University of Nevada, Reno                       
 
-#   ANOVA                                          
+#   Chi-squared tests                                          
 
 
 
