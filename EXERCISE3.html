@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="NRES 710" />
+
+
+<title>Exercise 3: regression</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">NRES 710</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="schedule.html">Schedule</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="INTRO.html">Introduction to NRES 710</a>
+    </li>
+    <li>
+      <a href="LECTURE1.html">Basic Concepts</a>
+    </li>
+    <li>
+      <a href="LECTURE2.html">Sampling uncertainty</a>
+    </li>
+    <li>
+      <a href="LECTURE3.html">Taxonomy of common statistics</a>
+    </li>
+    <li>
+      <a href="LECTURE4.html">t-test and z-test</a>
+    </li>
+    <li>
+      <a href="LECTURE5.html">chi-squared tests</a>
+    </li>
+    <li>
+      <a href="LECTURE6.html">Linear Regression</a>
+    </li>
+    <li>
+      <a href="LECTURE7.html">ANOVA</a>
+    </li>
+    <li>
+      <a href="LECTURE8.html">GLM and GLMM</a>
+    </li>
+    <li>
+      <a href="LECTURE9.html">Next steps</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Exercises
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="EXERCISE1.html">Exercise- data summary functions</a>
+    </li>
+    <li>
+      <a href="EXERCISE2.html">Exercise- t-tests</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    More Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Links.html">Links</a>
+    </li>
+    <li>
+      <a href="FINALPROJ.html">Final Projects</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Datasets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Data1.dat">Data1</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Exercise 3: regression</h1>
+<h4 class="author">NRES 710</h4>
+<h4 class="date">Fall 2022</h4>
+
+</div>
+
+
+<div id="regression-analysis-in-r" class="section level2">
+<h2>Regression Analysis in R</h2>
+<p>Today’s exercises provide hands-on experience working with linear
+regression in R. By running through some R code and interpreting
+statistical outputs, as a class and individually (or in small groups),
+we will gain some valuable initial exposure to the regression modeling
+problem (as well as more practice coding in R).</p>
+<p>I encourage you to work in small groups. This way, one group member
+can focus on a subset of problems, and then all team members can review
+their solutions and results with other team members.</p>
+<p>Please submit your responses individually on WebCampus. If you worked
+with a team, please include the names of your team members at the top of
+your submission.</p>
+<p>Reports must be uploaded to WebCampus by the date indicated (see
+WebCampus).</p>
+<p>You are of course welcome to ask for help outside of your groups by
+using the Statistical Concepts Discussion Forum, or by asking the
+instructor for hints.</p>
+<p>Good luck!!</p>
+<div id="problem-1.-initial-data-visualizations."
+class="section level3">
+<h3>Problem 1. Initial data visualizations.</h3>
+<p>Objectives: explore the <code>airquality</code> built-in dataset in
+R, through its documentation, and using descriptive functions such as
+<code>head()</code> and <code>summary()</code>.</p>
+<div id="section" class="section level4">
+<h4>1.1)</h4>
+<p>Use the <code>pairs()</code> function to display a matrix of
+scatterplots, useful for exploring relationships among several predictor
+variables, as well as bivariate relationships between each of the
+predictors and the response. Note that we will use the
+<code>Ozone</code> variable in the <code>airquality</code> dataframe as
+our response when fitting our regression models.</p>
+<p>IN YOUR RESPONSE: please include your code, followed by a one
+sentence description of an important pattern you observe from the
+<code>pairs()</code> plot.</p>
+</div>
+<div id="section-1" class="section level4">
+<h4>1.2)</h4>
+<p>Re-run the <code>pairs()</code> function, this time using the
+<code>lower.panel=panel.smooth</code> argument (explore the help for the
+pairs function for more details) to display a <code>loess()</code>
+function (i.e. a local weighted regression to fit a smoothed curve),
+useful for exploring possible nonlinear relationships among variables.
+In addition, the help documentation for the <code>pairs()</code>
+function also provides an example of an argument that can be used for
+plotting histograms along the diagonal of the scatterplot matrix (using
+the argument <code>diag.panel = panel.hist</code>) – see if you can get
+this to work!</p>
+<p>IN YOUR RESPONSE: please include your code, along with a short
+description of any potential violations of the following assumptions:
+normality of the residuals (looking at the histogram of the response
+variable can indicate potential issues with the assumption of normally
+distributed residuals), and non-linear relationships between the
+response and one of the predictor variables.</p>
+</div>
+<div id="section-2" class="section level4">
+<h4>1.3)</h4>
+<p>Use the <code>cor()</code> function to generate correlation matrix
+for all predictor variables (all columns except for <code>Ozone</code>).
+You will note that there are many missing values in the correlation
+matrix because of missing observations in the data. Specify the argument
+<code>use=”pairwise.complete.obs”</code> so that correlations are
+calculated using all complete pairs of observations between each pair of
+variables.</p>
+<p>IN YOUR RESPONSE: include your code, along with a one-sentence
+description of whether you have any potential issues with
+multicollinearity: as a general rule, pairwise correlation coefficients
+above 0.7 or 0.8 can lead to issues with multicollinearity.</p>
+</div>
+</div>
+<div id="problem-2.-data-exploration" class="section level3">
+<h3>Problem 2. Data exploration</h3>
+<p>By now you’ve noticed that the dataset has missing data values! We
+will deal with this bluntly and in one fell swoop by removing all cases
+for which any one of the variables has a missing value prior to running
+our analyses. To do this, we can use the syntax:</p>
+<pre><code>air.cleaned &lt;- na.omit(airquality)</code></pre>
+<p>For all subsequent analyses, use the <code>air.cleaned</code>
+dataframe.</p>
+<p>Before running any statistical analyses it’s a good idea to generate
+some summary statistics for your response and predictor variables. We
+have been through many of this already, so this should not take too
+long! Note that you can use the <code>summary()</code> function to
+accomplish most of the following tasks in one quick line of code!</p>
+<div id="section-3" class="section level4">
+<h4>2.1)</h4>
+<p>Please report the data types for the “Ozone”, “Wind”, and “Temp”
+columns in the <code>airquality</code> dataframe. You can use the
+<code>str()</code>, <code>typeof()</code>, and <code>class()</code>
+functions to help with this.</p>
+<p>IN YOUR RESPONSE: include your code, in addition to a brief
+description of an appropriate analysis for modeling the effect of “Temp”
+on “Ozone” based on the data type of the response and predictor variable
+(identify which variable is the predictor and which is the
+response).</p>
+</div>
+<div id="section-4" class="section level4">
+<h4>2.2)</h4>
+<p>Report the range (min and max values) for the “Ozone” and “Temp”
+columns in the <code>airquality</code> dataframe. You can use the
+<code>range()</code> or <code>summary()</code> function to help with
+this.</p>
+<p>IN YOUR RESPONSE: include your code, followed by a brief statement
+about whether it is likely that either of these variables has a
+<strong>constraint</strong> – e.g., it cannot take values can’t go above
+1 (e.g., a probability).</p>
+</div>
+<div id="section-5" class="section level4">
+<h4>2.3)</h4>
+<p>Report the mean and median for the “Ozone” and “Temp” columns in the
+<code>airquality</code> dataframe. You can use the
+<code>summary()</code> function to do this!</p>
+<p>IN YOUR RESPONSE: include your code, and comment briefly on whether
+either of these variables may be “right-skewed”, such that the mean is
+greater than the median value. This can indicate a potential deviation
+from the normality assumption for a potential response variable. You may
+also wish to use the <code>hist()</code> function to visualize a
+histogram and further evaluate the skewness (optional).</p>
+</div>
+</div>
+<div id="problem-3.-simple-linear-regression." class="section level3">
+<h3>Problem 3. Simple linear regression.</h3>
+<p>Simple linear regression involves testing for a relationship between
+a continuous response variable (dependent variable) and a continuous
+predictor variable (independent variable).</p>
+<p>The null hypothesis is that there is no relationship between the
+response variable and the predictor variable in your focal
+population.</p>
+<p>Your alternative hypothesis is that there is a linear relationship
+between the mean value of our response variable (y) and our predictor
+variable (x) in our focal population:</p>
+<p><span class="math inline">\(E(y) = \beta_0 + \beta_1*x\)</span></p>
+<p>To interpret this equation: the true population mean of our response
+variable <span class="math inline">\(E(y)\)</span> is computed by taking
+the true intercept (<span class="math inline">\(\beta_0\)</span>) and
+adding the product of the true slope term (<span
+class="math inline">\(\beta_1\)</span>) and our predictor variable <span
+class="math inline">\(x\)</span>. β0 and β1 are both parameters that we
+wish to estimate.</p>
+<p>We also assume that there is some “noise” in the focal population
+that can lead to sampling error. Specifically, we assume that the noise
+(error) is normally distributed with mean of zero and standard deviation
+of <span class="math inline">\(\epsilon\)</span>:</p>
+<p><span class="math inline">\(y = \beta_0 + \beta_1*x +
+\epsilon\)</span></p>
+<p>OR:</p>
+<p><span class="math inline">\(y = E(y) + \epsilon\)</span></p>
+<p>WHERE:</p>
+<p><span class="math inline">\(\epsilon = Normal(0, \sigma)\)</span></p>
+<p>As with a t-test, where we can only approximate the true population
+mean by computing the sample mean, we can only approximate the linear
+relationship between our response and predictor variables. That is, we
+have to deal with <strong>sampling uncertainty</strong>!</p>
+<p>Just like any other statistical test, we assume that our observed
+linear relationship (defined by estimated coefficients <span
+class="math inline">\(\hat{beta_0}\)</span> and <span
+class="math inline">\(\hat{beta_1}\)</span>) is just one of many such
+possible relationships that could have been derived from random
+sampling. If we collected a different sample, we would estimate a
+different linear relationship.</p>
+<p>NOTE: in linear regression we are generally far more interested in
+the slope of the linear relationship (<span
+class="math inline">\(\beta_1\)</span>) rather than the intercept. So
+for now, we assume <span class="math inline">\(\hat{\beta_1}\)</span> is
+the main test statistic of interest.</p>
+<p>So.. what is the sampling distribution for our test statistic <span
+class="math inline">\(\hat{\beta_1}\)</span> under the null hypothesis?
+The answer is that it (when converted to units of standard error to
+generate a t-statistic) is t-distributed! The degrees of freedom is
+equal to the sample size minus the number of estimated coefficients (in
+this case, intercept and B1; so df = n-2).</p>
+<p>Let’s go back to the built-in <code>airquality</code> dataset.</p>
+<div id="section-6" class="section level4">
+<h4>3.1)</h4>
+<p>Calculate a simple linear regression model of ozone concentration as
+a function of air temperature. Use the <code>lm()</code> function and
+assign the results to an R object. Use the <code>summary()</code>
+function on that R object to extract and display key information about
+this model. The syntax will look something like this:</p>
+<pre><code>Ozone.temp.lm &lt;- lm(Ozone ~ Temp, data=air.cleaned) 
+summary(Ozone.temp.lm)</code></pre>
+<p>IN YOUR RESPONSE: include your code, and write a brief description of
+the relationship between Ozone concentration and air temperature on the
+basis of your results. In your answer, use and interpret both the
+regression coefficient for the effect of “Temp” (slope term) and the
+R-squared statistic. Our knowledge of atmospheric chemistry tells us
+that ozone concentration should increase with increasing air
+temperature. Is that what we find?</p>
+</div>
+<div id="section-7" class="section level4">
+<h4>3.2)</h4>
+<p>Explore the relationship between ozone and temperature graphically
+using a scatter plot. Then overlay your regression results using the
+<code>abline()</code> function. You can syntax something like this:</p>
+<pre><code>plot(y ~ x)
+abline(mymod)   # &#39;mymod&#39; is an lm() object modeling y as a function of x
+</code></pre>
+<p>IN YOUR RESPONSE: include your code, followed by a brief description
+of whether you think it is justified to model this relationship as
+linear on the basis of your scatterplot and regression line.</p>
+</div>
+<div id="section-8" class="section level4">
+<h4>3.3)</h4>
+<p>In your model summary, take a look at the confidence interval on the
+regression coefficient (slope term) linking ozone concentration to
+temperature.</p>
+<p>IN YOUR RESPONSE: report the confidence interval, along with a
+concise description of what this confidence interval represents.</p>
+</div>
+<div id="section-9" class="section level4">
+<h4>3.4)</h4>
+<p>We can use the predict function to generate a 95% confidence interval
+around our predictions. The shape of the confidence bounds should be
+intuitive if you consider that there is sampling error associated with
+both the intercept and the slope terms). Using the following template
+code, generate a scatterplot of Ozone vs Temp, and overlaying the
+regression line and a confidence interval:</p>
+<pre><code>newdata &lt;- data.frame(    # make a data frame containing the temperature values we want to make predictions for, spanning the range of temperature values in our data
+  Temp = seq(50,100,1)
+)
+
+my.predict &lt;- predict(Ozone.temp.lm, newdata = newdata, interval = &quot;confidence&quot;)  # 95% conf int by default
+
+plot(Ozone ~ Temp, data=air.cleaned)
+abline(Ozone.temp.lm, col=&quot;blue&quot;)   # change the model name to match your own
+lines(newdata$Temp,my.predict[,&quot;upr&quot;],col=&quot;red&quot;,lty=2)   # add upper bound
+lines(newdata$Temp,my.predict[,&quot;lwr&quot;],col=&quot;red&quot;,lty=2)   # add lower bound
+</code></pre>
+<p>IN YOUR RESPONSE: include your code, along with a concise description
+of what the 95% confidence interval in this plot represents!</p>
+</div>
+<div id="section-10" class="section level4">
+<h4>3.5)</h4>
+<p>Finally, let’s examine some regression diagnostics (goodness of fit
+tests). These tests help us to evaluate if the linear regression model
+is in fact an adequate representation of our data. If it is not
+adequate, we should not really be taking the results very seriously!!
+You can use the following code template to help generate two key
+diagnostic plots:</p>
+<pre><code>layout(matrix(1:2, nrow=1,byrow = T))
+hist(residuals(Ozone.temp.lm))
+qqnorm(residuals(Ozone.temp.lm))
+qqline(Ozone.temp.lm)</code></pre>
+<p>Or use this code to generate four diagnostic plots:</p>
+<pre><code>layout(matrix(1:4, nrow=2, byrow = T))
+plot(Ozone.temp.lm)    # default diagnostic plots</code></pre>
+<p>IN YOUR RESPONSE: include your code, followed by a brief description
+of key takeaways from the diagnostic plots. Specifically, please
+evaluate whether the residuals are normally distributed and whether the
+homoskedasticity assumption is violated? Optionally, you may comment on
+whether there appear to be any outliers or high-influence points.</p>
+</div>
+</div>
+<div id="problem-4.-multiple-linear-regression." class="section level3">
+<h3>Problem 4. Multiple linear regression.</h3>
+<div id="section-11" class="section level4">
+<h4>4.1)</h4>
+<p>Now build a similar regression model, keeping Ozone as the response
+variable and temperatre as one of the predictor variables, but adding
+one additional predictor variable to the model. You pick which variable
+to add! Use the <code>summary()</code> function to evaluate the key
+model results.</p>
+<p>IN YOUR RESPONSE: include your code, followed by a brief description
+of the effect of the new variable on ozone concentration, and whether
+(and how much) the regression coefficient linking Ozone to Temperature
+changed after including the new variable. Finally, briefly describe
+whether (and how much) the R-squared statistic changed after adding the
+new variable.</p>
+</div>
+<div id="section-12" class="section level4">
+<h4>4.2)</h4>
+<p>Finally, run a test to see if your new model with two predictors is
+better than (outperforms) the model with only temperature as a
+predictor. Use the following code as a template:</p>
+<pre><code>anova(model 1, model 2) </code></pre>
+<p>IN YOUR RESPONSE: include your code, followed by a brief description
+of which of these models is best on the basis of the above result. (try
+to do a Google search to help in interpretation- or you can ask your
+instructor!)</p>
+</div>
+</div>
+<div id="optional-additional-questions" class="section level3">
+<h3>Optional additional questions</h3>
+<p>These questions are optional but will give you additional practice
+with regression analysis!</p>
+<p>First, you can use the <code>effects</code> package in R to
+effortlessly visualize the fitted effects, along with partial
+residuals.</p>
+<p>First you must install the <code>effects</code> package, in R studio,
+if you have not already installed it on your computer.</p>
+<pre><code>library(effects)   
+
+plot(allEffects(Ozone.full.lm, partial.residuals=FALSE))
+plot(allEffects(Ozone.full.lm, partial.residuals=TRUE), partial.residual=list(cex=0.4, col=&quot;red&quot;))</code></pre>
+<p>You can ask the instructor to explain the graphs.</p>
+<p>From the graphs showing fitted relationships along with partial
+residuals, does it appear that your model is well specified?</p>
+<p>And here are some additional things to try!</p>
+<ol style="list-style-type: decimal">
+<li>Z-standardize (normalize) your predictor variables prior to fitting
+the model, to obtain standardized regression coefficients that are all
+in standard deviate units, and hence comparable. You can use the
+<code>scale()</code> function to accomplish this. From there you can
+determine which of your variables have stronger vs. weaker effects.</li>
+<li>Transform predictor variables (e.g. log transform) to try to improve
+model fit.</li>
+<li>Transform your response variable (e.g. log transform) to try to
+improve model fit.</li>
+<li>Fit interaction terms as appropriate to try to improve model
+fit.</li>
+<li>Fit nonlinear relationships by including polynomial terms in your
+model, as appropriate to improve model fit.</li>
+</ol>
+<p>—End exercise 3—</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
