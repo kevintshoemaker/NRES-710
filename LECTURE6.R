@@ -6,6 +6,8 @@
 
 
 
+# Examples --------------------------------------
+
 eggs.per.nest <- 100
 n.nests <- 15
 light <- rnorm(n.nests,50,10)   # make up some light pollution values (predictor var)
@@ -35,23 +37,18 @@ t.stat <- (slope-0)/stderr    # t statistic
 pval <- 2*pt(t.stat,n.nests-2)    # p value
 
 
-############
-# use lm function instead (easy way!)
+# use lm() function instead (easy way!)
 
 model <- lm(hatchlings.successful~light)
 
 summary(model)   # get the same t stat and p-value hopefully!
 
-
-############
 # plot regression line!
 
 plot(hatchlings.successful~light)  # plot the data
 abline(intercept,slope,col="blue")
 
 
-
-######
 # add confidence interval on the regression line
 
 newdata <- data.frame(    # make a data frame containing the light values we want to make predictions for (spanning the range of light values in our data)
@@ -64,12 +61,6 @@ plot(hatchlings.successful~light)  # plot the data
 abline(intercept,slope,col="blue")
 lines(newdata$light,my.predict[,"upr"],col="red",lty=2)   # add upper bound
 lines(newdata$light,my.predict[,"lwr"],col="red",lty=2)   # add lower bound
-
-
-#  use the lm function to regress tree volume on tree girth using the 'trees' dataset
-
-mod <- lm(Volume~Girth,data=trees)
-summary(mod)
 
 
 my.intercept <- model$coefficients["(Intercept)"]
@@ -306,6 +297,5 @@ anova(my.mod)     # produce an analysis of variance table
 
 my.mod <- aov(Sepal.Length~Species,data=iris)   # same model!!
 summary(my.mod)     # but produces an anova table by default
-
 
 
