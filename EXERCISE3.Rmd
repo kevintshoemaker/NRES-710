@@ -98,7 +98,7 @@ $y = \beta_0 + \beta_1*x + \epsilon$
 
 OR:
 
-$y = E(y) + \epsilon$
+$y \equiv E(y) + \epsilon$
 
 WHERE:
 

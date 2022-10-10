@@ -439,9 +439,9 @@ script to your working directory</a></p>
 <p>Classical linear regression involves testing for a relationship
 between a continuous response variable (dependent variable) and a
 continuous predictor variable (independent variable).</p>
-<p>You can have multiple explanatory variables… hence you can have
-multiple linear regression. We will focus on <em>simple linear
-regression</em> here.</p>
+<p>You can have multiple explanatory variables (multiple linear
+regression). But we will focus on <em>simple linear regression</em>
+here.</p>
 <p>The null hypothesis is that there is no relationship between the
 response variable and the predictor variable in your population of
 interest. That is, observations with larger values for your predictor
@@ -450,14 +450,15 @@ of the response variable on average.</p>
 <div id="simple-example" class="section level3">
 <h3>Simple example</h3>
 <p>Imagine we are testing for a relationship between the brightness of
-artificial lighting at long stretch of beach (e.g., from hotels and
-other forms of development) and the total number of hatchling sea
-turtles per nest that successfully make it to the ocean.</p>
-<p><em>Population</em>: All nests in this particular stretch of
-beach<br />
-<em>Parameter(s)</em>: The mean number of hatchlings per nest that
-successfully travel from their nest to the ocean and how this changes as
-a function of the brightness of artificial lighting.<br />
+artificial lighting on coastal beaches (e.g., from hotels and other
+forms of development) and the total number of hatchling sea turtles per
+nest that successfully make it to the ocean.</p>
+<p><img src="statistics1.png" style="width:30.0%" /></p>
+<p><em>Population</em>: All nests deposited on coastal beaches across
+the region of interest.<br />
+<em>Parameter(s)</em>: The relationship between the mean number of
+successful hatchlings per nest and the brightness of artificial
+lighting.<br />
 <em>Sample</em>: All monitored nests<br />
 <em>Statistic(s)</em>: Slope and intercept of the linear relationship
 between the measured response variable (number of successful
@@ -491,13 +492,13 @@ from this process:</p>
 <p><span class="math inline">\(y= \beta_0 + \beta_1\cdot x +
 \epsilon\)</span></p>
 <p>OR:</p>
-<p><span class="math inline">\(y= E(y) + \epsilon\)</span></p>
+<p><span class="math inline">\(y = E(y) + \epsilon\)</span></p>
 <p>WHERE:</p>
 <p><span class="math inline">\(\epsilon \equiv Normal(0,
 \sigma)\)</span></p>
 <p>This is actually the same assumption we made for a one-sample
 t-test!</p>
-<p>For a t-test, we assume that there is a true population mean <span
+<p>For a t-test, we assumed that there is a true population mean <span
 class="math inline">\(\mu\)</span> (equivalent to <span
 class="math inline">\(E(y)\)</span>) and that the true “noise” is
 normally distributed with standard deviation of <span
@@ -508,18 +509,18 @@ relationship between our response and predictor variables:</p>
 <p><span class="math inline">\(\bar{y} = \hat{B_0} + \hat{B_0}\cdot
 x\)</span></p>
 <p>Just like any other statistical test, we assume that our observed
-linear relationship (defined by test statistics <span
+linear relationship (defined by coefficients <span
 class="math inline">\(\hat{B_0}\)</span> and <span
 class="math inline">\(\hat{B_1}\)</span>) is just one of many such
 possible relationships that <em>could have been derived</em> from random
 sampling from our population of interest. If we collected a different
-sample, we would get a different linear relationship.</p>
-<p>NOTE: in linear regression we are generally far more interested in
-the slope of the linear relationship (<span
-class="math inline">\(\hat{B_1}\)</span> rather than the intercept). So
-for now, we assume <span class="math inline">\(\hat{B_1}\)</span> (slope
-between response and predictor, computed from the sample) is the main
-test statistic of interest!</p>
+sample, we would get a different linear relationship. NOTE: in linear
+regression we are generally far more interested in the slope of the
+linear relationship (<span class="math inline">\(\hat{B_1}\)</span>
+rather than the intercept). So for now, we assume <span
+class="math inline">\(\hat{B_1}\)</span> (slope between response and
+predictor, computed from the sample) is the main test statistic of
+interest!</p>
 <p>So.. what is the sampling distribution for our test statistic <span
 class="math inline">\(\hat{B_1}\)</span> under the null hypothesis in
 this case? Well, the answer is that it (when converted to units of
@@ -531,20 +532,14 @@ standard error) is t-distributed! Let’s look into this a bit more.</p>
 regression. Why? How?</p>
 <p>In a one-sample t-test we are interested in estimating the true
 population mean, and we assume that our t-statistic (i.e., deviation of
-the sample mean from the null mean, in units of standard error) is
-t-distributed with degrees of freedom of one less than the sample
-size.</p>
-<p>What is the hypothesis of a typical one-sample t-test? (<span
-class="math inline">\(\mu = 0\)</span> - that is, the true mean is
-zero!)</p>
-<p>What is the hypothesis of a linear regression? (Slope = 0 - that is,
-the true relationship is zero).</p>
+the sample mean from the null-hypothesis mean, in units of standard
+error) is t-distributed.</p>
+<p>What is the null hypothesis of a linear regression? (Slope = 0 - that
+is, the true relationship is zero).</p>
 <p>So already we are seeing a bit of a similarity.</p>
-<div id="t-test-recap" class="section level4">
-<h4>t-test recap</h4>
 <p>In a t-test we assume that the population mean is equal to the null
-mean and that the data are normally distributed around the true mean. We
-could write this as (using regression notation):</p>
+mean and that the data are normally distributed. We could write this as
+(using regression notation):</p>
 <p><span class="math inline">\(y = \beta_0 + \epsilon\)</span></p>
 <p>WHERE:</p>
 <p><span class="math inline">\(\epsilon \equiv Normal(0,
@@ -561,9 +556,6 @@ statistical theories to show that the t-statistic:</p>
 of parameters estimated in the model (there is only one estimated
 parameter- the sample mean <span
 class="math inline">\(\bar{\beta_0}\)</span>).</p>
-</div>
-<div id="linear-regression-version" class="section level4">
-<h4>linear regression version</h4>
 <p>In linear regression we assume that the mean of our response is
 determined by two parameters- the intercept and the slope (linear
 relationship with the predictor variable). The null hypothesis (usually)
@@ -596,7 +588,6 @@ freedom is 2 less than the sample size (since computing the residual
 error requires computing two parameters: mean and slope).</p>
 </div>
 </div>
-</div>
 <div id="simple-linear-regression-examples" class="section level2">
 <h2>Simple linear regression: examples</h2>
 <p>Okay let’s consider the sea turtle example from the beginning of
@@ -605,16 +596,6 @@ lecture:</p>
 artificial lighting at long stretch of beach (e.g., from hotels and
 other forms of development) and the total number of hatchling sea
 turtles per nest that successfully make it to the ocean.</p>
-<p><em>Population</em>: All nests in this particular stretch of
-beach<br />
-<em>Parameter(s)</em>: The mean number of hatchlings per nest that
-successfully travel from their nest to the ocean and how this changes as
-a function of the brightness of artificial lighting.<br />
-<em>Sample</em>: All monitored nests<br />
-<em>Statistic(s)</em>: Slope and intercept of the linear relationship
-between the measured response variable (number of successful
-ocean-arrivers per nest) and the predictor variable (brightness of
-artificial lighting)</p>
 <p>First we will simulate some data under a known process model:</p>
 <pre class="r"><code>eggs.per.nest &lt;- 100
 n.nests &lt;- 15
@@ -630,7 +611,7 @@ hatchlings.successful &lt;- rbinom(n.nests,eggs.per.nest,probsucc(light))   # de
 
 plot(hatchlings.successful~light)  # plot the data</code></pre>
 <p><img src="LECTURE6_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>Now that we have data, let’s run a linear regression!</p>
+<p>Now that we have data, let’s run a linear regression analysis!</p>
 <pre class="r"><code>slope &lt;- sum((light-mean(light))*(hatchlings.successful-mean(hatchlings.successful)))/sum((light-mean(light))^2)
 intercept &lt;- mean(hatchlings.successful) - slope*mean(light)
 
@@ -694,33 +675,11 @@ lines(newdata$light,my.predict[,&quot;lwr&quot;],col=&quot;red&quot;,lty=2)   # 
 <p><img src="LECTURE6_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>This confidence interval loosely represents the range of plausible
 best-fit lines we could fit if we were to gather multiple alternative
-datasets. If some of the lines that fit within the upper and lower
-bounds of the confidence interval on the regression line have a positive
-slope and others have a negative slope, we might remain unconvinced that
-the relationship betwen the response and predictor variable is
-‘statistically significant’!</p>
-<pre class="r"><code>#  use the lm function to regress tree volume on tree girth using the &#39;trees&#39; dataset
-
-mod &lt;- lm(Volume~Girth,data=trees)
-summary(mod)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = Volume ~ Girth, data = trees)
-## 
-## Residuals:
-##    Min     1Q Median     3Q    Max 
-## -8.065 -3.107  0.152  3.495  9.587 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -36.9435     3.3651  -10.98 7.62e-12 ***
-## Girth         5.0659     0.2474   20.48  &lt; 2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 4.252 on 29 degrees of freedom
-## Multiple R-squared:  0.9353, Adjusted R-squared:  0.9331 
-## F-statistic: 419.4 on 1 and 29 DF,  p-value: &lt; 2.2e-16</code></pre>
+datasets. If some of the plausible lines that fit within the upper and
+lower bounds of the confidence interval on the regression line have a
+positive slope and others have a negative slope, we might remain
+unconvinced that the relationship betwen the response and predictor
+variable is ‘statistically significant’!</p>
 </div>
 <div id="assumptions-of-simple-linear-regression"
 class="section level2">
@@ -729,7 +688,7 @@ class="section level2">
 <h3>Normal distribution</h3>
 <p>Simple linear regression assumes that the model
 <strong>residuals</strong> are normally distributed.</p>
-<p>Let’s quickly review what residuals are (see whiteboard exercise)</p>
+<p>Let’s quickly review what residuals are [quick whiteboard demo]</p>
 <p>Let’s look at the residuals for our sea turtle example:</p>
 <pre class="r"><code>my.intercept &lt;- model$coefficients[&quot;(Intercept)&quot;]
 my.slope &lt;- model$coefficients[&quot;light&quot;]
@@ -827,7 +786,7 @@ values.</p>
 <p>The second diagnostic plot (normal Q-Q) lets you check for normality
 of residuals. You already know how to do this.</p>
 <p>The third diagnostic plot (scale-location) lets you check for
-homoskedascitiy. This plot should have no obvious pattern to it- it
+homoskedasticity. This plot should have no obvious pattern to it- it
 should look like random noise across the range of fitted values.</p>
 <p>The fourth diagnostic plot (residuals vs leverage) lets you check to
 make sure your regression model isn’t driven by a few
@@ -893,7 +852,7 @@ following:</p>
 <h2>Multiple linear regression</h2>
 <p>Multiple, or multi-variable, linear regression simply refers to the
 case where you have more than one predictor variable.</p>
-<p>NOTE: avoid using the term ‘multivariate’ because that usually refers
+<p>NOTE: avoid using the term ‘multivariate’ because that often refers
 to the case where you have multiple <strong>response</strong>
 variables.</p>
 <div id="linear-regression-vs-correlation" class="section level3">
@@ -982,13 +941,14 @@ you have a major problem with multicollinearity, you should generally
 use only one variable out of every pair of highly correlated variables
 for your final model.</p>
 <p>You might also consider “penalized regression” approaches like ‘ridge
-regression’. This, however, is outside the scope of this class!</p>
+regression’ or ‘lasso regression’. This, however, is outside the scope
+of this class!</p>
 <div id="variance-inflation-factors" class="section level4">
 <h4>Variance Inflation Factors</h4>
-<p>Variance Inflation Factors are a diagnostic tool to help you evaluate
-if you have a multicollinearity problem. In general VIFs less than 4 are
-considered okay. On the other hand, VIFs greater than 5 or 10 indicate
-serious problems!</p>
+<p>Variance Inflation Factors (VIFs) are a diagnostic tool to help you
+evaluate if you have a multicollinearity problem. In general VIFs less
+than 4 are considered okay. On the other hand, VIFs greater than 5 or 10
+indicate serious problems!</p>
 <p>To compute variance inflation factors, you can use the ‘vif’ function
 in the ‘car’ package. Let’s try this using the trees dataset!</p>
 <pre class="r"><code>########
@@ -1242,9 +1202,10 @@ account for sources of non-independence:</p>
 <p><em>Regression with phylogenetic correction</em> – use this if
 phylogenetic relatedness among your sampling units is the main source of
 non-independence</p>
-<p><em>Autoregression (more generally, time series modeling)</em> – use
-this if the main source of non-independence is temporal- observations
-taken closer together in time are more likely to be related</p>
+<p><em>Autoregression (more generally, ARIMA-type time series
+modeling)</em> – use this if the main source of non-independence is
+temporal- observations taken closer together in time are more likely to
+be related</p>
 <p><em>Spatial autoregression</em> (more generally, spatial regression
 models) – use this if the main source of non-independence is spatial –
 observations taken closer together in space are more correlated.</p>
