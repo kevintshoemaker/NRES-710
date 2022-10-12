@@ -380,6 +380,9 @@ div.tocify {
     <li>
       <a href="EXERCISE2.html">Exercise- t-tests</a>
     </li>
+    <li>
+      <a href="EXERCISE3.html">Exercise- simple linear regression</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -533,8 +536,8 @@ columns in the <code>airquality</code> dataframe. You can use the
 this.</p>
 <p>IN YOUR RESPONSE: include your code, followed by a brief statement
 about whether it is likely that either of these variables has a
-<strong>constraint</strong> – e.g., it cannot take values can’t go above
-1 (e.g., a probability).</p>
+<strong>constraint</strong> – e.g., it cannot take values above 1 (e.g.,
+a probability).</p>
 </div>
 <div id="section-5" class="section level4">
 <h4>2.3)</h4>
@@ -622,7 +625,8 @@ temperature. Is that what we find?</p>
 <h4>3.2)</h4>
 <p>Explore the relationship between ozone and temperature graphically
 using a scatter plot. Then overlay your regression results using the
-<code>abline()</code> function. You can syntax something like this:</p>
+<code>abline()</code> function. You can syntax something like this (feel
+free to use ggplot instead!):</p>
 <pre><code>plot(y ~ x)
 abline(mymod)   # &#39;mymod&#39; is an lm() object modeling y as a function of x
 </code></pre>
@@ -634,7 +638,8 @@ linear on the basis of your scatterplot and regression line.</p>
 <h4>3.3)</h4>
 <p>In your model summary, take a look at the confidence interval on the
 regression coefficient (slope term) linking ozone concentration to
-temperature.</p>
+temperature. You can use the <code>confint()</code> function to help
+with this.</p>
 <p>IN YOUR RESPONSE: report the confidence interval, along with a
 concise description of what this confidence interval represents.</p>
 </div>
@@ -644,7 +649,9 @@ concise description of what this confidence interval represents.</p>
 around our predictions. The shape of the confidence bounds should be
 intuitive if you consider that there is sampling error associated with
 both the intercept and the slope terms). Using the following template
-code, generate a scatterplot of Ozone vs Temp, and overlaying the
+code (in this case, I want everyone to gain practice using the
+<code>predict</code> function, so don’t just use ggplot to generate the
+figure!), generate a scatterplot of Ozone vs Temp, and overlaying the
 regression line and a confidence interval:</p>
 <pre><code>newdata &lt;- data.frame(    # make a data frame containing the temperature values we want to make predictions for, spanning the range of temperature values in our data
   Temp = seq(50,100,1)
@@ -687,7 +694,7 @@ whether there appear to be any outliers or high-influence points.</p>
 <div id="section-11" class="section level4">
 <h4>4.1)</h4>
 <p>Now build a similar regression model, keeping Ozone as the response
-variable and temperatre as one of the predictor variables, but adding
+variable and temperature as one of the predictor variables, but adding
 one additional predictor variable to the model. You pick which variable
 to add! Use the <code>summary()</code> function to evaluate the key
 model results.</p>
