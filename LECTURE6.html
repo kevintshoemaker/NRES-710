@@ -689,7 +689,7 @@ best-fit lines we could fit if we were to gather multiple alternative
 datasets. If some of the plausible lines that fit within the upper and
 lower bounds of the confidence interval on the regression line have a
 positive slope and others have a negative slope, we might remain
-unconvinced that the relationship betwen the response and predictor
+unconvinced that the relationship between the response and predictor
 variable is ‘statistically significant’!</p>
 <p><strong>Q:</strong> take a couple minutes to run a simple linear
 regression of tree Volume as a function of tree Girth using the built-in
@@ -762,11 +762,11 @@ which means they have equal variance across the range of the predictor
 and response variables.</p>
 <p>Let’s look at the sea turtle example:</p>
 <pre class="r"><code>my.residuals &lt;- model$residuals
+my.standardized.residuals &lt;- rstandard(model)    # even better...
 
-plot(my.residuals~light)</code></pre>
+plot(my.residuals~predict(model))    # plot residuals against fitted values</code></pre>
 <p><img src="LECTURE6_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<pre class="r"><code>plot(my.residuals~predict(model))</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+<pre class="r"><code># plot(my.standardized.residuals~predict(model))</code></pre>
 <p>Do you see any evidence for <strong>heteroskedasticity</strong>?
 Heteroskedasticity means non-homogeneity of variance across the range of
 the predictor variable. Serious violations of the equal variance
@@ -778,9 +778,9 @@ or you may choose to use an alternative analysis like a
 class="section level3">
 <h3>Predictor variable is known with certainty</h3>
 <p>That is, the observed (e.g., measured) values for your predictor
-variable are correct and known with perfect precision. In regression,
-the randomness in linear regression is associated only with the response
-variable - and that randomness is normally distributed.</p>
+variable are correct and known with precision. In standard regression
+analyses, the randomness in linear regression is associated only with
+the response variable - and that randomness is normally distributed.</p>
 </div>
 </div>
 <div id="diagnostic-plots" class="section level2">
@@ -811,8 +811,8 @@ points in these regions (with large values for “Cook’s distance”) have
 the property that if they were removed from the analysis the results
 would change substantially.</p>
 <p>These four figures, taken together, should be a guide to interpreting
-how robust your regression is. You need to be the scientist. Analyze
-these plots and make decisions about what you’re willing to accept.</p>
+how robust your regression is. Analyze these plots and make decisions
+about what you’re willing to accept.</p>
 <div id="influential-points" class="section level3">
 <h3>Influential points</h3>
 <p>Which of the following plots has a highly influential point?</p>
@@ -887,13 +887,13 @@ response) as a random variable and the other (the predictor variable) as
 a set of fixed values (a fixed effect).</p>
 <div id="assessing-correlation-in-r" class="section level3">
 <h3>Assessing correlation in R</h3>
-<p>In R you can use the ‘cor’ function (part of base R) to assess
-correlation. To run a correlation test (assess if the correlation is
-‘significant’) you can use the ‘cor.test’ function. By default, the
-‘cor.test’ function runs a Pearson correlation test, which is a
-parametric test that assumes both variables are normal, no outliers,
-etc. If you want you can run a non-parametric version- the Spearman
-correlation (or Kendall’s tau).</p>
+<p>In R you can use the <code>cor</code> function (part of base R) to
+assess correlation. To run a correlation test (assess if the correlation
+is ‘significant’) you can use the ‘cor.test’ function. By default, the
+<code>cor.test()</code> function runs a Pearson correlation test, which
+is a parametric test that assumes both variables are normal, no
+outliers, etc. If you want you can run a non-parametric version- the
+Spearman’s correlation (or Kendall’s tau).</p>
 <pre class="r"><code>## load the &#39;mtcars&#39; data set
 
 data(mtcars)
@@ -958,12 +958,12 @@ class="section level2">
 <h2>Multicollinearity (for multiple linear regression)</h2>
 <p>If you have multiple predictor variables, you should first check that
 your predictor variables are not too correlated with one another. If the
-correlation between all pairs of covariates is less than around 0.7 or
-0.8 you should generally not have a big problem with multicollinearity
-(although you might still check your variance inflation factors!). If
-you have a major problem with multicollinearity, you should generally
-use only one variable out of every pair of highly correlated variables
-for your final model.</p>
+correlation between all pairs of quantitative covariates is less than
+around 0.7 or 0.8 you should generally not have a big problem with
+multicollinearity (although you might still check your variance
+inflation factors!). If you have a major problem with multicollinearity,
+you should generally use only one variable out of every pair of highly
+correlated variables for your final model.</p>
 <p>You might also consider “penalized regression” approaches like ‘ridge
 regression’ or ‘lasso regression’. This, however, is outside the scope
 of this class!</p>

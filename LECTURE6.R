@@ -88,7 +88,6 @@ qqnorm(my.residuals)
 shapiro.test(my.residuals)
 
 
-
 layout(matrix(1:4,nrow=2,byrow = T))
 plot(anscombe$y1~anscombe$x1,ylab="response",xlab="predictor")
 plot(anscombe$y2~anscombe$x2,ylab="response",xlab="predictor")
@@ -97,10 +96,11 @@ plot(anscombe$y4~anscombe$x4,ylab="response",xlab="predictor")
 
 
 my.residuals <- model$residuals
+my.standardized.residuals <- rstandard(model)    # even better...
 
-plot(my.residuals~light)
+plot(my.residuals~predict(model))    # plot residuals against fitted values
+# plot(my.standardized.residuals~predict(model))
 
-plot(my.residuals~predict(model))
 
 
 layout(matrix(1:4,2,byrow = T))
