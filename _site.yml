@@ -37,6 +37,8 @@ navbar:
       href: EXERCISE2.html
     - text: Exercise- simple linear regression
       href: EXERCISE3.html
+    - text: Exercise- multiple linear regression
+      href: EXERCISE4.html
   - text: More Resources
     menu:
     - text: Links 

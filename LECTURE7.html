@@ -380,6 +380,9 @@ div.tocify {
     <li>
       <a href="EXERCISE2.html">Exercise- t-tests</a>
     </li>
+    <li>
+      <a href="EXERCISE3.html">Exercise- simple linear regression</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -431,7 +434,7 @@ div.tocify {
 <div id="download-the-r-code-for-this-lecture" class="section level2">
 <h2>Download the R code for this lecture!</h2>
 <p>To follow along with the R-based lessons and demos, <a
-href="LECTURE5.R">right (or command) click on this link and save the
+href="LECTURE7.R">right (or command) click on this link and save the
 script to your working directory</a></p>
 </div>
 <div id="overview-anova" class="section level2">
@@ -440,7 +443,7 @@ script to your working directory</a></p>
 to assess whether the mean value is the same across groups defined by
 one or more categorical predictor variables. Which is another way of
 saying that ANOVA is a regression model where the predictor variable(s)
-is categorical.</p>
+is categorical!</p>
 <p>In a simple linear regression, we are testing whether the mean of our
 response variable changes linearly across the range of our
 (continuous/numeric) predictor variable.</p>
@@ -449,16 +452,19 @@ changes across the different levels (bins) of our categorical
 variable.</p>
 <p>The null hypothesis in ANOVA is that the mean of the response
 variable is the same across all levels/bins of your categorical variable
-– i.e. <span class="math inline">\(\mu_1=\mu_2=\mu_3=\mu_i\)</span></p>
+– i.e. <span class="math inline">\(\mu_1=\mu_2=\mu_3=\mu_i\)</span>. In
+this way, ANOVA is a <strong>global test</strong> that considers all of
+the categories of your predictor variable simultaneously. If you reject
+the null hypothesis, at least one of the categories is different from
+the others… But you don’t know which one(s)!</p>
 <p>Note that if you’re facing a situation where your categorical
 variable has two groups, you can use EITHER a t-test or an ANOVA. But
 you should use the t-test – first of all, the t-test works with unequal
 variance, and second of all, it would just seem strange to run an ANOVA
 in this case!</p>
 <p>In ANOVA, the test statistic is called the F statistic. This is
-analogous to the t-statistic and the Chi-squared statistic in that it is
-computed from the data, and that it has a known sampling distribution
-under the null hypothesis.</p>
+analogous to the t-statistic and the Chi-squared statistic in that it
+has a known sampling error distribution.</p>
 <p>Let’s explore this statistic in a little more detail!</p>
 <div id="the-f-statistic" class="section level3">
 <h3>The F Statistic</h3>
@@ -512,6 +518,8 @@ That’s right – Linear Regression!</p>
 <p>ANOVA is a special case of regression where the predictor variable is
 categorical – there is one independent variable and one or more
 dependent variables that are categorical.</p>
+<p>In linear regression, the F-test is a global test of whether the
+signal “significantly” outweighs the noise!</p>
 </div>
 </div>
 <div id="assumptions-of-anova" class="section level3">
@@ -535,8 +543,9 @@ population.</p>
 equivalent to the homoskedasticity assumption from linear
 regression!</p>
 <p>NOTE: you don’t really need to worry so much about ‘high influence’
-points in ANOVA. However, ANOVA works best if there are similar numbers
-of observations in each group - this is a ‘balanced’ design.</p>
+points in ANOVA (although you do need to worry about outliers!).
+However, ANOVA works best if there are similar numbers of observations
+in each group - this is a ‘balanced’ design.</p>
 </div>
 </div>
 </div>
@@ -587,8 +596,8 @@ df &lt;- data.frame(
 
 plot(Height~Treatment, data=df)</code></pre>
 <p><img src="LECTURE7_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>Our goal is to assess the plausibility of the null hypothesis that
-the group means are equal.</p>
+<p>Our goal is to assess the incompatibility of the data with the null
+hypothesis that the group means are equal.</p>
 <pre class="r"><code>grand.mean &lt;- mean(df$Height)   # grand mean
 
 group.means &lt;- by(df$Height,df$Treatment,mean)    # group means
@@ -607,36 +616,36 @@ residual.var &lt;- sapply(1:n.groups,function(t) (groups[[t]]-group.means[t])^2/
 
 unexplained.var &lt;- sum(residual.var)
 
-#######
+###
 # now we can compute the F statistic!
 
 Fstat &lt;- explained.var/unexplained.var
 Fstat</code></pre>
 <pre><code>## [1] 24.78947</code></pre>
-<pre class="r"><code>#######
+<pre class="r"><code>###
 # define degrees of freedom
 
 df1 &lt;- n.groups-1
 df2 &lt;- sample.size-n.groups
 
-#######
+###
 # visualize the sampling distribution under null hypothesis
 
 curve(df(x,df1,df2),0,10)</code></pre>
 <p><img src="LECTURE7_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<pre class="r"><code>######
+<pre class="r"><code>###
 # compute critical value of F statistic
 
 Fcrit &lt;- qf(0.95,df1,df2)
 Fcrit</code></pre>
 <pre><code>## [1] 4.256495</code></pre>
-<pre class="r"><code>######
+<pre class="r"><code>###
 # compute p-value
 
 pval &lt;- 1-pf(Fstat,df1,df2)
 
 
-#####
+###
 # use aov function
 
 model1 &lt;- aov(Height~Treatment,data=df)
@@ -646,7 +655,7 @@ summary(model1)</code></pre>
 ## Residuals    9   4.75   0.528                     
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>#####
+<pre class="r"><code>###
 # use lm function
 
 model1 &lt;- lm(Height~Treatment,data=df)
@@ -712,8 +721,9 @@ addition, Tukey’s test assumes independence of observations (of course!)
 and homogeneity of variance among groups.</p>
 <p>The test statistic for Tukey’s test is called <em>q</em>, and is
 computed as:</p>
-<p><span class="math inline">\(q = \frac{Y_A-Y_B}{SE}\)</span>, where Y
-sub A is the larger of the two means being compared.</p>
+<p><span class="math inline">\(q = \frac{Y_A-Y_B}{SE}\)</span>, where
+<span class="math inline">\(Y_A\)</span> is the larger of the two means
+being compared.</p>
 <p>Does this look like any other familiar test statistic? Yes, that’s
 right- Tukey’s test is essentially a t-test! The only difference is that
 it is maintaining an <em>experimentwise error rate</em> that matches the
@@ -731,7 +741,7 @@ test</em>.</p>
 <div id="tukey-test-example" class="section level3">
 <h3>Tukey test example</h3>
 <p>Lets’ try it!</p>
-<pre class="r"><code>######
+<pre class="r"><code>###
 # Tukey&#39;s test
 
 # find critical q-value for tukey test
@@ -791,7 +801,7 @@ results</code></pre>
 ## 1     F1       F2 -3.00 8.2589664 0.0006459124
 ## 2     F1       F3  0.25 0.6882472 0.8792868263
 ## 3     F2       F3  3.25 8.9472136 0.0003591856</code></pre>
-<pre class="r"><code>########  compare with R&#39;s built in tukey test function
+<pre class="r"><code>###  compare with R&#39;s built in tukey test function
 model1 &lt;- aov(Height~Treatment,data=df)
 TukeyHSD(model1)</code></pre>
 <pre><code>##   Tukey multiple comparisons of means
@@ -804,7 +814,7 @@ TukeyHSD(model1)</code></pre>
 ## F2-F1  3.00  1.565743  4.434257 0.0006459
 ## F3-F1 -0.25 -1.684257  1.184257 0.8792868
 ## F3-F2 -3.25 -4.684257 -1.815743 0.0003592</code></pre>
-<pre class="r"><code>#######  and finally, compare with &#39;emmeans&#39;
+<pre class="r"><code>###  and finally, compare with &#39;emmeans&#39;
 
 library(emmeans)
 model1 &lt;- lm(Height~Treatment,data=df)
@@ -817,8 +827,7 @@ pairs(emm)    # run tukey test!</code></pre>
 ## 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 <p>Note that the last method (‘emmeans’) is the most flexible, since you
-can use this function for all kinds of models, including mixed
-models!</p>
+can use this function for all kinds of models, including GLM!</p>
 <p>The ‘general’ way to think about pairwise comparisons is that you are
 using the model to make predictions under different “what if” scenarios
 (e.g., what is the expected response if treatment is A, temperature is
@@ -832,10 +841,8 @@ variables!</p>
 <div id="another-simple-example" class="section level2">
 <h2>Another simple example</h2>
 <p>Here we run another simple example of a one-way ANOVA followed by
-Tukey’s pairwise comparison tests (drawn from <a
-href="https://aaronschlegel.me/tukeys-test-post-hoc-analysis.html">this
-site</a>), just using R’s built in functions (no more ‘by hand’
-calculations!):</p>
+Tukey’s pairwise comparison tests, just using R’s built in functions (no
+more ‘by hand’ calculations!):</p>
 <pre class="r"><code>library(agricolae)
 data(&quot;PlantGrowth&quot;)
 
@@ -852,12 +859,12 @@ plant.av</code></pre>
 ## 
 ## Residual standard error: 0.6233746
 ## Estimated effects may be unbalanced</code></pre>
-<pre class="r"><code>#######
+<pre class="r"><code>###
 # evaluate goodness of fit (assumption violations etc)
 layout(matrix(1:4,nrow=2,byrow = T))
 plot(plant.av)</code></pre>
 <p><img src="LECTURE7_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<pre class="r"><code>#######
+<pre class="r"><code>###
 # run pairwise comparisons
 
 tukeytest &lt;- TukeyHSD(plant.av)
@@ -875,7 +882,7 @@ tukeytest</code></pre>
 <pre class="r"><code>layout(matrix(1,nrow=1,byrow = T))
 plot(tukeytest)   #default plotting method for tukey test objects!</code></pre>
 <p><img src="LECTURE7_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
-<pre class="r"><code>######
+<pre class="r"><code>###
 # alternative method
 
 

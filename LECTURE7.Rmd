@@ -20,27 +20,27 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 #  NRES 710, Lecture 7 ---------------------------------------                             
 #   University of Nevada, Reno                        
 #
-#    ANOVA                                        ####
+#    ANOVA                              
 
 ```
 
 ## Download the R code for this lecture!
 
-To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](LECTURE5.R)
+To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](LECTURE7.R)
 
 ## Overview: ANOVA
 
-ANOVA is short for "ANalysis Of VAriance". An ANOVA test is designed to assess whether the mean value is the same across groups defined by one or more categorical predictor variables. Which is another way of saying that ANOVA is a regression model where the predictor variable(s) is categorical. 
+ANOVA is short for "ANalysis Of VAriance". An ANOVA test is designed to assess whether the mean value is the same across groups defined by one or more categorical predictor variables. Which is another way of saying that ANOVA is a regression model where the predictor variable(s) is categorical! 
 
 In a simple linear regression, we are testing whether the mean of our response variable changes linearly across the range of our (continuous/numeric) predictor variable.
 
 In ANOVA, we are testing whether the mean of our response variable changes across the different levels (bins) of our categorical variable.
 
-The null hypothesis in ANOVA is that the mean of the response variable is the same across all levels/bins of your categorical variable – i.e. $\mu_1=\mu_2=\mu_3=\mu_i$ 
+The null hypothesis in ANOVA is that the mean of the response variable is the same across all levels/bins of your categorical variable – i.e. $\mu_1=\mu_2=\mu_3=\mu_i$. In this way, ANOVA is a **global test** that considers all of the categories of your predictor variable simultaneously. If you reject the null hypothesis, at least one of the categories is different from the others... But you don't know which one(s)! 
 
 Note that if you’re facing a situation where your categorical variable has two groups, you can use EITHER a t-test or an ANOVA. But you should use the t-test -- first of all, the t-test works with unequal variance, and second of all, it would just seem strange to run an ANOVA in this case!  
 
-In ANOVA, the test statistic is called the F statistic. This is analogous to the t-statistic and the Chi-squared statistic in that it is computed from the data, and that it has a known sampling distribution under the null hypothesis.
+In ANOVA, the test statistic is called the F statistic. This is analogous to the t-statistic and the Chi-squared statistic in that it has a known sampling error distribution.
 
 Let's explore this statistic in a little more detail!
 
@@ -84,6 +84,8 @@ That’s right – Linear Regression!
 
 ANOVA is a special case of regression where the predictor variable is categorical -- there is one independent variable and one or more dependent variables that are categorical. 
 
+In linear regression, the F-test is a global test of whether the signal "significantly" outweighs the noise!
+
 
 ### Assumptions of ANOVA
 
@@ -103,7 +105,7 @@ Samples are independent of each other (as always!)
 
 All sample groups have the same variance. Note that this is equivalent to the homoskedasticity assumption from linear regression!
 
-NOTE: you don't really need to worry so much about 'high influence' points in ANOVA. However, ANOVA works best if there are similar numbers of observations in each group - this is a 'balanced' design.   
+NOTE: you don't really need to worry so much about 'high influence' points in ANOVA (although you do need to worry about outliers!). However, ANOVA works best if there are similar numbers of observations in each group - this is a 'balanced' design.   
 
 ## Examples
 
@@ -150,7 +152,7 @@ plot(Height~Treatment, data=df)
 ```
 
 
-Our goal is to assess the plausibility of the null hypothesis that the group means are equal.
+Our goal is to assess the incompatibility of the data with the null hypothesis that the group means are equal.
 
 ```{r}
 
@@ -172,44 +174,44 @@ residual.var <- sapply(1:n.groups,function(t) (groups[[t]]-group.means[t])^2/(sa
 
 unexplained.var <- sum(residual.var)
 
-#######
+###
 # now we can compute the F statistic!
 
 Fstat <- explained.var/unexplained.var
 Fstat
 
 
-#######
+###
 # define degrees of freedom
 
 df1 <- n.groups-1
 df2 <- sample.size-n.groups
 
-#######
+###
 # visualize the sampling distribution under null hypothesis
 
 curve(df(x,df1,df2),0,10)
 
 
-######
+###
 # compute critical value of F statistic
 
 Fcrit <- qf(0.95,df1,df2)
 Fcrit
 
-######
+###
 # compute p-value
 
 pval <- 1-pf(Fstat,df1,df2)
 
 
-#####
+###
 # use aov function
 
 model1 <- aov(Height~Treatment,data=df)
 summary(model1)
 
-#####
+###
 # use lm function
 
 model1 <- lm(Height~Treatment,data=df)
@@ -219,7 +221,6 @@ anova(model1)
 
 
 ```
-
 
 
 ## Pairwise comparisons
@@ -242,7 +243,7 @@ Tukey's test assumes that observations are normally distributed. In addition, Tu
 
 The test statistic for Tukey's test is called *q*, and is computed as:
 
-$q = \frac{Y_A-Y_B}{SE}$, where Y sub A is the larger of the two means being compared. 
+$q = \frac{Y_A-Y_B}{SE}$, where $Y_A$ is the larger of the two means being compared. 
 
 Does this look like any other familiar test statistic? Yes, that's right- Tukey's test is essentially a t-test! The only difference is that it is maintaining an *experimentwise error rate* that matches the alpha level you set. So you *could* run multiple independent t-tests- one for each pair of factor levels. BUT if you did that, the more tests you ran, the higher your risk of committing a type-I error. If we use Tukey's test, we keep that risk equal to alpha regardless of how many tests we perform. 
 
@@ -258,7 +259,7 @@ Lets' try it!
 
 ```{r}
 
-######
+###
 # Tukey's test
 
 # find critical q-value for tukey test
@@ -311,12 +312,12 @@ for(i in 1:nrow(pair_totry)){
 results
 
 
-########  compare with R's built in tukey test function
+###  compare with R's built in tukey test function
 model1 <- aov(Height~Treatment,data=df)
 TukeyHSD(model1)
 
 
-#######  and finally, compare with 'emmeans'
+###  and finally, compare with 'emmeans'
 
 library(emmeans)
 model1 <- lm(Height~Treatment,data=df)
@@ -324,14 +325,14 @@ emm <- emmeans(model1,specs=c("Treatment"))  # compute the treatment means with 
 pairs(emm)    # run tukey test!
 
 ```
-Note that the last method ('emmeans') is the most flexible, since you can use this function for all kinds of models, including mixed models!
+Note that the last method ('emmeans') is the most flexible, since you can use this function for all kinds of models, including GLM!
 
 The 'general' way to think about pairwise comparisons is that you are using the model to make predictions under different "what if" scenarios (e.g., what is the expected response if treatment is A, temperature is 25C, soil type is "X") and then testing to see if those differences are consistent with the null hypothesis of zero differences. If you think about it this way, performing pairwise comparisons can make sense even for complex models with multiple continuous and categorical predictor variables!
 
 
 ## Another simple example
 
-Here we run another simple example of a one-way ANOVA followed by Tukey's pairwise comparison tests (drawn from [this site](https://aaronschlegel.me/tukeys-test-post-hoc-analysis.html)), just using R's built in functions (no more 'by hand' calculations!):
+Here we run another simple example of a one-way ANOVA followed by Tukey's pairwise comparison tests, just using R's built in functions (no more 'by hand' calculations!):
 
 ```{r}
 
@@ -342,12 +343,12 @@ plant.lm <- lm(weight ~ group, data = PlantGrowth)   #run the 'regression' model
 plant.av <- aov(plant.lm)  # run anova test and print anova table
 plant.av
 
-#######
+###
 # evaluate goodness of fit (assumption violations etc)
 layout(matrix(1:4,nrow=2,byrow = T))
 plot(plant.av)
 
-#######
+###
 # run pairwise comparisons
 
 tukeytest <- TukeyHSD(plant.av)
@@ -357,7 +358,7 @@ layout(matrix(1,nrow=1,byrow = T))
 plot(tukeytest)   #default plotting method for tukey test objects!
 
 
-######
+###
 # alternative method
 
 
@@ -623,7 +624,6 @@ ANOVA is closely linked with experimental design. If you control for all confoun
 However, in observational studies we often can't control for nuisance factors using experimental design. Instead we often need to control for nuisance factors within our model. This process is called **model-based inference**. Model based inference is often not as satisfying, much more difficult, and often much less powerful, and prone to subtle and pernicious errors, and requiring more complex statistics, etc., BUT it is often the best we can do!! Because this class is for ecologists and environmental scietists, I tend to emphasize model-based inference over design-based inference. And this is why I de-emphasize ANOVA and instead emphasize linear regression, glm, and mixed models (lmer, glmm).   
 
 This is the subject of the next lecture.
-
 
 
 [--go to next lecture--](LECTURE8.html) 

@@ -1,5 +1,5 @@
 ---
-title: "Exercise 2: t-tests"
+title: "Exercise 4: multiple linear regression"
 author: "NRES 710"
 date: "Fall 2022"
 output: 
@@ -20,111 +20,74 @@ knitr::opts_chunk$set(
 ```
 
 
-Today's exercises provide hands-on experience working with t-tests (and nonparametric alternatives) in R, with an emphasis on drawing valid statistical interpretations from your results. 
+Today's exercises provide hands-on experience working with multiple linear regression in R, with an emphasis on drawing valid statistical interpretations from your results. 
 
-I encourage you to work in teams of three. This way, one team member can focus on a single problem, and then all team members can review their solution and results with other members of the team. 
+I encourage you to work in teams.  
 
-Please submit your responses individually on webcampus. If you worked with a team, please include the names of your team members at the top of your submission. 
+Please submit your responses **individually** on webcampus. If you worked with a team, please include the names of your team members at the top of your submission. 
 
 Reports must be uploaded to Webcampus by the date indicated (see WebCampus).
 
-It is not expected that you will complete the whole process during the 50-minute class period. 
-
-You are of course welcome to ask for help outside of your groups by using the Statistical Concepts Discussion Forum, or by asking the instructor for hints. 
-
+It is not expected that you will complete the whole process during the class period. 
 Good luck!!
 
+![](roadrunner.gif)
 
-### Problem 1.  
-Your research team is tasked with testing whether tortoises move longer distances after translocation than before translocation. You measure average daily movement distances for one month pre-translocation and one month post-translocation. Here are your data:
+A new bird species has recently been discovered, the Pinyon Roadrunner(*Geococcyx fictus*). Like its famous cousin the Greater Roadrunner (*Geococcyx californianus*), this species prefers open country, is predatory on a wide variety of reptiles, insects, arthropods, and rodents; and forages primarily through rapid movements on the ground (or sometimes running in slow motion through the air), continuously vocalizing with its “beep beep” or “hmeep hmeep” call. 
 
-![](tortoise_ttest.png){width=50%}
+The new species occurs in cooler Great Basin environments where the Greater Roadrunner is not found, preferring montane sagebrush communities or sparse woodlands dominated by pinyon pine and juniper tree species. Not much is known yet about the specific habitat requirements of this newly discovered species, although data from recent surveys are available from several scattered mountain ranges where it has been observed to be surprisingly abundant. 
 
-You can copy the following code to load this into R:
+You are provided (see file [PJRoadRunner.csv](PJRoadRunner.csv)) with the following data from 100 site locations where extensive point count surveys were implemented, including roadrunner density (response variable) as well as predictor variables representing topographic, edaphic (soil-related) and woodland vegetation structure:
 
-```{r}
-library(tidyverse)
+1. RR: PinyonRoadrunner density (birds/km2). This is your response variable
+2. Steep: slope steepness (%) 
+3. Elev: Elevation (feet)
+4. TreeDens: Tree Density (trees/ha), all stems > 2-cm diameter at breast height (dbh)
+5. CosAsp: Slope aspect, linearized from degrees using a cosine transformation such that 1.0 represents northeast-facing (45 degree) slopes (i.e., cooler slopes that receive less solar insolation) and -1.0 represents southwest-facing (225 degree) slopes. 
+6. PatchSize: Area (ha) of the woodland patch where observations were made (or the closest patch to the observation point), estimated from aerial photography
+7. SoilpH: Surface soil pH from an aggregate sample (to 8-cm depth) obtained from numerous locations around the observation point. 
+8. SoilD: Soil depth (m) averaged from numerous locations around the observation point.
+9.CanCov: Tree canopy cover (% aerial cover) estimated from aerial photography through image analysis. 
 
-tortdf <- tribble(
-  ~ name, ~ pre_trans, ~post_trans,
-  "Helen",	120,	426,
-  "Thomas",	601,	511,
-  "Hayleigh",	90,	155,
-  "Maximilian",	451,	510,
-  "Adele",	339,	325,
-  "Conner",	183,	388
-)
+Be aware that this is a simulated data set for a fictitious species (yes, I have been pulling your leg up to this point). Actually, the true habitat relationships for this species are perfectly known as the parameters in a linear equation used to calculate the abundances.
 
-# tortdf
+You should therefore be able to reconstruct the true parameters through a multiple linear equation analysis! However, some challenges that may make this a nontrivial exercise in regression modeling:
 
-```
+a. Some random noise (uncorrelated error) has been added to the calculation
+b. You are provided with a random sample of data from the underlying population of observations that was calculated
+c. The predictor variables may be correlated with one another, as one expects for variables representing topography, soils and vegetation
+d. There may be nonlinear relationships between predictor and response variables
+e. There may be interaction effects in therelationship between predictor and response variables
+f. There may be other confounding influences at play. 
 
+Your group’s assignment is to reconstruct the true parameters of the Pinyon Roadrunner species-habitat relationship, and to outline the process by which you arrived at your result. 
 
-With these data, use an appropriate type of t-test to assess whether tortoises move longer distances after translocation versus before translocation. Please copy your well-commented R code into the text box entry in WebCampus. Following the code, please report: 
+Some hints: 
 
-1. Mean difference in daily movement distance before vs after translocation
-2. Confidence interval on the value computed above (you choose the confidence level) 
-3. t-statistic, p-value and degrees of freedom associated with the test
-4. Results from a normality test
-5. Results (p-value) from an analogous nonparametric test 
-6. A concise statement of what you conclude from this test, concerning how translocation of tortoises affects their daily movement. 
+* Explore the correlation structure of your dataset carefully.
+* Use the vif function (`car` package) to explore possible multicollinearity, and refit your regression models accordingly.
+* You can use the `update()` function to quickly add or remove parameters from existing regression (lm) models
+* Use regression diagnostic plots
+* Use the `poly` function to add polynomial terms to a regression model. 
+* Try using the `effects` package to easily display (graphically) effects of predictor variables modeled from your regression models, including interaction and polynomial terms
+* Try using the `coplot()` function to generate graphs of suspected interaction terms empirically (from the data, not from a modeled relationship)
+* Use the `anova()` function on multiple, nested models to statistically test model parsimony using an 'Extra Sum of Squares' F-Test (increase in variance explained vs. number of parameters added). You could also use the AIC function to calculate AIC coefficients (which we will cover later in the course). 
+* Adopt (and consistently follow) an approach for addressing the multicollinearity that is present in the dataset. 
 
-
-### Problem 2. 
-
-Your research team is tasked with testing if a new cucumber hybrid grows bigger fruit in soil type B vs soil type A. You measure dry weight (g) for seven cucumbers grown in soil type A and 14 cucumbers grown in soil type B. Here are your data:
-
-Soil type A: 5.5, 7.1, 2.2, 11.1, 4.73, 8.9, 5.1                       
-Soil type B: 2.7, 6.1, 11.3, 3.6, 8.6, 4.4, 3.8, 9.5, 8.8, 4.5, 7.0, 12.2, 51.1, 5.2, 5.5, 3.0, 9.59 
-
-And here are the same data in R- feel free to copy this chunk:
-
-```{r}
-
-typeA <- c(5.5, 7.1, 2.2, 11.1, 4.73, 8.9, 5.1)                       
-typeB <- c(2.7, 6.1, 11.3, 3.6, 8.6, 4.4, 3.8, 9.5, 8.8, 4.5, 7.0, 12.2, 51.1, 5.2, 5.5, 3.0, 9.59) 
-
-```
-
-With these data, use a two-sample t-test to assess whether cucumbers tend to be larger when grown in one soil type versus the other (is this a one-tailed or two-tailed test?). Plot the data as relevant (e.g. using a boxplot to compare results from the two soil types). Please provide your well-commented R code and report the following:
-
-1. Mean cucumber weight in each soil type
-2. Confidence intervals on the means you computed above (you choose the confidence level)     
-3. t-statistic, p-value and degrees of freedom associated with the test
-4. A brief discussion of any potential outlier issue you may or may not have. Does your answer change if you remove the outlier? Why or why not? Should you remove the outlier?   
-5. Run any appropriate normality tests and report the results
-6. Results (p-value) from an analogous nonparametric test  
-7. A concise statement of what you conclude from this test, concerning how translocation of tortoises affects their daily movement.
-
-### Problem 3. 
-
-Your research team is tasked with testing if first-year tree seedlings of a drought-adapted pine species characteristic of the Great Basin Desert (singleleaf pinyon pine, or *Pinus monophylla*) exhibit plasticity in biomass allocation to belowground plant tissues as a function of water availability. 
-
-You are given data for the root:shoot ratio for 23 seedlings given an abundant water supply that is maintained at close to field capacity over the course of the growing season (i.e., “Wettest Treatment”), and for another 23 seedlings that are maintained at close to the wilting point for the entire growing season after an initial pulse of water following germination (i.e., “Driest Treatment”). The seedlings are clustered according to different source populations throughout the range of the species, but we will ignore that for purposes of this class exercise. 
-
-It is hypothesized that seedlings grown under conditions of severe water limitation will allocate a greater proportion of carbon (hence, biomass) to their root systems, and therefore will maintain a greater root:shoot ratio. 
-
-Import the comma-delimited Excel spreadsheet, [“ShootRoot.csv”](ShootRoot.csv), which contains only two columns of data: Treatment (Wettest vs. Driest), and Root.Shoot (the root:shoot ratio). 
-
-```{r}
-
-shootroot <- read_csv("ShootRoot.csv")
-shootroot
-
-```
-
-With these data, assess whether singleleaf pinyon pine seedlings exhibit greater root:shoot ratios when grown under drier conditions. 
-
-Please provide your well-commented R code and report the following: 
-
-1. mean and median root:shoot ratios given both treatments
-2. confidence intervals on these means
-3. t-statistic and p-value for your t-test
-4. assessment and discussion of whether the assumptions of t-tests were met
-5. results of any alternative (e.g. non-parametric) analyses conducted as a result of violations of assumptions found in the previous step
-6. your final conclusions regarding the hypothesized relationship between watering treatment and seedling plasticity with respect to root:shoot ratios. 
+The assignment will be due on the deadline specified in WebCampus. 
 
 
+Your report should include: 
+
+1. R code
+2. Key outputs (tables, figures) for describing important elements of your workflow and for supporting your conclusions.
+3. Your regression model parameters for the final model that you believe to be the “true model” (see above for explanation) 
+4. A concluding section outlining your main findings, describing analysis steps or approaches that you considered especially helpful, and any remaining uncertainties. 
+
+
+
+
+-- End of exercise 4 ---
 
 
 

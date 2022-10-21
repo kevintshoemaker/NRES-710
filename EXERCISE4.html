@@ -12,7 +12,7 @@
 <meta name="author" content="NRES 710" />
 
 
-<title>Schedule</title>
+<title>Exercise 4: multiple linear regression</title>
 
 <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -30,6 +30,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -223,6 +226,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -230,6 +296,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -307,9 +383,6 @@ $(document).ready(function () {
     <li>
       <a href="EXERCISE3.html">Exercise- simple linear regression</a>
     </li>
-    <li>
-      <a href="EXERCISE4.html">Exercise- multiple linear regression</a>
-    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -351,145 +424,132 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Schedule</h1>
+<h1 class="title toc-ignore">Exercise 4: multiple linear regression</h1>
 <h4 class="author">NRES 710</h4>
 <h4 class="date">Fall 2022</h4>
 
 </div>
 
 
-<div id="schedule" class="section level2">
-<h2>Schedule</h2>
-<p>Note: this schedule is subject to change. Please check for updates
-frequently.</p>
-<p>Also, if the due dates listed here differ from WebCampus, use the
-date listed on WebCampus!</p>
-<table>
-<colgroup>
-<col width="9%" />
-<col width="36%" />
-<col width="36%" />
-<col width="16%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Week</th>
-<th align="left">Mon. meeting</th>
-<th align="left">Wed. meeting (R mini-lab)</th>
-<th align="left">Assignments</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Aug. 29 (week 1)</td>
-<td align="left"><a href="INTRO.html">Overview: R and
-statistics</a></td>
-<td align="left"><a href="LECTURE1.html">P-values, statistical
-tests</a></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">Sept. 5 (week 2)</td>
-<td align="left"><em>No Class (labor day)</em></td>
-<td align="left"><a href="EXERCISE1.html">Exercise 1: functions and
-summary stats</a></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">Sept. 12 (week 3)</td>
-<td align="left"><a href="LECTURE2.html">Central limit theorem (CLT) and
-sampling distributions</a></td>
-<td align="left"><a href="LECTURE2.html">Central limit theorem (CLT) and
-sampling distributions</a></td>
-<td align="left">Exercise 1 due 9/16</td>
-</tr>
-<tr class="even">
-<td align="left">Sept. 19 (week 4)</td>
-<td align="left"><a href="LECTURE3.html">Taxonomy of statistics</a></td>
-<td align="left"><a href="LECTURE4.html">t-tests and z tests</a></td>
-<td align="left">Project proposals due 9/23</td>
-</tr>
-<tr class="odd">
-<td align="left">Sept. 26 (week 5)</td>
-<td align="left"><a href="LECTURE4.html">t-tests and z-tests</a></td>
-<td align="left"><a href="EXERCISE2.html">Exercise 2: t-tests</a></td>
-<td align="left">Exercise 2 due 10/5</td>
-</tr>
-<tr class="even">
-<td align="left">Oct. 3 (week 6)</td>
-<td align="left"><a href="LECTURE5.html">Chi-squared tests</a></td>
-<td align="left"><em>No class (Kevin at conference)</em></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">Oct. 10 (week 7)</td>
-<td align="left"><a href="LECTURE6.html">Linear regression</a></td>
-<td align="left"><a href="EXERCISE3.html">Exercise 3: linear
-regression</a></td>
-<td align="left">Exercise 3 due 10/19</td>
-</tr>
-<tr class="even">
-<td align="left">Oct. 17 (week 8)</td>
-<td align="left"><a href="LECTURE6.html">Linear regression</a></td>
-<td align="left">Discussion: p-values</td>
-<td align="left">p-value readings (see WebCampus)</td>
-</tr>
-<tr class="odd">
-<td align="left">Oct. 24 (week 9)</td>
-<td align="left"><a href="LECTURE6.html">Linear regression</a></td>
-<td align="left"><a href="EXERCISE4.html">Exercise 4: Multiple linear
-regression</a></td>
-<td align="left">Exercise 4 due 11/2</td>
-</tr>
-<tr class="even">
-<td align="left">Oct. 31 (week 10)</td>
-<td align="left"><a href="LECTURE7.html">ANOVA</a></td>
-<td align="left"><a href="LECTURE7.html">ANOVA</a></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">Nov. 7 (week 11)</td>
-<td align="left"><em>No class (Kevin at conference)</em></td>
-<td align="left"><a href="EXERCISE5.html">Exercise 5: GLM</a> [Kevin
-away at conference]</td>
-<td align="left">Exercise 5 due 11/11</td>
-</tr>
-<tr class="even">
-<td align="left">Nov. 14 (week 12)</td>
-<td align="left"><a href="LECTURE8.html">GLM</a></td>
-<td align="left"><a href="LECTURE8.html">GLM</a></td>
-<td align="left">Draft project ms due 11/16</td>
-</tr>
-<tr class="odd">
-<td align="left">Nov. 21 (week 13)</td>
-<td align="left"><a href="LECTURE9.html">GLMM</a></td>
-<td align="left"><a href="EXERCISE6.html">Exercise 6: GLMM</a></td>
-<td align="left">Exercise 6 due 11/25</td>
-</tr>
-<tr class="even">
-<td align="left">Nov. 28 (week 14)</td>
-<td align="left"><a href="LECTURE9.html">GLMM</a></td>
-<td align="left">Discussion: code and data sharing</td>
-<td align="left">Peer reviews due 11/30</td>
-</tr>
-<tr class="odd">
-<td align="left">Dec. 5 (week 15)</td>
-<td align="left">Machine Learning</td>
-<td align="left">random forest example</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">Dec. 12 (week 16)</td>
-<td align="left">Next steps- multivariate, Bayesian, etc.</td>
-<td align="left"><em>no class</em></td>
-<td align="left">Final projects due Dec 16</td>
-</tr>
-</tbody>
-</table>
+<p>Today’s exercises provide hands-on experience working with multiple
+linear regression in R, with an emphasis on drawing valid statistical
+interpretations from your results.</p>
+<p>I encourage you to work in teams.</p>
+<p>Please submit your responses <strong>individually</strong> on
+webcampus. If you worked with a team, please include the names of your
+team members at the top of your submission.</p>
+<p>Reports must be uploaded to Webcampus by the date indicated (see
+WebCampus).</p>
+<p>It is not expected that you will complete the whole process during
+the class period. Good luck!!</p>
+<p><img src="roadrunner.gif" /></p>
+<p>A new bird species has recently been discovered, the Pinyon
+Roadrunner(<em>Geococcyx fictus</em>). Like its famous cousin the
+Greater Roadrunner (<em>Geococcyx californianus</em>), this species
+prefers open country, is predatory on a wide variety of reptiles,
+insects, arthropods, and rodents; and forages primarily through rapid
+movements on the ground (or sometimes running in slow motion through the
+air), continuously vocalizing with its “beep beep” or “hmeep hmeep”
+call.</p>
+<p>The new species occurs in cooler Great Basin environments where the
+Greater Roadrunner is not found, preferring montane sagebrush
+communities or sparse woodlands dominated by pinyon pine and juniper
+tree species. Not much is known yet about the specific habitat
+requirements of this newly discovered species, although data from recent
+surveys are available from several scattered mountain ranges where it
+has been observed to be surprisingly abundant.</p>
+<p>You are provided (see file <a
+href="PJRoadRunner.csv">PJRoadRunner.csv</a>) with the following data
+from 100 site locations where extensive point count surveys were
+implemented, including roadrunner density (response variable) as well as
+predictor variables representing topographic, edaphic (soil-related) and
+woodland vegetation structure:</p>
+<ol style="list-style-type: decimal">
+<li>RR: PinyonRoadrunner density (birds/km2). This is your response
+variable</li>
+<li>Steep: slope steepness (%)</li>
+<li>Elev: Elevation (feet)</li>
+<li>TreeDens: Tree Density (trees/ha), all stems &gt; 2-cm diameter at
+breast height (dbh)</li>
+<li>CosAsp: Slope aspect, linearized from degrees using a cosine
+transformation such that 1.0 represents northeast-facing (45 degree)
+slopes (i.e., cooler slopes that receive less solar insolation) and -1.0
+represents southwest-facing (225 degree) slopes.</li>
+<li>PatchSize: Area (ha) of the woodland patch where observations were
+made (or the closest patch to the observation point), estimated from
+aerial photography</li>
+<li>SoilpH: Surface soil pH from an aggregate sample (to 8-cm depth)
+obtained from numerous locations around the observation point.</li>
+<li>SoilD: Soil depth (m) averaged from numerous locations around the
+observation point. 9.CanCov: Tree canopy cover (% aerial cover)
+estimated from aerial photography through image analysis.</li>
+</ol>
+<p>Be aware that this is a simulated data set for a fictitious species
+(yes, I have been pulling your leg up to this point). Actually, the true
+habitat relationships for this species are perfectly known as the
+parameters in a linear equation used to calculate the abundances.</p>
+<p>You should therefore be able to reconstruct the true parameters
+through a multiple linear equation analysis! However, some challenges
+that may make this a nontrivial exercise in regression modeling:</p>
+<ol style="list-style-type: lower-alpha">
+<li>Some random noise (uncorrelated error) has been added to the
+calculation</li>
+<li>You are provided with a random sample of data from the underlying
+population of observations that was calculated</li>
+<li>The predictor variables may be correlated with one another, as one
+expects for variables representing topography, soils and vegetation</li>
+<li>There may be nonlinear relationships between predictor and response
+variables</li>
+<li>There may be interaction effects in therelationship between
+predictor and response variables</li>
+<li>There may be other confounding influences at play.</li>
+</ol>
+<p>Your group’s assignment is to reconstruct the true parameters of the
+Pinyon Roadrunner species-habitat relationship, and to outline the
+process by which you arrived at your result.</p>
+<p>Some hints:</p>
+<ul>
+<li>Explore the correlation structure of your dataset carefully.</li>
+<li>Use the vif function (<code>car</code> package) to explore possible
+multicollinearity, and refit your regression models accordingly.</li>
+<li>You can use the <code>update()</code> function to quickly add or
+remove parameters from existing regression (lm) models</li>
+<li>Use regression diagnostic plots</li>
+<li>Use the <code>poly</code> function to add polynomial terms to a
+regression model.</li>
+<li>Try using the <code>effects</code> package to easily display
+(graphically) effects of predictor variables modeled from your
+regression models, including interaction and polynomial terms</li>
+<li>Try using the <code>coplot()</code> function to generate graphs of
+suspected interaction terms empirically (from the data, not from a
+modeled relationship)</li>
+<li>Use the <code>anova()</code> function on multiple, nested models to
+statistically test model parsimony using an ‘Extra Sum of Squares’
+F-Test (increase in variance explained vs. number of parameters added).
+You could also use the AIC function to calculate AIC coefficients (which
+we will cover later in the course).</li>
+<li>Adopt (and consistently follow) an approach for addressing the
+multicollinearity that is present in the dataset.</li>
+</ul>
+<p>The assignment will be due on the deadline specified in
+WebCampus.</p>
+<p>Your report should include:</p>
+<ol style="list-style-type: decimal">
+<li>R code</li>
+<li>Key outputs (tables, figures) for describing important elements of
+your workflow and for supporting your conclusions.</li>
+<li>Your regression model parameters for the final model that you
+believe to be the “true model” (see above for explanation)</li>
+<li>A concluding section outlining your main findings, describing
+analysis steps or approaches that you considered especially helpful, and
+any remaining uncertainties.</li>
+</ol>
+<p>– End of exercise 4 —</p>
+
+
+
 </div>
-
-
-
+</div>
 
 </div>
 
@@ -522,6 +582,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
