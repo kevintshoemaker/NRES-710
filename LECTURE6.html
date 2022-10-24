@@ -625,8 +625,8 @@ hatchlings.successful &lt;- rbinom(n.nests,eggs.per.nest,probsucc(light))   # de
 #curve(probsucc,0,100)
 
 plot(hatchlings.successful~light)  # plot the data</code></pre>
-<p><img src="LECTURE6_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>Now that we have data, let’s run a simple linear regression analysis!
+<p><img src="LECTURE6_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+Now that we have data, let’s run a simple linear regression analysis!
 This one time we will compute the statistics directly from the data
 without using R functions.</p>
 <pre class="r"><code>slope &lt;- sum((light-mean(light))*(hatchlings.successful-mean(hatchlings.successful)))/sum((light-mean(light))^2)
@@ -764,7 +764,9 @@ to large. That is, the residuals are <strong>homoskedastic</strong> –
 which means they have equal variance across the range of the predictor
 and response variables.</p>
 <p>Let’s look at the sea turtle example:</p>
-<pre class="r"><code>my.residuals &lt;- model$residuals
+<pre class="r"><code># evaluate assumptions -----------------------------
+
+my.residuals &lt;- model$residuals
 my.standardized.residuals &lt;- rstandard(model)    # even better...
 
 plot(my.residuals~predict(model))    # plot residuals against fitted values</code></pre>
@@ -819,7 +821,9 @@ about what you’re willing to accept.</p>
 <div id="influential-points" class="section level3">
 <h3>Influential points</h3>
 <p>Which of the following plots has a highly influential point?</p>
-<pre class="r"><code>layout(matrix(1:4,nrow=2,byrow = T))
+<pre class="r"><code># which one has high influence point?
+
+layout(matrix(1:4,nrow=2,byrow = T))
 plot(anscombe$y1~anscombe$x1,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
 plot(anscombe$y2~anscombe$x2,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
 plot(anscombe$y3~anscombe$x3,ylab=&quot;response&quot;,xlab=&quot;predictor&quot;)
@@ -873,14 +877,6 @@ following:</p>
 <li>Non-significant p, low R2</li>
 </ol>
 </div>
-<div id="multiple-linear-regression" class="section level2">
-<h2>Multiple linear regression</h2>
-<p>Multiple, or multi-variable, linear regression simply refers to the
-case where you have more than one predictor variable.</p>
-<p>NOTE: avoid using the term ‘multivariate’ because that often refers
-to the case where you have multiple <strong>response</strong>
-variables.</p>
-</div>
 <div id="linear-regression-vs-correlation" class="section level2">
 <h2>Linear regression vs correlation</h2>
 <p>When you run a simple linear regression you are assuming that one
@@ -897,7 +893,9 @@ is ‘significant’) you can use the ‘cor.test’ function. By default, the
 is a parametric test that assumes both variables are normal, no
 outliers, etc. If you want you can run a non-parametric version- the
 Spearman’s correlation (or Kendall’s tau).</p>
-<pre class="r"><code>## load the &#39;mtcars&#39; data set
+<pre class="r"><code># assess correlation -----------------------
+
+## load the &#39;mtcars&#39; data set
 
 data(mtcars)
 
@@ -939,7 +937,7 @@ cor.test(mtcars$disp,mtcars$wt)</code></pre>
 ## 0.8879799</code></pre>
 <pre class="r"><code>## now try a non-parametric version
 
-cor.test(mtcars$disp,mtcars$wt, method = &quot;kendall&quot;) # or spearman</code></pre>
+cor.test(mtcars$disp,mtcars$wt, method = &quot;kendall&quot;) # or spearman (kendall generally preferred)</code></pre>
 <pre><code>## Warning in cor.test.default(mtcars$disp, mtcars$wt, method = &quot;kendall&quot;): Cannot
 ## compute exact p-value with ties</code></pre>
 <pre><code>## 
@@ -951,14 +949,21 @@ cor.test(mtcars$disp,mtcars$wt, method = &quot;kendall&quot;) # or spearman</cod
 ## sample estimates:
 ##       tau 
 ## 0.7433824</code></pre>
-<p>If we were running a multiple linear regression with these variables
-as predictor variables, we might be somewhat concerned about
+</div>
+</div>
+<div id="multiple-linear-regression" class="section level2">
+<h2>Multiple linear regression</h2>
+<p>Multiple, or multi-variable, linear regression simply refers to the
+case where you have more than one predictor variable. NOTE: avoid using
+the term ‘multivariate’ because that often refers to the case where you
+have multiple <strong>response</strong> variables.</p>
+<p>If we were running a multiple linear regression with the variables
+“disp”,“hp”,“wt” from the <code>mtcars</code> dataset as predictor
+variables (see above), we might be somewhat concerned about
 multicollinearity. What is that, you ask?</p>
-</div>
-</div>
 <div id="multicollinearity-for-multiple-linear-regression"
-class="section level2">
-<h2>Multicollinearity (for multiple linear regression)</h2>
+class="section level3">
+<h3>Multicollinearity (for multiple linear regression)</h3>
 <p>If you have multiple predictor variables, you should first check that
 your predictor variables are not too correlated with one another. If the
 correlation between all pairs of quantitative covariates is less than
@@ -975,25 +980,27 @@ of this class!</p>
 <p>Variance Inflation Factors (VIFs) are a diagnostic tool to help you
 evaluate if you have a multicollinearity problem. In general VIFs less
 than 4 are considered okay. On the other hand, VIFs greater than 5 or 10
-indicate serious problems!</p>
+indicate problems!</p>
 <p>To compute variance inflation factors, you can use the ‘vif’ function
 in the ‘car’ package. Let’s try this using the trees dataset!</p>
-<pre class="r"><code>########
+<pre class="r"><code># variance inflation factors ---------------------
+
+###
 # load the car package
 
 library(car)
 
-#######
+###
 # load the trees dataset
 
 data(trees)
 
-######
+###
 # visualize relationships among predictor vars
 
 pairs(trees[,c(&quot;Girth&quot;,&quot;Height&quot;)])</code></pre>
 <p><img src="LECTURE6_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<pre class="r"><code>######
+<pre class="r"><code>###
 # check for correlation in predictor variables
 
 cor(trees[,c(&quot;Girth&quot;,&quot;Height&quot;)])   # predictor variables not highly correlated</code></pre>
@@ -1013,7 +1020,7 @@ car::vif(my.mod)</code></pre>
 <p>Here it looks like we don’t have to worry!</p>
 <p>What about if we use the ‘mtcars’ dataset? It seemed there were
 stronger correlations among predictor variables in that case!</p>
-<pre class="r"><code>########
+<pre class="r"><code>###
 ## mtcars multicollinearity example
 
 mymod &lt;- lm(mpg~disp+hp+wt,data=mtcars) 
@@ -1029,7 +1036,9 @@ variables and eliminate one of these!</p>
 ## disp 1.0000000 0.7909486 0.8879799
 ## hp   0.7909486 1.0000000 0.6587479
 ## wt   0.8879799 0.6587479 1.0000000</code></pre>
-<pre class="r"><code>## let&#39;s remove the &#39;disp&#39; variable and keep weight...
+<pre class="r"><code>#  alternative: use &quot;findCorrelation&quot; from caret package
+
+## let&#39;s remove the &#39;disp&#39; variable and keep weight...
 
 mymod &lt;- lm(mpg~hp+wt,data=mtcars) 
 
@@ -1037,6 +1046,7 @@ vif(mymod)</code></pre>
 <pre><code>##       hp       wt 
 ## 1.766625 1.766625</code></pre>
 <p>Looks much better now!!!</p>
+</div>
 </div>
 </div>
 <div id="what-if-assumptions-are-violated" class="section level2">
@@ -1048,9 +1058,9 @@ regression are violated?</p>
 <p>If we suspect a non-linear functional relationship between our
 response and predictor variables, we might perform a <strong>non-linear
 regression</strong> analysis.</p>
-<p>We can perform a non-linear regression using the “nls” function in R
-(for non-linear least squares). Let’s use the “DNase” dataset in R to
-explore this.</p>
+<p>We can perform a non-linear regression using the <code>nls()</code>
+function in R (for non-linear least squares). Let’s use the “DNase”
+dataset in R to explore this.</p>
 <pre class="r"><code># ?nls
 
 data(DNase)
@@ -1190,12 +1200,12 @@ improves the situation.</p>
 that assumes the residuals are gamma distributed, or Poisson
 distributed). In a gamma or Poisson distribution, the residuals are
 expected to get larger as the expected mean value gets larger!</p>
-<p>We will talk more about GLM in an upcoming lecture. But for now,
-let’s run an example with a transformed response variable:</p>
-<pre class="r"><code>##########
+<p>We will talk more about GLM soon. But for now, let’s run an example
+with a transformed response variable:</p>
+<pre class="r"><code>###
 # heteroskedasticity
 
-##### first, simulate data with heteroskedastic residuals
+### first, simulate data with heteroskedastic residuals
 
 simulated.x &lt;- runif(100,0.1,5)
 simulated.y &lt;- exp(rnorm(100,1.1+0.3*simulated.x,0.7))
@@ -1214,8 +1224,9 @@ plot(model1)  # run diagnostic plots    heteroskedasticity issues</code></pre>
 
 model2 &lt;- lm(log(simulated.y)~simulated.x)
 par(mfrow=c(2,2))
-plot(model2)  # run diagnostic plots - no issues!  </code></pre>
+plot(model2)  # run diagnostic plots - no issues!</code></pre>
 <p><img src="LECTURE6_files/figure-html/unnamed-chunk-19-3.png" width="672" /></p>
+<pre class="r"><code># can also run &quot;bptest&quot; in &quot;lmtest&quot; package to test for violation of homoskedasticity</code></pre>
 </div>
 <div id="non-independence-of-observations" class="section level3">
 <h3>Non-independence of observations</h3>
@@ -1257,13 +1268,14 @@ regression and ANOVA is that in regression, the response variable is
 numeric/continuous and in ANOVA your response variable(s) is
 categorical.</p>
 <p>How similar are regression and ANOVA? Well, we can fit regression and
-ANOVA models with the ‘lm’ functions, the assumptions are essentially
-the same, and the diagnostic plots are essentially the same.</p>
+ANOVA models with the <code>lm()</code> function, the assumptions are
+essentially the same, and the diagnostic plots are essentially the
+same.</p>
 <p>There are differences- we will touch on this in the next lecture- but
 for now let’s focus on the similarities. Let’s run an ANOVA in R using
 the same approaches we have just learned for linear regression!</p>
 <p>In this example we will use the famous iris dataset.</p>
-<pre class="r"><code>#### ANOVA as regression example
+<pre class="r"><code>## ANOVA as regression example
 
 data(iris)    # load the iris dataset
 
@@ -1299,7 +1311,7 @@ summary(my.mod)    # look at the results</code></pre>
 ## Residuals 147 38.956   0.265                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>####
+<pre class="r"><code>###
 # alternative!
 
 my.mod &lt;- aov(Sepal.Length~Species,data=iris)   # same model!!

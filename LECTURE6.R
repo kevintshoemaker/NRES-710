@@ -95,6 +95,8 @@ plot(anscombe$y3~anscombe$x3,ylab="response",xlab="predictor")
 plot(anscombe$y4~anscombe$x4,ylab="response",xlab="predictor")
 
 
+# evaluate assumptions -----------------------------
+
 my.residuals <- model$residuals
 my.standardized.residuals <- rstandard(model)    # even better...
 
@@ -107,12 +109,16 @@ layout(matrix(1:4,2,byrow = T))
 plot(model)
 
 
+# which one has high influence point?
+
 layout(matrix(1:4,nrow=2,byrow = T))
 plot(anscombe$y1~anscombe$x1,ylab="response",xlab="predictor")
 plot(anscombe$y2~anscombe$x2,ylab="response",xlab="predictor")
 plot(anscombe$y3~anscombe$x3,ylab="response",xlab="predictor")
 plot(anscombe$y4~anscombe$x4,ylab="response",xlab="predictor")
 
+
+# assess correlation -----------------------
 
 ## load the 'mtcars' data set
 
@@ -143,27 +149,29 @@ cor.test(mtcars$disp,mtcars$wt)
 
 ## now try a non-parametric version
 
-cor.test(mtcars$disp,mtcars$wt, method = "kendall") # or spearman
+cor.test(mtcars$disp,mtcars$wt, method = "kendall") # or spearman (kendall generally preferred)
 
 
 
-########
+# variance inflation factors ---------------------
+
+###
 # load the car package
 
 library(car)
 
-#######
+###
 # load the trees dataset
 
 data(trees)
 
-######
+###
 # visualize relationships among predictor vars
 
 pairs(trees[,c("Girth","Height")])
 
 
-######
+###
 # check for correlation in predictor variables
 
 cor(trees[,c("Girth","Height")])   # predictor variables not highly correlated
@@ -178,7 +186,7 @@ my.mod <- lm(Volume~Girth+Height,data=trees)
 car::vif(my.mod)
 
 
-########
+###
 ## mtcars multicollinearity example
 
 mymod <- lm(mpg~disp+hp+wt,data=mtcars) 
@@ -187,6 +195,8 @@ vif(mymod)
 
 
 cor(mtcars.reduced)
+
+#  alternative: use "findCorrelation" from caret package
 
 ## let's remove the 'disp' variable and keep weight...
 
@@ -255,10 +265,10 @@ shapiro.test(resids)
 ## check for heteroskedasticity
 plot(resids~predict(model3))
 
-##########
+###
 # heteroskedasticity
 
-##### first, simulate data with heteroskedastic residuals
+### first, simulate data with heteroskedastic residuals
 
 simulated.x <- runif(100,0.1,5)
 simulated.y <- exp(rnorm(100,1.1+0.3*simulated.x,0.7))
@@ -278,10 +288,12 @@ plot(model1)  # run diagnostic plots    heteroskedasticity issues
 
 model2 <- lm(log(simulated.y)~simulated.x)
 par(mfrow=c(2,2))
-plot(model2)  # run diagnostic plots - no issues!  
+plot(model2)  # run diagnostic plots - no issues!
+
+# can also run "bptest" in "lmtest" package to test for violation of homoskedasticity
 
 
-#### ANOVA as regression example
+## ANOVA as regression example
 
 data(iris)    # load the iris dataset
 
@@ -292,7 +304,7 @@ summary(my.mod)    # look at the results
 
 anova(my.mod)     # produce an analysis of variance table
 
-####
+###
 # alternative!
 
 my.mod <- aov(Sepal.Length~Species,data=iris)   # same model!!
