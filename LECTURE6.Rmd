@@ -619,6 +619,7 @@ Alternatively, you might run a **generalized linear model (GLM)** that doesn't a
 We will talk more about GLM soon. But for now, let's run an example with a transformed response variable:
 
 ```{r}
+
 ###
 # heteroskedasticity
 
