@@ -39,7 +39,7 @@ The new species occurs in cooler Great Basin environments where the Greater Road
 
 You are provided (see file [PJRoadRunner.csv](PJRoadRunner.csv)) with the following data from 100 site locations where extensive point count surveys were implemented, including roadrunner density (response variable) as well as predictor variables representing topographic, edaphic (soil-related) and woodland vegetation structure:
 
-1. RR: PinyonRoadrunner density (birds/km2). This is your response variable
+1. RR: Pinyon Roadrunner density (birds/km2). This is your response variable
 2. Steep: slope steepness (%) 
 3. Elev: elevation (feet)
 4. TreeDens: Tree Density (trees/ha), all stems > 2-cm diameter at breast height (dbh)
