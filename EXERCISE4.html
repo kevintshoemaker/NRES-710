@@ -383,6 +383,9 @@ div.tocify {
     <li>
       <a href="EXERCISE3.html">Exercise- simple linear regression</a>
     </li>
+    <li>
+      <a href="EXERCISE4.html">Exercise- multiple linear regression</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -468,14 +471,14 @@ woodland vegetation structure:</p>
 <li>RR: PinyonRoadrunner density (birds/km2). This is your response
 variable</li>
 <li>Steep: slope steepness (%)</li>
-<li>Elev: Elevation (feet)</li>
+<li>Elev: elevation (feet)</li>
 <li>TreeDens: Tree Density (trees/ha), all stems &gt; 2-cm diameter at
 breast height (dbh)</li>
 <li>CosAsp: Slope aspect, linearized from degrees using a cosine
 transformation such that 1.0 represents northeast-facing (45 degree)
 slopes (i.e., cooler slopes that receive less solar insolation) and -1.0
 represents southwest-facing (225 degree) slopes.</li>
-<li>PatchSize: Area (ha) of the woodland patch where observations were
+<li>PatchSize: Area (ha) of the habitat patch where observations were
 made (or the closest patch to the observation point), estimated from
 aerial photography</li>
 <li>SoilpH: Surface soil pH from an aggregate sample (to 8-cm depth)
@@ -484,24 +487,24 @@ obtained from numerous locations around the observation point.</li>
 observation point. 9.CanCov: Tree canopy cover (% aerial cover)
 estimated from aerial photography through image analysis.</li>
 </ol>
-<p>Be aware that this is a simulated data set for a fictitious species
-(yes, I have been pulling your leg up to this point). Actually, the true
-habitat relationships for this species are perfectly known as the
-parameters in a linear equation used to calculate the abundances.</p>
+<p>Of course, this is actually a simulated data set. The true habitat
+relationships for this species are perfectly known as the parameters in
+a linear equation used to calculate the abundances.</p>
 <p>You should therefore be able to reconstruct the true parameters
-through a multiple linear equation analysis! However, some challenges
-that may make this a nontrivial exercise in regression modeling:</p>
+through a multiple linear equation analysis!</p>
+<p>However, some challenges that may make this a nontrivial exercise in
+regression modeling:</p>
 <ol style="list-style-type: lower-alpha">
 <li>Some random noise (uncorrelated error) has been added to the
-calculation</li>
+observations</li>
 <li>You are provided with a random sample of data from the underlying
 population of observations that was calculated</li>
 <li>The predictor variables may be correlated with one another, as one
 expects for variables representing topography, soils and vegetation</li>
 <li>There may be nonlinear relationships between predictor and response
 variables</li>
-<li>There may be interaction effects in therelationship between
-predictor and response variables</li>
+<li>There may be <strong>interaction effects</strong> in the
+relationship between predictor and response variables</li>
 <li>There may be other confounding influences at play.</li>
 </ol>
 <p>Your group’s assignment is to reconstruct the true parameters of the
@@ -512,20 +515,20 @@ process by which you arrived at your result.</p>
 <li>Explore the correlation structure of your dataset carefully.</li>
 <li>Use the vif function (<code>car</code> package) to explore possible
 multicollinearity, and refit your regression models accordingly.</li>
-<li>You can use the <code>update()</code> function to quickly add or
-remove parameters from existing regression (lm) models</li>
 <li>Use regression diagnostic plots</li>
-<li>Use the <code>poly</code> function to add polynomial terms to a
-regression model.</li>
-<li>Try using the <code>effects</code> package to easily display
-(graphically) effects of predictor variables modeled from your
-regression models, including interaction and polynomial terms</li>
+<li>You can use the <code>poly()</code> function to add polynomial terms
+to a regression model. Alternatively, use the <code>I()</code> operator:
+eg, to add a squared term use <code>y ~ x1 + I(x1^2)</code>.<br />
+</li>
+<li>Try using the <code>effects</code> package to easily visualize the
+effects of predictor variables modeled from your regression models,
+including interaction and polynomial terms</li>
 <li>Try using the <code>coplot()</code> function to generate graphs of
 suspected interaction terms empirically (from the data, not from a
 modeled relationship)</li>
 <li>Use the <code>anova()</code> function on multiple, nested models to
-statistically test model parsimony using an ‘Extra Sum of Squares’
-F-Test (increase in variance explained vs. number of parameters added).
+statistically test model parsimony using an F-Test or likelihood ratio
+test (increase in variance explained vs. number of parameters added).
 You could also use the AIC function to calculate AIC coefficients (which
 we will cover later in the course).</li>
 <li>Adopt (and consistently follow) an approach for addressing the

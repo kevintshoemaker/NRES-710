@@ -41,23 +41,25 @@ You are provided (see file [PJRoadRunner.csv](PJRoadRunner.csv)) with the follow
 
 1. RR: PinyonRoadrunner density (birds/km2). This is your response variable
 2. Steep: slope steepness (%) 
-3. Elev: Elevation (feet)
+3. Elev: elevation (feet)
 4. TreeDens: Tree Density (trees/ha), all stems > 2-cm diameter at breast height (dbh)
 5. CosAsp: Slope aspect, linearized from degrees using a cosine transformation such that 1.0 represents northeast-facing (45 degree) slopes (i.e., cooler slopes that receive less solar insolation) and -1.0 represents southwest-facing (225 degree) slopes. 
-6. PatchSize: Area (ha) of the woodland patch where observations were made (or the closest patch to the observation point), estimated from aerial photography
+6. PatchSize: Area (ha) of the habitat patch where observations were made (or the closest patch to the observation point), estimated from aerial photography
 7. SoilpH: Surface soil pH from an aggregate sample (to 8-cm depth) obtained from numerous locations around the observation point. 
 8. SoilD: Soil depth (m) averaged from numerous locations around the observation point.
 9.CanCov: Tree canopy cover (% aerial cover) estimated from aerial photography through image analysis. 
 
-Be aware that this is a simulated data set for a fictitious species (yes, I have been pulling your leg up to this point). Actually, the true habitat relationships for this species are perfectly known as the parameters in a linear equation used to calculate the abundances.
+Of course, this is actually a simulated data set. The true habitat relationships for this species are perfectly known as the parameters in a linear equation used to calculate the abundances.
 
-You should therefore be able to reconstruct the true parameters through a multiple linear equation analysis! However, some challenges that may make this a nontrivial exercise in regression modeling:
+You should therefore be able to reconstruct the true parameters through a multiple linear equation analysis! 
 
-a. Some random noise (uncorrelated error) has been added to the calculation
+However, some challenges that may make this a nontrivial exercise in regression modeling:
+
+a. Some random noise (uncorrelated error) has been added to the observations
 b. You are provided with a random sample of data from the underlying population of observations that was calculated
 c. The predictor variables may be correlated with one another, as one expects for variables representing topography, soils and vegetation
 d. There may be nonlinear relationships between predictor and response variables
-e. There may be interaction effects in therelationship between predictor and response variables
+e. There may be **interaction effects** in the relationship between predictor and response variables
 f. There may be other confounding influences at play. 
 
 Your group’s assignment is to reconstruct the true parameters of the Pinyon Roadrunner species-habitat relationship, and to outline the process by which you arrived at your result. 
@@ -66,12 +68,11 @@ Some hints:
 
 * Explore the correlation structure of your dataset carefully.
 * Use the vif function (`car` package) to explore possible multicollinearity, and refit your regression models accordingly.
-* You can use the `update()` function to quickly add or remove parameters from existing regression (lm) models
 * Use regression diagnostic plots
-* Use the `poly` function to add polynomial terms to a regression model. 
-* Try using the `effects` package to easily display (graphically) effects of predictor variables modeled from your regression models, including interaction and polynomial terms
+* You can use the `poly()` function to add polynomial terms to a regression model. Alternatively, use the `I()` operator: eg, to add a squared term use `y ~ x1 + I(x1^2)`.  
+* Try using the `effects` package to easily visualize the effects of predictor variables modeled from your regression models, including interaction and polynomial terms
 * Try using the `coplot()` function to generate graphs of suspected interaction terms empirically (from the data, not from a modeled relationship)
-* Use the `anova()` function on multiple, nested models to statistically test model parsimony using an 'Extra Sum of Squares' F-Test (increase in variance explained vs. number of parameters added). You could also use the AIC function to calculate AIC coefficients (which we will cover later in the course). 
+* Use the `anova()` function on multiple, nested models to statistically test model parsimony using an F-Test or likelihood ratio test (increase in variance explained vs. number of parameters added). You could also use the AIC function to calculate AIC coefficients (which we will cover later in the course). 
 * Adopt (and consistently follow) an approach for addressing the multicollinearity that is present in the dataset. 
 
 The assignment will be due on the deadline specified in WebCampus. 
