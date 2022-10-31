@@ -265,6 +265,7 @@ shapiro.test(resids)
 ## check for heteroskedasticity
 plot(resids~predict(model3))
 
+
 ###
 # heteroskedasticity
 

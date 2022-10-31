@@ -5,8 +5,7 @@
 #    ANOVA                              
 
 
-#######
-# Simple one-way ANOVA example
+# Simple one-way ANOVA example---------------
 
 F1 <- c(1,2,2,3)     # plant height under fertilizer treatment 1
 F2 <- c(5,6,5,4)
@@ -89,7 +88,8 @@ anova(model1)
 
 
 
-###
+# Pairwise comparison! -----------------
+
 # Tukey's test
 
 # find critical q-value for tukey test
@@ -180,7 +180,6 @@ plot(tukeytest)   #default plotting method for tukey test objects!
 ###
 # alternative method
 
-
  # run tukey test
 emm <- emmeans(plant.lm,specs=c("group"))  # compute the treatment means with 'emmeans'
 pairs(emm)    # run tukey test!
@@ -189,6 +188,8 @@ toplot <- as.data.frame(summary(emm))[,c("group","emmean","lower.CL","upper.CL")
 xvals <- barplot(toplot$emmean,names.arg = toplot$group,ylim=c(0,7))
 arrows(xvals,toplot$lower.CL,xvals,toplot$upper.CL,angle=90,code=3)
 text(xvals,c(6.4,6.4,6.4),labels = c("ab","a","b"),cex=1.5)
+
+# note: many statisticians recommend against compact letter displays... 
 
 
 
@@ -220,16 +221,29 @@ with(ToothGrowth, {   # the "with" function allows you to only specify the name 
   interaction.plot(dose, supp, len, fixed = TRUE, col = c("red","blue"), leg.bty = "o")
 })
 
+# alternatively, use the "effects" package:
+
+plot(effects::Effect(c("dose", "supp"),model_with_interaction))
+
+plot(effects::Effect(c("dose", "supp"),model))
 
 
-
-TukeyHSD(aov(model), "dose")   # run tukey test for the 'dose' variable in the ToothGrowth model
-TukeyHSD(aov(model_with_interaction), "dose")   # run tukey test for the 'dose' variable in the ToothGrowth model
+TukeyHSD(aov(model), "dose")   # run Tukey test for the 'dose' variable in the ToothGrowth model
+TukeyHSD(aov(model_with_interaction), "dose")   # run Tukey test for the 'dose' variable in the ToothGrowth model
 
 library(emmeans)
-emm = emmeans(model_with_interaction,
-                      specs= pairwise ~ dose:supp)
-contrast(emm)
+emm = emmeans(model_with_interaction, ~dose:supp)
+emm
+plot(emm,by="dose")
+
+pairs(emm,type="response")   # look at pairwise comparisons
+
+pwpm(emm)    # generate an informative summary matrix of pairwise comparisons!
+
+emmip(model_with_interaction, supp ~ dose)   # interaction plot of emms
+
+# NOTE: you could use compact letter displays but many statisticians prefer to avoid this!
+
 
 
 ### Kruskal-Wallis example

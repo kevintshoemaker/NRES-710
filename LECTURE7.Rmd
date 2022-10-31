@@ -36,11 +36,11 @@ In a simple linear regression, we are testing whether the mean of our response v
 
 In ANOVA, we are testing whether the mean of our response variable changes across the different levels (bins) of our categorical variable.
 
-The null hypothesis in ANOVA is that the mean of the response variable is the same across all levels/bins of your categorical variable – i.e. $\mu_1=\mu_2=\mu_3=\mu_i$. In this way, ANOVA is a **global test** that considers all of the categories of your predictor variable simultaneously. If you reject the null hypothesis, at least one of the categories is different from the others... But you don't know which one(s)! 
+The null hypothesis in ANOVA is that the mean of the response variable is the same across all levels of your categorical variable – i.e. $\mu_1=\mu_2=\mu_3=\mu_i$. In this way, ANOVA is a **global test** that considers all of the categories of your predictor variable simultaneously. If you reject the null hypothesis, at least one of the categories is different from the others... But you don't know which one(s)! 
 
-Note that if you’re facing a situation where your categorical variable has two groups, you can use EITHER a t-test or an ANOVA. But you should use the t-test -- first of all, the t-test works with unequal variance, and second of all, it would just seem strange to run an ANOVA in this case!  
+Note that if you’re facing a situation where your categorical variable has two groups, you can use EITHER a t-test or an ANOVA. ...But you should use the t-test -- first, the t-test works with unequal variance, second, there is no on-tailed F test, and third, it would just seem strangely overcomplicated to run an ANOVA in this case!  
 
-In ANOVA, the test statistic is called the F statistic. This is analogous to the t-statistic and the Chi-squared statistic in that it has a known sampling error distribution.
+In ANOVA, the test statistic is called the F-statistic. This is analogous to the t-statistic and the Chi-squared statistic in that it has a known sampling error distribution.
 
 Let's explore this statistic in a little more detail!
 
@@ -64,7 +64,7 @@ The unexplained variance is defined by:
 
 $\sum_{i=1}^{K}\sum_{j=1}^{n_i}(Y_{ij}-\bar{Y_i})^2/(N-K)$
  
-You won't generally need to compute the F statistic yourself but it is useful to know how to do it! We will go though one example where we compute the F statistic 'by hand' (in R), but after that we will let R functions do the job for us! 
+You won't generally need to compute the F-statistic yourself but it is useful to know how to do it! We will go though one example where we compute the F statistic 'by hand' (in R), but after that we will let R functions do the job for us! 
 
 
 ### The F Distribution
@@ -73,10 +73,9 @@ The F distribution was developed by George Snedecor (founder of the first US sta
 
 Just like the t distribution and the Chi-squared distribution, the F distribution is the approximate sampling distribution of the F statistic under the null hypothesis. 
 
-Interesting fact: in the case where the categorical variable has only two levels, the F distribution is just the t distribution, squared!  
+Interesting fact: in the case where the categorical variable has only two levels, the F distribution is the square of the t distribution!  
 
 The F distribution has two parameters: the numerator degrees of freedom (df1; also known as the 'treatment' degrees of freedom) and the denominator degrees of freedom (df2; also known as the residual degrees of freedom). The numerator degrees of freedom for a one-way ANOVA is K-1, and the denominator degrees of freedom is N-K.   
-
 #### Regression and the F distribution/statistic
 
 What is the F-distribution commonly associated with (besides ANOVA)? 
@@ -84,18 +83,17 @@ That’s right – Linear Regression!
 
 ANOVA is a special case of regression where the predictor variable is categorical -- there is one independent variable and one or more dependent variables that are categorical. 
 
-In linear regression, the F-test is a global test of whether the signal "significantly" outweighs the noise!
-
+In linear regression, just as in ANOVA, the F-test is a global test of whether the signal outweighs the noise beyond a reasonable doubt!
 
 ### Assumptions of ANOVA
 
 Since ANOVA and regression are basically the same thing, the assumptions are also basically the same!
 
-Also note that, like regression and t-tests, ANOVA is reasonably robust against violations of the normal distribution assumption. 
+Also note that, like regression and t-tests, ANOVA is reasonably robust against violations of normality. 
 
 #### Normality
 
-Each sample group is drawn from a normally distributed population.
+Each sample group is drawn from a normally distributed population. (remember the raw distribution of your response variable does not need to be normally distributed)
 
 #### Independence
 
@@ -115,7 +113,7 @@ Let's look at the following example: we measure the height of some plants under 
 
 Here the individual observations ($y_{ij}$) are a function of the average height of the plants ($\mu$) plus the effect of the fertilizer (Ai) plus an error term (Eij)
 
-In comparison with linear regression (using the 'language' of linear regression), let's write out this model as a linear equation!
+To illustrate the similarity with linear regression (using the 'language' of linear regression), let's write out this model as a linear equation!
 
 $height_i = \beta_0 + \beta_1\cdot fertilizer2 + \beta_2\cdot fertilizer3 + \epsilon_i$
 
@@ -123,16 +121,13 @@ Where i is the observation number, beta0 is the intercept, beta1 and beta2 are '
 
 What happened to fertilizer #1 in this example? Well, if observation 5 was treated with fertilizer #1, then the value for 'fertilizer2' would be 0 and the value for 'fertilizer3' would also be zero. That is, the intercept (beta0) represents the expected mean for observations treated with fertilizer 1! 
 
-[draw on whiteboard]
-
 [demonstration with 'model.matrix']
 
-Our goal here is to test if the regression coefficients beta1 and beta2 are zero- that is, that mean plant height is the same across all three treatments.
+Our goal here is to test if the regression coefficients beta1 and beta2 are zero- that is, that mean plant height is the same across all three treatments (in regression terms: the intercept-only model is the correct model).
 
 ```{r}
 
-#######
-# Simple one-way ANOVA example
+# Simple one-way ANOVA example---------------
 
 F1 <- c(1,2,2,3)     # plant height under fertilizer treatment 1
 F2 <- c(5,6,5,4)
@@ -231,9 +226,9 @@ This is where *pairwise comparison* comes in. Pairwise comparisons allow you to 
 
 Remember that if we are unable to reject our null hypothesis, there is no point in performing pairwise comparisons- we already know that the variation in group means is consistent with the null hypothesis that the true population means are not actually different from one another. 
 
-There are several ways to perform pairwise comparisons in R. One of the most powerful and flexible functions for doing this is the 'emmeans' function (in the 'emmeans' package). 
+There are several ways to perform pairwise comparisons in R. One of the most powerful and flexible functions for doing this is the `emmeans()` function (in the 'emmeans' package). 
 
-For classical ANOVA tests, the most common method for pairwise comparison is called 'Tukey's test'. This can be done using the 'TukeyHSD' function in R or the 'emmeans' function. 
+For classical ANOVA tests, the most common method for pairwise comparison is called 'Tukey's test'. This can be done using the 'TukeyHSD' function in R or the `emmeans()` function. 
 
 ### Tukey's test
 
@@ -259,7 +254,8 @@ Lets' try it!
 
 ```{r}
 
-###
+# Pairwise comparison! -----------------
+
 # Tukey's test
 
 # find critical q-value for tukey test
@@ -325,10 +321,10 @@ emm <- emmeans(model1,specs=c("Treatment"))  # compute the treatment means with 
 pairs(emm)    # run tukey test!
 
 ```
+
 Note that the last method ('emmeans') is the most flexible, since you can use this function for all kinds of models, including GLM!
 
-The 'general' way to think about pairwise comparisons is that you are using the model to make predictions under different "what if" scenarios (e.g., what is the expected response if treatment is A, temperature is 25C, soil type is "X") and then testing to see if those differences are consistent with the null hypothesis of zero differences. If you think about it this way, performing pairwise comparisons can make sense even for complex models with multiple continuous and categorical predictor variables!
-
+The 'general' way to think about pairwise comparisons is that you are using the model to make predictions (of the mean response value) under different pairs of "what if" scenarios (e.g., what is the expected response if treatment is A vs B, given temperature is 25C, and soil type is "A") and then testing to see if those differences are consistent with the null hypothesis of zero differences. If you think about it this way, performing pairwise comparisons can make sense even for complex models with multiple continuous and categorical predictor variables!
 
 ## Another simple example
 
@@ -361,7 +357,6 @@ plot(tukeytest)   #default plotting method for tukey test objects!
 ###
 # alternative method
 
-
  # run tukey test
 emm <- emmeans(plant.lm,specs=c("group"))  # compute the treatment means with 'emmeans'
 pairs(emm)    # run tukey test!
@@ -371,11 +366,15 @@ xvals <- barplot(toplot$emmean,names.arg = toplot$group,ylim=c(0,7))
 arrows(xvals,toplot$lower.CL,xvals,toplot$upper.CL,angle=90,code=3)
 text(xvals,c(6.4,6.4,6.4),labels = c("ab","a","b"),cex=1.5)
 
+# note: many statisticians recommend against compact letter displays... 
+
 
 ```
 
 
-In the above figure, we use the convention of adding letter codes to our plot to illustrate the results of the pairwise comparison. Pairs of treatments/groups with different labels are different according to the pairwise comparison test. Pairs that share a common label are not different. In the above figure, treatment 1 and treatment 2 are different from one another, but the control is not different from either treatment. You can also see this visually based on the overlapping in the confidence intervals (trt1 and trt2 do not overlap, whereas both treatments overlap with the control). 
+In the above figure, we use the convention of adding letter codes to our plot to illustrate the results of the pairwise comparison (compact letter displays). Pairs of treatments/groups with different labels are different according to the pairwise comparison test. Pairs that share a common label are not different. In the above figure, treatment 1 and treatment 2 are different from one another, but the control is not different from either treatment. You can also see this visually based on the overlapping in the confidence intervals (trt1 and trt2 do not overlap, whereas both treatments overlap with the control).
+
+Statisticians often warn against using compact letter displays, for the same reasons they often caution against using "significance tests" (e.g., $p < 0.05$). 
 
 
 ## Two-way ANOVA
@@ -438,24 +437,36 @@ with(ToothGrowth, {   # the "with" function allows you to only specify the name 
   interaction.plot(dose, supp, len, fixed = TRUE, col = c("red","blue"), leg.bty = "o")
 })
 
+# alternatively, use the "effects" package:
 
+plot(effects::Effect(c("dose", "supp"),model_with_interaction))
+
+plot(effects::Effect(c("dose", "supp"),model))
 
 ```
 
-
 ### Pairwise comparisons
 
-Pairwise comparisons for two-way ANOVA are similar to in one-way ANOVA- you just have to specify which categorical predictor variable(s) you want to run pairwise comparisons for! Or you might want to run pairwise comparisons for all combinations of levels across both categorical predictors... If you want to do the latter (e.g., to examine which interactions are significant), you might consider using the 'emmeans' function in the 'emmeans' package
+Pairwise comparisons for two-way ANOVA are similar to in one-way ANOVA- you just have to specify which categorical predictor variable(s) you want to run pairwise comparisons for! Or, for models with interactions, you might want to run pairwise comparisons for all combinations of levels across both categorical predictors... If you want to do the latter (e.g., to examine which specific interactions are significant), you can the 'emmeans' package
 
 ```{r}
 
-TukeyHSD(aov(model), "dose")   # run tukey test for the 'dose' variable in the ToothGrowth model
-TukeyHSD(aov(model_with_interaction), "dose")   # run tukey test for the 'dose' variable in the ToothGrowth model
+TukeyHSD(aov(model), "dose")   # run Tukey test for the 'dose' variable in the ToothGrowth model
+TukeyHSD(aov(model_with_interaction), "dose")   # run Tukey test for the 'dose' variable in the ToothGrowth model
 
 library(emmeans)
-emm = emmeans(model_with_interaction,
-                      specs= pairwise ~ dose:supp)
-contrast(emm)
+emm = emmeans(model_with_interaction, ~dose:supp)
+emm
+plot(emm,by="dose")
+
+pairs(emm,type="response")   # look at pairwise comparisons
+
+pwpm(emm)    # generate an informative summary matrix of pairwise comparisons!
+
+emmip(model_with_interaction, supp ~ dose)   # interaction plot of emms
+
+# NOTE: you could use compact letter displays but many statisticians prefer to avoid this!
+
 
 ```
 
@@ -607,7 +618,7 @@ dt
 ```
 Now we could add our compact letter display- in which case we would want to indicate that group 3 differs from group 1. So group 1 could get an "a", group 2 could get an "ab", and group 3 could get a "b". 
 
-An alternative to the Dunn test is to use pairwise Mann-Whitney U (MWU) tests and then to use a Bonferroni correction (or another similar correction) to control the experimentwise error rate.
+An alternative to the Dunn test is to use pairwise Mann-Whitney U (MWU) tests and then to use a Bonferroni correction (or another similar correction) to control the experiment-wise error rate.
 
 In the above example, we would run three MWU tests- one for each pairwise comparison- and would reject the null if any of the p-values was less than $\frac{\alpha}{3}$ (applying the Bonferroni correction).
 
@@ -621,7 +632,7 @@ In this class I have emphasized the equivalence between ANOVA and regression. Th
 
 ANOVA is closely linked with experimental design. If you control for all confounding variables so that your categorical "treatment" is the only factor that could influence your response process, you can run an ANOVA and you are home free- there is nothing left to do- you have your answer in hand. This is called **design-based inference** because you designed your experiment to control for nuisance variables that could limit your inference. This makes the statistical analyses easy! *Design based inference uses careful experimental design to control for nuisance factors.* 
 
-However, in observational studies we often can't control for nuisance factors using experimental design. Instead we often need to control for nuisance factors within our model. This process is called **model-based inference**. Model based inference is often not as satisfying, much more difficult, and often much less powerful, and prone to subtle and pernicious errors, and requiring more complex statistics, etc., BUT it is often the best we can do!! Because this class is for ecologists and environmental scietists, I tend to emphasize model-based inference over design-based inference. And this is why I de-emphasize ANOVA and instead emphasize linear regression, glm, and mixed models (lmer, glmm).   
+However, in observational studies we often can't control for nuisance factors using experimental design. Instead we often need to control for nuisance factors within our model. This process is called **model-based inference**. Model based inference is often not as satisfying, more difficult, and often much less powerful, and prone to subtle and pernicious errors, and requiring more complex statistics, etc., BUT it is often the best we can do!! Because this class is for ecologists and environmental scientists, I tend to emphasize model-based inference over design-based inference. And this is why I de-emphasize ANOVA and instead emphasize linear regression, glm, and mixed models (lmer, glmm).   
 
 This is the subject of the next lecture.
 

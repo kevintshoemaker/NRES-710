@@ -383,6 +383,9 @@ div.tocify {
     <li>
       <a href="EXERCISE3.html">Exercise- simple linear regression</a>
     </li>
+    <li>
+      <a href="EXERCISE4.html">Exercise- multiple linear regression</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -451,18 +454,18 @@ response variable changes linearly across the range of our
 changes across the different levels (bins) of our categorical
 variable.</p>
 <p>The null hypothesis in ANOVA is that the mean of the response
-variable is the same across all levels/bins of your categorical variable
-– i.e. <span class="math inline">\(\mu_1=\mu_2=\mu_3=\mu_i\)</span>. In
+variable is the same across all levels of your categorical variable –
+i.e. <span class="math inline">\(\mu_1=\mu_2=\mu_3=\mu_i\)</span>. In
 this way, ANOVA is a <strong>global test</strong> that considers all of
 the categories of your predictor variable simultaneously. If you reject
 the null hypothesis, at least one of the categories is different from
 the others… But you don’t know which one(s)!</p>
 <p>Note that if you’re facing a situation where your categorical
-variable has two groups, you can use EITHER a t-test or an ANOVA. But
-you should use the t-test – first of all, the t-test works with unequal
-variance, and second of all, it would just seem strange to run an ANOVA
-in this case!</p>
-<p>In ANOVA, the test statistic is called the F statistic. This is
+variable has two groups, you can use EITHER a t-test or an ANOVA. …But
+you should use the t-test – first, the t-test works with unequal
+variance, second, there is no on-tailed F test, and third, it would just
+seem strangely overcomplicated to run an ANOVA in this case!</p>
+<p>In ANOVA, the test statistic is called the F-statistic. This is
 analogous to the t-statistic and the Chi-squared statistic in that it
 has a known sampling error distribution.</p>
 <p>Let’s explore this statistic in a little more detail!</p>
@@ -490,7 +493,7 @@ class="math inline">\(\bar{Y}\)</span> is the overall mean.</p>
 <p>The unexplained variance is defined by:</p>
 <p><span
 class="math inline">\(\sum_{i=1}^{K}\sum_{j=1}^{n_i}(Y_{ij}-\bar{Y_i})^2/(N-K)\)</span></p>
-<p>You won’t generally need to compute the F statistic yourself but it
+<p>You won’t generally need to compute the F-statistic yourself but it
 is useful to know how to do it! We will go though one example where we
 compute the F statistic ‘by hand’ (in R), but after that we will let R
 functions do the job for us!</p>
@@ -504,34 +507,32 @@ Ronald Fisher, who developed the ANOVA testing framework.</p>
 distribution is the approximate sampling distribution of the F statistic
 under the null hypothesis.</p>
 <p>Interesting fact: in the case where the categorical variable has only
-two levels, the F distribution is just the t distribution, squared!</p>
+two levels, the F distribution is the square of the t distribution!</p>
 <p>The F distribution has two parameters: the numerator degrees of
 freedom (df1; also known as the ‘treatment’ degrees of freedom) and the
 denominator degrees of freedom (df2; also known as the residual degrees
 of freedom). The numerator degrees of freedom for a one-way ANOVA is
-K-1, and the denominator degrees of freedom is N-K.</p>
-<div id="regression-and-the-f-distributionstatistic"
-class="section level4">
-<h4>Regression and the F distribution/statistic</h4>
+K-1, and the denominator degrees of freedom is N-K.<br />
+#### Regression and the F distribution/statistic</p>
 <p>What is the F-distribution commonly associated with (besides ANOVA)?
 That’s right – Linear Regression!</p>
 <p>ANOVA is a special case of regression where the predictor variable is
 categorical – there is one independent variable and one or more
 dependent variables that are categorical.</p>
-<p>In linear regression, the F-test is a global test of whether the
-signal “significantly” outweighs the noise!</p>
-</div>
+<p>In linear regression, just as in ANOVA, the F-test is a global test
+of whether the signal outweighs the noise beyond a reasonable doubt!</p>
 </div>
 <div id="assumptions-of-anova" class="section level3">
 <h3>Assumptions of ANOVA</h3>
 <p>Since ANOVA and regression are basically the same thing, the
 assumptions are also basically the same!</p>
 <p>Also note that, like regression and t-tests, ANOVA is reasonably
-robust against violations of the normal distribution assumption.</p>
+robust against violations of normality.</p>
 <div id="normality" class="section level4">
 <h4>Normality</h4>
-<p>Each sample group is drawn from a normally distributed
-population.</p>
+<p>Each sample group is drawn from a normally distributed population.
+(remember the raw distribution of your response variable does not need
+to be normally distributed)</p>
 </div>
 <div id="independence" class="section level4">
 <h4>Independence</h4>
@@ -559,8 +560,9 @@ plants under the effect of 3 different fertilizer treatments.</p>
 class="math inline">\(y_{ij}\)</span>) are a function of the average
 height of the plants (<span class="math inline">\(\mu\)</span>) plus the
 effect of the fertilizer (Ai) plus an error term (Eij)</p>
-<p>In comparison with linear regression (using the ‘language’ of linear
-regression), let’s write out this model as a linear equation!</p>
+<p>To illustrate the similarity with linear regression (using the
+‘language’ of linear regression), let’s write out this model as a linear
+equation!</p>
 <p><span class="math inline">\(height_i = \beta_0 + \beta_1\cdot
 fertilizer2 + \beta_2\cdot fertilizer3 + \epsilon_i\)</span></p>
 <p>Where i is the observation number, beta0 is the intercept, beta1 and
@@ -574,13 +576,12 @@ value for ‘fertilizer3’ would be zero.</p>
 be 0 and the value for ‘fertilizer3’ would also be zero. That is, the
 intercept (beta0) represents the expected mean for observations treated
 with fertilizer 1!</p>
-<p>[draw on whiteboard]</p>
 <p>[demonstration with ‘model.matrix’]</p>
 <p>Our goal here is to test if the regression coefficients beta1 and
 beta2 are zero- that is, that mean plant height is the same across all
-three treatments.</p>
-<pre class="r"><code>#######
-# Simple one-way ANOVA example
+three treatments (in regression terms: the intercept-only model is the
+correct model).</p>
+<pre class="r"><code># Simple one-way ANOVA example---------------
 
 F1 &lt;- c(1,2,2,3)     # plant height under fertilizer treatment 1
 F2 &lt;- c(5,6,5,4)
@@ -705,11 +706,11 @@ is no point in performing pairwise comparisons- we already know that the
 variation in group means is consistent with the null hypothesis that the
 true population means are not actually different from one another.</p>
 <p>There are several ways to perform pairwise comparisons in R. One of
-the most powerful and flexible functions for doing this is the ‘emmeans’
-function (in the ‘emmeans’ package).</p>
+the most powerful and flexible functions for doing this is the
+<code>emmeans()</code> function (in the ‘emmeans’ package).</p>
 <p>For classical ANOVA tests, the most common method for pairwise
 comparison is called ‘Tukey’s test’. This can be done using the
-‘TukeyHSD’ function in R or the ‘emmeans’ function.</p>
+‘TukeyHSD’ function in R or the <code>emmeans()</code> function.</p>
 <div id="tukeys-test" class="section level3">
 <h3>Tukey’s test</h3>
 <p>Tukey’s test (or Tukey’s Honestly Significant Differences [HSD])
@@ -741,7 +742,8 @@ test</em>.</p>
 <div id="tukey-test-example" class="section level3">
 <h3>Tukey test example</h3>
 <p>Lets’ try it!</p>
-<pre class="r"><code>###
+<pre class="r"><code># Pairwise comparison! -----------------
+
 # Tukey&#39;s test
 
 # find critical q-value for tukey test
@@ -829,13 +831,13 @@ pairs(emm)    # run tukey test!</code></pre>
 <p>Note that the last method (‘emmeans’) is the most flexible, since you
 can use this function for all kinds of models, including GLM!</p>
 <p>The ‘general’ way to think about pairwise comparisons is that you are
-using the model to make predictions under different “what if” scenarios
-(e.g., what is the expected response if treatment is A, temperature is
-25C, soil type is “X”) and then testing to see if those differences are
-consistent with the null hypothesis of zero differences. If you think
-about it this way, performing pairwise comparisons can make sense even
-for complex models with multiple continuous and categorical predictor
-variables!</p>
+using the model to make predictions (of the mean response value) under
+different pairs of “what if” scenarios (e.g., what is the expected
+response if treatment is A vs B, given temperature is 25C, and soil type
+is “A”) and then testing to see if those differences are consistent with
+the null hypothesis of zero differences. If you think about it this way,
+performing pairwise comparisons can make sense even for complex models
+with multiple continuous and categorical predictor variables!</p>
 </div>
 </div>
 <div id="another-simple-example" class="section level2">
@@ -885,7 +887,6 @@ plot(tukeytest)   #default plotting method for tukey test objects!</code></pre>
 <pre class="r"><code>###
 # alternative method
 
-
  # run tukey test
 emm &lt;- emmeans(plant.lm,specs=c(&quot;group&quot;))  # compute the treatment means with &#39;emmeans&#39;
 pairs(emm)    # run tukey test!</code></pre>
@@ -900,15 +901,19 @@ xvals &lt;- barplot(toplot$emmean,names.arg = toplot$group,ylim=c(0,7))
 arrows(xvals,toplot$lower.CL,xvals,toplot$upper.CL,angle=90,code=3)
 text(xvals,c(6.4,6.4,6.4),labels = c(&quot;ab&quot;,&quot;a&quot;,&quot;b&quot;),cex=1.5)</code></pre>
 <p><img src="LECTURE7_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
+<pre class="r"><code># note: many statisticians recommend against compact letter displays... </code></pre>
 <p>In the above figure, we use the convention of adding letter codes to
-our plot to illustrate the results of the pairwise comparison. Pairs of
-treatments/groups with different labels are different according to the
-pairwise comparison test. Pairs that share a common label are not
-different. In the above figure, treatment 1 and treatment 2 are
-different from one another, but the control is not different from either
-treatment. You can also see this visually based on the overlapping in
-the confidence intervals (trt1 and trt2 do not overlap, whereas both
-treatments overlap with the control).</p>
+our plot to illustrate the results of the pairwise comparison (compact
+letter displays). Pairs of treatments/groups with different labels are
+different according to the pairwise comparison test. Pairs that share a
+common label are not different. In the above figure, treatment 1 and
+treatment 2 are different from one another, but the control is not
+different from either treatment. You can also see this visually based on
+the overlapping in the confidence intervals (trt1 and trt2 do not
+overlap, whereas both treatments overlap with the control).</p>
+<p>Statisticians often warn against using compact letter displays, for
+the same reasons they often caution against using “significance tests”
+(e.g., <span class="math inline">\(p &lt; 0.05\)</span>).</p>
 </div>
 <div id="two-way-anova" class="section level2">
 <h2>Two-way ANOVA</h2>
@@ -1065,18 +1070,24 @@ with(ToothGrowth, {   # the &quot;with&quot; function allows you to only specify
   interaction.plot(dose, supp, len, fixed = TRUE, col = c(&quot;red&quot;,&quot;blue&quot;), leg.bty = &quot;o&quot;)
 })</code></pre>
 <p><img src="LECTURE7_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code># alternatively, use the &quot;effects&quot; package:
+
+plot(effects::Effect(c(&quot;dose&quot;, &quot;supp&quot;),model_with_interaction))</code></pre>
+<p><img src="LECTURE7_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<pre class="r"><code>plot(effects::Effect(c(&quot;dose&quot;, &quot;supp&quot;),model))</code></pre>
+<p><img src="LECTURE7_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
 </div>
 </div>
 <div id="pairwise-comparisons-1" class="section level3">
 <h3>Pairwise comparisons</h3>
 <p>Pairwise comparisons for two-way ANOVA are similar to in one-way
 ANOVA- you just have to specify which categorical predictor variable(s)
-you want to run pairwise comparisons for! Or you might want to run
-pairwise comparisons for all combinations of levels across both
-categorical predictors… If you want to do the latter (e.g., to examine
-which interactions are significant), you might consider using the
-‘emmeans’ function in the ‘emmeans’ package</p>
-<pre class="r"><code>TukeyHSD(aov(model), &quot;dose&quot;)   # run tukey test for the &#39;dose&#39; variable in the ToothGrowth model</code></pre>
+you want to run pairwise comparisons for! Or, for models with
+interactions, you might want to run pairwise comparisons for all
+combinations of levels across both categorical predictors… If you want
+to do the latter (e.g., to examine which specific interactions are
+significant), you can the ‘emmeans’ package</p>
+<pre class="r"><code>TukeyHSD(aov(model), &quot;dose&quot;)   # run Tukey test for the &#39;dose&#39; variable in the ToothGrowth model</code></pre>
 <pre><code>##   Tukey multiple comparisons of means
 ##     95% family-wise confidence level
 ## 
@@ -1087,7 +1098,7 @@ which interactions are significant), you might consider using the
 ## 1-0.5  9.130  6.215909 12.044091 0e+00
 ## 2-0.5 15.495 12.580909 18.409091 0e+00
 ## 2-1    6.365  3.450909  9.279091 7e-06</code></pre>
-<pre class="r"><code>TukeyHSD(aov(model_with_interaction), &quot;dose&quot;)   # run tukey test for the &#39;dose&#39; variable in the ToothGrowth model</code></pre>
+<pre class="r"><code>TukeyHSD(aov(model_with_interaction), &quot;dose&quot;)   # run Tukey test for the &#39;dose&#39; variable in the ToothGrowth model</code></pre>
 <pre><code>##   Tukey multiple comparisons of means
 ##     95% family-wise confidence level
 ## 
@@ -1099,20 +1110,54 @@ which interactions are significant), you might consider using the
 ## 2-0.5 15.495 12.727488 18.262512 0.0e+00
 ## 2-1    6.365  3.597488  9.132512 2.7e-06</code></pre>
 <pre class="r"><code>library(emmeans)
-emm = emmeans(model_with_interaction,
-                      specs= pairwise ~ dose:supp)
-contrast(emm)</code></pre>
-<pre><code>## I bet you wanted to call this with just object[[1]] - use &#39;[[]]&#39; or which&#39; if I&#39;m wrong.
-## See &#39;? emm_list&#39; for more information</code></pre>
-<pre><code>##  contrast          estimate   SE df t.ratio p.value
-##  dose0.5 OJ effect    -5.58 1.05 54  -5.326  &lt;.0001
-##  dose1 OJ effect       3.89 1.05 54   3.708  0.0006
-##  dose2 OJ effect       7.25 1.05 54   6.913  &lt;.0001
-##  dose0.5 VC effect   -10.83 1.05 54 -10.334  &lt;.0001
-##  dose1 VC effect      -2.04 1.05 54  -1.949  0.0565
-##  dose2 VC effect       7.33 1.05 54   6.989  &lt;.0001
+emm = emmeans(model_with_interaction, ~dose:supp)
+emm</code></pre>
+<pre><code>##  dose supp emmean   SE df lower.CL upper.CL
+##  0.5  OJ    13.23 1.15 54    10.93     15.5
+##  1    OJ    22.70 1.15 54    20.40     25.0
+##  2    OJ    26.06 1.15 54    23.76     28.4
+##  0.5  VC     7.98 1.15 54     5.68     10.3
+##  1    VC    16.77 1.15 54    14.47     19.1
+##  2    VC    26.14 1.15 54    23.84     28.4
 ## 
-## P value adjustment: fdr method for 6 tests</code></pre>
+## Confidence level used: 0.95</code></pre>
+<pre class="r"><code>plot(emm,by=&quot;dose&quot;)</code></pre>
+<p><img src="LECTURE7_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>pairs(emm,type=&quot;response&quot;)   # look at pairwise comparisons</code></pre>
+<pre><code>##  contrast                estimate   SE df t.ratio p.value
+##  dose0.5 OJ - dose1 OJ      -9.47 1.62 54  -5.831  &lt;.0001
+##  dose0.5 OJ - dose2 OJ     -12.83 1.62 54  -7.900  &lt;.0001
+##  dose0.5 OJ - dose0.5 VC     5.25 1.62 54   3.233  0.0243
+##  dose0.5 OJ - dose1 VC      -3.54 1.62 54  -2.180  0.2640
+##  dose0.5 OJ - dose2 VC     -12.91 1.62 54  -7.949  &lt;.0001
+##  dose1 OJ - dose2 OJ        -3.36 1.62 54  -2.069  0.3187
+##  dose1 OJ - dose0.5 VC      14.72 1.62 54   9.064  &lt;.0001
+##  dose1 OJ - dose1 VC         5.93 1.62 54   3.651  0.0074
+##  dose1 OJ - dose2 VC        -3.44 1.62 54  -2.118  0.2936
+##  dose2 OJ - dose0.5 VC      18.08 1.62 54  11.133  &lt;.0001
+##  dose2 OJ - dose1 VC         9.29 1.62 54   5.720  &lt;.0001
+##  dose2 OJ - dose2 VC        -0.08 1.62 54  -0.049  1.0000
+##  dose0.5 VC - dose1 VC      -8.79 1.62 54  -5.413  &lt;.0001
+##  dose0.5 VC - dose2 VC     -18.16 1.62 54 -11.182  &lt;.0001
+##  dose1 VC - dose2 VC        -9.37 1.62 54  -5.770  &lt;.0001
+## 
+## P value adjustment: tukey method for comparing a family of 6 estimates</code></pre>
+<pre class="r"><code>pwpm(emm)    # generate an informative summary matrix of pairwise comparisons!</code></pre>
+<pre><code>##         0.5 OJ    1 OJ    2 OJ  0.5 VC    1 VC    2 VC
+## 0.5 OJ [13.23]  &lt;.0001  &lt;.0001  0.0243  0.2640  &lt;.0001
+## 1 OJ     -9.47 [22.70]  0.3187  &lt;.0001  0.0074  0.2936
+## 2 OJ    -12.83   -3.36 [26.06]  &lt;.0001  &lt;.0001  1.0000
+## 0.5 VC    5.25   14.72   18.08 [ 7.98]  &lt;.0001  &lt;.0001
+## 1 VC     -3.54    5.93    9.29   -8.79 [16.77]  &lt;.0001
+## 2 VC    -12.91   -3.44   -0.08  -18.16   -9.37 [26.14]
+## 
+## Row and column labels: dose:supp
+## Upper triangle: P values   adjust = &quot;tukey&quot;
+## Diagonal: [Estimates] (emmean) 
+## Lower triangle: Comparisons (estimate)   earlier vs. later</code></pre>
+<pre class="r"><code>emmip(model_with_interaction, supp ~ dose)   # interaction plot of emms</code></pre>
+<p><img src="LECTURE7_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<pre class="r"><code># NOTE: you could use compact letter displays but many statisticians prefer to avoid this!</code></pre>
 </div>
 </div>
 <div id="non-parametric-anova-kruskal-wallis-test"
@@ -1300,7 +1345,7 @@ want to indicate that group 3 differs from group 1. So group 1 could get
 an “a”, group 2 could get an “ab”, and group 3 could get a “b”.</p>
 <p>An alternative to the Dunn test is to use pairwise Mann-Whitney U
 (MWU) tests and then to use a Bonferroni correction (or another similar
-correction) to control the experimentwise error rate.</p>
+correction) to control the experiment-wise error rate.</p>
 <p>In the above example, we would run three MWU tests- one for each
 pairwise comparison- and would reject the null if any of the p-values
 was less than <span class="math inline">\(\frac{\alpha}{3}\)</span>
@@ -1331,13 +1376,13 @@ control for nuisance factors.</em></p>
 factors using experimental design. Instead we often need to control for
 nuisance factors within our model. This process is called
 <strong>model-based inference</strong>. Model based inference is often
-not as satisfying, much more difficult, and often much less powerful,
-and prone to subtle and pernicious errors, and requiring more complex
+not as satisfying, more difficult, and often much less powerful, and
+prone to subtle and pernicious errors, and requiring more complex
 statistics, etc., BUT it is often the best we can do!! Because this
-class is for ecologists and environmental scietists, I tend to emphasize
-model-based inference over design-based inference. And this is why I
-de-emphasize ANOVA and instead emphasize linear regression, glm, and
-mixed models (lmer, glmm).</p>
+class is for ecologists and environmental scientists, I tend to
+emphasize model-based inference over design-based inference. And this is
+why I de-emphasize ANOVA and instead emphasize linear regression, glm,
+and mixed models (lmer, glmm).</p>
 <p>This is the subject of the next lecture.</p>
 <p><a href="LECTURE8.html">–go to next lecture–</a></p>
 </div>
