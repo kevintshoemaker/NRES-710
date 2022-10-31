@@ -504,16 +504,18 @@ functions do the job for us!</p>
 first US statistics department – at Iowa State. The “F” is in honor of
 Ronald Fisher, who developed the ANOVA testing framework.</p>
 <p>Just like the t distribution and the Chi-squared distribution, the F
-distribution is the approximate sampling distribution of the F statistic
-under the null hypothesis.</p>
+distribution is the approximate sampling distribution of the F
+statistic.</p>
 <p>Interesting fact: in the case where the categorical variable has only
 two levels, the F distribution is the square of the t distribution!</p>
 <p>The F distribution has two parameters: the numerator degrees of
 freedom (df1; also known as the ‘treatment’ degrees of freedom) and the
 denominator degrees of freedom (df2; also known as the residual degrees
 of freedom). The numerator degrees of freedom for a one-way ANOVA is
-K-1, and the denominator degrees of freedom is N-K.<br />
-#### Regression and the F distribution/statistic</p>
+K-1, and the denominator degrees of freedom is N-K.</p>
+<div id="regression-and-the-f-distributionstatistic"
+class="section level4">
+<h4>Regression and the F distribution/statistic</h4>
 <p>What is the F-distribution commonly associated with (besides ANOVA)?
 That’s right – Linear Regression!</p>
 <p>ANOVA is a special case of regression where the predictor variable is
@@ -521,6 +523,7 @@ categorical – there is one independent variable and one or more
 dependent variables that are categorical.</p>
 <p>In linear regression, just as in ANOVA, the F-test is a global test
 of whether the signal outweighs the noise beyond a reasonable doubt!</p>
+</div>
 </div>
 <div id="assumptions-of-anova" class="section level3">
 <h3>Assumptions of ANOVA</h3>
@@ -659,7 +662,26 @@ summary(model1)</code></pre>
 <pre class="r"><code>###
 # use lm function
 
-model1 &lt;- lm(Height~Treatment,data=df)
+model.matrix(Height~Treatment,data=df)</code></pre>
+<pre><code>##    (Intercept) TreatmentF2 TreatmentF3
+## 1            1           0           0
+## 2            1           0           0
+## 3            1           0           0
+## 4            1           0           0
+## 5            1           1           0
+## 6            1           1           0
+## 7            1           1           0
+## 8            1           1           0
+## 9            1           0           1
+## 10           1           0           1
+## 11           1           0           1
+## 12           1           0           1
+## attr(,&quot;assign&quot;)
+## [1] 0 1 1
+## attr(,&quot;contrasts&quot;)
+## attr(,&quot;contrasts&quot;)$Treatment
+## [1] &quot;contr.treatment&quot;</code></pre>
+<pre class="r"><code>model1 &lt;- lm(Height~Treatment,data=df)
 summary(model1)</code></pre>
 <pre><code>## 
 ## Call:

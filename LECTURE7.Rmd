@@ -71,11 +71,12 @@ You won't generally need to compute the F-statistic yourself but it is useful to
 
 The F distribution was developed by George Snedecor (founder of the first US statistics department – at Iowa State. The “F” is in honor of Ronald Fisher, who developed the ANOVA testing framework. 
 
-Just like the t distribution and the Chi-squared distribution, the F distribution is the approximate sampling distribution of the F statistic under the null hypothesis. 
+Just like the t distribution and the Chi-squared distribution, the F distribution is the approximate sampling distribution of the F statistic. 
 
 Interesting fact: in the case where the categorical variable has only two levels, the F distribution is the square of the t distribution!  
 
-The F distribution has two parameters: the numerator degrees of freedom (df1; also known as the 'treatment' degrees of freedom) and the denominator degrees of freedom (df2; also known as the residual degrees of freedom). The numerator degrees of freedom for a one-way ANOVA is K-1, and the denominator degrees of freedom is N-K.   
+The F distribution has two parameters: the numerator degrees of freedom (df1; also known as the 'treatment' degrees of freedom) and the denominator degrees of freedom (df2; also known as the residual degrees of freedom). The numerator degrees of freedom for a one-way ANOVA is K-1, and the denominator degrees of freedom is N-K.  
+
 #### Regression and the F distribution/statistic
 
 What is the F-distribution commonly associated with (besides ANOVA)? 
@@ -209,6 +210,7 @@ summary(model1)
 ###
 # use lm function
 
+model.matrix(Height~Treatment,data=df)
 model1 <- lm(Height~Treatment,data=df)
 summary(model1)
 

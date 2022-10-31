@@ -81,6 +81,7 @@ summary(model1)
 ###
 # use lm function
 
+model.matrix(Height~Treatment,data=df)
 model1 <- lm(Height~Treatment,data=df)
 summary(model1)
 
