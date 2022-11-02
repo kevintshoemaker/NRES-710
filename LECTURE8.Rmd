@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```{r echo=FALSE}
 
-#  NRES 710, Lecture 7 ---------------------------------------                             
+#  NRES 710, Lecture 8 ---------------------------------------                             
 #   University of Nevada, Reno                        
 #
 #    GLM and GLMM                                       ####
@@ -27,11 +27,11 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ## Download the R code for this lecture!
 
-To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](LECTURE6.R)
+To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](LECTURE8.R)
 
 ## Overview: Generalized Linear Models
 
-Generalized Linear Models (GLM) are not generally covered in intro stats classes, but they are so flexible and so common in ecology and environmental science that you really need to at least know that these models exist!
+Generalized Linear Models (GLM) are not generally covered in intro stats classes, but they are so flexible and so common in ecology and environmental science that you really need to know how to work with these models!
 
 The real data sets that we deal with as ecologists and environmental scientists tend to violate some key assumptions of classical linear regression and ANOVA. In particular, residuals are often decidedly non-normal and variance is decidedly non-equal (heteroskedastic) across the range of predictions. 
 
