@@ -411,7 +411,7 @@ summary(ToothGrowth)
 
 table(ToothGrowth$supp,ToothGrowth$dose)   # three doses, two types of supplements
 
-ToothGrowth$dose <- ordered(ToothGrowth$dose)  # convert dose variable to factor (make it categorical)
+ToothGrowth$dose <- as.factor(as.character(ToothGrowth$dose))  # convert dose variable to factor (make it categorical)
 
 model <- lm(len~supp+dose,data=ToothGrowth)  # two way anova with no interaction
 

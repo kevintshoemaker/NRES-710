@@ -1,2 +1,4 @@
-base
 titanic
+emmeans
+agricolae
+simpleboot

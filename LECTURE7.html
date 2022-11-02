@@ -1006,7 +1006,7 @@ summary(ToothGrowth)</code></pre>
 ##      0.5  1  2
 ##   OJ  10 10 10
 ##   VC  10 10 10</code></pre>
-<pre class="r"><code>ToothGrowth$dose &lt;- ordered(ToothGrowth$dose)  # convert dose variable to factor (make it categorical)
+<pre class="r"><code>ToothGrowth$dose &lt;- as.factor(as.character(ToothGrowth$dose))  # convert dose variable to factor (make it categorical)
 
 model &lt;- lm(len~supp+dose,data=ToothGrowth)  # two way anova with no interaction
 
@@ -1021,10 +1021,10 @@ summary(model)</code></pre>
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  20.6633     0.6988  29.569  &lt; 2e-16 ***
+## (Intercept)  12.4550     0.9883  12.603  &lt; 2e-16 ***
 ## suppVC       -3.7000     0.9883  -3.744 0.000429 ***
-## dose.L       10.9566     0.8559  12.802  &lt; 2e-16 ***
-## dose.Q       -1.1288     0.8559  -1.319 0.192573    
+## dose1         9.1300     1.2104   7.543 4.38e-10 ***
+## dose2        15.4950     1.2104  12.802  &lt; 2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -1052,13 +1052,13 @@ summary(model_with_interaction)</code></pre>
 ##  -8.20  -2.72  -0.27   2.65   8.27 
 ## 
 ## Coefficients:
-##               Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)    20.6633     0.6630  31.166  &lt; 2e-16 ***
-## suppVC         -3.7000     0.9376  -3.946 0.000231 ***
-## dose.L          9.0722     1.1484   7.900 1.43e-10 ***
-## dose.Q         -2.4944     1.1484  -2.172 0.034254 *  
-## suppVC:dose.L   3.7689     1.6240   2.321 0.024108 *  
-## suppVC:dose.Q   2.7312     1.6240   1.682 0.098394 .  
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    13.230      1.148  11.521 3.60e-16 ***
+## suppVC         -5.250      1.624  -3.233  0.00209 ** 
+## dose1           9.470      1.624   5.831 3.18e-07 ***
+## dose2          12.830      1.624   7.900 1.43e-10 ***
+## suppVC:dose1   -0.680      2.297  -0.296  0.76831    
+## suppVC:dose2    5.330      2.297   2.321  0.02411 *  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
