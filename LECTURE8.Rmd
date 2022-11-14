@@ -20,7 +20,8 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 #  NRES 710, Lecture 8 ---------------------------------------                             
 #   University of Nevada, Reno                        
 #
-#    GLM and GLMM                                       ####
+#    GLM and GLMM                                      
+
 
 ```
 
@@ -31,37 +32,33 @@ To follow along with the R-based lessons and demos, [right (or command) click on
 
 ## Overview: Generalized Linear Models
 
-Generalized Linear Models (GLM) are not generally covered in intro stats classes, but they are so flexible and so common in ecology and environmental science that you really need to know how to work with these models!
+Generalized Linear Models (GLM) are not generally covered in 'intro' stats classes, but they are so flexible and so common in ecology and environmental science that you really need to know how to work with these models!
 
-The real data sets that we deal with as ecologists and environmental scientists tend to violate some key assumptions of classical linear regression and ANOVA. In particular, residuals are often decidedly non-normal and variance is decidedly non-equal (heteroskedastic) across the range of predictions. 
+The real data sets that we deal with as ecologists and environmental scientists tend to violate some key assumptions of classical linear regression or ANOVA. In particular, residuals are often non-normal and variance is not equal (heteroskedastic) across the range of predictions. 
 
-Generalized linear models allow us to model response variables that are not amenable to classical linear regression -- but allows us to use a model structure that closely resembles linear regression. Pretty much everything about running a GLM is like linear regression. The primary function for running GLM models ('glm') even looks very similar to the regression function 'lm'. 
+GLMs allow us to model response variables that are not amenable to classical linear regression -- but uses a model structure that closely resembles linear regression. Pretty much everything about running a GLM feels like linear regression. The primary function for running GLM models (`glm()`) even looks very similar to the regression function `lm()`. 
 
-GLMs are parametric analyses -- it's just that (1) we don't need to assume our response variable is normally distributed and (2) we don't need to assume the relationship between the response variable and the predictor variable(s) is linear on the scale of the untransformed response variable. Let's look into each of these in more detail:
+GLMs are *parametric* analyses -- it's just that (1) we don't need to assume our response variable is normally distributed and (2) we don't need to assume the relationship between the response variable and the predictor variable(s) is linear on the scale of the untransformed response variable. Let's look into each of these in more detail:
 
-### Alternative distributions
+### Alternative error distributions
 
-So we don't need to assume the response variable is normally distributed -- but we do need to assume it is distributed according to some known probability distribution -- and we need to specify what distribution we ARE assuming. We can assume that the response process is Poisson distributed, or gamma distributed, or beta distributed, or any of a host of other distributions. But again, we have to specify which distribution!
+So we don't need to assume the response variable is normally distributed -- but we do need to assume it is distributed according to some known probability distribution -- and we need to specify what distribution we ARE assuming. We can assume that the response process is Poisson distributed, or gamma distributed, or any of a host of other distributions (GLMs are typically limited to the set of distributions known as the "exponential family"). But we, the modelers, have to specify which distribution to use!
 
 ### Link functions
 
-So we don't need to assume the relationship between the mean of the response variable and the predictor variable(s) is linear on the scale of the untransformed response variable -- but the hypothesized relationship must be linear on some transformation of the response variable -- and we need to specify what transformed version of the response process we wish to assume linearity for. This is called the 'link function'. 
+So we don't need to assume the relationship between the mean of the response variable and the predictor variable(s) is linear on the scale of the untransformed response variable -- but we DO assume that the hypothesized relationship is linear on some transformation of the response variable -- and we need to specify what transformed version of the response process we wish to assume linearity for. This is called the 'link function'. 
 
-In the general case, a GLM can be described by the following pseudo-equations:
+In the general case, a GLM can be described by the following pseudo-equation:
 
-$f(\bar{y})=\beta_0+\beta_1\cdot x_1+\beta_2 \cdot x_2 \ldots$
+$f(\mu)=\beta_0+\beta_1\cdot x_1+\beta_2 \cdot x_2 \ldots$
 
 The left side of this equation is the mean of the response variable, transformed according to the specified link function. The right side of this equation is called the **linear predictor** and describes how the (transformed) mean response varies as a function of the predictor variable(s). 
 
-To complete the picture, we need to represent the error/variability. To do this we represent the raw response as being distributed according to a distribution we specify:
+To complete the picture, we represent the error distribution (inherent variability among observations) according to whatever error process we specified: e.g., a binomial distribution, Poisson distribution, or a number of other possibilities.   
 
-$y \sim My.Dist(\ldots)$
+### Logistic regression
 
-My.Dist can be the binomial distribution, Poisson distribution, or a number of other possibilities. The mean of the distribution is described by the covariates (preditor variables) as described in the top equation.  
-
-### A simple example (logistic regression)
-
-For example, we might have a binary response variable and a continuous predictor variable. Making the assumption of linearity would not necessarily make sense in this case. 
+For example, we might have a *binary* response variable and a *continuous* predictor variable. Making the assumption of linearity would not necessarily make sense in this case. 
 
 Let's first make up an example:
 
