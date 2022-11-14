@@ -25,10 +25,12 @@ navbar:
       href: LECTURE6.html
     - text: ANOVA
       href: LECTURE7.html
-    - text: GLM and GLMM
+    - text: GLM
       href: LECTURE8.html
-    - text: Next steps
+    - text: GLMM
       href: LECTURE9.html
+    - text: Next steps
+      href: LECTURE10.html
   - text: Exercises
     menu:
     - text: Exercise- data summary functions

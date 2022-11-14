@@ -12,7 +12,7 @@
 <meta name="author" content="NRES 710" />
 
 
-<title>Next Steps</title>
+<title>Generalized Linear Mixed Models (GLMM)</title>
 
 <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -360,10 +360,13 @@ div.tocify {
       <a href="LECTURE7.html">ANOVA</a>
     </li>
     <li>
-      <a href="LECTURE8.html">GLM and GLMM</a>
+      <a href="LECTURE8.html">GLM</a>
     </li>
     <li>
-      <a href="LECTURE9.html">Next steps</a>
+      <a href="LECTURE9.html">GLMM</a>
+    </li>
+    <li>
+      <a href="LECTURE10.html">Next steps</a>
     </li>
   </ul>
 </li>
@@ -379,6 +382,12 @@ div.tocify {
     </li>
     <li>
       <a href="EXERCISE2.html">Exercise- t-tests</a>
+    </li>
+    <li>
+      <a href="EXERCISE3.html">Exercise- simple linear regression</a>
+    </li>
+    <li>
+      <a href="EXERCISE4.html">Exercise- multiple linear regression</a>
     </li>
   </ul>
 </li>
@@ -421,161 +430,432 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Next Steps</h1>
+<h1 class="title toc-ignore">Generalized Linear Mixed Models (GLMM)</h1>
 <h4 class="author">NRES 710</h4>
 <h4 class="date">Fall 2022</h4>
 
 </div>
 
 
-<p>We’ve reached the end of the course, congratulations!!</p>
-<p>But this is not the end of your statistical training - learning
-statistics and modeling (informally or formally) is an ongoing part of
-your growth as a scientist!</p>
-<p>The types of analytical approaches you decide to learn (informally or
-formally) depends on a lot of factors:</p>
+<div id="download-the-r-code-for-this-lecture" class="section level2">
+<h2>Download the R code for this lecture!</h2>
+<p>To follow along with the R-based lessons and demos, <a
+href="LECTURE9.R">right (or command) click on this link and save the
+script to your working directory</a></p>
+</div>
+<div id="overview-mixed-effects-models" class="section level2">
+<h2>Overview: Mixed-effects models</h2>
+<p>Remember the assumption of independent observations? Every single one
+of the models we have considered so far makes that assumption. If that
+assumption is violated, we are committing pseudoreplication. If
+pseudoreplication is relatively minor we may be able to ignore it for
+modeling (but still reporting the potential issue). But in many cases
+the issue is too large to ignore.</p>
+<p>Mixed models allow us to build more realistic models that incorporate
+some known potential sources of non-independence in our data.</p>
+<p>The term <strong>mixed-effects models</strong> refers to the fact
+that these models have two kinds of predictor variables: <em>fixed
+effects</em> and <em>random effects</em>. The random effects are what
+allow us to incorporate potential inter-dependencies among our
+observations.</p>
+<div id="is-it-a-fixed-effect-or-a-random-effect"
+class="section level3">
+<h3>Is it a fixed effect or a random effect?</h3>
+<p>One point of confusion that quickly bubbles up around mixed-effects
+models is the question of whether you should include a predictor
+variable as a random or a fixed effect.</p>
+<p>It might help to consider some typical random effects and some
+typical fixed effects:</p>
+<div id="fixed-effects" class="section level4">
+<h4>Fixed effects</h4>
+<p>Typical fixed effects include:</p>
 <ul>
-<li>the type of data you will be analyzing (both responses and
-predictors)</li>
-<li>whether your data are primarily coming from controlled experiments
-or uncontrolled field-based studies</li>
-<li>whether you are interested in understanding mechanisms or making
-predictions (or both)</li>
-<li>whether you have one predictor variable or multiple predictor
-variables.</li>
-<li>whether you have one response variable or multiple response
-variables.</li>
-<li>whether you are testing hypotheses or generating hypotheses</li>
-<li>whether you have key sources of non-independence like phylogenetic
-dependencies or spatiotemporal dependencies.</li>
-<li>whether you align philosophically more with Bayesian or frequentist
-inference</li>
+<li>Temperature (continuous fixed effect- e.g., linear regression)</li>
+<li>Treatment (categorical fixed effect- e.g., ANOVA)</li>
+<li>Interaction between temperature and treatment (interaction fixed
+effect)</li>
 </ul>
-<p>Here are some final thoughts to help you think through your next
-steps as a data analyst!</p>
-<div id="bayesian-vs-frequentist" class="section level2">
-<h2>Bayesian vs frequentist</h2>
-<p>This course has been entirely grounded in frequentist inference-
-which is a bit strange for me, as someone who tends to gravitate toward
-Bayesian inference!</p>
-<p>In both Bayesian inference and frequentist inference, the truth is
-unknown. But the two approaches differ in how they treat probability and
-uncertainty.</p>
-<p>In frequentist inference, the truth is fixed but unknown, and
-incomplete sampling prevents us from knowing the full truth. Sampling
-variance is the only source of uncertainty. Therefore there is
-uncertainty associated with sample statistics- but no uncertainty
-associated with population parameters. It is not appropriate to think of
-the truth itself (the population parameter) as uncertain.</p>
-<p>In Bayesian inference, probability is treated as a <em>degree of
-belief</em>, and not as a reflection of sampling uncertainty. In this
-way, we treat the population parameters themselves as uncertain, which
-reflects incomplete knowledge of the truth. We can therefore assign
-probability distributions to the population parameters- more “peaked”
-distributions represent more precise knowledge and flatter, spread-out
-distributions represent less precise knowledge (often due to
-insufficient data).</p>
-<p>Many of you are likely to find Bayesian statistics more intuitive
-than frequentist statistics- I certainly do!</p>
-<p>For example, you can interpret confidence intervals as (e.g.) “I am
-95 confident that the true value is between this lower bound and this
-upper bound”. This is the way most of us WISH we could interpret
-confidence intervals.</p>
-<p>NOTE: in Bayesian inference, confidence intervals are often called
-‘credible intervals’ to differentiate them from frequentist confidence
-intervals.</p>
+<p>Fixed effects are what we have been calling ‘predictor variables’ in
+this class. They usually represent the variables that we want to relate
+to our response variable. Ideally, our observations span the full range
+of our fixed effects (predictor variables) such that we can use our data
+to make inference about the relationship between our response and
+predictor variables across the range of values that we might encounter
+in our entire population of interest.</p>
+<p>There is no assumption that our predictor variables are normally
+distributed- in fact, the only assumption we make about the predictor
+variables (usually) are that (1) they are measured with certainty and
+(2) we ideally want them to be distributed evenly across the range of
+values across which we want to make inference about our response
+process.</p>
+<p>For example, if we want to make inference about the relationship
+between tree diameter and volume, we would like to take measurements of
+trees that vary from the smallest-diameter trees we wish to make
+inference about to the largest-diameter trees that we’d like to make
+inference about. To ensure that our sample includes the full range of
+diameters, we might specifically select trees that cover the entire
+range of interest. That is, we could <strong>fix</strong> the set of
+trees in our samples to include the full range of our predictor
+variable. There is no rule stating that we have to select our predictor
+variable levels from a random process. In fact, experimental design is
+all about pre-determining our predictor variable levels!</p>
+<p>The term <strong>fixed effect</strong> comes from experimental
+design, where we literally arrange (fix) our observations into specific
+treatment and control groups. For example, we might take 100 otherwise
+interchangeable sapling trees and subject them randomly to different
+treatments of <strong>fixed</strong> levels of some factor that might
+influence growth (say nitrogen concentrations)- and then we can make
+inference about the effect of nitrogen across the range of
+concentrations that we determined.</p>
+<p><strong>SIDE NOTE</strong>: we can (and often do) make inferences
+about our response variable for levels of our predictor variables that
+are outside the range of values in our data set. This is called
+<strong>extrapolation</strong> and can be a dangerous practice because
+we lack empirical support for this type of inference, especially when
+the predictions are far outside the bounds of our data set.</p>
 </div>
-<div id="parametric-vs-nonparametric-tests" class="section level2">
-<h2>Parametric vs nonparametric tests</h2>
-<p>If you are running statistical tests and you want to be sure your
-results are not compromised by a failure to meet parametric assumptions,
-then you might want to dive deeper into nonparametric statistics. The
-most powerful and flexible family of nonparametric tests are called
-<strong>permutation tests</strong>. These tests rely on dissociating
-your response and predictor variables by “scrambling” the information,
-repeating this procedure hundreds of times, and seeing if your observed
-level of signal exceeds the expected level of signal from these
-“scrambled” datasets. If so, you can reject your null!</p>
-</div>
-<div id="learning-to-bootstrap" class="section level2">
-<h2>Learning to bootstrap</h2>
-<p><strong>Bootstrap</strong> methods allow you to generate confidence
-intervals and sampling distributions for pretty much any test statistic
-you’d like, without relying on known distributions like the
-t-distribution, F-distribution, Chi-square distribution, etc. The
-bootstrap techniques simply involve repeatedly running the analysis on
-datasets sampled with replacement from your actual dataset. Learning to
-bootstrap is well worth the time for almost any aspiring data
-analyst.</p>
-</div>
-<div id="machine-learning" class="section level2">
-<h2>Machine learning</h2>
-<p>Machine learning techniques are very diverse approaches for detecting
-signals in datasets. Machine learning methods tend to impose far fewer
-assumptions about the data than classical statistical and modeling
-approaches. For example, <strong>random forest</strong> methods enable
-detection of non-linear responses and complex interactions without
-having to specify these non-linear functions and interactions in
-advance. We just provide the algorithm with a response variable and a
-bunch of predictor variables and let the random forest algorithm find
-the signals. In addition, supervised machine learning methods like
-random forest allow you to rank your predictor variables in order of
-their importance (degree of useful predictive power).</p>
-<p>Machine learning methods are often useful for performing variable
-selection (identifying a small set of important predictor variables),
-and for identifying important non-linear responses or interactions.</p>
-<p>Supervised machine learning (e.g., random forest) involves giving the
-algorithm a bunch of observations with known response and known
-predictor variables and letting the algorithm find the relationships
-between the response and predictor – just like multiple linear
-regression.</p>
-<p>Unsupervised machine learning (e.g., clustering algorithms) involve
-giving the algorithm a bunch of observations, each associated with a
-bunch of measurements, and allowing the algorithm to identify key
-differences and similarities (patterns) in the data. For example, the
-algorithm my divide the observations into groups that share certain
-similarities. These groups (clusters) can then enable researchers to
-identify key ‘hidden’ similarities between observations.</p>
-</div>
-<div id="multivariate-statistics" class="section level2">
-<h2>Multivariate statistics</h2>
-<p>Multivariate statistics involves trying to interpret multiple
-response processes at the same time. For example, community ecologists
-often want to understand the presence/absence and population dynamics of
-multiple species in a single ecological community. These researchers
-therefore are dealing with muliple response variables at the same time -
-for example, they may wish to model the presence or absence of species
-A, B, C, and D as a function of three environmental covariates (x1, x2
-and x3) and inter-species competitive exclusion. Such an analysis would
-be called a <strong>multivariate analysis</strong>.</p>
-<p>I will try to post more on multivariate statistics later - and
-definitely in the next iteration of this class!</p>
-<div id="dimensionality-reduction" class="section level3">
-<h3>Dimensionality reduction</h3>
-<p>Often classified as a type of multivariate statistical analysis,
-<strong>principal components analysis (PCA)</strong> and other
-dimensionality reduction methods (e.g., non-metric multidimensional
-scaling, or NMDA) are useful for taking a large set of variables and
-trying to summarize the variation among observations according to a
-smaller set of derived variables (often known as “axes” – for example,
-“PCA axis 1”). This can enable visualization of similarities and
-differences among observations – eg., by plotting PC1 vs PC2.</p>
-<p>Some analysts will run a PCA on all their observations (e.g., all 100
-predictor variables) in order to reduce their set of inter-correlated
-predictor variables from a very large number to a set of just a few
-(often 2 or 3) uncorrelated predictor variables. This is one way of
-dealing with <strong>multicollinearity</strong>. However, it introduces
-a new problem- how to interpret your new variables!</p>
+<div id="random-effects" class="section level4">
+<h4>Random effects</h4>
+<p>Typical Random effects include:</p>
+<ul>
+<li>Block ID (blocks are a small subset of the units about which you
+want to make inference, multiple observations per block)</li>
+<li>Site ID (sites are a small subset of the units about which you want
+to make inference, multiple observations per site)</li>
+<li>Year (study years are a small subset of the years about which you
+want to make inference, multiple observations per year)</li>
+<li>Individual (individuals studied are randomly selected from the
+population of interest, each individual subjected to repeated
+measurements)</li>
+</ul>
+<p>First of all, most random effects will be categorical.</p>
+<p>Second, random effects are a random sample or otherwise a small
+subset of the units about which you want to make inference.</p>
+<p>Third, random effects variables must have multiple (usually &gt;3)
+observations per level. If you only have one observation per random
+effect level, it is not a random effect- it’s just a replicate
+observation in an ordinary linear regression!</p>
 </div>
 </div>
-<div id="last-words" class="section level2">
-<h2>Last words</h2>
-<p>I will try to add to this ‘next steps’ lecture in the future. In the
-meantime, I wish you all the best as you continue your journey as
-creative, effective data analysts.</p>
-<p>As always, your feedback is very much appreciated.</p>
-<p>Thanks for bearing with me this semester!!!</p>
-<p>–End of lectures–</p>
+<div id="mixed-effects-models-in-regression-notation"
+class="section level3">
+<h3>Mixed effects models in regression notation</h3>
+<p>Before we run examples in R, let’s look at linear mixed-effects
+regression models in regression notation.</p>
+<p>The equation should look familiar- the only difference is that there
+is more than one error term. Each random effect is now associated with a
+new error term…</p>
+<p>Let’s say we are fitting the following mixed-effects model:</p>
+<p><strong>Response variable:</strong> Tortoise clutch size<br />
+<strong>Predictor variables: fixed effects:</strong> Annual winter
+precipitation, Annual spring temperature<br />
+<strong>Predictor variables: random effects:</strong> Site, year</p>
+<p>The simplest way to model random effects is to include them as
+<strong>random intercepts</strong>– that is, the intercept term changes
+randomly with each factor level.</p>
+<p>In many cases, simply adding a random intercept term for each random
+effect is appropriate for accounting for sources of non-independence in
+your data set- but in many cases it is not sufficient. That is because
+the slope (the relationship between your response and predictor– the
+thing you are usually most interested in making inference about) can
+itself vary depending on your random effect levels. This is called a
+<strong>random slopes</strong> model.</p>
+<p>Here is an equation to represent the simpler random-intercept
+analysis:</p>
+<p><span class="math inline">\(Clutch \space size = \beta_0 + \beta_1
+\cdot precip_t + \beta_2 \cdot temp_t + \gamma_{site} + \gamma_{year} +
+\epsilon_{obs}\)</span></p>
+<p>Here we now have three sources of ‘error’: a random (normally
+distributed) term for each site (<span
+class="math inline">\(\gamma_{site}\)</span>), a random (normally
+distributed) term for each year, and a normally distributed residual
+error term (<span class="math inline">\(\epsilon_{obs}\)</span>).</p>
+<p>If we want to include random slope and random intercept terms (which
+is often the most appropriate model), the equation gets a bit more
+complicated:</p>
+<p><span class="math inline">\(Clutch \space size = \beta_0 + \beta_1
+\cdot precip_t + \beta_2 \cdot temp_t + \gamma_{site} + \gamma_{year} +
+\gamma_{site, \beta_1}\cdot precip_t + \gamma_{site, \beta_2}\cdot
+temp_t + \epsilon_{obs}\)</span></p>
+<p>Here we have two addition “error” terms that allow the slope terms
+(beta1 and beta2) to vary randomly with each site and year.</p>
+</div>
+<div id="nested-random-effects" class="section level3">
+<h3>Nested random effects</h3>
+<p>You will often read descriptions of mixed-effects models saying
+things like “Individual and Site were included as random effects, with
+Individual nested within Site”.</p>
+<p>Let’s imagine we randomly selected 10 sites and within each site we
+capture a random sample of tortoises and we measure tortoise clutch size
+for 4 consecutive years for each tortoise.</p>
+<p>In this case, we have two potential random effects: site (random
+subset of a much larger set of potential sites) and individual (random
+subset of a much larger set of individuals within each site). Individual
+#1 from Site #1 is obviously a different individual than Individual #1
+from Site #2. So we can’t simply include a simple random effect term for
+“Individual #1”. Since there are many “Individual #1”s, each “Individual
+#1” must get its own random effect! In this case, Individual is nested
+within Site!</p>
+<p>Let’s contrast this with a non-nested random effect- let’s say site
+and year.</p>
+<p>In this case, Year “2014” in site #1 is the same as Year “2014” in
+site #2. Therefore the random effect associated with year “2014” does
+not differ depending on site. In this case, site and year are
+independent, non-nested random effects!</p>
+</div>
+<div id="assumptions-of-mixed-effects-regression"
+class="section level3">
+<h3>Assumptions of mixed-effects regression</h3>
+<p>The assumptions of mixed-effects regression are the same as in
+classical linear regression (for mixed-effects regression models) or
+generalized linear models (for generalized linear mixed models; GLMM).
+The only additional assumption is this:</p>
+<ul>
+<li>All random effects are normally distributed!</li>
+</ul>
+<p>In some more complex models you might encounter models that assume
+random effects take other distributions- but this is still rare to
+see!</p>
+</div>
+<div id="example-mixed-effects-regression-in-r" class="section level3">
+<h3>Example: mixed-effects regression in R</h3>
+<p>The ‘workhorse’ package in R for fitting mixed-effects regression
+models (and GLMM) is the ‘lme4’ package. However, there are some other
+packages you should be aware of that can make your life easier. One such
+package is “glmmTMB”- I have found this package has more flexibility and
+tends to have less trouble fitting complex mixed-effects models.</p>
+<p>We will use <a href="tundra2.csv">this dataset</a> as our example -
+this is a data set on carbon balance in the tundra. This example is
+taken from <a
+href="https://bbolker.github.io/mixedmodels-misc/ecostats_chap.html">this
+website</a>.</p>
+<pre class="r"><code>#########
+# TUNDRA EXAMPLE
+#########
+
+##### Read in the data
+
+mc1 &lt;- read.csv(&quot;tundra2.csv&quot;,sep=&quot;,&quot;,na.strings=c(&quot;-&quot;,&quot;NA&quot;))
+
+summary(mc1)</code></pre>
+<pre><code>##        X              Year          Site               GS.NEE        
+##  Min.   : 1.00   Min.   :1966   Length:82          Min.   :-153.000  
+##  1st Qu.:21.25   1st Qu.:1993   Class :character   1st Qu.: -55.350  
+##  Median :41.50   Median :1998   Mode  :character   Median : -20.867  
+##  Mean   :41.50   Mean   :1998                      Mean   : -10.012  
+##  3rd Qu.:61.75   3rd Qu.:2005                      3rd Qu.:   3.275  
+##  Max.   :82.00   Max.   :2010                      Max.   : 390.000  
+##        n             cYear         
+##  Min.   :1.000   Min.   :-31.8698  
+##  1st Qu.:1.000   1st Qu.: -4.8698  
+##  Median :1.000   Median :  0.6302  
+##  Mean   :1.829   Mean   : -0.1015  
+##  3rd Qu.:2.750   3rd Qu.:  7.1302  
+##  Max.   :6.000   Max.   : 12.1302</code></pre>
+<pre class="r"><code>table(mc1$Year)  # some years have many observations</code></pre>
+<pre><code>## 
+##   1966   1970   1971   1972   1983   1984   1985   1987   1990   1991   1992 
+##      1      1      1      1      1      1      1      1      4      5      2 
+##   1993   1994   1995   1996   1997   1998   1999   2000   2001   2002 2002.5 
+##      4      4      6      4      3      1      2      2      3      2      1 
+##   2003 2003.5   2004 2004.5   2005   2006   2007   2008 2008.5   2009   2010 
+##      2      1      3      1      4      5      4      4      1      3      3</code></pre>
+<pre class="r"><code>table(mc1$Site)  # some sites have many observations</code></pre>
+<pre><code>## 
+##       Anajtyvuk River, AK               APL-133, AK               Atqasuk, AK 
+##                         1                         3                         1 
+##          Barrow Peninsula                Barrow, AK           Daring Lake, CA 
+##                         1                        12                         7 
+##             Halmer-Yu, RU          Happy Valley, AK                 Healy, AK 
+##                         1                         5                         7 
+##        Imnavait Creek, AK                Ivotuk, AK       Kytalyk Reserve, RU 
+##                         4                         2                         1 
+##           Lek Vorkuta, RU           Meade River, AK    Pituffik Peninsula, GL 
+##                         2                         1                         2 
+##           Prudhoe Bay, AK                Sagwon, AK       Samoylov Island, RU 
+##                         7                         1                         1 
+##                Talnik, RU Toolik &amp; Happy Valley, AK                Toolik, AK 
+##                         1                         1                        12 
+##                U-PAD, AK      West Dock &amp; U-PAD, AK            Zachenberg, GL 
+##                         2                         1                         6</code></pre>
+<pre class="r"><code>library(ggplot2)
+
+## visualize net ecosystem exchange by year- varying by site
+
+ggplot(mc1,aes(x=Year,y=GS.NEE,colour=Site))+geom_point()+
+    geom_smooth(method=&quot;lm&quot;,alpha=0.3)+
+    scale_y_continuous(limits=c(-150,400),oob=scales::squish)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning in qt((1 - level)/2, df): NaNs produced
+
+## Warning in qt((1 - level)/2, df): NaNs produced
+
+## Warning in qt((1 - level)/2, df): NaNs produced
+
+## Warning in qt((1 - level)/2, df): NaNs produced</code></pre>
+<pre><code>## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+## -Inf
+
+## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+## -Inf
+
+## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+## -Inf
+
+## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+## -Inf</code></pre>
+<p><img src="LECTURE9_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Okay now let’s fit a mixed-effects regression model with Net
+Ecosystem Exchange (NEE) as the response variable and Year as the
+fixed-effect (covariate). For our random effect we will have site- and
+the intercept and trend (slope term) can vary with site. That is, we
+have random intercept terms and random slope terms for each site.</p>
+<p>Fitting a mixed model in ‘lme4’ (using the ‘lmer’ function) looks a
+lot like fitting a linear model in ‘lm’.</p>
+<pre class="r"><code>library(lme4)</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre class="r"><code>cmod_lmer &lt;- lmer(GS.NEE ~ cYear + (1+cYear|Site),
+                data=mc1, weights=n)</code></pre>
+<pre><code>## boundary (singular) fit: see help(&#39;isSingular&#39;)</code></pre>
+<p>A couple notes: first of all, the ‘weights’ term is there because
+some observations are aggregated- that is, there are multiple
+observations for a given site/year combination- those observations that
+aggregate 3 observations get triple the weight of a site/year
+combination with only one observation. (Technically, we are using an
+inverse-variance weighting scheme!)</p>
+<p>Secondly, note that year is treated as a fixed effect in this model.
+That is- we are looking for a trend in our response variable over
+time!</p>
+<p>Third, note the warning of a ‘singular fit’. This is fairly common to
+see, and doesn’t necessarily mean you can’t use the model. But it means
+that lme4 struggled to fit the model and some of the parameters may have
+very wide confidence bounds!</p>
+<p>Let’s look at the model results using ‘summary’:</p>
+<pre class="r"><code>summary(cmod_lmer)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: GS.NEE ~ cYear + (1 + cYear | Site)
+##    Data: mc1
+## Weights: n
+## 
+## REML criterion at convergence: 874.2
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -2.90221 -0.35038 -0.07972  0.30155  2.93141 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev. Corr 
+##  Site     (Intercept)  116.05  10.773        
+##           cYear         19.95   4.467   -1.00
+##  Residual             3355.16  57.924        
+## Number of obs: 82, groups:  Site, 24
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)  -16.296      7.338  -2.221
+## cYear         -3.745      1.341  -2.792
+## 
+## Correlation of Fixed Effects:
+##       (Intr)
+## cYear -0.417
+## optimizer (nloptwrap) convergence code: 0 (OK)
+## boundary (singular) fit: see help(&#39;isSingular&#39;)</code></pre>
+<p>The results from the ‘summary’ function should look somewhat
+familiar! But note that there are no p-values associated with your fixed
+effects (regression coefficients)- just t-statistics! This is because it
+is really hard to know what the degrees of freedom are for the test! Is
+it the number of observations? Is it the number of sites?</p>
+<p>Also note that the summary now includes a summary of the random
+effects. One red flag here is that the random intercept term and random
+slope terms are perfectly (negagively) correlated (Corr=-1). This is the
+reason for the ‘singular’ warning in this case.</p>
+<p>From the random effects summary we can see that site explains a
+relatively small percent of the total variance among observations.</p>
+<p>To fit the model using glmmTMB we can use the following code:</p>
+<pre class="r"><code>library(glmmTMB)
+cmod_glmmTMB &lt;- glmmTMB(GS.NEE ~ cYear + (1+cYear|Site),
+                data=mc1,
+                weights=n)</code></pre>
+<pre><code>## Warning in fitTMB(TMBStruc): Model convergence problem; non-positive-definite
+## Hessian matrix. See vignette(&#39;troubleshooting&#39;)</code></pre>
+<pre class="r"><code>summary(cmod_glmmTMB)</code></pre>
+<pre><code>##  Family: gaussian  ( identity )
+## Formula:          GS.NEE ~ cYear + (1 + cYear | Site)
+## Data: mc1
+## Weights: n
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##       NA       NA       NA       NA       76 
+## 
+## Random effects:
+## 
+## Conditional model:
+##  Groups   Name        Variance  Std.Dev. Corr  
+##  Site     (Intercept) 3.841e-02  0.196         
+##           cYear       3.148e+01  5.611   -0.79 
+##  Residual             1.543e+03 39.280         
+## Number of obs: 82, groups:  Site, 24
+## 
+## Dispersion estimate for gaussian family (sigma^2): 1.54e+03 
+## 
+## Conditional model:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)  -22.347      5.579  -4.005 6.19e-05 ***
+## cYear         -3.706      1.416  -2.617  0.00887 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The summary looks similar- but one difference you see is that there
+are p-values on the regression coefficients now.</p>
+<p>Let’s perform some model diagnostics to test goodness-of-fit!</p>
+<p>Since the standard linear regression assumptions apply, we could look
+at our standard diagnostic plots:</p>
+<pre class="r"><code>plot(cmod_lmer,type=c(&quot;p&quot;,&quot;smooth&quot;))</code></pre>
+<p><img src="LECTURE9_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>plot(cmod_lmer,sqrt(abs(resid(.)))~fitted(.),
+                  type=c(&quot;p&quot;,&quot;smooth&quot;),ylab=expression(sqrt(abs(resid))))</code></pre>
+<p><img src="LECTURE9_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<pre class="r"><code>plot(cmod_lmer,resid(.,type=&quot;pearson&quot;)~cYear,
+                  type=c(&quot;p&quot;,&quot;smooth&quot;))</code></pre>
+<p><img src="LECTURE9_files/figure-html/unnamed-chunk-6-3.png" width="672" /></p>
+<pre class="r"><code>qqnorm(residuals(cmod_lmer,type=&quot;pearson&quot;,scaled=T))</code></pre>
+<p><img src="LECTURE9_files/figure-html/unnamed-chunk-6-4.png" width="672" /></p>
+<p>The diagnostics look, well, okay!. If you look into it more deeply,
+you see that that ‘Toolik’ site is the one causing most of the
+issues.</p>
+<p>Okay let’s visualize the random effects (both intercept and random
+slope terms):</p>
+<pre class="r"><code>library(lattice)
+dotplot(ranef(cmod_lmer,condVar=TRUE),
+          lattice.options=list(layout=c(1,2)))</code></pre>
+<pre><code>## $Site</code></pre>
+<p><img src="LECTURE9_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>If we want to test to see if year is explaining any of the variance,
+we can run an F-test (ANOVA):</p>
+<pre class="r"><code>library(car)</code></pre>
+<pre><code>## Loading required package: carData</code></pre>
+<pre class="r"><code>Anova(cmod_lmer)</code></pre>
+<pre><code>## Analysis of Deviance Table (Type II Wald chisquare tests)
+## 
+## Response: GS.NEE
+##        Chisq Df Pr(&gt;Chisq)   
+## cYear 7.7956  1   0.005237 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Note that if we had a categorical variable and wanted to run pairwise
+comparisons, we could- using the ‘emmeans’ package (just like with
+standard ANOVA).</p>
+<p>If we want confidence intervals on our fixed effects, we can use the
+‘confint’ function, just like in ordinary linear regression. Here we use
+the Wald method (simplified version) and only extract confidence
+intervals for the fixed effects.</p>
+<p>I had to use ‘suppressWarnings’ to avoid lots of warning messages
+here!</p>
+<pre class="r"><code>confint(cmod_lmer,parm=&quot;beta_&quot;,method=&quot;Wald&quot;)</code></pre>
+<pre><code>##                  2.5 %    97.5 %
+## (Intercept) -30.677776 -1.914152
+## cYear        -6.374309 -1.116174</code></pre>
+<p><a href="LECTURE10.html">–go to next lecture–</a></p>
+</div>
 </div>
 
 

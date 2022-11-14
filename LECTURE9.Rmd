@@ -1,5 +1,5 @@
 ---
-title: "Next Steps"
+title: "Generalized Linear Mixed Models (GLMM)"
 author: "NRES 710"
 date: "Fall 2022"
 output: 
@@ -15,93 +15,255 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```
 
+
 ```{r echo=FALSE}
 
-#  NRES 710, Lecture 7 ---------------------------------------                             
+#  NRES 710, Lecture 9 ---------------------------------------                             
 #   University of Nevada, Reno                        
 #
-#    Next Steps                                   
+#    GLMM                                      
+
 
 ```
 
 
-We've reached the end of the course, congratulations!! 
+## Download the R code for this lecture!
 
-But this is not the end of your statistical training - learning statistics and modeling (informally or formally) is an ongoing part of your growth as a scientist!
-
-The types of analytical approaches you decide to learn (informally or formally) depends on a lot of factors: 
-
-* the type of data you will be analyzing (both responses and predictors)
-* whether your data are primarily coming from controlled experiments or uncontrolled field-based studies
-* whether you are interested in understanding mechanisms or making predictions (or both)
-* whether you have one predictor variable or multiple predictor variables. 
-* whether you have one response variable or multiple response variables.
-* whether you are testing hypotheses or generating hypotheses
-* whether you have key sources of non-independence like phylogenetic dependencies or spatiotemporal dependencies. 
-* whether you align philosophically more with Bayesian or frequentist inference
-
-Here are some final thoughts to help you think through your next steps as a data analyst!
-
-## Bayesian vs frequentist
-
-This course has been entirely grounded in frequentist inference- which is a bit strange for me, as someone who tends to gravitate toward Bayesian inference! 
-
-In both Bayesian inference and frequentist inference, the truth is unknown. But the two approaches differ in how they treat probability and uncertainty.  
-
-In frequentist inference, the truth is fixed but unknown, and incomplete sampling prevents us from knowing the full truth. Sampling variance is the only source of uncertainty. Therefore there is uncertainty associated with sample statistics- but no uncertainty associated with population parameters. It is not appropriate to think of the truth itself (the population parameter) as uncertain.
-
-In Bayesian inference, probability is treated as a *degree of belief*, and not as a reflection of sampling uncertainty. In this way, we treat the population parameters themselves as uncertain, which reflects incomplete knowledge of the truth. We can therefore assign probability distributions to the population parameters- more "peaked" distributions represent more precise knowledge and flatter, spread-out distributions represent less precise knowledge (often due to insufficient data). 
-
-Many of you are likely to find Bayesian statistics more intuitive than frequentist statistics- I certainly do! 
-
-For example, you can interpret confidence intervals as (e.g.) "I am 95 confident that the true value is between this lower bound and this upper bound". This is the way most of us WISH we could interpret confidence intervals.  
-
-NOTE: in Bayesian inference, confidence intervals are often called 'credible intervals' to differentiate them from frequentist confidence intervals.
-
-## Parametric vs nonparametric tests
-
-If you are running statistical tests and you want to be sure your results are not compromised by a failure to meet parametric assumptions, then you might want to dive deeper into nonparametric statistics. The most powerful and flexible family of nonparametric tests are called **permutation tests**. These tests rely on dissociating your response and predictor variables by "scrambling" the information, repeating this procedure hundreds of times, and seeing if your observed level of signal exceeds the expected level of signal from these "scrambled" datasets. If so, you can reject your null!
-
-## Learning to bootstrap
-
-**Bootstrap** methods allow you to generate confidence intervals and sampling distributions for pretty much any test statistic you'd like, without relying on known distributions like the t-distribution, F-distribution, Chi-square distribution, etc. The bootstrap techniques simply involve repeatedly running the analysis on datasets sampled with replacement from your actual dataset. Learning to bootstrap is well worth the time for almost any aspiring data analyst. 
-
-## Machine learning
-
-Machine learning techniques are very diverse approaches for detecting signals in datasets. Machine learning methods tend to impose far fewer assumptions about the data than classical statistical and modeling approaches. For example, **random forest** methods enable detection of non-linear responses and complex interactions without having to specify these non-linear functions and interactions in advance. We just provide the algorithm with a response variable and a bunch of predictor variables and let the random forest algorithm find the signals. In addition, supervised machine learning methods like random forest allow you to rank your predictor variables in order of their importance (degree of useful predictive power). 
-
-Machine learning methods are often useful for performing variable selection (identifying a small set of important predictor variables), and for identifying important non-linear responses or interactions. 
-
-Supervised machine learning (e.g., random forest) involves giving the algorithm a bunch of observations with known response and known predictor variables and letting the algorithm find the relationships between the response and predictor -- just like multiple linear regression.
-
-Unsupervised machine learning (e.g., clustering algorithms) involve giving the algorithm a bunch of observations, each associated with a bunch of measurements, and allowing the algorithm to identify key differences and similarities (patterns) in the data. For example, the algorithm my divide the observations into groups that share certain similarities. These groups (clusters) can then enable researchers to identify key 'hidden' similarities between observations. 
-
-## Multivariate statistics
-
-Multivariate statistics involves trying to interpret multiple response processes at the same time. For example, community ecologists often want to understand the presence/absence and population dynamics of multiple species in a single ecological community. These researchers therefore are dealing with muliple response variables at the same time - for example, they may wish to model the presence or absence of species A, B, C, and D as a function of three environmental covariates (x1, x2 and x3) and inter-species competitive exclusion. Such an analysis would be called a **multivariate analysis**. 
-
-I will try to post more on multivariate statistics later - and definitely in the next iteration of this class!
-
-### Dimensionality reduction
-
-Often classified as a type of multivariate statistical analysis, **principal components analysis (PCA)** and other dimensionality reduction methods (e.g., non-metric multidimensional scaling, or NMDA) are useful for taking a large set of variables and trying to summarize the variation among observations according to a smaller set of derived variables (often known as "axes" -- for example, "PCA axis 1"). This can enable visualization of similarities and differences among observations -- eg., by plotting PC1 vs PC2.
-
-Some analysts will run a PCA on all their observations (e.g., all 100 predictor variables) in order to reduce their set of inter-correlated predictor variables from a very large number to a set of just a few (often 2 or 3) uncorrelated predictor variables. This is one way of dealing with **multicollinearity**. However, it introduces a new problem- how to interpret your new variables!
+To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](LECTURE9.R)
 
 
-## Last words
+## Overview: Mixed-effects models
 
-I will try to add to this 'next steps' lecture in the future. In the meantime, I wish you all the best as you continue your journey as creative, effective data analysts. 
+Remember the assumption of independent observations? Every single one of the models we have considered so far makes that assumption. If that assumption is violated, we are committing pseudoreplication. If pseudoreplication is relatively minor we may be able to ignore it for modeling (but still reporting the potential issue). But in many cases the issue is too large to ignore.  
 
-As always, your feedback is very much appreciated. 
+Mixed models allow us to build more realistic models that incorporate some known potential sources of non-independence in our data. 
 
-Thanks for bearing with me this semester!!!
+The term **mixed-effects models** refers to the fact that these models have two kinds of predictor variables: *fixed effects* and *random effects*. The random effects are what allow us to incorporate potential inter-dependencies among our observations.  
+
+### Is it a fixed effect or a random effect?
+
+One point of confusion that quickly bubbles up around mixed-effects models is the question of whether you should include a predictor variable as a random or a fixed effect.
+
+It might help to consider some typical random effects and some typical fixed effects:
+
+#### Fixed effects
+
+Typical fixed effects include:     
+
+* Temperature (continuous fixed effect- e.g., linear regression)
+* Treatment (categorical fixed effect- e.g., ANOVA)
+* Interaction between temperature and treatment (interaction fixed effect)
+
+Fixed effects are what we have been calling 'predictor variables' in this class. They usually represent the variables that we want to relate to our response variable. Ideally, our observations span the full range of our fixed effects (predictor variables) such that we can use our data to make inference about the relationship between our response and predictor variables across the range of values that we might encounter in our entire population of interest. 
+
+There is no assumption that our predictor variables are normally distributed- in fact, the only assumption we make about the predictor variables (usually) are that (1) they are measured with certainty and (2) we ideally want them to be distributed evenly across the range of values across which we want to make inference about our response process.  
+
+For example, if we want to make inference about the relationship between tree diameter and volume, we would like to take measurements of trees that vary from the smallest-diameter trees we wish to make inference about to the largest-diameter trees that we'd like to make inference about. To ensure that our sample includes the full range of diameters, we might specifically select trees that cover the entire range of interest. That is, we could **fix** the set of trees in our samples to include the full range of our predictor variable. There is no rule stating that we have to select our predictor variable levels from a random process. In fact, experimental design is all about pre-determining our predictor variable levels!
+
+The term **fixed effect** comes from experimental design, where we literally arrange (fix) our observations into specific treatment and control groups. For example, we might take 100 otherwise interchangeable sapling trees and subject them randomly to different treatments of **fixed** levels of some factor that might influence growth (say nitrogen concentrations)- and then we can make inference about the effect of nitrogen across the range of concentrations that we determined.
+
+**SIDE NOTE**: we can (and often do) make inferences about our response variable for levels of our predictor variables that are outside the range of values in our data set. This is called **extrapolation** and can be a dangerous practice because we lack empirical support for this type of inference, especially when the predictions are far outside the bounds of our data set.  
+
+#### Random effects
+
+Typical Random effects include:    
+
+* Block ID (blocks are a small subset of the units about which you want to make inference, multiple observations per block)
+* Site ID (sites are a small subset of the units about which you want to make inference, multiple observations per site)
+* Year (study years are a small subset of the years about which you want to make inference, multiple observations per year)
+* Individual (individuals studied are randomly selected from the population of interest, each individual subjected to repeated measurements)
+
+First of all, most random effects will be categorical.    
+
+Second, random effects are a random sample or otherwise a small subset of the units about which you want to make inference. 
+
+Third, random effects variables must have multiple (usually >3) observations per level. If you only have one observation per random effect level, it is not a random effect- it's just a replicate observation in an ordinary linear regression! 
 
 
 
+### Mixed effects models in regression notation
+
+Before we run examples in R, let's look at linear mixed-effects regression models in regression notation.
+
+The equation should look familiar- the only difference is that there is more than one error term. Each random effect is now associated with a new error term...
+
+Let's say we are fitting the following mixed-effects model:
+
+**Response variable:** Tortoise clutch size          
+**Predictor variables: fixed effects:** Annual winter precipitation, Annual spring temperature    
+**Predictor variables: random effects:** Site, year    
+
+The simplest way to model random effects is to include them as **random intercepts**-- that is, the intercept term changes randomly with each factor level. 
+
+In many cases, simply adding a random intercept term for each random effect is appropriate for accounting for sources of non-independence in your data set- but in many cases it is not sufficient. That is because the slope (the relationship between your response and predictor-- the thing you are usually most interested in making inference about) can itself vary depending on your random effect levels. This is called a **random slopes** model. 
+
+Here is an equation to represent the simpler random-intercept analysis:
+
+$Clutch \space size = \beta_0 + \beta_1 \cdot precip_t + \beta_2 \cdot temp_t + \gamma_{site} + \gamma_{year} + \epsilon_{obs}$
+
+Here we now have three sources of 'error': a random (normally distributed) term for each site ($\gamma_{site}$), a random (normally distributed) term for each year, and a normally distributed residual error term ($\epsilon_{obs}$). 
+
+If we want to include random slope and random intercept terms (which is often the most appropriate model), the equation gets a bit more complicated:
+
+$Clutch \space size = \beta_0 + \beta_1 \cdot precip_t + \beta_2 \cdot temp_t + \gamma_{site} + \gamma_{year} + \gamma_{site, \beta_1}\cdot precip_t + \gamma_{site, \beta_2}\cdot temp_t + \epsilon_{obs}$
+
+Here we have two addition "error" terms that allow the slope terms (beta1 and beta2) to vary randomly with each site and year. 
+
+### Nested random effects
+
+You will often read descriptions of mixed-effects models saying things like "Individual and Site were included as random effects, with Individual nested within Site". 
+
+Let's imagine we randomly selected 10 sites and within each site we capture a random sample of tortoises and we measure tortoise clutch size for 4 consecutive years for each tortoise. 
+
+In this case, we have two potential random effects: site (random subset of a much larger set of potential sites) and individual (random subset of a much larger set of individuals within each site). Individual #1 from Site #1 is obviously a different individual than Individual #1 from Site #2. So we can't simply include a simple random effect term for "Individual #1". Since there are many "Individual #1"s, each "Individual #1" must get its own random effect! In this case, Individual is nested within Site!
+
+Let's contrast this with a non-nested random effect- let's say site and year. 
+
+In this case, Year "2014" in site #1 is the same as Year "2014" in site #2. Therefore the random effect associated with year "2014" does not differ depending on site. In this case, site and year are independent, non-nested random effects! 
+
+### Assumptions of mixed-effects regression
+
+The assumptions of mixed-effects regression are the same as in classical linear regression (for mixed-effects regression models) or generalized linear models (for generalized linear mixed models; GLMM). The only additional assumption is this:
+
+* All random effects are normally distributed!
+
+In some more complex models you might encounter models that assume random effects take other distributions- but this is still rare to see!
+
+### Example: mixed-effects regression in R
+
+The 'workhorse' package in R for fitting mixed-effects regression models (and GLMM) is the 'lme4' package. However, there are some other packages you should be aware of that can make your life easier. One such package is "glmmTMB"- I have found this package has more flexibility and tends to have less trouble fitting complex mixed-effects models. 
+
+We will use [this dataset](tundra2.csv) as our example - this is a data set on carbon balance in the tundra. This example is taken from [this website](https://bbolker.github.io/mixedmodels-misc/ecostats_chap.html).
+
+```{r}
+
+#########
+# TUNDRA EXAMPLE
+#########
+
+##### Read in the data
+
+mc1 <- read.csv("tundra2.csv",sep=",",na.strings=c("-","NA"))
+
+summary(mc1)
+
+table(mc1$Year)  # some years have many observations
+
+table(mc1$Site)  # some sites have many observations
+
+library(ggplot2)
+
+## visualize net ecosystem exchange by year- varying by site
+
+ggplot(mc1,aes(x=Year,y=GS.NEE,colour=Site))+geom_point()+
+    geom_smooth(method="lm",alpha=0.3)+
+    scale_y_continuous(limits=c(-150,400),oob=scales::squish)
 
 
---End of lectures--
+```
+
+Okay now let's fit a mixed-effects regression model with Net Ecosystem Exchange (NEE) as the response variable and Year as the fixed-effect (covariate). For our random effect we will have site- and the intercept and trend (slope term) can vary with site. That is, we have random intercept terms and random slope terms for each site. 
+
+Fitting a mixed model in 'lme4' (using the 'lmer' function) looks a lot like fitting a linear model in 'lm'. 
+
+```{r}
+
+library(lme4)
+cmod_lmer <- lmer(GS.NEE ~ cYear + (1+cYear|Site),
+                data=mc1, weights=n)
+
+```
+
+A couple notes: first of all, the 'weights' term is there because some observations are aggregated- that is, there are multiple observations for a given site/year combination- those observations that aggregate 3 observations get triple the weight of a site/year combination with only one observation. (Technically, we are using an inverse-variance weighting scheme!) 
+
+Secondly, note that year is treated as a fixed effect in this model. That is- we are looking for a trend in our response variable over time!
+
+Third, note the warning of a 'singular fit'. This is fairly common to see, and doesn't necessarily mean you can't use the model. But it means that lme4 struggled to fit the model and some of the parameters may have very wide confidence bounds!
+
+Let's look at the model results using 'summary':
+
+```{r}
+
+summary(cmod_lmer)
+
+```
+
+The results from the 'summary' function should look somewhat familiar! But note that there are no p-values associated with your fixed effects (regression coefficients)- just t-statistics! This is because it is really hard to know what the degrees of freedom are for the test! Is it the number of observations? Is it the number of sites? 
+
+Also note that the summary now includes a summary of the random effects. One red flag here is that the random intercept term and random slope terms are perfectly (negagively) correlated (Corr=-1). This is the reason for the 'singular' warning in this case. 
+
+From the random effects summary we can see that site explains a relatively small percent of the total variance among observations. 
+
+
+To fit the model using glmmTMB we can use the following code:
+
+```{r}
+
+library(glmmTMB)
+cmod_glmmTMB <- glmmTMB(GS.NEE ~ cYear + (1+cYear|Site),
+                data=mc1,
+                weights=n)
+
+summary(cmod_glmmTMB)
+```
+
+The summary looks similar- but one difference you see is that there are p-values on the regression coefficients now. 
+
+
+Let's perform some model diagnostics to test goodness-of-fit!
+
+Since the standard linear regression assumptions apply, we could look at our standard diagnostic plots:
+
+```{r}
+
+plot(cmod_lmer,type=c("p","smooth"))
+plot(cmod_lmer,sqrt(abs(resid(.)))~fitted(.),
+                  type=c("p","smooth"),ylab=expression(sqrt(abs(resid))))
+plot(cmod_lmer,resid(.,type="pearson")~cYear,
+                  type=c("p","smooth"))
+qqnorm(residuals(cmod_lmer,type="pearson",scaled=T))
+
+```
+
+The diagnostics look, well, okay!. If you look into it more deeply, you see that that 'Toolik' site is the one causing most of the issues. 
+
+
+Okay let's visualize the random effects (both intercept and random slope terms):
+
+```{r}
+
+library(lattice)
+dotplot(ranef(cmod_lmer,condVar=TRUE),
+          lattice.options=list(layout=c(1,2)))
+
+```
+
+If we want to test to see if year is explaining any of the variance, we can run an F-test (ANOVA):
+
+```{r}
+
+library(car)
+Anova(cmod_lmer)
+
+
+```
+
+Note that if we had a categorical variable and wanted to run pairwise comparisons, we could- using the 'emmeans' package (just like with standard ANOVA). 
+
+
+If we want confidence intervals on our fixed effects, we can use the 'confint' function, just like in ordinary linear regression. Here we use the Wald method (simplified version) and only extract confidence intervals for the fixed effects. 
+
+I had to use 'suppressWarnings' to avoid lots of warning messages here!
+
+```{r}
+
+confint(cmod_lmer,parm="beta_",method="Wald")
+
+```
+
+
+
+[--go to next lecture--](LECTURE10.html) 
 
 
 

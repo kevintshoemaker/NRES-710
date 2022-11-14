@@ -7,3 +7,12 @@ glmmTMB
 lattice
 carData
 car
+equatiomatic
+tidyverse
+tibble
+tidyr
+readr
+purrr
+dplyr
+stringr
+forcats

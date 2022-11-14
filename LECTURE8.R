@@ -2,7 +2,7 @@
 #  NRES 710, Lecture 8 ---------------------------------------                             
 #   University of Nevada, Reno                        
 #
-#    GLM and GLMM                                      
+#    GLM                                      
 
 
 
@@ -33,7 +33,8 @@ data.frame(
 
   ## conduct logistic regression:
 
-model <- glm(response~predictor,family=binomial(link="logit"))    # logistic regression in R
+mydat <- data.frame(response=response,predictor=predictor)
+model <- glm(response~predictor,family=binomial(link="logit"),data=mydat)    # logistic regression in R
 summary(model)   # summary looks similar to ordinary linear regression!
 
 newdat <- data.frame(        # make predictions for plotting regression line and approx conf bounds
@@ -74,7 +75,14 @@ abline(0,1)
 plot(qr~predict(model))
 
 
-# Count regression example
+## display formula!
+
+library(equatiomatic)
+
+equatiomatic::extract_eq(model,wrap=T,intercept = "beta",show_distribution = T)
+
+
+# Count regression example ------------------------------
 
 predictor = runif(30,-2,2)
 response = rnbinom(30,mu=exp(3-0.5*predictor),size=2)     # make up data!
@@ -88,10 +96,11 @@ plot(lm(response~predictor))
 
 ## try Poisson count regression model!
 
-model <- glm(response~predictor,family=poisson(link="log"))
+mydat <- mydat <- data.frame(response=response,predictor=predictor)
+model <- glm(response~predictor,family=poisson(link="log"),data=mydat)
 summary(model)
 
-plot(response~predictor)
+plot(response~predictor,data=mydat)
 
 newdat <- data.frame(
   predictor = seq(-3,3,0.1)
@@ -104,15 +113,36 @@ lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col="blue",lty=2)
 lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col="blue",lty=2)
 
 
-residuals(model)  # compute the deviance residuals for the poisson regression model
+## display formula!
 
-summary(residuals(model))   # median should be near zero
+library(equatiomatic)
 
-paste0(c("Null deviance: ", "Residual deviance: "),     # null deviance should be much higher than residual deviance
-       round(c(model$null.deviance, deviance(model)), 2))
+equatiomatic::extract_eq(model,wrap=T,intercept = "beta")
 
-paste0(c("model df: ", "Residual deviance: "),     # resid deviance should be close to residual df
-       round(c(model$df.residual, deviance(model)), 2))
+
+# Demo: heteroskedasticity in Poisson distrubution
+
+library(tidyverse)
+library(ggplot2)
+
+thisdat <- sapply(1:15,function(t) rpois(1000,lambda=t) )
+thisdat <- thisdat %>% 
+  as_tibble(.name_repair = "unique") %>%
+  rename_with( ~str_extract(.x,pat="(\\d)+")) %>% 
+  pivot_longer(cols=everything(),names_to = "mean", values_to = "value",names_transform = as.numeric)
+
+ggplot(thisdat,aes(x=mean,y=value)) + 
+  geom_boxplot(aes(group=mean))
+
+
+ # quantile residuals (GLM diagnostics)
+
+qr <- statmod::qresiduals(model)
+qqnorm(qr)
+abline(0,1)
+
+plot(qr~predict(model))
+
 
 
 library(DHARMa)
@@ -152,7 +182,8 @@ simresids <- simulateResiduals(model,n=250,plot=T)   # looks a lot better!
 testResiduals(simresids)  # run tests on the residuals!
 
 
-######
+# AIC model selection ----------------------
+
 # Make up data!
 
 predictor1 = runif(30,-2,2)
@@ -160,8 +191,6 @@ predictor2 <- runif(30,-100,100)
 predictor3 <- rnorm(30)   # useless predictor
 response = rnbinom(30,mu=exp(3-0.5*predictor1+0.01*predictor2),size=2)
 
-
-###
 # fit a bunch of candidate models
 
 model.pois.all <- glm(response~predictor1+predictor2+predictor3,family="poisson")
