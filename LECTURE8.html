@@ -821,8 +821,27 @@ thisdat &lt;- thisdat %&gt;%
 <p><img src="LECTURE8_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>However, we need some way of testing whether the distribution we
 selected is a reasonable fit to our data. We could use so-called
-deviance residuals here (which is the default in r) but I prefer to use
-the quantile residual approach.</p>
+deviance or pearson residuals to estimate overdispersion and run other
+diagnostic tests:</p>
+<pre class="r"><code># test for overdispersion:
+
+overdisp_fun &lt;- function(model) {    # function from Ben Bolker...
+    rdf &lt;- df.residual(model)
+    rp &lt;- residuals(model,type=&quot;pearson&quot;)
+    Pearson.chisq &lt;- sum(rp^2)
+    prat &lt;- Pearson.chisq/rdf
+    pval &lt;- pchisq(Pearson.chisq, df=rdf, lower.tail=FALSE)
+    c(chisq=Pearson.chisq,ratio=prat,rdf=rdf,p=pval)
+}
+
+options(scipar=15)
+overdisp_fun(model)</code></pre>
+<pre><code>##        chisq        ratio          rdf            p 
+## 1.758857e+02 6.281631e+00 2.800000e+01 2.268474e-23</code></pre>
+<p>Here we see that the data are overdispersed with respect to the
+model- much higher variance in the data than allowed by the Poisson
+distribution!</p>
+<p>I prefer to use the quantile residual approach.</p>
 <p>The DHARMa package in R not only implements the quantile residual
 approach, but does so in a way that is applicable to nearly all models
 you can fit in R!</p>
@@ -833,20 +852,20 @@ linear mixed-effects models- see below!)</p>
 qr &lt;- statmod::qresiduals(model)
 qqnorm(qr)
 abline(0,1)</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <pre class="r"><code>plot(qr~predict(model))</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
 <p>So using the quantile residuals we’re starting to get a picture that
 the Poisson distribution may not be a great fit. Let’s use the DHARMa
 package now…</p>
 <pre class="r"><code>library(DHARMa)
 
 simresids &lt;- simulateResiduals(model,n=250,plot=T)   # clearly this is a bad fit!</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <pre class="r"><code>plotResiduals(simresids,predictor)   # look for patterns across a predictor variable</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
 <pre class="r"><code>testResiduals(simresids)  # run tests on the residuals!</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-14-3.png" width="672" /><img src="LECTURE8_files/figure-html/unnamed-chunk-14-4.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-15-3.png" width="672" /><img src="LECTURE8_files/figure-html/unnamed-chunk-15-4.png" width="672" /></p>
 <pre><code>## $uniformity
 ## 
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
@@ -956,12 +975,12 @@ mypred &lt;- predict(model,type=&quot;response&quot;,se.fit = T,newdata=newdat)
 lines(newdat$predictor,mypred$fit,col=&quot;blue&quot;)
 lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
 lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>Now let’s check the model fit!</p>
 <pre class="r"><code>simresids &lt;- simulateResiduals(model,n=250,plot=T)   # looks a lot better!</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <pre class="r"><code>testResiduals(simresids)  # run tests on the residuals!</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-16-2.png" width="672" /><img src="LECTURE8_files/figure-html/unnamed-chunk-16-3.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-17-2.png" width="672" /><img src="LECTURE8_files/figure-html/unnamed-chunk-17-3.png" width="672" /></p>
 <pre><code>## $uniformity
 ## 
 ##  Exact one-sample Kolmogorov-Smirnov test

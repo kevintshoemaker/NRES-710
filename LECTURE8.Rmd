@@ -290,7 +290,30 @@ ggplot(thisdat,aes(x=mean,y=value)) +
 
 ```
 
-However, we need some way of testing whether the distribution we selected is a reasonable fit to our data. We could use so-called deviance residuals here (which is the default in r) but I prefer to use the quantile residual approach. 
+However, we need some way of testing whether the distribution we selected is a reasonable fit to our data. We could use so-called deviance or pearson residuals to estimate overdispersion and run other diagnostic tests:
+
+```{r}
+
+# test for overdispersion:
+
+overdisp_fun <- function(model) {    # function from Ben Bolker...
+    rdf <- df.residual(model)
+    rp <- residuals(model,type="pearson")
+    Pearson.chisq <- sum(rp^2)
+    prat <- Pearson.chisq/rdf
+    pval <- pchisq(Pearson.chisq, df=rdf, lower.tail=FALSE)
+    c(chisq=Pearson.chisq,ratio=prat,rdf=rdf,p=pval)
+}
+
+options(scipar=15)
+overdisp_fun(model)
+
+
+```
+Here we see that the data are overdispersed with respect to the model- much higher variance in the data than allowed by the Poisson distribution!
+
+
+I prefer to use the quantile residual approach. 
 
 The DHARMa package in R not only implements the quantile residual approach, but does so in a way that is applicable to nearly all models you can fit in R! 
 
