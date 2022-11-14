@@ -64,6 +64,8 @@ Let's first make up an example:
 
 ```{r}
 
+# logistic regression ----------------------
+
 ## made up data for glm #1 (logistic regression)
 
 predictor <- runif(100,0,50)
@@ -78,16 +80,13 @@ plot(lm(response~predictor))
 
 ```
 
-Note that the predicted mean response at high values of the predictor exceed 1- which is impossible for a binary response. Clearly we can't make the assumption of linearity on the untransformed binary response. Furthermore, the other diagnostic plots also do not look great...
+Note that the predicted mean response at high values of the predictor exceed 1- which is impossible for a binary response. In fact, the mean (expected) value for a binary response is the same thing as the "probability of success (frequency of obtaining a value of 1)" -- and probabilities are constrained between 0 and 1. Clearly we can't make the assumption of linearity on the un-transformed binary response. Furthermore, the other diagnostic plots also do not look so hot...
 
-Another way of saying this is that a binary response cannot go below zero or above 1, whereas a linear function of predictor variables (linear predictor) can do both!
+One transformation that makes sense for a regression with a binary response variable is the **logit transformation**. The logit transformation is commonly used to take probabilities (which are constrained between 0 and 1) and transform them to *unconstrained* values that can vary between -Inf and Inf.
 
-One transformation that makes sense for a regression with a binary response is the **logit transformation**. The logit transformation is commonly used to take probabilities (which are constrained between 0 and 1) and transform them to values that can vary between -Inf and Inf.
-
-That way, the linear predictor (which is not constrained and can therefore vary between -Inf and Inf) will always be interpretable as a probability!
+This way, the linear predictor (which is inherently unconstrained and can therefore theoretically vary between -Inf and Inf) can always be interpretable as a probability!
 
 For example, take the following probabilities:
-
 
 ```{r}
 
@@ -115,7 +114,7 @@ So instead of:
 
 $\bar{y} = \beta_0 + \beta_1\cdot x$ 
 
-We can use the **logit link** and assume instead that:
+We can use the **logit link function** and assume instead that:
 
 $logit(\bar{y}) = \beta_0 + \beta_1\cdot x$
 
@@ -123,15 +122,13 @@ If we solve for y, this equation becomes:
 
 $\bar{y} = \frac{e^{\beta_0 + \beta_1\cdot x}}{1+e^{\beta_0 + \beta_1\cdot x}}$
 
-This is what we do when we conduct a *logistic regression*! Specifically, in a logistic regression we assume the following:
+This is what we do when we conduct a *logistic regression*! Specifically, in a logistic regression we generally assume the following:
 
-**Response distribution**: binomial with size=1 (can only be zero or 1; also known as a Bernoulli distribution)     
+**Response distribution**: response variable is binomially distributed. Often (but not necessarily), this takes the form of a specific binomial distribution with size=1 (can only be zero or one; also known as a Bernoulli distribution).     
 
-**Link function**: logit (mean of the response is a linear function of the predictor variable(s), on the logit scale) 
+**Link function**: the mean response (binomial probability) is a linear function of the predictor variable(s) on the logit scale. 
 
-We use a binomial response distribution because our response variable is discrete, just like a binomial distribution. If you flip one coin you can get only a zero or a one, just like the response variable. The binomial distribution matches the response variable, so it is an appropriate distribution to assume!
-
-NOTE: it may not seem obvious, but the mean of a binary random variable is the probability of success (probability of getting a one). That is, if you repeatedly sampled from a random binary process many many times, the expected mean of those numbers (fraction of the total number of samples that are equal to one) is the same thing as the probability of success.  
+We use a binomial response distribution because our response variable is analogous to a coin flip. If you flip one coin you can get only a zero or a one, just like the response variable. The binomial distribution matches the response variable, so it is an appropriate distribution to assume!
 
 
 ```{r}
@@ -162,7 +159,7 @@ par(mfcol=c(1,2))
 
 mypred <- predict(model,type="link",se.fit=T,newdata = newdat)
 
-plot(newdat$predictor,mypred$fit,col="blue",type="l",ylab="mean response(logit scale)",xlab="predictor")
+plot(newdat$predictor,mypred$fit,col="blue",type="l",ylab="mean response (logit scale)",xlab="predictor")
 lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col="blue",lty=2)
 lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col="blue",lty=2)
 
@@ -176,6 +173,19 @@ lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col="blue",lty=2)
 
 ```
 
+The standard regression diagnostic plots don't work for logistic regression. However, we can use deviance residuals, Pearson residuals or quantile residuals to assess whether the key assumptions of GLM may be violated. I generally prefer to use the quantile residuals, because they (unlike deviance residuals) make sense for nearly any class of model including logistic regression and even GLMM:
+
+```{r}
+
+ # quantile residuals (GLM diagnostics)
+
+qr <- statmod::qresiduals(model)
+qqnorm(qr)
+abline(0,1)
+
+plot(qr~predict(model))
+
+```
 
 ### Another simple example (Poisson count regression)
 
@@ -233,10 +243,11 @@ Obviously, the standard diagnostic plots don't make much sense for GLM-- after a
 
 The Poisson distribution, for example, does not have homogeneous variance- in fact, the variance of the Poisson distribution is equal to the mean. So the larger the expected value, the larger the variance!
 
-However, we need some way of testing whether the distribution we selected is a reasonable fit to our data. We could use so-called deviance residuals here (which is the default in r)  but I prefer to use the DHARMa package in R. 
+However, we need some way of testing whether the distribution we selected is a reasonable fit to our data. We could use so-called deviance residuals here (which is the default in r) but I prefer to use the quantile residual approach. 
+
+The DHARMa package in R not only implements the quantile residual approach, but does so in a way that is applicable to nearly all models you can fit in R! 
 
 NOTE: the DHARMa package also works for GLMM models (generalized linear mixed-effects models- see below!)
-
 
 ```{r}
 

@@ -442,70 +442,69 @@ script to your working directory</a></p>
 </div>
 <div id="overview-generalized-linear-models" class="section level2">
 <h2>Overview: Generalized Linear Models</h2>
-<p>Generalized Linear Models (GLM) are not generally covered in intro
+<p>Generalized Linear Models (GLM) are not generally covered in ‘intro’
 stats classes, but they are so flexible and so common in ecology and
 environmental science that you really need to know how to work with
 these models!</p>
 <p>The real data sets that we deal with as ecologists and environmental
 scientists tend to violate some key assumptions of classical linear
-regression and ANOVA. In particular, residuals are often decidedly
-non-normal and variance is decidedly non-equal (heteroskedastic) across
-the range of predictions.</p>
-<p>Generalized linear models allow us to model response variables that
-are not amenable to classical linear regression – but allows us to use a
-model structure that closely resembles linear regression. Pretty much
-everything about running a GLM is like linear regression. The primary
-function for running GLM models (‘glm’) even looks very similar to the
-regression function ‘lm’.</p>
-<p>GLMs are parametric analyses – it’s just that (1) we don’t need to
-assume our response variable is normally distributed and (2) we don’t
-need to assume the relationship between the response variable and the
-predictor variable(s) is linear on the scale of the untransformed
+regression or ANOVA. In particular, residuals are often non-normal and
+variance is not equal (heteroskedastic) across the range of
+predictions.</p>
+<p>GLMs allow us to model response variables that are not amenable to
+classical linear regression – but uses a model structure that closely
+resembles linear regression. Pretty much everything about running a GLM
+feels like linear regression. The primary function for running GLM
+models (<code>glm()</code>) even looks very similar to the regression
+function <code>lm()</code>.</p>
+<p>GLMs are <em>parametric</em> analyses – it’s just that (1) we don’t
+need to assume our response variable is normally distributed and (2) we
+don’t need to assume the relationship between the response variable and
+the predictor variable(s) is linear on the scale of the untransformed
 response variable. Let’s look into each of these in more detail:</p>
-<div id="alternative-distributions" class="section level3">
-<h3>Alternative distributions</h3>
+<div id="alternative-error-distributions" class="section level3">
+<h3>Alternative error distributions</h3>
 <p>So we don’t need to assume the response variable is normally
 distributed – but we do need to assume it is distributed according to
 some known probability distribution – and we need to specify what
 distribution we ARE assuming. We can assume that the response process is
-Poisson distributed, or gamma distributed, or beta distributed, or any
-of a host of other distributions. But again, we have to specify which
-distribution!</p>
+Poisson distributed, or gamma distributed, or any of a host of other
+distributions (GLMs are typically limited to the set of distributions
+known as the “exponential family”). But we, the modelers, have to
+specify which distribution to use!</p>
 </div>
 <div id="link-functions" class="section level3">
 <h3>Link functions</h3>
 <p>So we don’t need to assume the relationship between the mean of the
 response variable and the predictor variable(s) is linear on the scale
-of the untransformed response variable – but the hypothesized
-relationship must be linear on some transformation of the response
-variable – and we need to specify what transformed version of the
-response process we wish to assume linearity for. This is called the
+of the untransformed response variable – but we DO assume that the
+hypothesized relationship is linear on some transformation of the
+response variable – and we need to specify what transformed version of
+the response process we wish to assume linearity for. This is called the
 ‘link function’.</p>
 <p>In the general case, a GLM can be described by the following
-pseudo-equations:</p>
-<p><span class="math inline">\(f(\bar{y})=\beta_0+\beta_1\cdot
-x_1+\beta_2 \cdot x_2 \ldots\)</span></p>
+pseudo-equation:</p>
+<p><span class="math inline">\(f(\mu)=\beta_0+\beta_1\cdot x_1+\beta_2
+\cdot x_2 \ldots\)</span></p>
 <p>The left side of this equation is the mean of the response variable,
 transformed according to the specified link function. The right side of
 this equation is called the <strong>linear predictor</strong> and
 describes how the (transformed) mean response varies as a function of
 the predictor variable(s).</p>
-<p>To complete the picture, we need to represent the error/variability.
-To do this we represent the raw response as being distributed according
-to a distribution we specify:</p>
-<p><span class="math inline">\(y \sim My.Dist(\ldots)\)</span></p>
-<p>My.Dist can be the binomial distribution, Poisson distribution, or a
-number of other possibilities. The mean of the distribution is described
-by the covariates (preditor variables) as described in the top
-equation.</p>
+<p>To complete the picture, we represent the error distribution
+(inherent variability among observations) according to whatever error
+process we specified: e.g., a binomial distribution, Poisson
+distribution, or a number of other possibilities.</p>
 </div>
-<div id="a-simple-example-logistic-regression" class="section level3">
-<h3>A simple example (logistic regression)</h3>
-<p>For example, we might have a binary response variable and a
-continuous predictor variable. Making the assumption of linearity would
-not necessarily make sense in this case.</p>
+<div id="logistic-regression" class="section level3">
+<h3>Logistic regression</h3>
+<p>For example, we might have a <em>binary</em> response variable and a
+<em>continuous</em> predictor variable. Making the assumption of
+linearity would not necessarily make sense in this case.</p>
 <p>Let’s first make up an example:</p>
-<pre class="r"><code>## made up data for glm #1 (logistic regression)
+<pre class="r"><code># logistic regression ----------------------
+
+## made up data for glm #1 (logistic regression)
 
 predictor &lt;- runif(100,0,50)
 response &lt;- rbinom(100,1, plogis(-5 + 0.26*predictor) )
@@ -517,20 +516,20 @@ abline(lm(response~predictor),col=&quot;red&quot;)   # overlay regression line</
 plot(lm(response~predictor))</code></pre>
 <p><img src="LECTURE8_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
 <p>Note that the predicted mean response at high values of the predictor
-exceed 1- which is impossible for a binary response. Clearly we can’t
-make the assumption of linearity on the untransformed binary response.
-Furthermore, the other diagnostic plots also do not look great…</p>
-<p>Another way of saying this is that a binary response cannot go below
-zero or above 1, whereas a linear function of predictor variables
-(linear predictor) can do both!</p>
+exceed 1- which is impossible for a binary response. In fact, the mean
+(expected) value for a binary response is the same thing as the
+“probability of success (frequency of obtaining a value of 1)” – and
+probabilities are constrained between 0 and 1. Clearly we can’t make the
+assumption of linearity on the un-transformed binary response.
+Furthermore, the other diagnostic plots also do not look so hot…</p>
 <p>One transformation that makes sense for a regression with a binary
-response is the <strong>logit transformation</strong>. The logit
-transformation is commonly used to take probabilities (which are
-constrained between 0 and 1) and transform them to values that can vary
-between -Inf and Inf.</p>
-<p>That way, the linear predictor (which is not constrained and can
-therefore vary between -Inf and Inf) will always be interpretable as a
-probability!</p>
+response variable is the <strong>logit transformation</strong>. The
+logit transformation is commonly used to take probabilities (which are
+constrained between 0 and 1) and transform them to
+<em>unconstrained</em> values that can vary between -Inf and Inf.</p>
+<p>This way, the linear predictor (which is inherently unconstrained and
+can therefore theoretically vary between -Inf and Inf) can always be
+interpretable as a probability!</p>
 <p>For example, take the following probabilities:</p>
 <pre class="r"><code>probs &lt;- runif(10)
 probs</code></pre>
@@ -562,30 +561,28 @@ zero or above one.</p>
 <p>So instead of:</p>
 <p><span class="math inline">\(\bar{y} = \beta_0 + \beta_1\cdot
 x\)</span></p>
-<p>We can use the <strong>logit link</strong> and assume instead
-that:</p>
+<p>We can use the <strong>logit link function</strong> and assume
+instead that:</p>
 <p><span class="math inline">\(logit(\bar{y}) = \beta_0 + \beta_1\cdot
 x\)</span></p>
 <p>If we solve for y, this equation becomes:</p>
 <p><span class="math inline">\(\bar{y} = \frac{e^{\beta_0 + \beta_1\cdot
 x}}{1+e^{\beta_0 + \beta_1\cdot x}}\)</span></p>
 <p>This is what we do when we conduct a <em>logistic regression</em>!
-Specifically, in a logistic regression we assume the following:</p>
-<p><strong>Response distribution</strong>: binomial with size=1 (can
-only be zero or 1; also known as a Bernoulli distribution)</p>
-<p><strong>Link function</strong>: logit (mean of the response is a
-linear function of the predictor variable(s), on the logit scale)</p>
+Specifically, in a logistic regression we generally assume the
+following:</p>
+<p><strong>Response distribution</strong>: response variable is
+binomially distributed. Often (but not necessarily), this takes the form
+of a specific binomial distribution with size=1 (can only be zero or
+one; also known as a Bernoulli distribution).</p>
+<p><strong>Link function</strong>: the mean response (binomial
+probability) is a linear function of the predictor variable(s) on the
+logit scale.</p>
 <p>We use a binomial response distribution because our response variable
-is discrete, just like a binomial distribution. If you flip one coin you
-can get only a zero or a one, just like the response variable. The
-binomial distribution matches the response variable, so it is an
-appropriate distribution to assume!</p>
-<p>NOTE: it may not seem obvious, but the mean of a binary random
-variable is the probability of success (probability of getting a one).
-That is, if you repeatedly sampled from a random binary process many
-many times, the expected mean of those numbers (fraction of the total
-number of samples that are equal to one) is the same thing as the
-probability of success.</p>
+is analogous to a coin flip. If you flip one coin you can get only a
+zero or a one, just like the response variable. The binomial
+distribution matches the response variable, so it is an appropriate
+distribution to assume!</p>
 <pre class="r"><code>  ## conduct logistic regression:
 
 model &lt;- glm(response~predictor,family=binomial(link=&quot;logit&quot;))    # logistic regression in R
@@ -632,7 +629,7 @@ visualization of the same exact model:</p>
 
 mypred &lt;- predict(model,type=&quot;link&quot;,se.fit=T,newdata = newdat)
 
-plot(newdat$predictor,mypred$fit,col=&quot;blue&quot;,type=&quot;l&quot;,ylab=&quot;mean response(logit scale)&quot;,xlab=&quot;predictor&quot;)
+plot(newdat$predictor,mypred$fit,col=&quot;blue&quot;,type=&quot;l&quot;,ylab=&quot;mean response (logit scale)&quot;,xlab=&quot;predictor&quot;)
 lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
 lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
 
@@ -643,6 +640,20 @@ plot(newdat$predictor,mypred$fit,col=&quot;blue&quot;,type=&quot;l&quot;,ylab=&q
 lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
 lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</code></pre>
 <p><img src="LECTURE8_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>The standard regression diagnostic plots don’t work for logistic
+regression. However, we can use deviance residuals, Pearson residuals or
+quantile residuals to assess whether the key assumptions of GLM may be
+violated. I generally prefer to use the quantile residuals, because they
+(unlike deviance residuals) make sense for nearly any class of model
+including logistic regression and even GLMM:</p>
+<pre class="r"><code> # quantile residuals (GLM diagnostics)
+
+qr &lt;- statmod::qresiduals(model)
+qqnorm(qr)
+abline(0,1)</code></pre>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>plot(qr~predict(model))</code></pre>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
 </div>
 <div id="another-simple-example-poisson-count-regression"
 class="section level3">
@@ -667,10 +678,10 @@ response = rnbinom(30,mu=exp(3-0.5*predictor),size=2)     # make up data!
 
 plot(response~predictor)
 abline(lm(response~predictor))</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <pre class="r"><code>par(mfrow=c(2,2))
 plot(lm(response~predictor))</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
 <p>Here we see some potential issues with ordinary linear regression and
 we might consider Poisson count regression instead!</p>
 <pre class="r"><code>## try Poisson count regression model!
@@ -682,21 +693,21 @@ summary(model)</code></pre>
 ## glm(formula = response ~ predictor, family = poisson(link = &quot;log&quot;))
 ## 
 ## Deviance Residuals: 
-##    Min      1Q  Median      3Q     Max  
-## -5.430  -2.692  -1.104   1.599  10.104  
+##     Min       1Q   Median       3Q      Max  
+## -5.1637  -1.9085  -0.3191   2.0617   4.3448  
 ## 
 ## Coefficients:
 ##             Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)  2.69679    0.05770   46.74   &lt;2e-16 ***
-## predictor   -0.73003    0.04659  -15.67   &lt;2e-16 ***
+## (Intercept)  2.86667    0.04955   57.86   &lt;2e-16 ***
+## predictor   -0.75982    0.03677  -20.66   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## (Dispersion parameter for poisson family taken to be 1)
 ## 
-##     Null deviance: 636.54  on 29  degrees of freedom
-## Residual deviance: 356.85  on 28  degrees of freedom
-## AIC: 493.28
+##     Null deviance: 716.22  on 29  degrees of freedom
+## Residual deviance: 186.76  on 28  degrees of freedom
+## AIC: 322.16
 ## 
 ## Number of Fisher Scoring iterations: 5</code></pre>
 <pre class="r"><code>plot(response~predictor)
@@ -710,7 +721,7 @@ mypred &lt;- predict(model,type=&quot;response&quot;,se.fit = T,newdata=newdat)
 lines(newdat$predictor,mypred$fit,col=&quot;blue&quot;)
 lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
 lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 </div>
 <div id="diagnostic-testing-with-glm" class="section level2">
@@ -727,46 +738,49 @@ the mean. So the larger the expected value, the larger the variance!</p>
 <p>However, we need some way of testing whether the distribution we
 selected is a reasonable fit to our data. We could use so-called
 deviance residuals here (which is the default in r) but I prefer to use
-the DHARMa package in R.</p>
+the quantile residual approach.</p>
+<p>The DHARMa package in R not only implements the quantile residual
+approach, but does so in a way that is applicable to nearly all models
+you can fit in R!</p>
 <p>NOTE: the DHARMa package also works for GLMM models (generalized
 linear mixed-effects models- see below!)</p>
 <pre class="r"><code>residuals(model)  # compute the deviance residuals for the poisson regression model</code></pre>
 <pre><code>##           1           2           3           4           5           6 
-## -2.57985714  4.83708591 -4.92109577  0.71482310 -1.59495575 -2.90285585 
+##  1.41091663  0.02027447 -1.91687117 -1.88329487 -2.94412743  4.34481884 
 ##           7           8           9          10          11          12 
-## -2.63991801  2.07019894 -5.04023615 -2.74257957  1.58859027 -4.63332068 
+## -2.25788730 -1.15574121 -4.68016554  1.39524279 -0.06377005  0.89809385 
 ##          13          14          15          16          17          18 
-## -2.58938512 -5.42978559 -1.64732817 -1.50424227 10.10353400 -3.59712614 
+##  2.62100502 -0.99064866  2.64203006  2.23928663 -1.16695579 -5.16374164 
 ##          19          20          21          22          23          24 
-## -2.70681105  1.60308923  1.07224616 -0.41872308  4.44620233 -0.70411883 
+##  3.06452320 -0.83251497 -1.39097097 -2.82515688  2.24746686  2.13160046 
 ##          25          26          27          28          29          30 
-## -2.64661852  2.05187494 -0.07695945  3.73607274 -0.68216270  3.10008295</code></pre>
+##  1.85218827 -0.10777226 -0.53042214 -3.30217257  3.32555707 -3.96901409</code></pre>
 <pre class="r"><code>summary(residuals(model))   # median should be near zero</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-## -5.4298 -2.6918 -1.1042 -0.4578  1.5995 10.1035</code></pre>
+## -5.1637 -1.9085 -0.3191 -0.2329  2.0617  4.3448</code></pre>
 <pre class="r"><code>paste0(c(&quot;Null deviance: &quot;, &quot;Residual deviance: &quot;),     # null deviance should be much higher than residual deviance
        round(c(model$null.deviance, deviance(model)), 2))</code></pre>
-<pre><code>## [1] &quot;Null deviance: 636.54&quot;     &quot;Residual deviance: 356.85&quot;</code></pre>
+<pre><code>## [1] &quot;Null deviance: 716.22&quot;     &quot;Residual deviance: 186.76&quot;</code></pre>
 <pre class="r"><code>paste0(c(&quot;model df: &quot;, &quot;Residual deviance: &quot;),     # resid deviance should be close to residual df
        round(c(model$df.residual, deviance(model)), 2))</code></pre>
-<pre><code>## [1] &quot;model df: 28&quot;              &quot;Residual deviance: 356.85&quot;</code></pre>
+<pre><code>## [1] &quot;model df: 28&quot;              &quot;Residual deviance: 186.76&quot;</code></pre>
 <p>So using the deviance residuals we’re starting to get a picture that
 the Poisson distribution may not be a great fit. Let’s use the DHARMa
 package now…</p>
-<pre class="r"><code>library(DHARMa)</code></pre>
-<pre><code>## This is DHARMa 0.4.5. For overview type &#39;?DHARMa&#39;. For recent changes, type news(package = &#39;DHARMa&#39;)</code></pre>
-<pre class="r"><code>simresids &lt;- simulateResiduals(model,n=250,plot=T)   # clearly this is a bad fit!</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>library(DHARMa)
+
+simresids &lt;- simulateResiduals(model,n=250,plot=T)   # clearly this is a bad fit!</code></pre>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <pre class="r"><code>plotResiduals(simresids,predictor)   # look for patterns across a predictor variable</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
 <pre class="r"><code>testResiduals(simresids)  # run tests on the residuals!</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-10-3.png" width="672" /><img src="LECTURE8_files/figure-html/unnamed-chunk-10-4.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-11-3.png" width="672" /><img src="LECTURE8_files/figure-html/unnamed-chunk-11-4.png" width="672" /></p>
 <pre><code>## $uniformity
 ## 
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  simulationOutput$scaledResiduals
-## D = 0.42413, p-value = 4.108e-05
+## D = 0.29942, p-value = 0.009224
 ## alternative hypothesis: two-sided
 ## 
 ## 
@@ -776,7 +790,7 @@ package now…</p>
 ##  simulated
 ## 
 ## data:  simulationOutput
-## dispersion = 17.344, p-value &lt; 2.2e-16
+## dispersion = 8.6128, p-value &lt; 2.2e-16
 ## alternative hypothesis: two.sided
 ## 
 ## 
@@ -785,19 +799,19 @@ package now…</p>
 ##  DHARMa bootstrapped outlier test
 ## 
 ## data:  simulationOutput
-## outliers at both margin(s) = 11, observations = 30, p-value &lt; 2.2e-16
+## outliers at both margin(s) = 6, observations = 30, p-value &lt; 2.2e-16
 ## alternative hypothesis: two.sided
 ##  percent confidence interval:
-##  0.00000000 0.03333333
+##  0.00000000 0.05083333
 ## sample estimates:
-## outlier frequency (expected: 0.008 ) 
-##                            0.3666667</code></pre>
+## outlier frequency (expected: 0.00933333333333333 ) 
+##                                                0.2</code></pre>
 <pre><code>## $uniformity
 ## 
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  simulationOutput$scaledResiduals
-## D = 0.42413, p-value = 4.108e-05
+## D = 0.29942, p-value = 0.009224
 ## alternative hypothesis: two-sided
 ## 
 ## 
@@ -807,7 +821,7 @@ package now…</p>
 ##  simulated
 ## 
 ## data:  simulationOutput
-## dispersion = 17.344, p-value &lt; 2.2e-16
+## dispersion = 8.6128, p-value &lt; 2.2e-16
 ## alternative hypothesis: two.sided
 ## 
 ## 
@@ -816,13 +830,13 @@ package now…</p>
 ##  DHARMa bootstrapped outlier test
 ## 
 ## data:  simulationOutput
-## outliers at both margin(s) = 11, observations = 30, p-value &lt; 2.2e-16
+## outliers at both margin(s) = 6, observations = 30, p-value &lt; 2.2e-16
 ## alternative hypothesis: two.sided
 ##  percent confidence interval:
-##  0.00000000 0.03333333
+##  0.00000000 0.05083333
 ## sample estimates:
-## outlier frequency (expected: 0.008 ) 
-##                            0.3666667</code></pre>
+## outlier frequency (expected: 0.00933333333333333 ) 
+##                                                0.2</code></pre>
 <p>Okay so the DHARMa package diagnostics seem to indicate that the
 Poisson regression was a poor fit to the data (you will find this is
 usually true with Poisson regression). Let’s try running a negative
@@ -841,22 +855,22 @@ summary(model)</code></pre>
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
-## -2.2975  -1.0231  -0.3612   0.4815   1.7332  
+## -1.8241  -0.7926  -0.1538   0.4755   1.1283  
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)   2.6314     0.1676  15.700 2.08e-15 ***
-## predictor    -0.8179     0.1635  -5.003 2.75e-05 ***
+## (Intercept)  2.87003    0.11157   25.73  &lt; 2e-16 ***
+## predictor   -0.74449    0.09135   -8.15 7.15e-09 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## (Dispersion parameter for Negative Binomial(2) family taken to be 1.153425)
+## (Dispersion parameter for Negative Binomial(2) family taken to be 0.6373751)
 ## 
-##     Null deviance: 62.772  on 29  degrees of freedom
-## Residual deviance: 36.802  on 28  degrees of freedom
-## AIC: 239.94
+##     Null deviance: 65.919  on 29  degrees of freedom
+## Residual deviance: 21.200  on 28  degrees of freedom
+## AIC: 220.46
 ## 
-## Number of Fisher Scoring iterations: 5</code></pre>
+## Number of Fisher Scoring iterations: 4</code></pre>
 <pre class="r"><code>model &lt;- glm.nb(response~predictor)
 
 plot(response~predictor)
@@ -870,18 +884,18 @@ mypred &lt;- predict(model,type=&quot;response&quot;,se.fit = T,newdata=newdat)
 lines(newdat$predictor,mypred$fit,col=&quot;blue&quot;)
 lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
 lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>Now let’s check the model fit!</p>
 <pre class="r"><code>simresids &lt;- simulateResiduals(model,n=250,plot=T)   # looks a lot better!</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <pre class="r"><code>testResiduals(simresids)  # run tests on the residuals!</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-12-2.png" width="672" /><img src="LECTURE8_files/figure-html/unnamed-chunk-12-3.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-13-2.png" width="672" /><img src="LECTURE8_files/figure-html/unnamed-chunk-13-3.png" width="672" /></p>
 <pre><code>## $uniformity
 ## 
 ##  Exact one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  simulationOutput$scaledResiduals
-## D = 0.09722, p-value = 0.9133
+## D = 0.09726, p-value = 0.913
 ## alternative hypothesis: two-sided
 ## 
 ## 
@@ -891,7 +905,7 @@ lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</c
 ##  simulated
 ## 
 ## data:  simulationOutput
-## dispersion = 0.78737, p-value = 0.96
+## dispersion = 0.6299, p-value = 0.552
 ## alternative hypothesis: two.sided
 ## 
 ## 
@@ -905,14 +919,14 @@ lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</c
 ##  percent confidence interval:
 ##  0.00000000 0.03333333
 ## sample estimates:
-## outlier frequency (expected: 0.00566666666666667 ) 
-##                                                  0</code></pre>
+## outlier frequency (expected: 0.007 ) 
+##                                    0</code></pre>
 <pre><code>## $uniformity
 ## 
 ##  Exact one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  simulationOutput$scaledResiduals
-## D = 0.09722, p-value = 0.9133
+## D = 0.09726, p-value = 0.913
 ## alternative hypothesis: two-sided
 ## 
 ## 
@@ -922,7 +936,7 @@ lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</c
 ##  simulated
 ## 
 ## data:  simulationOutput
-## dispersion = 0.78737, p-value = 0.96
+## dispersion = 0.6299, p-value = 0.552
 ## alternative hypothesis: two.sided
 ## 
 ## 
@@ -936,8 +950,8 @@ lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</c
 ##  percent confidence interval:
 ##  0.00000000 0.03333333
 ## sample estimates:
-## outlier frequency (expected: 0.00566666666666667 ) 
-##                                                  0</code></pre>
+## outlier frequency (expected: 0.007 ) 
+##                                    0</code></pre>
 <p>And this time our count regression model fits the data well, and we
 can report the results of this model with confidence!</p>
 <p>NOTE: you should always run goodness-of-fit tests for any model you
@@ -1007,12 +1021,12 @@ AICtab &lt;- data.frame(
 AICtab$DeltaAIC &lt;- abs(AICtab$AIC-min(AICtab$AIC))
 
 AICtab[order(AICtab$DeltaAIC,decreasing = F),]</code></pre>
-<pre><code>##                           ModelName LogLikelihood      AIC  DeltaAIC
-## NegBin_preds1and2 NegBin_preds1and2     -109.9512 227.9023   0.00000
-## NegBin_allvars       NegBin_allvars     -109.9227 229.8453   1.94300
-## NegBin_pred1           NegBin_pred1     -116.2897 238.5795  10.67713
-## NegBin_pred2           NegBin_pred2     -116.2897 238.5795  10.67713
-## Poisson                     Poisson     -260.8865 529.7731 301.87076</code></pre>
+<pre><code>##                           ModelName LogLikelihood      AIC   DeltaAIC
+## NegBin_preds1and2 NegBin_preds1and2     -121.2851 250.5703   0.000000
+## NegBin_allvars       NegBin_allvars     -121.2836 252.5671   1.996863
+## NegBin_pred1           NegBin_pred1     -131.0361 268.0723  17.501980
+## NegBin_pred2           NegBin_pred2     -131.0361 268.0723  17.501980
+## Poisson                     Poisson     -258.1650 524.3300 273.759717</code></pre>
 <p>NOTE: for AIC model comparison to make sense, the response variable
 must be exactly the same (note: you can’t compare different
 transformations of the response variable) and the number of observations
@@ -1279,7 +1293,7 @@ ggplot(mc1,aes(x=Year,y=GS.NEE,colour=Site))+geom_point()+
 
 ## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
 ## -Inf</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>Okay now let’s fit a mixed-effects regression model with Net
 Ecosystem Exchange (NEE) as the response variable and Year as the
 fixed-effect (covariate). For our random effect we will have site- and
@@ -1287,9 +1301,8 @@ the intercept and trend (slope term) can vary with site. That is, we
 have random intercept terms and random slope terms for each site.</p>
 <p>Fitting a mixed model in ‘lme4’ (using the ‘lmer’ function) looks a
 lot like fitting a linear model in ‘lm’.</p>
-<pre class="r"><code>library(lme4)</code></pre>
-<pre><code>## Loading required package: Matrix</code></pre>
-<pre class="r"><code>cmod_lmer &lt;- lmer(GS.NEE ~ cYear + (1+cYear|Site),
+<pre class="r"><code>library(lme4)
+cmod_lmer &lt;- lmer(GS.NEE ~ cYear + (1+cYear|Site),
                 data=mc1, weights=n)</code></pre>
 <pre><code>## boundary (singular) fit: see help(&#39;isSingular&#39;)</code></pre>
 <p>A couple notes: first of all, the ‘weights’ term is there because
@@ -1385,15 +1398,15 @@ are p-values on the regression coefficients now.</p>
 <p>Since the standard linear regression assumptions apply, we could look
 at our standard diagnostic plots:</p>
 <pre class="r"><code>plot(cmod_lmer,type=c(&quot;p&quot;,&quot;smooth&quot;))</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <pre class="r"><code>plot(cmod_lmer,sqrt(abs(resid(.)))~fitted(.),
                   type=c(&quot;p&quot;,&quot;smooth&quot;),ylab=expression(sqrt(abs(resid))))</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
 <pre class="r"><code>plot(cmod_lmer,resid(.,type=&quot;pearson&quot;)~cYear,
                   type=c(&quot;p&quot;,&quot;smooth&quot;))</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-18-3.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-19-3.png" width="672" /></p>
 <pre class="r"><code>qqnorm(residuals(cmod_lmer,type=&quot;pearson&quot;,scaled=T))</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-18-4.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-19-4.png" width="672" /></p>
 <p>The diagnostics look, well, okay!. If you look into it more deeply,
 you see that that ‘Toolik’ site is the one causing most of the
 issues.</p>
@@ -1403,12 +1416,11 @@ slope terms):</p>
 dotplot(ranef(cmod_lmer,condVar=TRUE),
           lattice.options=list(layout=c(1,2)))</code></pre>
 <pre><code>## $Site</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="LECTURE8_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>If we want to test to see if year is explaining any of the variance,
 we can run an F-test (ANOVA):</p>
-<pre class="r"><code>library(car)</code></pre>
-<pre><code>## Loading required package: carData</code></pre>
-<pre class="r"><code>Anova(cmod_lmer)</code></pre>
+<pre class="r"><code>library(car)
+Anova(cmod_lmer)</code></pre>
 <pre><code>## Analysis of Deviance Table (Type II Wald chisquare tests)
 ## 
 ## Response: GS.NEE

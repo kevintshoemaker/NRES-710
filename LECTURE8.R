@@ -1,9 +1,12 @@
 
-#  NRES 710, Lecture 7 ---------------------------------------                             
+#  NRES 710, Lecture 8 ---------------------------------------                             
 #   University of Nevada, Reno                        
 #
-#    GLM and GLMM                                       ####
+#    GLM and GLMM                                      
 
+
+
+# logistic regression ----------------------
 
 ## made up data for glm #1 (logistic regression)
 
@@ -49,7 +52,7 @@ par(mfcol=c(1,2))
 
 mypred <- predict(model,type="link",se.fit=T,newdata = newdat)
 
-plot(newdat$predictor,mypred$fit,col="blue",type="l",ylab="mean response(logit scale)",xlab="predictor")
+plot(newdat$predictor,mypred$fit,col="blue",type="l",ylab="mean response (logit scale)",xlab="predictor")
 lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col="blue",lty=2)
 lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col="blue",lty=2)
 
@@ -60,6 +63,15 @@ plot(newdat$predictor,mypred$fit,col="blue",type="l",ylab="mean response",xlab="
 lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col="blue",lty=2)
 lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col="blue",lty=2)
 
+
+
+ # quantile residuals (GLM diagnostics)
+
+qr <- statmod::qresiduals(model)
+qqnorm(qr)
+abline(0,1)
+
+plot(qr~predict(model))
 
 
 # Count regression example
