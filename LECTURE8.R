@@ -143,10 +143,10 @@ overdisp_fun <- function(model) {    # function from Ben Bolker...
     Pearson.chisq <- sum(rp^2)
     prat <- Pearson.chisq/rdf
     pval <- pchisq(Pearson.chisq, df=rdf, lower.tail=FALSE)
-    c(chisq=Pearson.chisq,ratio=prat,rdf=rdf,p=pval)
+    list(chisq=Pearson.chisq,ratio=prat,rdf=round(rdf),p=pval)
 }
 
-options(scipar=15)
+options(scipen=15)
 overdisp_fun(model)
 
 
@@ -193,6 +193,8 @@ lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col="blue",lty=2)
 lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col="blue",lty=2)
 
 
+# test goodness of fit using DHARMa!
+
 simresids <- simulateResiduals(model,n=250,plot=T)   # looks a lot better!
 
 testResiduals(simresids)  # run tests on the residuals!
@@ -231,7 +233,10 @@ AICtab <- data.frame(
   AIC = sapply(cand.set,AIC)
 )
 
-AICtab$DeltaAIC <- abs(AICtab$AIC-min(AICtab$AIC))
+k <- c(3,3,1,2,1)
+AICtab$AICc <- AICtab$AIC + (2*k^2+2*k)/(30-k-1)
 
-AICtab[order(AICtab$DeltaAIC,decreasing = F),]
+AICtab$DeltaAICc <- abs(AICtab$AICc-min(AICtab$AICc))
+
+AICtab[order(AICtab$DeltaAICc,decreasing = F),]
 

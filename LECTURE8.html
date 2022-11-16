@@ -831,17 +831,28 @@ overdisp_fun &lt;- function(model) {    # function from Ben Bolker...
     Pearson.chisq &lt;- sum(rp^2)
     prat &lt;- Pearson.chisq/rdf
     pval &lt;- pchisq(Pearson.chisq, df=rdf, lower.tail=FALSE)
-    c(chisq=Pearson.chisq,ratio=prat,rdf=rdf,p=pval)
+    list(chisq=Pearson.chisq,ratio=prat,rdf=round(rdf),p=pval)
 }
 
-options(scipar=15)
+options(scipen=15)
 overdisp_fun(model)</code></pre>
-<pre><code>##        chisq        ratio          rdf            p 
-## 1.758857e+02 6.281631e+00 2.800000e+01 2.268474e-23</code></pre>
+<pre><code>## $chisq
+## [1] 175.8857
+## 
+## $ratio
+## [1] 6.281631
+## 
+## $rdf
+## [1] 28
+## 
+## $p
+## [1] 2.268474e-23</code></pre>
 <p>Here we see that the data are overdispersed with respect to the
 model- much higher variance in the data than allowed by the Poisson
 distribution!</p>
-<p>I prefer to use the quantile residual approach.</p>
+<p>I prefer to use the quantile residual approach, which is very
+informative across many different types of models, including GLM and
+GLMM.</p>
 <p>The DHARMa package in R not only implements the quantile residual
 approach, but does so in a way that is applicable to nearly all models
 you can fit in R!</p>
@@ -977,7 +988,9 @@ lines(newdat$predictor,mypred$fit+2*mypred$se.fit,col=&quot;blue&quot;,lty=2)
 lines(newdat$predictor,mypred$fit-2*mypred$se.fit,col=&quot;blue&quot;,lty=2)</code></pre>
 <p><img src="LECTURE8_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>Now let’s check the model fit!</p>
-<pre class="r"><code>simresids &lt;- simulateResiduals(model,n=250,plot=T)   # looks a lot better!</code></pre>
+<pre class="r"><code># test goodness of fit using DHARMa!
+
+simresids &lt;- simulateResiduals(model,n=250,plot=T)   # looks a lot better!</code></pre>
 <p><img src="LECTURE8_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <pre class="r"><code>testResiduals(simresids)  # run tests on the residuals!</code></pre>
 <p><img src="LECTURE8_files/figure-html/unnamed-chunk-17-2.png" width="672" /><img src="LECTURE8_files/figure-html/unnamed-chunk-17-3.png" width="672" /></p>
@@ -1109,15 +1122,18 @@ AICtab &lt;- data.frame(
   AIC = sapply(cand.set,AIC)
 )
 
-AICtab$DeltaAIC &lt;- abs(AICtab$AIC-min(AICtab$AIC))
+k &lt;- c(3,3,1,2,1)
+AICtab$AICc &lt;- AICtab$AIC + (2*k^2+2*k)/(30-k-1)
 
-AICtab[order(AICtab$DeltaAIC,decreasing = F),]</code></pre>
-<pre><code>##                           ModelName LogLikelihood      AIC   DeltaAIC
-## NegBin_preds1and2 NegBin_preds1and2     -113.7682 235.5363   0.000000
-## NegBin_allvars       NegBin_allvars     -112.8576 235.7151   0.178813
-## NegBin_pred1           NegBin_pred1     -120.3266 246.6532  11.116913
-## NegBin_pred2           NegBin_pred2     -120.3266 246.6532  11.116913
-## Poisson                     Poisson     -168.2480 344.4960 108.959649</code></pre>
+AICtab$DeltaAICc &lt;- abs(AICtab$AICc-min(AICtab$AICc))
+
+AICtab[order(AICtab$DeltaAICc,decreasing = F),]</code></pre>
+<pre><code>##                           ModelName LogLikelihood      AIC     AICc   DeltaAICc
+## NegBin_preds1and2 NegBin_preds1and2     -113.7682 235.5363 235.9808   0.0000000
+## NegBin_allvars       NegBin_allvars     -112.8576 235.7151 236.6382   0.6574455
+## NegBin_pred1           NegBin_pred1     -120.3266 246.6532 246.7961  10.8153253
+## NegBin_pred2           NegBin_pred2     -120.3266 246.6532 246.7961  10.8153253
+## Poisson                     Poisson     -168.2480 344.4960 345.4190 109.4382814</code></pre>
 <p>NOTE: for AIC model comparison to make sense, the response variable
 must be exactly the same (note: you can’t compare different
 transformations of the response variable) and the number of observations

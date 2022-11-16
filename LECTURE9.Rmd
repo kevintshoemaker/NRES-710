@@ -35,7 +35,6 @@ To follow along with the R-based lessons and demos, [right (or command) click on
 ## Overview: Mixed-effects models
 
 Remember the assumption of independent observations? Every single one of the models we have considered so far makes that assumption. If that assumption is violated, we are committing pseudoreplication. If pseudoreplication is relatively minor we may be able to ignore it for modeling (but still reporting the potential issue). But in many cases the issue is too large to ignore.  
-
 Mixed models allow us to build more realistic models that incorporate some known potential sources of non-independence in our data. 
 
 The term **mixed-effects models** refers to the fact that these models have two kinds of predictor variables: *fixed effects* and *random effects*. The random effects are what allow us to incorporate potential inter-dependencies among our observations.  
@@ -261,6 +260,8 @@ confint(cmod_lmer,parm="beta_",method="Wald")
 
 ```
 
+
+Ben Bolker maintains a very useful "FAQ" site on GLMM: if you are using GLMMs I encourage you to read through it and run through the R examples: [https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html](https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html)
 
 
 [--go to next lecture--](LECTURE10.html) 

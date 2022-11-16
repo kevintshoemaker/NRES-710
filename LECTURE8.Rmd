@@ -302,10 +302,10 @@ overdisp_fun <- function(model) {    # function from Ben Bolker...
     Pearson.chisq <- sum(rp^2)
     prat <- Pearson.chisq/rdf
     pval <- pchisq(Pearson.chisq, df=rdf, lower.tail=FALSE)
-    c(chisq=Pearson.chisq,ratio=prat,rdf=rdf,p=pval)
+    list(chisq=Pearson.chisq,ratio=prat,rdf=round(rdf),p=pval)
 }
 
-options(scipar=15)
+options(scipen=15)
 overdisp_fun(model)
 
 
@@ -313,7 +313,7 @@ overdisp_fun(model)
 Here we see that the data are overdispersed with respect to the model- much higher variance in the data than allowed by the Poisson distribution!
 
 
-I prefer to use the quantile residual approach. 
+I prefer to use the quantile residual approach, which is very informative across many different types of models, including GLM and GLMM. 
 
 The DHARMa package in R not only implements the quantile residual approach, but does so in a way that is applicable to nearly all models you can fit in R! 
 
@@ -380,6 +380,8 @@ Now let's check the model fit!
 
 ```{r}
 
+# test goodness of fit using DHARMa!
+
 simresids <- simulateResiduals(model,n=250,plot=T)   # looks a lot better!
 
 testResiduals(simresids)  # run tests on the residuals!
@@ -445,9 +447,12 @@ AICtab <- data.frame(
   AIC = sapply(cand.set,AIC)
 )
 
-AICtab$DeltaAIC <- abs(AICtab$AIC-min(AICtab$AIC))
+k <- c(3,3,1,2,1)
+AICtab$AICc <- AICtab$AIC + (2*k^2+2*k)/(30-k-1)
 
-AICtab[order(AICtab$DeltaAIC,decreasing = F),]
+AICtab$DeltaAICc <- abs(AICtab$AICc-min(AICtab$AICc))
+
+AICtab[order(AICtab$DeltaAICc,decreasing = F),]
 
 ```
 
