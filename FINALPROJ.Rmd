@@ -70,11 +70,19 @@ NOTE: please include line numbers- this is important for the peer-review process
 
 ## Peer reviews (due November 30)
 
-Your first drafts will be subjected to peer review. Unlike standard scientific peer-review practice, the peer-reviews in this class will be *not be anonymous*-- please sign your reviews. Your manuscript will be reviewed by two other students, and the reviews themselves will be graded (see below; one peer review document should be turned). The reviews are designed to provide feedback on all aspects of the paper- but for this class the most important aspect of the peer reviews is a critique of the statistical approach being used. Key questions for peer-reviewers to consider are (in no particular order):     
+Your first drafts will be subjected to peer review. 
 
-1. Are the stats appropriate for the data and the experimental design? Can you recommend an approach that might be more appropriate?         
+Unlike standard scientific peer-review practice, the peer-reviews in this class will be *not be anonymous*-- please sign your reviews.
+
+Your manuscript will be reviewed by two other students, and the reviews themselves will be graded (see below; one peer review document should be turned). I have placed an example peer-review in WebCampus.
+
+The reviews are designed to provide feedback on all aspects of the paper- but for this class the most important aspect of the peer reviews feedback on the statistical approach being used- and suggestions for improvement!
+
+Key questions for peer-reviewers to consider are (in no particular order):     
+
+1. Are the stats appropriate for the data and the research question(s)? Can you recommend one or more approaches that might be more appropriate?         
 2. Do the results justify the conclusions?     
-3. Are the assumptions of the analysis discussed?      
+3. Are the assumptions of the analysis discussed and tested?      
 4. Are potential violations of the assumptions discussed in sufficient detail?     
 5. Is the writing concise and with a clear logical flow?     
 6. Are there too many or too few figures and tables? Do the figures and tables convey information clearly?      
@@ -84,23 +92,21 @@ Your first drafts will be subjected to peer review. Unlike standard scientific p
 
 ### Peer review submitted assignment
 
-The peer review assignment is an individual assignment, with two submissions due per person (one review per paper). 
+The peer review assignment is an individual assignment, with two submissions due per person (one review for each paper reviewed). 
 
 Each submission should be approximately two pages in length and should include:
 
 1. Title and author of the work under review    
 2. A brief summary of the work under review (just a couple sentences is okay)
-3. General comments. This is where you state your overall comments about the work under review. Your most important comments should come first, followed by less important comments. Pay attention to the list of points to consider (see above), but feel free to raise any issues that you feel could improve the paper. This should be 1-2 paragraphs in length.      
+3. General comments. This is where you state your overall comments about the work under review. Your most important comments and suggestions should come first, followed by less important comments/suggestions. Pay attention to the list of points to consider (see above), but feel free to raise any issues that you feel could improve the paper. This should be 1-2 paragraphs in length.      
 4. Specific comments. This is where you can raise comments that are specific to particular sentences or paragraphs. Please refer to line numbers in the work under review- this makes it easier to convey this specific information!
-5. Names of reviewers (this is not a standard practice, but is necessary for this class!) 
+5. Names of reviewers ('signed' reviews are not a universal practice, but it is required for this class!) 
 
 NOTE: keep your comments respectful and constructive (of course!). And you can point out things you really like about the paper as well!
 
 NOTE: you don't need to correct grammar and spelling here- just focus on the big stuff!
 
-### In-class peer-review conferences
-
-In class on Wed Dec 2, you will have a chance to confer with your peer-review group about the key strengths and weaknesses of the draft paper you are reviewing. I will color code the spreadsheet so that the first portion of the class, the green-colored groups will confer, and in the second portion of class the blue colored groups will confer, and the purple colored groups will confer last. I'll provide more details in class on Monday. In the meantime, you should be able to get started with the peer reviews. The person listed as "Peer Reviewer #1" should also set up the zoom links for Wednesday's meetings- there is a column for the zoom links in the Google Sheets (see below; peer review tab), I tried to make it so everyone only served as "Peer Reviewer #1" once, but one of you is listed twice (sorry!). Your peer review submissions (group submission) should follow the general format of an academic peer-review. 
+I will collate the reviews and submit the peer-reviews to each author along with my comments (comments from the 'editor'!).  This is analogous to how you will receive feedback after submitting to a journal. 
 
 
 ## Final manuscript (due Dec 16 at 5pm)
