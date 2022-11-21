@@ -536,8 +536,8 @@ interpretable as a probability!</p>
 <p>For example, take the following probabilities:</p>
 <pre class="r"><code>probs &lt;- runif(10)
 probs</code></pre>
-<pre><code>##  [1] 0.10691064 0.55847640 0.44510033 0.08945630 0.42134245 0.21089711
-##  [7] 0.69728466 0.29543409 0.55251127 0.04963902</code></pre>
+<pre><code>##  [1] 0.41259901 0.69469295 0.05109803 0.46716814 0.94749137 0.61687316
+##  [7] 0.87175578 0.44395651 0.83994030 0.23815826</code></pre>
 <p>Here’s what happens if we apply the logit transformation:</p>
 <p><span class="math inline">\(logit(p) =
 log(\frac{p}{(1-p)})\)</span></p>
@@ -546,16 +546,16 @@ log(\frac{p}{(1-p)})\)</span></p>
   logit.p=log(probs/(1-probs))
 )</code></pre>
 <pre><code>##             p    logit.p
-## 1  0.10691064 -2.1226933
-## 2  0.55847640  0.2349809
-## 3  0.44510033 -0.2204876
-## 4  0.08945630 -2.3202917
-## 5  0.42134245 -0.3172649
-## 6  0.21089711 -1.3195264
-## 7  0.69728466  0.8344008
-## 8  0.29543409 -0.8691361
-## 9  0.55251127  0.2108225
-## 10 0.04963902 -2.9520648</code></pre>
+## 1  0.41259901 -0.3532315
+## 2  0.69469295  0.8221520
+## 3  0.05109803 -2.9215597
+## 4  0.46716814 -0.1315167
+## 5  0.94749137  2.8928403
+## 6  0.61687316  0.4762973
+## 7  0.87175578  1.9165729
+## 8  0.44395651 -0.2251199
+## 9  0.83994030  1.6577839
+## 10 0.23815826 -1.1628034</code></pre>
 <p>If our response variable is binary and we want to assume that the
 mean response (on some transformed scale) is linearly dependent on our
 predictor variable, the logit transformation is a good candidate for our
@@ -597,23 +597,23 @@ summary(model)   # summary looks similar to ordinary linear regression!</code></
 ##     data = mydat)
 ## 
 ## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -2.4429  -0.3942   0.1441   0.3312   2.3445  
+##      Min        1Q    Median        3Q       Max  
+## -2.41677  -0.24829   0.04037   0.26223   1.97845  
 ## 
 ## Coefficients:
 ##             Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept) -4.13792    0.89576  -4.619 3.85e-06 ***
-## predictor    0.21389    0.04166   5.134 2.83e-07 ***
+## (Intercept) -5.81957    1.37337  -4.237 2.26e-05 ***
+## predictor    0.29162    0.06465   4.510 6.47e-06 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## (Dispersion parameter for binomial family taken to be 1)
 ## 
-##     Null deviance: 131.791  on 99  degrees of freedom
-## Residual deviance:  60.607  on 98  degrees of freedom
-## AIC: 64.607
+##     Null deviance: 133.750  on 99  degrees of freedom
+## Residual deviance:  49.214  on 98  degrees of freedom
+## AIC: 53.214
 ## 
-## Number of Fisher Scoring iterations: 6</code></pre>
+## Number of Fisher Scoring iterations: 7</code></pre>
 <pre class="r"><code>newdat &lt;- data.frame(        # make predictions for plotting regression line and approx conf bounds
   predictor = seq(0,50,1)
 )
@@ -666,9 +666,9 @@ abline(0,1)</code></pre>
 specified in R, including GLM models:</p>
 <pre class="r"><code>## display formula!
 
-library(equatiomatic)</code></pre>
-<pre><code>## Warning: package &#39;equatiomatic&#39; was built under R version 4.2.2</code></pre>
-<pre class="r"><code>equatiomatic::extract_eq(model,wrap=T,intercept = &quot;beta&quot;,show_distribution = T)</code></pre>
+library(equatiomatic)
+
+equatiomatic::extract_eq(model,wrap=T,intercept = &quot;beta&quot;,show_distribution = T)</code></pre>
 <p><span class="math display">\[
 \begin{aligned}
 \operatorname{response} &amp;\sim
@@ -722,20 +722,20 @@ summary(model)</code></pre>
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
-## -5.1637  -1.9085  -0.3191   2.0617   4.3448  
+## -7.7527  -3.1160  -0.7389   0.9276  11.2604  
 ## 
 ## Coefficients:
 ##             Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)  2.86667    0.04955   57.86   &lt;2e-16 ***
-## predictor   -0.75982    0.03677  -20.66   &lt;2e-16 ***
+## (Intercept)  2.96492    0.04455   66.56   &lt;2e-16 ***
+## predictor   -0.47449    0.03238  -14.65   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## (Dispersion parameter for poisson family taken to be 1)
 ## 
-##     Null deviance: 716.22  on 29  degrees of freedom
-## Residual deviance: 186.76  on 28  degrees of freedom
-## AIC: 322.16
+##     Null deviance: 692.54  on 29  degrees of freedom
+## Residual deviance: 454.35  on 28  degrees of freedom
+## AIC: 588.94
 ## 
 ## Number of Fisher Scoring iterations: 5</code></pre>
 <pre class="r"><code>plot(response~predictor,data=mydat)
@@ -778,45 +778,16 @@ variance- in fact, the variance of the Poisson distribution is equal to
 the mean. So the larger the expected value, the larger the variance!</p>
 <pre class="r"><code># Demo: heteroskedasticity in Poisson distrubution
 
-library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-## ✔ tibble  3.1.8     ✔ dplyr   1.0.9
-## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
-## ✔ readr   2.1.2     ✔ forcats 0.5.1
-## ✔ purrr   0.3.4     
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ tidyr::expand() masks Matrix::expand()
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()
-## ✖ tidyr::pack()   masks Matrix::pack()
-## ✖ dplyr::recode() masks car::recode()
-## ✖ dplyr::select() masks MASS::select()
-## ✖ purrr::some()   masks car::some()
-## ✖ tidyr::unpack() masks Matrix::unpack()</code></pre>
-<pre class="r"><code>library(ggplot2)
+library(tidyverse)
+library(ggplot2)
 
 thisdat &lt;- sapply(1:15,function(t) rpois(1000,lambda=t) )
 thisdat &lt;- thisdat %&gt;% 
   as_tibble(.name_repair = &quot;unique&quot;) %&gt;%
   rename_with( ~str_extract(.x,pat=&quot;(\\d)+&quot;)) %&gt;% 
-  pivot_longer(cols=everything(),names_to = &quot;mean&quot;, values_to = &quot;value&quot;,names_transform = as.numeric)</code></pre>
-<pre><code>## New names:
-## • `` -&gt; `...1`
-## • `` -&gt; `...2`
-## • `` -&gt; `...3`
-## • `` -&gt; `...4`
-## • `` -&gt; `...5`
-## • `` -&gt; `...6`
-## • `` -&gt; `...7`
-## • `` -&gt; `...8`
-## • `` -&gt; `...9`
-## • `` -&gt; `...10`
-## • `` -&gt; `...11`
-## • `` -&gt; `...12`
-## • `` -&gt; `...13`
-## • `` -&gt; `...14`
-## • `` -&gt; `...15`</code></pre>
-<pre class="r"><code>ggplot(thisdat,aes(x=mean,y=value)) + 
+  pivot_longer(cols=everything(),names_to = &quot;mean&quot;, values_to = &quot;value&quot;,names_transform = as.numeric)
+
+ggplot(thisdat,aes(x=mean,y=value)) + 
   geom_boxplot(aes(group=mean))</code></pre>
 <p><img src="LECTURE8_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>However, we need some way of testing whether the distribution we
@@ -837,16 +808,16 @@ overdisp_fun &lt;- function(model) {    # function from Ben Bolker...
 options(scipen=15)
 overdisp_fun(model)</code></pre>
 <pre><code>## $chisq
-## [1] 175.8857
+## [1] 486.9276
 ## 
 ## $ratio
-## [1] 6.281631
+## [1] 17.39027
 ## 
 ## $rdf
 ## [1] 28
 ## 
 ## $p
-## [1] 2.268474e-23</code></pre>
+## [1] 3.296925e-85</code></pre>
 <p>Here we see that the data are overdispersed with respect to the
 model- much higher variance in the data than allowed by the Poisson
 distribution!</p>
@@ -862,10 +833,9 @@ linear mixed-effects models- see below!)</p>
 
 qr &lt;- statmod::qresiduals(model)
 qqnorm(qr)
-abline(0,1)</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<pre class="r"><code>plot(qr~predict(model))</code></pre>
-<p><img src="LECTURE8_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+abline(0,1)
+
+plot(qr~predict(model))</code></pre>
 <p>So using the quantile residuals we’re starting to get a picture that
 the Poisson distribution may not be a great fit. Let’s use the DHARMa
 package now…</p>
@@ -882,7 +852,7 @@ simresids &lt;- simulateResiduals(model,n=250,plot=T)   # clearly this is a bad 
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  simulationOutput$scaledResiduals
-## D = 0.29942, p-value = 0.009224
+## D = 0.38064, p-value = 0.0003355
 ## alternative hypothesis: two-sided
 ## 
 ## 
@@ -892,7 +862,7 @@ simresids &lt;- simulateResiduals(model,n=250,plot=T)   # clearly this is a bad 
 ##  simulated
 ## 
 ## data:  simulationOutput
-## dispersion = 8.6128, p-value &lt; 2.2e-16
+## dispersion = 26.057, p-value &lt; 2.2e-16
 ## alternative hypothesis: two.sided
 ## 
 ## 
@@ -901,19 +871,19 @@ simresids &lt;- simulateResiduals(model,n=250,plot=T)   # clearly this is a bad 
 ##  DHARMa bootstrapped outlier test
 ## 
 ## data:  simulationOutput
-## outliers at both margin(s) = 6, observations = 30, p-value &lt; 2.2e-16
+## outliers at both margin(s) = 11, observations = 30, p-value &lt; 2.2e-16
 ## alternative hypothesis: two.sided
 ##  percent confidence interval:
-##  0.00000000 0.03333333
+##  0.00000000 0.05083333
 ## sample estimates:
-## outlier frequency (expected: 0.009 ) 
-##                                  0.2</code></pre>
+## outlier frequency (expected: 0.0113333333333333 ) 
+##                                         0.3666667</code></pre>
 <pre><code>## $uniformity
 ## 
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  simulationOutput$scaledResiduals
-## D = 0.29942, p-value = 0.009224
+## D = 0.38064, p-value = 0.0003355
 ## alternative hypothesis: two-sided
 ## 
 ## 
@@ -923,7 +893,7 @@ simresids &lt;- simulateResiduals(model,n=250,plot=T)   # clearly this is a bad 
 ##  simulated
 ## 
 ## data:  simulationOutput
-## dispersion = 8.6128, p-value &lt; 2.2e-16
+## dispersion = 26.057, p-value &lt; 2.2e-16
 ## alternative hypothesis: two.sided
 ## 
 ## 
@@ -932,13 +902,13 @@ simresids &lt;- simulateResiduals(model,n=250,plot=T)   # clearly this is a bad 
 ##  DHARMa bootstrapped outlier test
 ## 
 ## data:  simulationOutput
-## outliers at both margin(s) = 6, observations = 30, p-value &lt; 2.2e-16
+## outliers at both margin(s) = 11, observations = 30, p-value &lt; 2.2e-16
 ## alternative hypothesis: two.sided
 ##  percent confidence interval:
-##  0.00000000 0.03333333
+##  0.00000000 0.05083333
 ## sample estimates:
-## outlier frequency (expected: 0.009 ) 
-##                                  0.2</code></pre>
+## outlier frequency (expected: 0.0113333333333333 ) 
+##                                         0.3666667</code></pre>
 <p>Okay so the DHARMa package diagnostics seem to indicate that the
 Poisson regression was a poor fit to the data (you will find this is
 usually true with Poisson regression). Let’s try running a negative
@@ -957,22 +927,22 @@ summary(model)</code></pre>
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
-## -1.8241  -0.7926  -0.1538   0.4755   1.1283  
+## -2.7718  -1.0497  -0.2072   0.2882   1.8582  
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  2.87003    0.11157   25.73  &lt; 2e-16 ***
-## predictor   -0.74449    0.09135   -8.15 7.15e-09 ***
+## (Intercept)   2.9641     0.1505  19.698  &lt; 2e-16 ***
+## predictor    -0.4822     0.1166  -4.135 0.000292 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## (Dispersion parameter for Negative Binomial(2) family taken to be 0.6373751)
+## (Dispersion parameter for Negative Binomial(2) family taken to be 1.209932)
 ## 
-##     Null deviance: 65.919  on 29  degrees of freedom
-## Residual deviance: 21.200  on 28  degrees of freedom
-## AIC: 220.46
+##     Null deviance: 62.208  on 29  degrees of freedom
+## Residual deviance: 41.886  on 28  degrees of freedom
+## AIC: 240.81
 ## 
-## Number of Fisher Scoring iterations: 4</code></pre>
+## Number of Fisher Scoring iterations: 5</code></pre>
 <pre class="r"><code>model &lt;- glm.nb(response~predictor)
 
 plot(response~predictor)
@@ -999,7 +969,7 @@ simresids &lt;- simulateResiduals(model,n=250,plot=T)   # looks a lot better!</c
 ##  Exact one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  simulationOutput$scaledResiduals
-## D = 0.09726, p-value = 0.913
+## D = 0.10255, p-value = 0.879
 ## alternative hypothesis: two-sided
 ## 
 ## 
@@ -1009,7 +979,7 @@ simresids &lt;- simulateResiduals(model,n=250,plot=T)   # looks a lot better!</c
 ##  simulated
 ## 
 ## data:  simulationOutput
-## dispersion = 0.6299, p-value = 0.552
+## dispersion = 1.2582, p-value = 0.472
 ## alternative hypothesis: two.sided
 ## 
 ## 
@@ -1023,14 +993,14 @@ simresids &lt;- simulateResiduals(model,n=250,plot=T)   # looks a lot better!</c
 ##  percent confidence interval:
 ##  0.00000000 0.03333333
 ## sample estimates:
-## outlier frequency (expected: 0.007 ) 
-##                                    0</code></pre>
+## outlier frequency (expected: 0.00633333333333333 ) 
+##                                                  0</code></pre>
 <pre><code>## $uniformity
 ## 
 ##  Exact one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  simulationOutput$scaledResiduals
-## D = 0.09726, p-value = 0.913
+## D = 0.10255, p-value = 0.879
 ## alternative hypothesis: two-sided
 ## 
 ## 
@@ -1040,7 +1010,7 @@ simresids &lt;- simulateResiduals(model,n=250,plot=T)   # looks a lot better!</c
 ##  simulated
 ## 
 ## data:  simulationOutput
-## dispersion = 0.6299, p-value = 0.552
+## dispersion = 1.2582, p-value = 0.472
 ## alternative hypothesis: two.sided
 ## 
 ## 
@@ -1054,8 +1024,8 @@ simresids &lt;- simulateResiduals(model,n=250,plot=T)   # looks a lot better!</c
 ##  percent confidence interval:
 ##  0.00000000 0.03333333
 ## sample estimates:
-## outlier frequency (expected: 0.007 ) 
-##                                    0</code></pre>
+## outlier frequency (expected: 0.00633333333333333 ) 
+##                                                  0</code></pre>
 <p>And this time our count regression model fits the data well, and we
 can report the results of this model with confidence!</p>
 <p>NOTE: you should always run goodness-of-fit tests for any model you
@@ -1128,12 +1098,12 @@ AICtab$AICc &lt;- AICtab$AIC + (2*k^2+2*k)/(30-k-1)
 AICtab$DeltaAICc &lt;- abs(AICtab$AICc-min(AICtab$AICc))
 
 AICtab[order(AICtab$DeltaAICc,decreasing = F),]</code></pre>
-<pre><code>##                           ModelName LogLikelihood      AIC     AICc   DeltaAICc
-## NegBin_preds1and2 NegBin_preds1and2     -113.7682 235.5363 235.9808   0.0000000
-## NegBin_allvars       NegBin_allvars     -112.8576 235.7151 236.6382   0.6574455
-## NegBin_pred1           NegBin_pred1     -120.3266 246.6532 246.7961  10.8153253
-## NegBin_pred2           NegBin_pred2     -120.3266 246.6532 246.7961  10.8153253
-## Poisson                     Poisson     -168.2480 344.4960 345.4190 109.4382814</code></pre>
+<pre><code>##                           ModelName LogLikelihood      AIC     AICc  DeltaAICc
+## NegBin_allvars       NegBin_allvars     -121.8939 253.7877 254.7108   0.000000
+## NegBin_preds1and2 NegBin_preds1and2     -124.1918 256.3836 256.8280   2.117221
+## NegBin_pred1           NegBin_pred1     -130.4119 266.8238 266.9667  12.255908
+## NegBin_pred2           NegBin_pred2     -130.4119 266.8238 266.9667  12.255908
+## Poisson                     Poisson     -322.9859 653.9718 654.8949 400.184078</code></pre>
 <p>NOTE: for AIC model comparison to make sense, the response variable
 must be exactly the same (note: you can’t compare different
 transformations of the response variable) and the number of observations

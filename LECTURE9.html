@@ -442,6 +442,10 @@ div.tocify {
 <p>To follow along with the R-based lessons and demos, <a
 href="LECTURE9.R">right (or command) click on this link and save the
 script to your working directory</a></p>
+<p>NOTE: Ben Bolker maintains a very useful “FAQ” site on GLMM: if you
+are using GLMMs I encourage you to read through it and run through the R
+examples: <a
+href="https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html">https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html</a></p>
 </div>
 <div id="overview-mixed-effects-models" class="section level2">
 <h2>Overview: Mixed-effects models</h2>
@@ -528,13 +532,17 @@ want to make inference, multiple observations per year)</li>
 population of interest, each individual subjected to repeated
 measurements)</li>
 </ul>
-<p>First of all, most random effects will be categorical.</p>
-<p>Second, random effects are a random sample or otherwise a small
-subset of the units about which you want to make inference.</p>
-<p>Third, random effects variables must have multiple (usually &gt;3)
-observations per level. If you only have one observation per random
-effect level, it is not a random effect- it’s just a replicate
-observation in an ordinary linear regression!</p>
+<p>First of all, random effects (in the context of standard GLMM [and
+this course] anyway) should be categorical- and should have multiple
+categories (usually &gt;5 and ideally much larger).</p>
+<p>Second, random effects should represent a random sample or otherwise
+a subset of the units about which you want to make inference.</p>
+<p>Third, random effects variables should have multiple observations per
+level (category)- at least for most levels. If you only have one
+observation per level, it is not a random effect- it’s just a replicate
+observation!</p>
+<p>Typically, we assume that random effects are normally distributed:
+i.e., described by a mean and a variance (or std dev).</p>
 </div>
 </div>
 <div id="mixed-effects-models-in-regression-notation"
@@ -577,14 +585,14 @@ complicated:</p>
 \cdot precip_t + \beta_2 \cdot temp_t + \gamma_{site} + \gamma_{year} +
 \gamma_{site, \beta_1}\cdot precip_t + \gamma_{site, \beta_2}\cdot
 temp_t + \epsilon_{obs}\)</span></p>
-<p>Here we have two addition “error” terms that allow the slope terms
+<p>Here we have two additional “error” terms that allow the slope terms
 (beta1 and beta2) to vary randomly with each site and year.</p>
 </div>
 <div id="nested-random-effects" class="section level3">
 <h3>Nested random effects</h3>
 <p>You will often read descriptions of mixed-effects models saying
-things like “Individual and Site were included as random effects, with
-Individual nested within Site”.</p>
+things like “Individual and site were included as random effects, with
+individual nested within Site”.</p>
 <p>Let’s imagine we randomly selected 10 sites and within each site we
 capture a random sample of tortoises and we measure tortoise clutch size
 for 4 consecutive years for each tortoise.</p>
@@ -629,11 +637,9 @@ this is a data set on carbon balance in the tundra. This example is
 taken from <a
 href="https://bbolker.github.io/mixedmodels-misc/ecostats_chap.html">this
 website</a>.</p>
-<pre class="r"><code>#########
-# TUNDRA EXAMPLE
-#########
+<pre class="r"><code># TUNDRA EXAMPLE ---------------------------
 
-##### Read in the data
+## Read in the data
 
 mc1 &lt;- read.csv(&quot;tundra2.csv&quot;,sep=&quot;,&quot;,na.strings=c(&quot;-&quot;,&quot;NA&quot;))
 
@@ -682,28 +688,10 @@ summary(mc1)</code></pre>
 
 ## visualize net ecosystem exchange by year- varying by site
 
-ggplot(mc1,aes(x=Year,y=GS.NEE,colour=Site))+geom_point()+
-    geom_smooth(method=&quot;lm&quot;,alpha=0.3)+
+ggplot(mc1,aes(x=Year,y=GS.NEE,colour=Site)) +
+    geom_point() +
+    geom_smooth(method=&quot;lm&quot;,alpha=0.3) +
     scale_y_continuous(limits=c(-150,400),oob=scales::squish)</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning in qt((1 - level)/2, df): NaNs produced
-
-## Warning in qt((1 - level)/2, df): NaNs produced
-
-## Warning in qt((1 - level)/2, df): NaNs produced
-
-## Warning in qt((1 - level)/2, df): NaNs produced</code></pre>
-<pre><code>## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
-## -Inf
-
-## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
-## -Inf
-
-## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
-## -Inf
-
-## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
-## -Inf</code></pre>
 <p><img src="LECTURE9_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>Okay now let’s fit a mixed-effects regression model with Net
 Ecosystem Exchange (NEE) as the response variable and Year as the
@@ -712,11 +700,9 @@ the intercept and trend (slope term) can vary with site. That is, we
 have random intercept terms and random slope terms for each site.</p>
 <p>Fitting a mixed model in ‘lme4’ (using the ‘lmer’ function) looks a
 lot like fitting a linear model in ‘lm’.</p>
-<pre class="r"><code>library(lme4)</code></pre>
-<pre><code>## Loading required package: Matrix</code></pre>
-<pre class="r"><code>cmod_lmer &lt;- lmer(GS.NEE ~ cYear + (1+cYear|Site),
+<pre class="r"><code>library(lme4)
+cmod_lmer &lt;- lmer(GS.NEE ~ cYear + (1+cYear|Site),
                 data=mc1, weights=n)</code></pre>
-<pre><code>## boundary (singular) fit: see help(&#39;isSingular&#39;)</code></pre>
 <p>A couple notes: first of all, the ‘weights’ term is there because
 some observations are aggregated- that is, there are multiple
 observations for a given site/year combination- those observations that
@@ -775,10 +761,9 @@ relatively small percent of the total variance among observations.</p>
 <pre class="r"><code>library(glmmTMB)
 cmod_glmmTMB &lt;- glmmTMB(GS.NEE ~ cYear + (1+cYear|Site),
                 data=mc1,
-                weights=n)</code></pre>
-<pre><code>## Warning in fitTMB(TMBStruc): Model convergence problem; non-positive-definite
-## Hessian matrix. See vignette(&#39;troubleshooting&#39;)</code></pre>
-<pre class="r"><code>summary(cmod_glmmTMB)</code></pre>
+                weights=n)
+
+summary(cmod_glmmTMB)</code></pre>
 <pre><code>##  Family: gaussian  ( identity )
 ## Formula:          GS.NEE ~ cYear + (1 + cYear | Site)
 ## Data: mc1
@@ -831,9 +816,8 @@ dotplot(ranef(cmod_lmer,condVar=TRUE),
 <p><img src="LECTURE9_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>If we want to test to see if year is explaining any of the variance,
 we can run an F-test (ANOVA):</p>
-<pre class="r"><code>library(car)</code></pre>
-<pre><code>## Loading required package: carData</code></pre>
-<pre class="r"><code>Anova(cmod_lmer)</code></pre>
+<pre class="r"><code>library(car)
+Anova(cmod_lmer)</code></pre>
 <pre><code>## Analysis of Deviance Table (Type II Wald chisquare tests)
 ## 
 ## Response: GS.NEE
@@ -854,10 +838,14 @@ here!</p>
 <pre><code>##                  2.5 %    97.5 %
 ## (Intercept) -30.677776 -1.914152
 ## cYear        -6.374309 -1.116174</code></pre>
-<p>Ben Bolker maintains a very useful “FAQ” site on GLMM: if you are
-using GLMMs I encourage you to read through it and run through the R
-examples: <a
-href="https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html">https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html</a></p>
+</div>
+<div id="nonconvergence" class="section level3">
+<h3>Nonconvergence</h3>
+<p>A common problem when fitting GLMMs is non-convergence.</p>
+<p>Some helpful tips can be found <a
+href="https://rstudio-pubs-static.s3.amazonaws.com/33653_57fc7b8e5d484c909b615d8633c01d51.html">here</a></p>
+<p>Also, it can help to try using glmmTMB or other model fitting
+packages in addition to lme4.</p>
 <p><a href="LECTURE10.html">–go to next lecture–</a></p>
 </div>
 </div>

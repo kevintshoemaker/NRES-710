@@ -11,8 +11,12 @@ output:
 
 ```{r setup, include=FALSE}
 
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
-
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
 ```
 
 
@@ -30,6 +34,9 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ## Download the R code for this lecture!
 
 To follow along with the R-based lessons and demos, [right (or command) click on this link and save the script to your working directory](LECTURE9.R)
+
+
+NOTE: Ben Bolker maintains a very useful "FAQ" site on GLMM: if you are using GLMMs I encourage you to read through it and run through the R examples: [https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html](https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html)
 
 
 ## Overview: Mixed-effects models
@@ -72,12 +79,13 @@ Typical Random effects include:
 * Year (study years are a small subset of the years about which you want to make inference, multiple observations per year)
 * Individual (individuals studied are randomly selected from the population of interest, each individual subjected to repeated measurements)
 
-First of all, most random effects will be categorical.    
+First of all, random effects (in the context of standard GLMM [and this course] anyway) should be categorical- and should have multiple categories (usually >5 and ideally much larger).    
 
-Second, random effects are a random sample or otherwise a small subset of the units about which you want to make inference. 
+Second, random effects should represent a random sample or otherwise a subset of the units about which you want to make inference. 
 
-Third, random effects variables must have multiple (usually >3) observations per level. If you only have one observation per random effect level, it is not a random effect- it's just a replicate observation in an ordinary linear regression! 
+Third, random effects variables should have multiple observations per level (category)- at least for most levels. If you only have one observation per level, it is not a random effect- it's just a replicate observation! 
 
+Typically, we assume that random effects are normally distributed: i.e., described by a mean and a variance (or std dev).
 
 
 ### Mixed effects models in regression notation
@@ -106,11 +114,11 @@ If we want to include random slope and random intercept terms (which is often th
 
 $Clutch \space size = \beta_0 + \beta_1 \cdot precip_t + \beta_2 \cdot temp_t + \gamma_{site} + \gamma_{year} + \gamma_{site, \beta_1}\cdot precip_t + \gamma_{site, \beta_2}\cdot temp_t + \epsilon_{obs}$
 
-Here we have two addition "error" terms that allow the slope terms (beta1 and beta2) to vary randomly with each site and year. 
+Here we have two additional "error" terms that allow the slope terms (beta1 and beta2) to vary randomly with each site and year. 
 
 ### Nested random effects
 
-You will often read descriptions of mixed-effects models saying things like "Individual and Site were included as random effects, with Individual nested within Site". 
+You will often read descriptions of mixed-effects models saying things like "Individual and site were included as random effects, with individual nested within Site". 
 
 Let's imagine we randomly selected 10 sites and within each site we capture a random sample of tortoises and we measure tortoise clutch size for 4 consecutive years for each tortoise. 
 
@@ -136,11 +144,9 @@ We will use [this dataset](tundra2.csv) as our example - this is a data set on c
 
 ```{r}
 
-#########
-# TUNDRA EXAMPLE
-#########
+# TUNDRA EXAMPLE ---------------------------
 
-##### Read in the data
+## Read in the data
 
 mc1 <- read.csv("tundra2.csv",sep=",",na.strings=c("-","NA"))
 
@@ -154,8 +160,9 @@ library(ggplot2)
 
 ## visualize net ecosystem exchange by year- varying by site
 
-ggplot(mc1,aes(x=Year,y=GS.NEE,colour=Site))+geom_point()+
-    geom_smooth(method="lm",alpha=0.3)+
+ggplot(mc1,aes(x=Year,y=GS.NEE,colour=Site)) +
+    geom_point() +
+    geom_smooth(method="lm",alpha=0.3) +
     scale_y_continuous(limits=c(-150,400),oob=scales::squish)
 
 
@@ -261,7 +268,13 @@ confint(cmod_lmer,parm="beta_",method="Wald")
 ```
 
 
-Ben Bolker maintains a very useful "FAQ" site on GLMM: if you are using GLMMs I encourage you to read through it and run through the R examples: [https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html](https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html)
+### Nonconvergence
+
+A common problem when fitting GLMMs is non-convergence. 
+
+Some helpful tips can be found [here](https://rstudio-pubs-static.s3.amazonaws.com/33653_57fc7b8e5d484c909b615d8633c01d51.html)
+
+Also, it can help to try using glmmTMB or other model fitting packages in addition to lme4.  
 
 
 [--go to next lecture--](LECTURE10.html) 

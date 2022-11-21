@@ -4,6 +4,7 @@
 #
 #    GLM                                      
 
+library(MASS)
 
 
 # logistic regression ----------------------

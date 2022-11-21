@@ -11,8 +11,12 @@ output:
 
 ```{r setup, include=FALSE}
 
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
-
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
 ```
 
 ```{r echo=FALSE}
@@ -22,6 +26,7 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 #
 #    GLM                                      
 
+library(MASS)
 
 ```
 
@@ -319,7 +324,7 @@ The DHARMa package in R not only implements the quantile residual approach, but 
 
 NOTE: the DHARMa package also works for GLMM models (generalized linear mixed-effects models- see below!)
 
-```{r}
+```{r eval=F}
 
  # quantile residuals (GLM diagnostics)
 

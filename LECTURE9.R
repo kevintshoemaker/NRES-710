@@ -6,11 +6,9 @@
 
 
 
-#########
-# TUNDRA EXAMPLE
-#########
+# TUNDRA EXAMPLE ---------------------------
 
-##### Read in the data
+## Read in the data
 
 mc1 <- read.csv("tundra2.csv",sep=",",na.strings=c("-","NA"))
 
@@ -24,8 +22,9 @@ library(ggplot2)
 
 ## visualize net ecosystem exchange by year- varying by site
 
-ggplot(mc1,aes(x=Year,y=GS.NEE,colour=Site))+geom_point()+
-    geom_smooth(method="lm",alpha=0.3)+
+ggplot(mc1,aes(x=Year,y=GS.NEE,colour=Site)) +
+    geom_point() +
+    geom_smooth(method="lm",alpha=0.3) +
     scale_y_continuous(limits=c(-150,400),oob=scales::squish)
 
 
