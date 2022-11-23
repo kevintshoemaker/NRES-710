@@ -32,7 +32,7 @@ topo <- rnorm_multi(n=1000, mu = c(20, 6500, 300),
                     varnames =c("Steep", "Elev", "TreeDens"))
 round(cor(topo),3)
 
-# Now create a uniformly distributed variable for "cosine-transformed" aspect
+# Now create a uniformly distributed variable for "cosine-transformed" aspect (1 represents cooler, northeast facing slopes)
 CosAsp <- runif(1000, -1, 1)                
 hist(CosAsp)
 
@@ -41,24 +41,24 @@ topo$CosAsp <- CosAsp #uncorrelated with the other variables (unless by chance)
 
 # Patch Size will be highly correlated with slope aspect
 # Larger patches (more continuous tree cover) on cooler slopes
-topo$PatchSize <- rnorm_pre(topo$CosAsp, mu=10, sd=5, r=0.85)
+topo$PatchSize <- rnorm_pre(topo$CosAsp, mu=10, sd=5, r=0.85)   # NOTE: shouldn't allow negatives... 
 
 # Soil pH will be highly correlated with tree density
-# Pine needle decomposition increases soil acidity
+# Pine needle decomposition increases soil acidity [not sure why the mean is set at 0.6]
 topo$SoilpH <- rnorm_pre(topo$TreeDens, mu=0.6, sd=0.2, r=0.9)
 
-# Soil depth will be highly negatively correlated with slope
+# Soil depth (m) will be highly negatively correlated with slope
 topo$SoilD <- rnorm_pre(topo$Steep, mu=0.5, sd=0.2, r=-0.9)
 
 cor(topo)
 
-# Canopy Cover will be highly correlated with soil Depth
+# Canopy Cover (percent) will be highly correlated with soil Depth
 topo$CanCov <- rnorm_pre(topo$SoilD, mu=31, sd=4, r=0.8)
 
 # Make a copy of this data frame, renamed as "AllData.df"
 AllData.df <- data.frame(topo)
 
-# Generage correlation matrix for the full data frame of predictors
+# Generate correlation matrix for the full data frame of predictors
 round(cor(AllData.df), 2)
 
 # Notice that certain aspects of the correlation structure are indirect
@@ -99,57 +99,14 @@ set.seed(-124)
 AllData.df$RR <- B0 + B1*topo$Steep + B2*topo$SoilD + B3*topo$Elev + B4*I(topo$Elev^2) + B5*topo$TreeDens +
   B6*topo$SoilpH + B7*topo$CosAsp + B8*topo$PatchSize + B9*topo$CanCov + B10*topo$CosAsp*topo$CanCov + 20*rnorm(1000)
 
-RR <- AllData.df$RR  #add the abundance variable to existing data frame
 head(AllData.df)
 summary(AllData.df)
 
 # explore this interaction effect between slope aspect and canopy cover
 # remember that every interaction has "two sides" to it
-coplot(RR ~ topo$CosAsp | topo$CanCov, panel=panel.smooth,columns = 6)
 coplot(RR ~ topo$CanCov | topo$CosAsp, panel=panel.smooth,columns=6)
+coplot(RR ~ topo$CosAsp | topo$CanCov, panel=panel.smooth,columns = 6)
 
-
-# What if I was to fit the full model from the full sample of 1000 data points?
-# interaction effect between CosAsp and CanCov included
-# polynomial term for Elev included
-
-Full.fullsample.lm <- lm(RR ~ Steep + SoilD + Elev + I(Elev^2) + TreeDens + SoilpH + CosAsp * CanCov + PatchSize, data=AllData.df)
-summary(Full.fullsample.lm)
-
-library(car)
-car::vif(Full.fullsample.lm)  # high inflation factors!
-
-plot(predict(Full.fullsample.lm) ~ AllData.df$RR)
-abline(0,1, col="darkgreen")
-
-# What if I was to fit the "true" model from the full sample of 1000 data points?
-# Soil pH and Soil Depth not included
-
-True.fullsample.lm <- lm(RR ~ Steep + Elev + I(Elev^2) + TreeDens + CosAsp * CanCov + PatchSize,data=AllData.df)
-summary(True.fullsample.lm)
-
-vif(True.fullsample.lm) # high inflation factor for Steep! What to do!
-
-#Let's further explore the potential effect of Steepness on RR
-
-# Calculate the portion of RR abundance that is NOT explained by elevation
-RR.given.Elev <- residuals(lm(RR ~ Elev + I(Elev^2),data=AllData.df))
-
-par(mfrow=c(1,2))
-
-plot(RR ~ Elev, ylab = "Roadrunner abundance", xlab = "Elevation (m)",data=AllData.df)
-plot(RR.given.Elev ~ Elev, ylab="RR | Elevation", xlab = "Elevation (m)",data=AllData.df)
-abline(lm(RR.given.Elev~Elev,data=AllData.df), col="red")
-
-# Partial residual plot: RR | Elevation ~ Steepness
-plot(RR ~ Steep, ylab = "Roadrunner abundance", xlab = "Slope Steepness (%)",data=AllData.df)
-plot(RR.given.Elev ~ Steep, ylab = "RR | Elevation (m)", xlab = "Slope Steepness (%)",data=AllData.df)
-abline(lm(RR.given.Elev~Steep,data=AllData.df), col="red")
-
-summary(lm(RR ~ Steep,data=AllData.df))
-summary(lm(RR.given.Elev ~ Steep,data=AllData.df))
-
-par(mfrow=c(1,1))
 
 ######
 ### 3. SAMPLE FROM THE FULL DATASET TO GENERATE A SAMPLE DATA SET TO PROVIDE TO THE CLASS
@@ -166,7 +123,7 @@ PJ.RR$RR <- as.integer(PJ.RR$RR)
 head(PJ.RR)
 
 # Write the data to an Excel file to distribute to the class
-write.table(PJ.RR, file="PJRoadRunner.csv", sep=",", row.names=F)
+# write.table(PJ.RR, file="PJRoadRunner.csv", sep=",", row.names=F)
 
 
 
@@ -196,7 +153,16 @@ panel.hist <- function(x, ...) {
 #Explore the data 
 
 pairs(PJ.RR, panel=panel.smooth, diag.panel=panel.hist)
-round(cor(PJ.RR),3)
+
+predvars <- setdiff(names(PJ.RR),"RR")
+round(cor(PJ.RR[,predvars]),3)
+
+caret::findCorrelation(cor(PJ.RR))  # tells us to remove tree density!
+
+
+# Remove outlier?
+
+PJ.RR <- subset(PJ.RR,RR>10)
 
 #Start off fitting a full model (but no polynomials or interactions)
 
@@ -209,69 +175,61 @@ par(mfrow=c(2,2))
 plot(full.lm)
 par(mfrow=c(1,1))
 
-vif(full.lm)
+vif(full.lm)    # steepness has very high VIF- might be best to remove.
 
 # The model has some issues.
-# Each group then went through a model selection process of some sort or another.
+# Try some model selection process of some sort or another.
 
 # Just for example:
-try2.lm <- (lm(RR ~ . - Steep, data=PJ.RR))
-vif(try2.lm)
-try3.lm <- update(try2.lm, ~ . - CosAsp, data=PJ.RR)
+try2.lm <- lm(RR ~ . - Steep, data=PJ.RR)   # remove the highest VIF variable (steepness)
+vif(try2.lm)    # might want to remove tree density- this is the variable identified by caret
+
+try3.lm <- update(try2.lm, ~ . - TreeDens, data=PJ.RR) 
 vif(try3.lm)
-try4.lm <- update(try3.lm, ~. - SoilD)
-vif(try4.lm)
-AIC(full.lm, try2.lm, try3.lm, try4.lm)
-anova(full.lm, try2.lm, try3.lm, try4.lm)
+summary(try3.lm)  # soil depth has high VIF and not a substantial effect- let's remove
+
+try4.lm <- update(try3.lm, ~ . - SoilD)
+vif(try4.lm)   # okay...
+summary(try4.lm)
+
+try5.lm <- update(try4.lm, ~ . +I(Elev^2), data=PJ.RR)   # add polynomial term for elevation
+summary(try5.lm)
+
+AIC(full.lm, try2.lm, try3.lm, try4.lm, try5.lm)
+anova(full.lm, try2.lm, try3.lm, try4.lm, try5.lm)
 
 # imagine you had stumbled upon the "true" interaction relationship
 # between canopy cover and slope aspect!
 
 coplot(PJ.RR$RR ~ PJ.RR$CanCov | PJ.RR$CosAsp, panel=panel.smooth,columns=6)
 
-try5.lm <- update(try4.lm, ~. +CosAsp*CanCov)
-
-# imagine you had realized the polynomial relationship with Elevation!
-try6.lm <- update(try5.lm, ~. + I(Elev^2))
+try6.lm <- update(try5.lm, ~. +CosAsp:CanCov)
 summary(try6.lm)
 
-# remove the non-significant SoilpH
-try7.lm <- update(try6.lm, ~. - SoilpH)
+
+# remove the non-significant patch size
+try7.lm <- update(try6.lm, ~. - PatchSize)
 summary(try7.lm)
 
-# Now by some great insight you think to try adding slope steepness back in - 
-# Then you would have the true model!
-true.lm <- lm(RR ~ I(Elev) + I(Elev^2) + TreeDens + Steep + PatchSize + CosAsp*CanCov, data=PJ.RR)
-summary(true.lm)
-vif(true.lm)
 
-# you would have to accept a lot of multicollinearity with slope steepness
-# would this be appropriate?
 
-# you would also have noticed that with Slope Steepness in the model
-# suddenly PatchSize becomes less important ("non-significant")
+true.lm <- lm(RR~Elev+I(Elev^2)+CosAsp*CanCov+Steep+TreeDens+PatchSize,data=PJ.RR)
 
-# let's say you removed PatchSize (since you don't know the "true model")
-try8.lm <- lm(RR ~ I(Elev) + I(Elev^2) + TreeDens + Steep + CosAsp*CanCov, data=PJ.RR)
-summary(try8.lm)
-vif(try8.lm)
 
-AIC(full.lm, try2.lm, try3.lm, try4.lm, try5.lm, try6.lm, try7.lm, try8.lm, true.lm)
+AIC(full.lm, try2.lm, try3.lm, try4.lm, try5.lm, try6.lm, try7.lm, true.lm)
 
-# try8.lm and true.lm have comparable support from the data (delta-AIC within 2)
-# you might opt for the more parsimonious (one less variable) try8.lm
 
 par(mfrow=c(2,2))
-plot(try8.lm)
+plot(try7.lm)
 par(mfrow=c(1,1))
-plot(predict(try8.lm) ~ PJ.RR$RR)
+plot(predict(try7.lm) ~ PJ.RR$RR)
 abline(0,1, col="red", lwd=3)
 
 library(effects)  #plot these effects!
 # with partial residuals!
 plot(allEffects(full.lm, partial.residuals=TRUE))
 
-# after removing steepness and aspect
+# after removing steepness and tree dens
 plot(allEffects(try3.lm, partial.residuals=TRUE))
 
 # after including interaction between aspect and canopy cover

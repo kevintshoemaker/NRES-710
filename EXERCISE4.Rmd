@@ -45,9 +45,9 @@ You are provided (see file [PJRoadRunner.csv](PJRoadRunner.csv)) with the follow
 4. TreeDens: Tree Density (trees/ha), all stems > 2-cm diameter at breast height (dbh)
 5. CosAsp: Slope aspect, linearized from degrees using a cosine transformation such that 1.0 represents northeast-facing (45 degree) slopes (i.e., cooler slopes that receive less solar insolation) and -1.0 represents southwest-facing (225 degree) slopes. 
 6. PatchSize: Area (ha) of the habitat patch where observations were made (or the closest patch to the observation point), estimated from aerial photography
-7. SoilpH: Surface soil pH from an aggregate sample (to 8-cm depth) obtained from numerous locations around the observation point. 
-8. SoilD: Soil depth (m) averaged from numerous locations around the observation point.
-9.CanCov: Tree canopy cover (% aerial cover) estimated from aerial photography through image analysis. 
+7. SoilpH: Surface soil pH from an aggregate sample (to 8-cm depth) obtained from numerous locations around the observation point.   
+8. SoilD: Soil depth (m) averaged from numerous locations around the observation point.     
+9. CanCov: Tree canopy cover (% aerial cover) estimated from aerial photography through image analysis. 
 
 Of course, this is actually a simulated data set. The true habitat relationships for this species are perfectly known as the parameters in a linear equation used to calculate the abundances.
 
