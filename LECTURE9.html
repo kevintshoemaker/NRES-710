@@ -604,8 +604,8 @@ from Site #2. So we can’t simply include a simple random effect term for
 “Individual #1”. Since there are many “Individual #1”s, each “Individual
 #1” must get its own random effect! In this case, Individual is nested
 within Site!</p>
-<p>Let’s contrast this with a non-nested random effect- let’s say site
-and year.</p>
+<p>Let’s contrast this with a non-nested (crossed) random effect- let’s
+say site and year.</p>
 <p>In this case, Year “2014” in site #1 is the same as Year “2014” in
 site #2. Therefore the random effect associated with year “2014” does
 not differ depending on site. In this case, site and year are
@@ -622,16 +622,17 @@ The only additional assumption is this:</p>
 <li>All random effects are normally distributed!</li>
 </ul>
 <p>In some more complex models you might encounter models that assume
-random effects take other distributions- but this is still rare to
+random effects take other distributions- but this is still VERY rare to
 see!</p>
 </div>
 <div id="example-mixed-effects-regression-in-r" class="section level3">
 <h3>Example: mixed-effects regression in R</h3>
-<p>The ‘workhorse’ package in R for fitting mixed-effects regression
-models (and GLMM) is the ‘lme4’ package. However, there are some other
-packages you should be aware of that can make your life easier. One such
-package is “glmmTMB”- I have found this package has more flexibility and
-tends to have less trouble fitting complex mixed-effects models.</p>
+<p>The ‘workhorse’ package in R for fitting generalized linear
+mixed-effects regression models (GLMM) is the ‘lme4’ package. However,
+there are some other packages you should be aware of that can make your
+life easier. One such package is “glmmTMB”- I have found this package
+has more flexibility and tends to have less trouble fitting complex
+mixed-effects models.</p>
 <p>We will use <a href="tundra2.csv">this dataset</a> as our example -
 this is a data set on carbon balance in the tundra. This example is
 taken from <a
@@ -707,8 +708,7 @@ cmod_lmer &lt;- lmer(GS.NEE ~ cYear + (1+cYear|Site),
 some observations are aggregated- that is, there are multiple
 observations for a given site/year combination- those observations that
 aggregate 3 observations get triple the weight of a site/year
-combination with only one observation. (Technically, we are using an
-inverse-variance weighting scheme!)</p>
+combination with only one observation.</p>
 <p>Secondly, note that year is treated as a fixed effect in this model.
 That is- we are looking for a trend in our response variable over
 time!</p>
@@ -749,11 +749,11 @@ very wide confidence bounds!</p>
 <p>The results from the ‘summary’ function should look somewhat
 familiar! But note that there are no p-values associated with your fixed
 effects (regression coefficients)- just t-statistics! This is because it
-is really hard to know what the degrees of freedom are for the test! Is
-it the number of observations? Is it the number of sites?</p>
+is difficult to compute the degrees of freedom- statisticians disagree
+about how and if p-values can/should be computed for these models.</p>
 <p>Also note that the summary now includes a summary of the random
 effects. One red flag here is that the random intercept term and random
-slope terms are perfectly (negagively) correlated (Corr=-1). This is the
+slope terms are perfectly (negatively) correlated (Corr=-1). This is the
 reason for the ‘singular’ warning in this case.</p>
 <p>From the random effects summary we can see that site explains a
 relatively small percent of the total variance among observations.</p>
@@ -761,7 +761,7 @@ relatively small percent of the total variance among observations.</p>
 <pre class="r"><code>library(glmmTMB)
 cmod_glmmTMB &lt;- glmmTMB(GS.NEE ~ cYear + (1+cYear|Site),
                 data=mc1,
-                weights=n)
+                weights=n,REML=F)
 
 summary(cmod_glmmTMB)</code></pre>
 <pre><code>##  Family: gaussian  ( identity )
@@ -789,8 +789,10 @@ summary(cmod_glmmTMB)</code></pre>
 ## cYear         -3.706      1.416  -2.617  0.00887 ** 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>The summary looks similar- but one difference you see is that there
-are p-values on the regression coefficients now.</p>
+<p>The summary looks (vaguely) similar- but one difference you see is
+that there are p-values on the regression coefficients now. This is due
+to assumptions that are made in glmmTMB model fitting process (using the
+Laplace approximation), which allows p-values to be computed!</p>
 <p>Let’s perform some model diagnostics to test goodness-of-fit!</p>
 <p>Since the standard linear regression assumptions apply, we could look
 at our standard diagnostic plots:</p>
@@ -804,16 +806,90 @@ at our standard diagnostic plots:</p>
 <p><img src="LECTURE9_files/figure-html/unnamed-chunk-6-3.png" width="672" /></p>
 <pre class="r"><code>qqnorm(residuals(cmod_lmer,type=&quot;pearson&quot;,scaled=T))</code></pre>
 <p><img src="LECTURE9_files/figure-html/unnamed-chunk-6-4.png" width="672" /></p>
-<p>The diagnostics look, well, okay!. If you look into it more deeply,
-you see that that ‘Toolik’ site is the one causing most of the
-issues.</p>
+<p>The diagnostics look, well, okay! Let’s try “DHARMa”:</p>
+<pre class="r"><code>library(DHARMa)
+# resids &lt;- simulateResiduals(cmod_lmer)  # similar results for the two different models
+# plot(resids)
+
+resids &lt;- simulateResiduals(cmod_glmmTMB)
+plot(resids)</code></pre>
+<p><img src="LECTURE9_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>testResiduals(resids)</code></pre>
+<p><img src="LECTURE9_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<pre><code>## $uniformity
+## 
+##  Asymptotic one-sample Kolmogorov-Smirnov test
+## 
+## data:  simulationOutput$scaledResiduals
+## D = 0.22127, p-value = 0.0006515
+## alternative hypothesis: two-sided
+## 
+## 
+## $dispersion
+## 
+##  DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+##  simulated
+## 
+## data:  simulationOutput
+## dispersion = 1.3914, p-value = 0.264
+## alternative hypothesis: two.sided
+## 
+## 
+## $outliers
+## 
+##  DHARMa outlier test based on exact binomial test with approximate
+##  expectations
+## 
+## data:  simulationOutput
+## outliers at both margin(s) = 3, observations = 82, p-value = 0.02812
+## alternative hypothesis: true probability of success is not equal to 0.007968127
+## 95 percent confidence interval:
+##  0.007609277 0.103215022
+## sample estimates:
+## frequency of outliers (expected: 0.00796812749003984 ) 
+##                                             0.03658537</code></pre>
+<pre><code>## $uniformity
+## 
+##  Asymptotic one-sample Kolmogorov-Smirnov test
+## 
+## data:  simulationOutput$scaledResiduals
+## D = 0.22127, p-value = 0.0006515
+## alternative hypothesis: two-sided
+## 
+## 
+## $dispersion
+## 
+##  DHARMa nonparametric dispersion test via sd of residuals fitted vs.
+##  simulated
+## 
+## data:  simulationOutput
+## dispersion = 1.3914, p-value = 0.264
+## alternative hypothesis: two.sided
+## 
+## 
+## $outliers
+## 
+##  DHARMa outlier test based on exact binomial test with approximate
+##  expectations
+## 
+## data:  simulationOutput
+## outliers at both margin(s) = 3, observations = 82, p-value = 0.02812
+## alternative hypothesis: true probability of success is not equal to 0.007968127
+## 95 percent confidence interval:
+##  0.007609277 0.103215022
+## sample estimates:
+## frequency of outliers (expected: 0.00796812749003984 ) 
+##                                             0.03658537</code></pre>
+<p>Not perfect… and this is from a published study. So you can probably
+forgive yourself if your GOF tests are not perfect in your class
+projects!</p>
 <p>Okay let’s visualize the random effects (both intercept and random
 slope terms):</p>
 <pre class="r"><code>library(lattice)
 dotplot(ranef(cmod_lmer,condVar=TRUE),
           lattice.options=list(layout=c(1,2)))</code></pre>
 <pre><code>## $Site</code></pre>
-<p><img src="LECTURE9_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="LECTURE9_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>If we want to test to see if year is explaining any of the variance,
 we can run an F-test (ANOVA):</p>
 <pre class="r"><code>library(car)
@@ -843,9 +919,10 @@ here!</p>
 <h3>Nonconvergence</h3>
 <p>A common problem when fitting GLMMs is non-convergence.</p>
 <p>Some helpful tips can be found <a
-href="https://rstudio-pubs-static.s3.amazonaws.com/33653_57fc7b8e5d484c909b615d8633c01d51.html">here</a></p>
+href="https://rstudio-pubs-static.s3.amazonaws.com/33653_57fc7b8e5d484c909b615d8633c01d51.html">here</a>.</p>
+<p>Scaling and zero-centering all of your covariates can help a lot!</p>
 <p>Also, it can help to try using glmmTMB or other model fitting
-packages in addition to lme4.</p>
+packages in addition to ‘lme4’.</p>
 <p><a href="LECTURE10.html">–go to next lecture–</a></p>
 </div>
 </div>

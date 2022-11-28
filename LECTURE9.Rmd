@@ -124,7 +124,7 @@ Let's imagine we randomly selected 10 sites and within each site we capture a ra
 
 In this case, we have two potential random effects: site (random subset of a much larger set of potential sites) and individual (random subset of a much larger set of individuals within each site). Individual #1 from Site #1 is obviously a different individual than Individual #1 from Site #2. So we can't simply include a simple random effect term for "Individual #1". Since there are many "Individual #1"s, each "Individual #1" must get its own random effect! In this case, Individual is nested within Site!
 
-Let's contrast this with a non-nested random effect- let's say site and year. 
+Let's contrast this with a non-nested (crossed) random effect- let's say site and year. 
 
 In this case, Year "2014" in site #1 is the same as Year "2014" in site #2. Therefore the random effect associated with year "2014" does not differ depending on site. In this case, site and year are independent, non-nested random effects! 
 
@@ -134,11 +134,11 @@ The assumptions of mixed-effects regression are the same as in classical linear 
 
 * All random effects are normally distributed!
 
-In some more complex models you might encounter models that assume random effects take other distributions- but this is still rare to see!
+In some more complex models you might encounter models that assume random effects take other distributions- but this is still VERY rare to see!
 
 ### Example: mixed-effects regression in R
 
-The 'workhorse' package in R for fitting mixed-effects regression models (and GLMM) is the 'lme4' package. However, there are some other packages you should be aware of that can make your life easier. One such package is "glmmTMB"- I have found this package has more flexibility and tends to have less trouble fitting complex mixed-effects models. 
+The 'workhorse' package in R for fitting generalized linear mixed-effects regression models (GLMM) is the 'lme4' package. However, there are some other packages you should be aware of that can make your life easier. One such package is "glmmTMB"- I have found this package has more flexibility and tends to have less trouble fitting complex mixed-effects models. 
 
 We will use [this dataset](tundra2.csv) as our example - this is a data set on carbon balance in the tundra. This example is taken from [this website](https://bbolker.github.io/mixedmodels-misc/ecostats_chap.html).
 
@@ -180,7 +180,7 @@ cmod_lmer <- lmer(GS.NEE ~ cYear + (1+cYear|Site),
 
 ```
 
-A couple notes: first of all, the 'weights' term is there because some observations are aggregated- that is, there are multiple observations for a given site/year combination- those observations that aggregate 3 observations get triple the weight of a site/year combination with only one observation. (Technically, we are using an inverse-variance weighting scheme!) 
+A couple notes: first of all, the 'weights' term is there because some observations are aggregated- that is, there are multiple observations for a given site/year combination- those observations that aggregate 3 observations get triple the weight of a site/year combination with only one observation.  
 
 Secondly, note that year is treated as a fixed effect in this model. That is- we are looking for a trend in our response variable over time!
 
@@ -194,9 +194,9 @@ summary(cmod_lmer)
 
 ```
 
-The results from the 'summary' function should look somewhat familiar! But note that there are no p-values associated with your fixed effects (regression coefficients)- just t-statistics! This is because it is really hard to know what the degrees of freedom are for the test! Is it the number of observations? Is it the number of sites? 
+The results from the 'summary' function should look somewhat familiar! But note that there are no p-values associated with your fixed effects (regression coefficients)- just t-statistics! This is because it is difficult to compute the degrees of freedom- statisticians disagree about how and if p-values can/should be computed for these models. 
 
-Also note that the summary now includes a summary of the random effects. One red flag here is that the random intercept term and random slope terms are perfectly (negagively) correlated (Corr=-1). This is the reason for the 'singular' warning in this case. 
+Also note that the summary now includes a summary of the random effects. One red flag here is that the random intercept term and random slope terms are perfectly (negatively) correlated (Corr=-1). This is the reason for the 'singular' warning in this case. 
 
 From the random effects summary we can see that site explains a relatively small percent of the total variance among observations. 
 
@@ -208,13 +208,12 @@ To fit the model using glmmTMB we can use the following code:
 library(glmmTMB)
 cmod_glmmTMB <- glmmTMB(GS.NEE ~ cYear + (1+cYear|Site),
                 data=mc1,
-                weights=n)
+                weights=n,REML=F)
 
 summary(cmod_glmmTMB)
 ```
 
-The summary looks similar- but one difference you see is that there are p-values on the regression coefficients now. 
-
+The summary looks (vaguely) similar- but one difference you see is that there are p-values on the regression coefficients now. This is due to assumptions that are made in glmmTMB model fitting process (using the Laplace approximation), which allows p-values to be computed!  
 
 Let's perform some model diagnostics to test goodness-of-fit!
 
@@ -231,8 +230,21 @@ qqnorm(residuals(cmod_lmer,type="pearson",scaled=T))
 
 ```
 
-The diagnostics look, well, okay!. If you look into it more deeply, you see that that 'Toolik' site is the one causing most of the issues. 
+The diagnostics look, well, okay! Let's try "DHARMa":
 
+```{r}
+
+library(DHARMa)
+# resids <- simulateResiduals(cmod_lmer)  # similar results for the two different models
+# plot(resids)
+
+resids <- simulateResiduals(cmod_glmmTMB)
+plot(resids)
+testResiduals(resids)
+
+```
+
+Not perfect... and this is from a published study. So you can probably forgive yourself if your GOF tests are not perfect in your class projects!
 
 Okay let's visualize the random effects (both intercept and random slope terms):
 
@@ -243,6 +255,7 @@ dotplot(ranef(cmod_lmer,condVar=TRUE),
           lattice.options=list(layout=c(1,2)))
 
 ```
+
 
 If we want to test to see if year is explaining any of the variance, we can run an F-test (ANOVA):
 
@@ -272,9 +285,11 @@ confint(cmod_lmer,parm="beta_",method="Wald")
 
 A common problem when fitting GLMMs is non-convergence. 
 
-Some helpful tips can be found [here](https://rstudio-pubs-static.s3.amazonaws.com/33653_57fc7b8e5d484c909b615d8633c01d51.html)
+Some helpful tips can be found [here](https://rstudio-pubs-static.s3.amazonaws.com/33653_57fc7b8e5d484c909b615d8633c01d51.html).
 
-Also, it can help to try using glmmTMB or other model fitting packages in addition to lme4.  
+Scaling and zero-centering all of your covariates can help a lot!
+
+Also, it can help to try using glmmTMB or other model fitting packages in addition to 'lme4'.  
 
 
 [--go to next lecture--](LECTURE10.html) 

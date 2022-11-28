@@ -40,7 +40,7 @@ summary(cmod_lmer)
 library(glmmTMB)
 cmod_glmmTMB <- glmmTMB(GS.NEE ~ cYear + (1+cYear|Site),
                 data=mc1,
-                weights=n)
+                weights=n,REML=F)
 
 summary(cmod_glmmTMB)
 
@@ -50,6 +50,15 @@ plot(cmod_lmer,sqrt(abs(resid(.)))~fitted(.),
 plot(cmod_lmer,resid(.,type="pearson")~cYear,
                   type=c("p","smooth"))
 qqnorm(residuals(cmod_lmer,type="pearson",scaled=T))
+
+
+library(DHARMa)
+# resids <- simulateResiduals(cmod_lmer)  # similar results for the two different models
+# plot(resids)
+
+resids <- simulateResiduals(cmod_glmmTMB)
+plot(resids)
+testResiduals(resids)
 
 
 library(lattice)
