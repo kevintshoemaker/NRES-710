@@ -567,9 +567,8 @@ your data set- but in many cases it is not sufficient. That is because
 the slope (the relationship between your response and predictor– the
 thing you are usually most interested in making inference about) can
 itself vary depending on your random effect levels. This is called a
-<strong>random slopes</strong> model.</p>
-<p>Here is an equation to represent the simpler random-intercept
-analysis:</p>
+<strong>random slopes</strong> model. Here is an equation to represent
+the simpler random-intercept analysis:</p>
 <p><span class="math inline">\(Clutch \space size = \beta_0 + \beta_1
 \cdot precip_t + \beta_2 \cdot temp_t + \gamma_{site} + \gamma_{year} +
 \epsilon_{obs}\)</span></p>
@@ -699,8 +698,9 @@ Ecosystem Exchange (NEE) as the response variable and Year as the
 fixed-effect (covariate). For our random effect we will have site- and
 the intercept and trend (slope term) can vary with site. That is, we
 have random intercept terms and random slope terms for each site.</p>
-<p>Fitting a mixed model in ‘lme4’ (using the ‘lmer’ function) looks a
-lot like fitting a linear model in ‘lm’.</p>
+<p>Fitting a mixed model in ‘lme4’ (using the <code>lmer()</code>
+function or <code>glmer()</code> function) looks a lot like fitting a
+linear model in ‘lm’.</p>
 <pre class="r"><code>library(lme4)
 cmod_lmer &lt;- lmer(GS.NEE ~ cYear + (1+cYear|Site),
                 data=mc1, weights=n)</code></pre>
@@ -712,10 +712,10 @@ combination with only one observation.</p>
 <p>Secondly, note that year is treated as a fixed effect in this model.
 That is- we are looking for a trend in our response variable over
 time!</p>
-<p>Third, note the warning of a ‘singular fit’. This is fairly common to
-see, and doesn’t necessarily mean you can’t use the model. But it means
-that lme4 struggled to fit the model and some of the parameters may have
-very wide confidence bounds!</p>
+<p>Third, don’t be surprised if you get a ‘singular fit’ warning. This
+is fairly common to see, and doesn’t necessarily mean you can’t use the
+model. But it means that lme4 struggled to fit the model and often some
+of the parameters may have very wide confidence bounds!</p>
 <p>Let’s look at the model results using ‘summary’:</p>
 <pre class="r"><code>summary(cmod_lmer)</code></pre>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
@@ -746,11 +746,12 @@ very wide confidence bounds!</p>
 ## cYear -0.417
 ## optimizer (nloptwrap) convergence code: 0 (OK)
 ## boundary (singular) fit: see help(&#39;isSingular&#39;)</code></pre>
-<p>The results from the ‘summary’ function should look somewhat
-familiar! But note that there are no p-values associated with your fixed
-effects (regression coefficients)- just t-statistics! This is because it
-is difficult to compute the degrees of freedom- statisticians disagree
-about how and if p-values can/should be computed for these models.</p>
+<p>The results from the <code>summary()</code> function should look
+somewhat familiar! But note that there are no p-values associated with
+your fixed effects (regression coefficients)- just t-statistics! This is
+because it is difficult to compute the degrees of freedom- statisticians
+disagree about how and if p-values can/should be computed for these
+models.</p>
 <p>Also note that the summary now includes a summary of the random
 effects. One red flag here is that the random intercept term and random
 slope terms are perfectly (negatively) correlated (Corr=-1). This is the
@@ -763,7 +764,7 @@ cmod_glmmTMB &lt;- glmmTMB(GS.NEE ~ cYear + (1+cYear|Site),
                 data=mc1,
                 weights=n,REML=F)
 
-summary(cmod_glmmTMB)</code></pre>
+summary(cmod_glmmTMB)   # note NAs present</code></pre>
 <pre><code>##  Family: gaussian  ( identity )
 ## Formula:          GS.NEE ~ cYear + (1 + cYear | Site)
 ## Data: mc1
@@ -789,6 +790,68 @@ summary(cmod_glmmTMB)</code></pre>
 ## cYear         -3.706      1.416  -2.617  0.00887 ** 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code># try a different optimizer -still doesn&#39;t work...
+cmod_glmmTMB2 &lt;- update(cmod_glmmTMB,control=glmmTMBControl(optimizer=optim,
+                                       optArgs=list(method=&quot;BFGS&quot;)))
+
+summary(cmod_glmmTMB2)</code></pre>
+<pre><code>##  Family: gaussian  ( identity )
+## Formula:          GS.NEE ~ cYear + (1 + cYear | Site)
+## Data: mc1
+## Weights: n
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##       NA       NA       NA       NA       76 
+## 
+## Random effects:
+## 
+## Conditional model:
+##  Groups   Name        Variance  Std.Dev.  Corr 
+##  Site     (Intercept) 6.801e-48 2.608e-24      
+##           cYear       3.162e+01 5.624e+00 1.00 
+##  Residual             1.542e+03 3.927e+01      
+## Number of obs: 82, groups:  Site, 24
+## 
+## Dispersion estimate for gaussian family (sigma^2): 1.54e+03 
+## 
+## Conditional model:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)  -22.411      5.127  -4.371 1.24e-05 ***
+## cYear         -3.710      1.411  -2.629  0.00856 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code># try a different specification- uncorrelated slope and intercept terms:
+
+cmod_glmmTMB3 &lt;- glmmTMB(GS.NEE ~ cYear + (1|Site) + (0+cYear|Site),
+                data=mc1,
+                weights=n, REML=T)
+
+summary(cmod_glmmTMB3)  # fits- not saying it&#39;s a good model!</code></pre>
+<pre><code>##  Family: gaussian  ( identity )
+## Formula:          GS.NEE ~ cYear + (1 | Site) + (0 + cYear | Site)
+## Data: mc1
+## Weights: n
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   1564.5   1576.5   -777.2   1554.5       79 
+## 
+## Random effects:
+## 
+## Conditional model:
+##  Groups   Name        Variance Std.Dev.
+##  Site     (Intercept)  519.41  22.791  
+##  Site.1   cYear         34.56   5.879  
+##  Residual             1409.15  37.539  
+## Number of obs: 82, groups:  Site, 24
+## 
+## Dispersion estimate for gaussian family (sigma^2): 1.41e+03 
+## 
+## Conditional model:
+##             Estimate Std. Error z value Pr(&gt;|z|)   
+## (Intercept)  -21.490      8.465  -2.539  0.01112 * 
+## cYear         -4.772      1.693  -2.818  0.00483 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>The summary looks (vaguely) similar- but one difference you see is
 that there are p-values on the regression coefficients now. This is due
 to assumptions that are made in glmmTMB model fitting process (using the
@@ -808,20 +871,20 @@ at our standard diagnostic plots:</p>
 <p><img src="LECTURE9_files/figure-html/unnamed-chunk-6-4.png" width="672" /></p>
 <p>The diagnostics look, well, okay! Let’s try “DHARMa”:</p>
 <pre class="r"><code>library(DHARMa)
-# resids &lt;- simulateResiduals(cmod_lmer)  # similar results for the two different models
-# plot(resids)
-
-resids &lt;- simulateResiduals(cmod_glmmTMB)
+resids &lt;- simulateResiduals(cmod_lmer)  # similar results for the two different models
 plot(resids)</code></pre>
 <p><img src="LECTURE9_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<pre class="r"><code>testResiduals(resids)</code></pre>
+<pre class="r"><code>resids &lt;- simulateResiduals(cmod_glmmTMB3)
+plot(resids)</code></pre>
 <p><img src="LECTURE9_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<pre class="r"><code>testResiduals(resids)</code></pre>
+<p><img src="LECTURE9_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
 <pre><code>## $uniformity
 ## 
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  simulationOutput$scaledResiduals
-## D = 0.22127, p-value = 0.0006515
+## D = 0.18166, p-value = 0.008926
 ## alternative hypothesis: two-sided
 ## 
 ## 
@@ -831,7 +894,7 @@ plot(resids)</code></pre>
 ##  simulated
 ## 
 ## data:  simulationOutput
-## dispersion = 1.3914, p-value = 0.264
+## dispersion = 1.221, p-value = 0.4
 ## alternative hypothesis: two.sided
 ## 
 ## 
@@ -853,7 +916,7 @@ plot(resids)</code></pre>
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  simulationOutput$scaledResiduals
-## D = 0.22127, p-value = 0.0006515
+## D = 0.18166, p-value = 0.008926
 ## alternative hypothesis: two-sided
 ## 
 ## 
@@ -863,7 +926,7 @@ plot(resids)</code></pre>
 ##  simulated
 ## 
 ## data:  simulationOutput
-## dispersion = 1.3914, p-value = 0.264
+## dispersion = 1.221, p-value = 0.4
 ## alternative hypothesis: two.sided
 ## 
 ## 
@@ -880,9 +943,9 @@ plot(resids)</code></pre>
 ## sample estimates:
 ## frequency of outliers (expected: 0.00796812749003984 ) 
 ##                                             0.03658537</code></pre>
-<p>Not perfect… and this is from a published study. So you can probably
-forgive yourself if your GOF tests are not perfect in your class
-projects!</p>
+<p>Not perfect… and this is from a published study in Ecology Letters.
+So you can probably forgive yourself if your GOF tests are not perfect
+in your class projects!</p>
 <p>Okay let’s visualize the random effects (both intercept and random
 slope terms):</p>
 <pre class="r"><code>library(lattice)
@@ -901,26 +964,69 @@ Anova(cmod_lmer)</code></pre>
 ## cYear 7.7956  1   0.005237 **
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Or we can compare using AIC. When using AIC it’s generally
+recommended not to use REML for model fitting.</p>
+<pre class="r"><code>cmod_lmer2 &lt;- lmer(GS.NEE ~ cYear + (1+cYear|Site),
+                data=mc1, weights=n,REML=F)
+cmod_lmer3 &lt;- lmer(GS.NEE ~ 1 + (1+cYear|Site),
+                data=mc1, weights=n,REML=F)
+
+AIC(cmod_lmer2,cmod_lmer3)</code></pre>
+<pre><code>##            df      AIC
+## cmod_lmer2  6 894.1666
+## cmod_lmer3  5 899.2038</code></pre>
+<p>We can also use similar tests to see if a random effect is worth
+including:</p>
+<pre class="r"><code>cmod_lmer3 &lt;- lmer(GS.NEE ~ cYear + (1+cYear|Site),
+                data=mc1, weights=n,REML=F)
+cmod_lmer4 &lt;- lmer(GS.NEE ~ cYear + (1|Site),
+                data=mc1, weights=n,REML=F)
+
+anova(cmod_lmer4,cmod_lmer3)</code></pre>
+<pre><code>## Data: mc1
+## Models:
+## cmod_lmer4: GS.NEE ~ cYear + (1 | Site)
+## cmod_lmer3: GS.NEE ~ cYear + (1 + cYear | Site)
+##            npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)    
+## cmod_lmer4    4 919.60 929.23 -455.80   911.60                         
+## cmod_lmer3    6 894.17 908.61 -441.08   882.17 29.435  2  4.058e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>AIC(cmod_lmer3,cmod_lmer4)   # random slope term effect is not an artifact of random chance!</code></pre>
+<pre><code>##            df      AIC
+## cmod_lmer3  6 894.1666
+## cmod_lmer4  4 919.6015</code></pre>
+<p>We can also compute R-squared-like statistics to evaluate performance
+for GLMMs:</p>
+<pre class="r"><code># Compute r-squared for GLMM! -----------------
+
+MuMIn::r.squaredGLMM(cmod_lmer)</code></pre>
+<pre><code>##            R2m       R2c
+## [1,] 0.1923366 0.4820433</code></pre>
+<pre class="r"><code>MuMIn::r.squaredGLMM(cmod_glmmTMB)</code></pre>
+<pre><code>##            R2m       R2c
+## [1,] 0.2207863 0.7207649</code></pre>
 <p>Note that if we had a categorical variable and wanted to run pairwise
-comparisons, we could- using the ‘emmeans’ package (just like with
-standard ANOVA).</p>
+comparisons, we could- using the <code>emmeans()</code> function (just
+like with standard ANOVA).</p>
 <p>If we want confidence intervals on our fixed effects, we can use the
 ‘confint’ function, just like in ordinary linear regression. Here we use
 the Wald method (simplified version) and only extract confidence
 intervals for the fixed effects.</p>
-<p>I had to use ‘suppressWarnings’ to avoid lots of warning messages
-here!</p>
 <pre class="r"><code>confint(cmod_lmer,parm=&quot;beta_&quot;,method=&quot;Wald&quot;)</code></pre>
 <pre><code>##                  2.5 %    97.5 %
 ## (Intercept) -30.677776 -1.914152
 ## cYear        -6.374309 -1.116174</code></pre>
+<p>Other things we might want to do with GLMM models (no examples
+provided yet!): effects plots for main effect- and random
+intercepts/slopes!</p>
 </div>
 <div id="nonconvergence" class="section level3">
 <h3>Nonconvergence</h3>
-<p>A common problem when fitting GLMMs is non-convergence.</p>
+<p>A common problem when fitting GLMMs is nonconvergence.</p>
 <p>Some helpful tips can be found <a
 href="https://rstudio-pubs-static.s3.amazonaws.com/33653_57fc7b8e5d484c909b615d8633c01d51.html">here</a>.</p>
-<p>Scaling and zero-centering all of your covariates can help a lot!</p>
+<p>Scaling and zero-centering all of your covariates can help!</p>
 <p>Also, it can help to try using glmmTMB or other model fitting
 packages in addition to ‘lme4’.</p>
 <p><a href="LECTURE10.html">–go to next lecture–</a></p>

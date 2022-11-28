@@ -42,7 +42,24 @@ cmod_glmmTMB <- glmmTMB(GS.NEE ~ cYear + (1+cYear|Site),
                 data=mc1,
                 weights=n,REML=F)
 
-summary(cmod_glmmTMB)
+summary(cmod_glmmTMB)   # note NAs present
+
+# try a different optimizer -still doesn't work...
+cmod_glmmTMB2 <- update(cmod_glmmTMB,control=glmmTMBControl(optimizer=optim,
+                                       optArgs=list(method="BFGS")))
+
+summary(cmod_glmmTMB2)
+
+# try a different specification- uncorrelated slope and intercept terms:
+
+cmod_glmmTMB3 <- glmmTMB(GS.NEE ~ cYear + (1|Site) + (0+cYear|Site),
+                data=mc1,
+                weights=n, REML=T)
+
+summary(cmod_glmmTMB3)  # fits- not saying it's a good model!
+
+
+
 
 plot(cmod_lmer,type=c("p","smooth"))
 plot(cmod_lmer,sqrt(abs(resid(.)))~fitted(.),
@@ -53,10 +70,10 @@ qqnorm(residuals(cmod_lmer,type="pearson",scaled=T))
 
 
 library(DHARMa)
-# resids <- simulateResiduals(cmod_lmer)  # similar results for the two different models
-# plot(resids)
+resids <- simulateResiduals(cmod_lmer)  # similar results for the two different models
+plot(resids)
 
-resids <- simulateResiduals(cmod_glmmTMB)
+resids <- simulateResiduals(cmod_glmmTMB3)
 plot(resids)
 testResiduals(resids)
 
@@ -69,6 +86,31 @@ dotplot(ranef(cmod_lmer,condVar=TRUE),
 library(car)
 Anova(cmod_lmer)
 
+
+
+cmod_lmer2 <- lmer(GS.NEE ~ cYear + (1+cYear|Site),
+                data=mc1, weights=n,REML=F)
+cmod_lmer3 <- lmer(GS.NEE ~ 1 + (1+cYear|Site),
+                data=mc1, weights=n,REML=F)
+
+AIC(cmod_lmer2,cmod_lmer3)
+
+
+cmod_lmer3 <- lmer(GS.NEE ~ cYear + (1+cYear|Site),
+                data=mc1, weights=n,REML=F)
+cmod_lmer4 <- lmer(GS.NEE ~ cYear + (1|Site),
+                data=mc1, weights=n,REML=F)
+
+anova(cmod_lmer4,cmod_lmer3)
+AIC(cmod_lmer3,cmod_lmer4)   # random slope term effect is not an artifact of random chance!
+
+
+
+# Compute r-squared for GLMM! -----------------
+
+MuMIn::r.squaredGLMM(cmod_lmer)
+
+MuMIn::r.squaredGLMM(cmod_glmmTMB)
 
 
 confint(cmod_lmer,parm="beta_",method="Wald")
