@@ -453,9 +453,9 @@ predictions and forecasts- but in statistics, prediction is often
 secondary to making inference about population parameters.</p>
 <p>The concept of the sampling distribution is central to statistics, as
 it allows us to account for uncertainty using p-values and confidence
-intervals. (OR, in Bayesian statistics, we use Bayes Rule to update our
-state of knowledge and account for uncertainty about population
-parameters)</p>
+intervals. (OR, in Bayesian statistics, we use <em>Bayes Rule</em> to
+update our state of knowledge and account for uncertainty about
+population parameters)</p>
 <p>In Machine Learning, we attempt to use available data to detect
 generalizable predictive patterns. In Machine Learning we often care
 less about building understanding, and we care more about making robust
@@ -481,8 +481,9 @@ be present in the data, regardless of the nature of these signals
 <p>In this lecture we will walk through a simple machine learning
 example using the Titanic passenger dataset- and using the Random Forest
 algorithm. Random forest models consist of an ensemble of decision
-trees- so let’s dig first into what a decision tree is… ### Decision
-trees</p>
+trees- so let’s dig first into what a decision tree is…</p>
+<div id="decision-trees" class="section level3">
+<h3>Decision trees</h3>
 <p>A decision tree is essentially a set of rules for determining an
 expected response from a set of predictor variables (features).</p>
 <p>First, we use one of the features to divide our full data set such
@@ -495,12 +496,13 @@ branch). Each decision point in the tree is called a <em>node</em>. The
 final branches in the tree are called <em>leaves</em>.</p>
 <p>Here is an example:</p>
 <p><img src="Decision_Tree1.jpg" /></p>
+</div>
 <div id="random-forest" class="section level3">
 <h3>Random forest</h3>
 <p>Random Forest is one of the older and still most popular machine
 learning methods. It is relatively easy to understand, and tends to make
-very good predictions. A Random Forest consists of a large set of
-decision trees!</p>
+good predictions. A Random Forest consists of a large set of decision
+trees!</p>
 <p>The basic algorithm is as follows:</p>
 <p>Build a large number of decision trees (e.g., 500) using the
 following algorithm:</p>

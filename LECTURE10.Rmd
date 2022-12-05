@@ -37,7 +37,7 @@ Machine Learning shares much in common with statistics, but there are some impor
 
 In statistics, we try to gain knowledge about a (statistical) population from a sample! We may also use our new understanding to make predictions and forecasts- but in statistics, prediction is often secondary to making inference about population parameters.
 
-The concept of the sampling distribution is central to statistics, as it allows us to account for uncertainty using p-values and confidence intervals. (OR, in Bayesian statistics, we use Bayes Rule to update our state of knowledge and account for uncertainty about population parameters)  
+The concept of the sampling distribution is central to statistics, as it allows us to account for uncertainty using p-values and confidence intervals. (OR, in Bayesian statistics, we use *Bayes Rule* to update our state of knowledge and account for uncertainty about population parameters)  
 
 In Machine Learning, we attempt to use available data to detect generalizable predictive patterns. In Machine Learning we often care less about building understanding, and we care more about making robust predictions. 
 
@@ -49,7 +49,8 @@ In statistics, we as analysts have to do a lot of work conceiving of potential d
 
 In Machine Learning, the analyst let's the computer do the heavy lifting. Machine Learning tends to impose fewer assumptions on the data than statistical models. For example, we often don't need to assume that residuals follow a Normal distribution, or that all relationships are linear! The computer algorithm tries to tease apart any signals that may be present in the data, regardless of the nature of these signals (linear, unimodal, etc.).
 
-In this lecture we will walk through a simple machine learning example using the Titanic passenger dataset- and using the Random Forest algorithm. Random forest models consist of an ensemble of decision trees- so let's dig first into what a decision tree is... 
+In this lecture we will walk through a simple machine learning example using the Titanic passenger dataset- and using the Random Forest algorithm. Random forest models consist of an ensemble of decision trees- so let's dig first into what a decision tree is...
+
 ### Decision trees
 
 A decision tree is essentially a set of rules for determining an expected response from a set of predictor variables (features). 
@@ -64,7 +65,7 @@ Here is an example:
 
 ### Random forest
 
-Random Forest is one of the older and still most popular machine learning methods. It is relatively easy to understand, and tends to make very good predictions. A Random Forest consists of a large set of decision trees!
+Random Forest is one of the older and still most popular machine learning methods. It is relatively easy to understand, and tends to make good predictions. A Random Forest consists of a large set of decision trees!
 
 The basic algorithm is as follows:    
 
