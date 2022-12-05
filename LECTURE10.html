@@ -12,7 +12,7 @@
 <meta name="author" content="NRES 710" />
 
 
-<title>Next steps</title>
+<title>Machine Learning: Random Forest</title>
 
 <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -360,10 +360,16 @@ div.tocify {
       <a href="LECTURE7.html">ANOVA</a>
     </li>
     <li>
-      <a href="LECTURE8.html">GLM and GLMM</a>
+      <a href="LECTURE8.html">GLM</a>
     </li>
     <li>
-      <a href="LECTURE9.html">Next steps</a>
+      <a href="LECTURE9.html">GLMM</a>
+    </li>
+    <li>
+      <a href="LECTURE10.html">Machine Learning</a>
+    </li>
+    <li>
+      <a href="LECTURE11.html">Next steps</a>
     </li>
   </ul>
 </li>
@@ -427,161 +433,564 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Next steps</h1>
+<h1 class="title toc-ignore">Machine Learning: Random Forest</h1>
 <h4 class="author">NRES 710</h4>
 <h4 class="date">Fall 2022</h4>
 
 </div>
 
 
-<p>We’ve reached the end of the course, congratulations!!</p>
-<p>But this is not the end of your statistical training - learning
-statistics and modeling (informally or formally) is an ongoing part of
-your growth as a scientist!</p>
-<p>The types of analytical approaches you decide to learn (informally or
-formally) depends on a lot of factors:</p>
-<ul>
-<li>the type of data you will be analyzing (both responses and
-predictors)</li>
-<li>whether your data are primarily coming from controlled experiments
-or uncontrolled field-based studies</li>
-<li>whether you are interested in understanding mechanisms or making
-predictions (or both)</li>
-<li>whether you have one predictor variable or multiple predictor
-variables.</li>
-<li>whether you have one response variable or multiple response
-variables.</li>
-<li>whether you are testing hypotheses or generating hypotheses</li>
-<li>whether you have key sources of non-independence like phylogenetic
-dependencies or spatiotemporal dependencies.</li>
-<li>whether you align philosophically more with Bayesian or frequentist
-inference</li>
-</ul>
-<p>Here are some final thoughts to help you think through your next
-steps as a data analyst!</p>
-<div id="bayesian-vs-frequentist" class="section level2">
-<h2>Bayesian vs frequentist</h2>
-<p>This course has been entirely grounded in frequentist inference-
-which is a bit strange for me, as someone who tends to gravitate toward
-Bayesian inference!</p>
-<p>In both Bayesian inference and frequentist inference, the truth is
-unknown. But the two approaches differ in how they treat probability and
-uncertainty.</p>
-<p>In frequentist inference, the truth is fixed but unknown, and
-incomplete sampling prevents us from knowing the full truth. Sampling
-variance is the only source of uncertainty. Therefore there is
-uncertainty associated with sample statistics- but no uncertainty
-associated with population parameters. It is not appropriate to think of
-the truth itself (the population parameter) as uncertain.</p>
-<p>In Bayesian inference, probability is treated as a <em>degree of
-belief</em>, and not as a reflection of sampling uncertainty. In this
-way, we treat the population parameters themselves as uncertain, which
-reflects incomplete knowledge of the truth. We can therefore assign
-probability distributions to the population parameters- more “peaked”
-distributions represent more precise knowledge and flatter, spread-out
-distributions represent less precise knowledge (often due to
-insufficient data).</p>
-<p>Many of you are likely to find Bayesian statistics more intuitive
-than frequentist statistics- I certainly do!</p>
-<p>For example, you can interpret confidence intervals as (e.g.) “I am
-95 confident that the true value is between this lower bound and this
-upper bound”. This is the way most of us WISH we could interpret
-confidence intervals.</p>
-<p>NOTE: in Bayesian inference, confidence intervals are often called
-‘credible intervals’ to differentiate them from frequentist confidence
-intervals.</p>
-</div>
-<div id="parametric-vs-nonparametric-tests" class="section level2">
-<h2>Parametric vs nonparametric tests</h2>
-<p>If you are running statistical tests and you want to be sure your
-results are not compromised by a failure to meet parametric assumptions,
-then you might want to dive deeper into nonparametric statistics. The
-most powerful and flexible family of nonparametric tests are called
-<strong>permutation tests</strong>. These tests rely on dissociating
-your response and predictor variables by “scrambling” the information,
-repeating this procedure hundreds of times, and seeing if your observed
-level of signal exceeds the expected level of signal from these
-“scrambled” datasets. If so, you can reject your null!</p>
-</div>
-<div id="learning-to-bootstrap" class="section level2">
-<h2>Learning to bootstrap</h2>
-<p><strong>Bootstrap</strong> methods allow you to generate confidence
-intervals and sampling distributions for pretty much any test statistic
-you’d like, without relying on known distributions like the
-t-distribution, F-distribution, Chi-square distribution, etc. The
-bootstrap techniques simply involve repeatedly running the analysis on
-datasets sampled with replacement from your actual dataset. Learning to
-bootstrap is well worth the time for almost any aspiring data
-analyst.</p>
-</div>
+<p>For those wishing to follow along with the R-based demo in class, <a
+href="LECTURE10.R">click here</a> for the companion R script for this
+lecture.</p>
 <div id="machine-learning" class="section level2">
-<h2>Machine learning</h2>
-<p>Machine learning techniques are very diverse approaches for detecting
-signals in datasets. Machine learning methods tend to impose far fewer
-assumptions about the data than classical statistical and modeling
-approaches. For example, <strong>random forest</strong> methods enable
-detection of non-linear responses and complex interactions without
-having to specify these non-linear functions and interactions in
-advance. We just provide the algorithm with a response variable and a
-bunch of predictor variables and let the random forest algorithm find
-the signals. In addition, supervised machine learning methods like
-random forest allow you to rank your predictor variables in order of
-their importance (degree of useful predictive power).</p>
-<p>Machine learning methods are often useful for performing variable
-selection (identifying a small set of important predictor variables),
-and for identifying important non-linear responses or interactions.</p>
-<p>Supervised machine learning (e.g., random forest) involves giving the
-algorithm a bunch of observations with known response and known
-predictor variables and letting the algorithm find the relationships
-between the response and predictor – just like multiple linear
-regression.</p>
-<p>Unsupervised machine learning (e.g., clustering algorithms) involve
-giving the algorithm a bunch of observations, each associated with a
-bunch of measurements, and allowing the algorithm to identify key
-differences and similarities (patterns) in the data. For example, the
-algorithm my divide the observations into groups that share certain
-similarities. These groups (clusters) can then enable researchers to
-identify key ‘hidden’ similarities between observations.</p>
+<h2>Machine Learning</h2>
+<p>Machine Learning shares much in common with statistics, but there are
+some important differences as well.</p>
+<p>In statistics, we try to gain knowledge about a (statistical)
+population from a sample! We may also use our new understanding to make
+predictions and forecasts- but in statistics, prediction is often
+secondary to making inference about population parameters.</p>
+<p>The concept of the sampling distribution is central to statistics, as
+it allows us to account for uncertainty using p-values and confidence
+intervals. (OR, in Bayesian statistics, we use Bayes Rule to update our
+state of knowledge and account for uncertainty about population
+parameters)</p>
+<p>In Machine Learning, we attempt to use available data to detect
+generalizable predictive patterns. In Machine Learning we often care
+less about building understanding, and we care more about making robust
+predictions.</p>
+<p>Machine learning is generally not going to allow us to make inference
+about population parameters of interest using confidence bounds,
+p-values etc. However, the predictions we make using Machine Learning
+tend to be more accurate than the predictions we make using statistical
+models – at least when the training features are not fundamentally
+different from the features being used for prediction.</p>
+<p>Nonetheless, machine learning can help generate hypotheses that can
+be tested more rigorously using statistical inference.</p>
+<p>In statistics, we as analysts have to do a lot of work conceiving of
+potential data-generating models (e.g., likelihood functions), fitting
+these models (e.g., MLE), testing goodness-of-fit, etc.</p>
+<p>In Machine Learning, the analyst let’s the computer do the heavy
+lifting. Machine Learning tends to impose fewer assumptions on the data
+than statistical models. For example, we often don’t need to assume that
+residuals follow a Normal distribution, or that all relationships are
+linear! The computer algorithm tries to tease apart any signals that may
+be present in the data, regardless of the nature of these signals
+(linear, unimodal, etc.).</p>
+<p>In this lecture we will walk through a simple machine learning
+example using the Titanic passenger dataset- and using the Random Forest
+algorithm. Random forest models consist of an ensemble of decision
+trees- so let’s dig first into what a decision tree is… ### Decision
+trees</p>
+<p>A decision tree is essentially a set of rules for determining an
+expected response from a set of predictor variables (features).</p>
+<p>First, we use one of the features to divide our full data set such
+that the response variables are as similar as possible within the two
+resulting <em>branches</em> of the tree.</p>
+<p>For each of the resulting branches, we repeat this procedure,
+dividing the resulting branches again and again (recursively) until some
+endpoint rule is reached (e.g., 3 or fewer observations remaining in the
+branch). Each decision point in the tree is called a <em>node</em>. The
+final branches in the tree are called <em>leaves</em>.</p>
+<p>Here is an example:</p>
+<p><img src="Decision_Tree1.jpg" /></p>
+<div id="random-forest" class="section level3">
+<h3>Random forest</h3>
+<p>Random Forest is one of the older and still most popular machine
+learning methods. It is relatively easy to understand, and tends to make
+very good predictions. A Random Forest consists of a large set of
+decision trees!</p>
+<p>The basic algorithm is as follows:</p>
+<p>Build a large number of decision trees (e.g., 500) using the
+following algorithm:</p>
+<ol style="list-style-type: decimal">
+<li>Draw a bootstrap sample (with replacement) from the original
+dataset- often substantially smaller than the original dataset.<br />
+</li>
+<li>Build a decision tree using this bootstrap sample. At each node of
+the decision tree, determine the optimal splitting rule using a
+restricted subset of the available predictor variables (randomly sampled
+from the set of available features).</li>
+<li>[for determining variable importance] Randomly shuffle each feature
+in turn and see how much the predictive power is reduced, using only
+‘out of bag’ observations (data that were not used to build the tree) to
+assess predictive performance.</li>
+</ol>
+<p>Once you have the full set of trees, you make predictions by using a
+weighted average (or majority-voting rule for categorical variables) of
+the predictions generated by all the trees based on all the component
+trees in the forest:</p>
+<p><img src="Random_forest1.png" /></p>
+<p>In Random Forest, each tree is meant to be somewhat independent from
+one another- in Machine Learning, each tree is a “weak learner”. All of
+the trees (the ensemble) will generally be a much better and more robust
+predictor than any single tree in the forest- or for that matter, any
+single tree you could generate. The use of bootstrapping and random
+sampling of features within the random forest algorithm ensures that
+each tree is a weak learner and is relatively independent from other
+trees in the forest. This way, the collection of semi-independent trees
+becomes a better predictor than any single tree could be!</p>
+<p>Random forest is not only a good way of making predictions, it also
+helps us:</p>
+<ol style="list-style-type: decimal">
+<li><em>Identify which features are most important for prediction</em>:
+By keeping track of which features tend to yield the biggest gains in
+prediction accuracy across all trees in the forest (generally we keep
+track of the ability to predict observations that were not used for
+fitting each tree- these are called ‘out of bag’ observations), we can
+easily generate robust indicators of variable importance.</li>
+<li><em>Identify non-linear relationships</em>. By plotting out our
+predicted response across a range of each predictor variable, we can see
+if any non-linear patterns emerge!</li>
+<li><em>Identify important interactions</em>. By comparing how predicted
+responses for one feature change across a range of another feature, we
+can assess the degree to which features interact to determine the
+expected response.</li>
+</ol>
 </div>
-<div id="multivariate-statistics" class="section level2">
-<h2>Multivariate statistics</h2>
-<p>Multivariate statistics involves trying to interpret multiple
-response processes at the same time. For example, community ecologists
-often want to understand the presence/absence and population dynamics of
-multiple species in a single ecological community. These researchers
-therefore are dealing with muliple response variables at the same time -
-for example, they may wish to model the presence or absence of species
-A, B, C, and D as a function of three environmental covariates (x1, x2
-and x3) and inter-species competitive exclusion. Such an analysis would
-be called a <strong>multivariate analysis</strong>.</p>
-<p>I will try to post more on multivariate statistics later - and
-definitely in the next iteration of this class!</p>
-<div id="dimensionality-reduction" class="section level3">
-<h3>Dimensionality reduction</h3>
-<p>Often classified as a type of multivariate statistical analysis,
-<strong>principal components analysis (PCA)</strong> and other
-dimensionality reduction methods (e.g., non-metric multidimensional
-scaling, or NMDA) are useful for taking a large set of variables and
-trying to summarize the variation among observations according to a
-smaller set of derived variables (often known as “axes” – for example,
-“PCA axis 1”). This can enable visualization of similarities and
-differences among observations – eg., by plotting PC1 vs PC2.</p>
-<p>Some analysts will run a PCA on all their observations (e.g., all 100
-predictor variables) in order to reduce their set of inter-correlated
-predictor variables from a very large number to a set of just a few
-(often 2 or 3) uncorrelated predictor variables. This is one way of
-dealing with <strong>multicollinearity</strong>. However, it introduces
-a new problem- how to interpret your new variables!</p>
 </div>
+<div id="example-the-titanic-disaster" class="section level2">
+<h2>Example: the Titanic disaster</h2>
+<p>Let’s evaluate which factors were related to surviving the Titanic
+disaster!</p>
+<p>You can load the Titanic data example <a href="titanic.csv">here</a>.
+Alternatively you can use the ‘titanic’ package in R!</p>
+<pre class="r"><code># Titanic disaster example  (load data) ----------------
+
+titanic &lt;- read.csv(&quot;titanic.csv&quot;,header=T)
+head(titanic)</code></pre>
+<pre><code>##   PassengerId Survived Pclass
+## 1           1        0      3
+## 2           2        1      1
+## 3           3        1      3
+## 4           4        1      1
+## 5           5        0      3
+## 6           6        0      3
+##                                                  Name    Sex Age SibSp Parch
+## 1                             Braund, Mr. Owen Harris   male  22     1     0
+## 2 Cumings, Mrs. John Bradley (Florence Briggs Thayer) female  38     1     0
+## 3                              Heikkinen, Miss. Laina female  26     0     0
+## 4        Futrelle, Mrs. Jacques Heath (Lily May Peel) female  35     1     0
+## 5                            Allen, Mr. William Henry   male  35     0     0
+## 6                                    Moran, Mr. James   male  NA     0     0
+##             Ticket    Fare Cabin Embarked
+## 1        A/5 21171  7.2500              S
+## 2         PC 17599 71.2833   C85        C
+## 3 STON/O2. 3101282  7.9250              S
+## 4           113803 53.1000  C123        S
+## 5           373450  8.0500              S
+## 6           330877  8.4583              Q</code></pre>
+<pre class="r"><code># library(titanic)            # alternative: load titanic data from package
+# titanic &lt;- titanic_train</code></pre>
+<p>Let’s first load a package that implements a fast/efficient version
+of random forest</p>
+<p>While we’re at it, let’s load another package for running a single
+decision tree</p>
+<pre class="r"><code># Load packages -------------------
+
+library(ranger)    # fast implementation of random forest
+library(party)     # good package for running decision tree analysis (and random forest- just slower)</code></pre>
+<p>When using categorical variables, we should make sure they are
+encoded as factors, not as numeric. Use class(data$Resp) to check the
+encoding, and use as.factor(data$Resp) to coerce your variable(s) to the
+‘factor’ type.</p>
+<pre class="r"><code># process data ----------------
+
+class(titanic$Survived)</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<pre class="r"><code>titanic$Survived &lt;- as.factor(titanic$Survived)    # code response variable as a factor variable (categorical)
+titanic$Sex &lt;- as.factor(titanic$Sex)
+
+class(titanic$Survived)   # make sure it&#39;s a factor</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<p>Now let’s define the predictors and response:</p>
+<pre class="r"><code>predictorNames &lt;- c(  &quot;Sex&quot;,       # nice readable names
+                      &quot;Age&quot;,
+                      &quot;Sibs/spouses&quot;,
+                      &quot;Parents/children&quot;,
+                      &quot;Fare&quot;
+)
+
+pred.names=c(  &quot;Sex&quot;,      # the actual names from the data frame
+               &quot;Age&quot;,
+               &quot;SibSp&quot;,
+               &quot;Parch&quot;,
+               &quot;Fare&quot;
+)
+# cbind(pred.names,predictorNames)
+
+response=&quot;Survived&quot;
+
+
+formula1 &lt;- as.formula(paste(response,&quot;~&quot;,paste(pred.names,collapse=&quot;+&quot;)))    # formula for the RF model</code></pre>
 </div>
-<div id="last-words" class="section level2">
-<h2>Last words</h2>
-<p>I will try to add to this ‘next steps’ lecture in the future. In the
-meantime, I wish you all the best as you continue your journey as
-creative, effective data analysts.</p>
-<p>As always, your feedback is very much appreciated.</p>
-<p>Thanks for bearing with me this semester!!!</p>
-<p>–End of lectures–</p>
+<div id="run-a-decision-tree" class="section level2">
+<h2>Run a decision tree</h2>
+<p>This is also known as a CART analysis (classification and regression
+tree) - a single tree, not a forest!</p>
+<pre class="r"><code># Fit a single decision tree -------------
+
+TerrMamm.tr &lt;- ctree(formula=formula1, data=titanic, controls = ctree_control(mincriterion = 0.85,maxdepth = 3))
+
+plot(TerrMamm.tr)</code></pre>
+<p><img src="LECTURE10_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>But remember that a single tree is not typically very robust- these
+are very likely to over-fit to the data (a couple new data points could
+totally change the tree)! Random forest gets around this issue and is
+much more <em>robust</em> than CART analysis!</p>
+<p>Like most machine learning algorithms, we can “tune” the algorithm in
+several different ways. Ideally, we would try out several alternative
+parameter tunings and see which one performs the best in
+cross-validation.</p>
+<pre class="r"><code># Run a random forest model!  ---------------------
+
+titanic2 &lt;- na.omit(titanic)   # remove missing data (ranger does not handle missing data- &#39;party&#39; implementation of RF does...)
+
+thismod &lt;- ranger(formula1, data=titanic2, probability=T,importance = &#39;permutation&#39;, max.depth = 2, mtry = 3, sample.fraction=0.4, num.trees = 1500 )</code></pre>
+</div>
+<div id="variable-importance" class="section level2">
+<h2>Variable importance</h2>
+<p>One thing we can easily get from a RF analysis is an index of the
+relative importance of each predictor variable</p>
+<pre class="r"><code>    # get the importance values
+varimp &lt;- importance(thismod)
+
+
+lengthndx &lt;- length(varimp)
+par(mai=c(1.2,2.4,0.6,0.9))
+col &lt;- rainbow(lengthndx, start = 3/6, end = 4/6)      
+barplot(height=varimp[order(varimp,decreasing = FALSE)],
+        horiz=T,las=1,main=&quot;Order of Importance of Predictor Variables&quot;,
+        xlab=&quot;Index of overall importance&quot;,col=col,           
+        names.arg=predictorNames[match(names(varimp),pred.names)][order(varimp,decreasing = FALSE)])</code></pre>
+<p><img src="LECTURE10_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="feature-selection" class="section level2">
+<h2>Feature selection</h2>
+<p>Random forest is also really effective tool for identifying which
+variables can be eliminated. This isn’t super important for the Titanic
+dataset since there aren’t that many predictors to begin with, but this
+can be one of the best ways to perform feature selection for datasets
+with lots of potential predictor variables.</p>
+<p>The ‘caret’ package provides some useful tools for feature selection,
+including the <code>rfe()</code> function:</p>
+<pre class="r"><code>library(caret)
+
+# perform feature selection --------------
+
+# first add some random features!
+
+titanic2$random1 &lt;- as.factor(sample(c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;),replace=T, size=nrow(titanic2)))
+
+titanic2$random2 &lt;- rnorm(nrow(titanic2))
+
+varstotry &lt;- c(pred.names,&quot;random1&quot;,&quot;random2&quot;)
+varstotry2 &lt;- c(predictorNames,&quot;random1&quot;,&quot;random2&quot;)
+response &lt;- &quot;Survived&quot;
+
+form = as.formula(paste0(response, &quot;~&quot;, paste(varstotry,collapse = &quot;+&quot;)))
+
+thismod2 &lt;- ranger(form, data=titanic2, probability=T,importance = &#39;permutation&#39;, max.depth = 2, mtry = 3, sample.fraction=0.4, num.trees = 1500 )
+
+    # get the importance values
+varimp2 &lt;- importance(thismod2)
+
+
+lengthndx &lt;- length(varimp)
+par(mai=c(1.2,2.4,0.6,0.9))
+col &lt;- rainbow(lengthndx, start = 3/6, end = 4/6)      
+barplot(height=varimp2[order(varimp2,decreasing = FALSE)],
+        horiz=T,las=1,main=&quot;Order of Importance of Predictor Variables&quot;,
+        xlab=&quot;Index of overall importance&quot;,col=col,           
+        names.arg=varstotry2[match(names(varimp2),varstotry)][order(varimp2,decreasing = FALSE)])</code></pre>
+<p><img src="LECTURE10_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code># recursive feature elimination (rfe) -------------------
+
+
+# read in function for using RFE with ranger
+
+rangerFuncs &lt;-  list(summary = defaultSummary,
+                     fit = function(x, y, first, last, ...) {
+                       loadNamespace(&quot;ranger&quot;)
+                       dat &lt;- if(is.data.frame(x)) 
+                         x else as.data.frame(x)
+                       dat$.outcome &lt;- y
+                       ranger::ranger(.outcome ~ ., data = dat, 
+                                      importance = &quot;permutation&quot;, 
+                                      probability = is.factor(y),
+                                      write.forest = TRUE,
+                                      ...)
+                     },
+                     pred = function(object, x)  {
+                       if(!is.data.frame(x)) x &lt;- as.data.frame(x)
+                       out &lt;- predict(object, x)$predictions
+                       if(object$treetype == &quot;Probability estimation&quot;) {
+                         out &lt;- cbind(pred = colnames(out)[apply(out, 1, which.max)],
+                                      out)
+                       } 
+                       out
+                     },
+                     rank = function(object, x, y) {
+                       if(length(object$variable.importance) == 0)
+                         stop(&quot;No importance values available&quot;)
+                       imps &lt;- ranger:::importance(object)
+                       vimp &lt;- data.frame(Overall = as.vector(imps),
+                                         var = names(imps))
+                       rownames(vimp) &lt;- names(imps)
+                       
+                       vimp &lt;- vimp[order(vimp$Overall, decreasing = TRUE),, drop = FALSE]
+                       vimp
+                     },
+                     selectSize = pickSizeBest,
+                     selectVar = pickVars)
+
+
+# define the settings for recursive feature elimination 
+reps = 10
+#folds &lt;- lapply(1:reps,function(t) createFolds(titanic2$Survived,k=10))   # changed to leave out grids
+
+control &lt;- caret::rfeControl(functions=rangerFuncs, method=&quot;repeatedcv&quot;, 
+                             repeats=reps, #index = folds, 
+                             rerank=T,allowParallel = TRUE)   # number=5,
+
+# run the RFE algorithm (takes a while even with reduced dataset)
+
+results &lt;- caret::rfe(x=titanic2[,varstotry], y=titanic2[,response], 
+                      sizes=c(1:length(varstotry)), 
+                      rfeControl=control, max.depth = 2, #mtry = 3, 
+                      sample.fraction=0.4, num.trees = 1500 )
+
+# list the chosen features
+
+predictors(results)      </code></pre>
+<pre><code>## [1] &quot;Sex&quot;   &quot;Fare&quot;  &quot;Age&quot;   &quot;Parch&quot; &quot;SibSp&quot;</code></pre>
+<pre class="r"><code># plot the results
+
+plot(results, type=c(&quot;g&quot;, &quot;o&quot;))    # visualize number of important features</code></pre>
+<p><img src="LECTURE10_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<pre class="r"><code>bestvars &lt;- results$optVariables
+bestvars</code></pre>
+<pre><code>## [1] &quot;Sex&quot;   &quot;Fare&quot;  &quot;Age&quot;   &quot;Parch&quot; &quot;SibSp&quot;</code></pre>
+<pre class="r"><code>covars_new2 &lt;- bestvars   #results$optVariables[1:7]
+
+formula &lt;- as.formula(paste0(response,&quot;~&quot;,paste(covars_new2,collapse = &quot;+&quot;)))   # formula with further reduced covars</code></pre>
+</div>
+<div id="univariate-predictions" class="section level2">
+<h2>Univariate predictions</h2>
+<p>We can also generate univariate predictive plots, also known as
+effects plots or “partial dependence plots”. Note the use of the
+‘predict’ function!</p>
+<pre class="r"><code># Make univariate &#39;effects&#39; plots -------------
+
+varstoplot &lt;- names(sort(varimp,decreasing = T))   # plot in order of decreasing importance
+par(mai=c(1,1,.8,.1))
+p=1
+for(p in 1:length(pred.names)){            # loop through all predictor variables
+  thisvar &lt;- varstoplot[p]    
+  
+  if(is.factor(titanic2[[thisvar]])){                    # make &#39;newdata&#39; that spans the range of the predictor variable
+    nd &lt;- data.frame(x=as.factor(levels(titanic2[[thisvar]])))
+  }else{
+    nd &lt;- data.frame(x=seq(min(titanic2[[thisvar]]),max(titanic2[[thisvar]]),length=50))
+  }
+  names(nd) &lt;- thisvar
+  
+  othervars &lt;- setdiff(pred.names,thisvar)    # set other variables at their mean value (or for factors, use first observation- I was lazy here)
+  temp &lt;- sapply(othervars,function(t){ if(is.factor(titanic2[[t]])){ nd[[t]] &lt;&lt;- titanic2[[t]][1]}else{ nd[[t]] &lt;&lt;- mean(titanic2[[t]]) }} )
+  #nd
+  
+  pred = predict(thismod,data=nd,type=&quot;response&quot;)$predictions[,2]    # use &#39;predict&#39; function to make predictions across the param of interest
+  
+  plot(pred~nd[,1],type=&quot;l&quot;,xlab=thisvar,main=thisvar)         # plot the predictions
+  if(!is.factor(nd[,1])) rug(jitter(titanic2[[thisvar]]))   # with &#39;rug&#39; for quantitative vars
+  
+}</code></pre>
+<p><img src="LECTURE10_files/figure-html/unnamed-chunk-10-1.png" width="672" /><img src="LECTURE10_files/figure-html/unnamed-chunk-10-2.png" width="672" /><img src="LECTURE10_files/figure-html/unnamed-chunk-10-3.png" width="672" /><img src="LECTURE10_files/figure-html/unnamed-chunk-10-4.png" width="672" /><img src="LECTURE10_files/figure-html/unnamed-chunk-10-5.png" width="672" /></p>
+</div>
+<div id="interactions" class="section level2">
+<h2>Interactions</h2>
+<p>We can also identify and characterize the most important
+interactions!</p>
+<p>In the following code block we assess the strength of all possible
+two-way interactions, by measuring the difference between the RF
+predictions across each 2-D parameter space and a fully additive model.
+Don’t worry if this doesn’t make sense- see me another time if you’d
+like me to explain the code in more detail!</p>
+<pre class="r"><code># Identify and characterize interactions ----------------
+
+allcomb &lt;- as.data.frame(t(combn(pred.names,2)))    # all bivariate combinations of the predictor variables 
+names(allcomb) &lt;- c(&quot;var1&quot;,&quot;var2&quot;)
+
+allcomb$int1 &lt;- NA    # for storing relative interaction intensity
+allcomb$int2 &lt;- NA
+
+p=1
+for(p in 1:nrow(allcomb)){     # loop through all bivariate combinations
+  var1 = allcomb$var1[p]
+  var2 = allcomb$var2[p]
+
+  if(!is.factor(titanic2[[var1]])){        # break each variable into bins for making predictions
+    all1= seq(min(titanic2[[var1]]),max(titanic2[[var1]]),length=10)
+  }else{
+    all1=as.factor(levels(titanic2[[var1]]))
+  }
+  if(!is.factor(titanic2[[var2]])){ 
+    all2 = seq(min(titanic2[[var2]]),max(titanic2[[var2]]),length=10)
+  }else{
+    all2=as.factor(levels(titanic2[[var2]]))
+  }
+
+  nd &lt;- expand.grid(all1,all2)     # make &#39;newdata&#39; data frame for making predictions across the 2-D parameter space
+  names(nd) &lt;- c(var1,var2)
+  
+  othervars &lt;- setdiff(pred.names,c(var1,var2))      # set all other vars at their mean value (or use first obs for factors-I was lazy)
+  temp &lt;- sapply(othervars,function(t){ if(is.factor(titanic2[[t]])){ nd[[t]] &lt;&lt;- titanic2[[t]][1]}else{ nd[[t]] &lt;&lt;- mean(titanic2[[t]]) }}   )
+  
+  pred = predict(thismod,data=nd,type=&quot;response&quot;)$predictions[,2]   # make predictions using &#39;predict()&#39;
+  
+  additive_model &lt;- lm(pred~nd[[var1]]+nd[[var2]])     # fit a fully additive model from RF predictions using &#39;lm()&#39;
+  
+  pred_add = predict(additive_model)    # generate predictions using the additive model (for comparison with RF predictions)
+  
+  allcomb$int1[p] &lt;- sqrt(mean((pred-pred_add)^2))   # metric of interaction strength (dif between RF and additive model)
+  
+  maximp &lt;- mean(varimp[c(var1,var2)])    # for weighted interaction importance
+  
+  allcomb$int2[p] &lt;- allcomb$int1[p]/maximp   # weighted measure that includes overall importance and interaction strength
+  
+}
+
+allcomb &lt;- allcomb[order(allcomb$int1,decreasing = T),]
+allcomb</code></pre>
+<pre><code>##     var1  var2        int1       int2
+## 7    Age  Fare 0.061760151  4.6228220
+## 4    Sex  Fare 0.054859807  0.8680700
+## 6    Age Parch 0.047583025 11.1734767
+## 10 Parch  Fare 0.045283567  4.2819199
+## 5    Age SibSp 0.044902243 10.5583941
+## 9  SibSp  Fare 0.043980658  4.1610080
+## 1    Sex   Age 0.039776707  0.6993032
+## 3    Sex Parch 0.021148432  0.3909414
+## 2    Sex SibSp 0.011450960  0.2117006
+## 8  SibSp Parch 0.005025566  3.4223746</code></pre>
+<p>Next, we visualize our top interactions!</p>
+<pre class="r"><code>### visualize interactions
+ints.torun &lt;- 1:3
+int=2
+for(int in 1:length(ints.torun)){
+  thisint &lt;- ints.torun[int]
+  var1 = allcomb$var1[thisint]
+  var2 = allcomb$var2[thisint]
+ 
+  if(!is.factor(titanic2[[var1]])){ 
+    all1= seq(min(titanic2[[var1]]),max(titanic2[[var1]]),length=10)
+  }else{
+    all1=as.factor(levels(titanic2[[var1]]))
+  }
+  if(!is.factor(titanic2[[var2]])){ 
+    all2 = seq(min(titanic2[[var2]]),max(titanic2[[var2]]),length=10)
+  }else{
+    all2=as.factor(levels(titanic2[[var2]]))
+  }
+  
+  nd &lt;- expand.grid(all1,all2)
+  names(nd) &lt;- c(var1,var2)
+  
+  othervars &lt;- setdiff(pred.names,c(var1,var2))
+  temp &lt;- sapply(othervars,function(t)if(is.factor(titanic2[[t]])){ nd[[t]] &lt;&lt;- titanic2[[t]][1]}else{ nd[[t]] &lt;&lt;- mean(titanic2[[t]]) }  )
+  
+  pred = predict(thismod,data=nd,type=&quot;response&quot;)$predictions[,2]
+  
+  predmat = matrix(pred,nrow=length(all1),ncol=length(all2))
+  
+  if(!is.factor(titanic2[[var1]])){
+    persp(all1,all2,predmat,theta=25,phi=25,xlab=var1,ylab=var2,zlab=&quot;prob surv&quot;)
+  }else{
+    plot(predmat[1,]~all2,xlab=var2,ylab=&quot;prob surv&quot;,type=&quot;l&quot;,ylim=c(0,1),col=&quot;green&quot;,lwd=2)
+    lines(all2,predmat[2,],col=&quot;blue&quot;,lwd=2)
+    legend(&quot;bottomright&quot;,bty=&quot;n&quot;,lty=c(1,1),col=c(&quot;green&quot;,&quot;blue&quot;),lwd=c(2,2),legend=c(&quot;Female&quot;,&quot;Male&quot;))
+  }
+  
+}</code></pre>
+<p><img src="LECTURE10_files/figure-html/unnamed-chunk-12-1.png" width="672" /><img src="LECTURE10_files/figure-html/unnamed-chunk-12-2.png" width="672" /><img src="LECTURE10_files/figure-html/unnamed-chunk-12-3.png" width="672" /></p>
+</div>
+<div id="model-performance" class="section level2">
+<h2>Model performance</h2>
+<p>Finally, let’s bring this home by looking at model performance!</p>
+<pre class="r"><code># CROSS VALIDATION -------------------------
+
+n.folds = 10       # set the number of &quot;folds&quot;
+foldVector = rep(c(1:n.folds),times=floor(length(titanic2$Survived)/9))[1:length(titanic2$Survived)]</code></pre>
+<p>Then, we do the cross validation, looping through each fold of the
+data, leaving out each fold in turn for model training.</p>
+<pre class="r"><code>counter = 1
+CV_df &lt;- data.frame(
+  CVprediction = numeric(nrow(titanic2)), # make a data frame for storage
+  realprediction = 0,
+  realdata = 0
+)
+i=1
+for(i in 1:n.folds){
+  fit_ndx &lt;- which(foldVector!=i)
+  validate_ndx &lt;- which(foldVector==i)
+  model &lt;- ranger(formula1, data = titanic2[fit_ndx,],probability=T,importance = &#39;permutation&#39;) 
+  CV_df$CVprediction[validate_ndx]  &lt;- predict(model,data=titanic2[validate_ndx,],type=&quot;response&quot;)$predictions[,2] 
+  CV_df$realprediction[validate_ndx]  &lt;-  predict(thismod,data=titanic2[validate_ndx,],type=&quot;response&quot;)$predictions[,2]
+  CV_df$realdata[validate_ndx] &lt;- titanic2$Survived[validate_ndx]
+}
+
+fact=TRUE
+if(fact){
+  CV_df$realdata=CV_df$realdata-1
+}
+
+CV_RMSE = sqrt(mean((CV_df$realdata - CV_df$CVprediction)^2))       # root mean squared error for holdout samples in 10-fold cross-validation
+real_RMSE = sqrt(mean((CV_df$realdata - CV_df$realprediction)^2))  # root mean squared error for residuals from final model
+
+# print RMSE statistics
+
+cat(&quot;The RMSE for the model under cross-validation is: &quot;, CV_RMSE, &quot;\n&quot;)</code></pre>
+<pre><code>## The RMSE for the model under cross-validation is:  0.3707382</code></pre>
+<pre class="r"><code>cat(&quot;The RMSE for the model using all data for training is: &quot;, real_RMSE, &quot;\n&quot;)</code></pre>
+<pre><code>## The RMSE for the model using all data for training is:  0.391428</code></pre>
+<p>Let’s plot out the ROC curves!</p>
+<pre class="r"><code>library(ROCR)
+library(rms)
+
+par(mfrow=c(2,1))
+pred &lt;- prediction(CV_df$CVprediction,CV_df$realdata)     # for holdout samples in cross-validation
+perf &lt;- performance(pred,&quot;tpr&quot;,&quot;fpr&quot;)
+auc &lt;- performance(pred,&quot;auc&quot;)
+plot(perf, main=&quot;Cross-validation&quot;)
+text(.9,.1,paste(&quot;AUC = &quot;,round(auc@y.values[[1]],2),sep=&quot;&quot;))
+
+pred &lt;- prediction(CV_df$realprediction,CV_df$realdata)     # for final model
+perf &lt;- performance(pred,&quot;tpr&quot;,&quot;fpr&quot;)
+auc &lt;- performance(pred,&quot;auc&quot;)
+plot(perf, main=&quot;All data&quot;)
+text(.9,.1,paste(&quot;AUC = &quot;,round(auc@y.values[[1]],2),sep=&quot;&quot;))</code></pre>
+<p><img src="LECTURE10_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>Finally, we can use a pseudo-R-squared metric as an alternative
+metric of performance</p>
+<pre class="r"><code>CV_df$CVprediction[which(CV_df$CVprediction==1)] &lt;- 0.9999       # ensure that all predictions are not exactly 0 or 1
+CV_df$CVprediction[which(CV_df$CVprediction==0)] &lt;- 0.0001
+CV_df$realprediction[which(CV_df$realprediction==1)] &lt;- 0.9999
+CV_df$realprediction[which(CV_df$realprediction==0)] &lt;- 0.0001
+
+fit_deviance_CV &lt;- mean(-2*(dbinom(CV_df$realdata,1,CV_df$CVprediction,log=T)-dbinom(CV_df$realdata,1,CV_df$realdata,log=T)))
+fit_deviance_real &lt;- mean(-2*(dbinom(CV_df$realdata,1,CV_df$realprediction,log=T)-dbinom(CV_df$realdata,1,CV_df$realdata,log=T)))
+null_deviance &lt;- mean(-2*(dbinom(CV_df$realdata,1,mean(CV_df$realdata),log=T)-dbinom(CV_df$realdata,1,CV_df$realdata,log=T)))
+deviance_explained_CV &lt;- (null_deviance-fit_deviance_CV)/null_deviance   # based on holdout samples
+deviance_explained_real &lt;- (null_deviance-fit_deviance_real)/null_deviance   # based on full model...
+
+# print RMSE statistics
+
+cat(&quot;The McFadden R2 for the model under cross-validation is: &quot;, deviance_explained_CV, &quot;\n&quot;)</code></pre>
+<pre><code>## The McFadden R2 for the model under cross-validation is:  0.3519176</code></pre>
+<pre class="r"><code>cat(&quot;The McFadden R2 for the model using all data for training is: &quot;, deviance_explained_real, &quot;\n&quot;)</code></pre>
+<pre><code>## The McFadden R2 for the model using all data for training is:  0.2902674</code></pre>
+<p>— End of demo—</p>
 </div>
 
 

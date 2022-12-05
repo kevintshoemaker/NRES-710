@@ -1,30 +1,35 @@
 ---
 title: "Machine Learning: Random Forest"
-author: "NRES 710"
-date: "Fall 2022"
+author: "Kevin Shoemaker"
+date: "Fall 2021"
 output: 
   html_document: 
-    theme: yeti
+    theme: cerulean
     toc: yes
     toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(
-	echo = TRUE,
-	message = FALSE,
-	warning = FALSE,
-	cache = TRUE
-)
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ```
 
 
 ```{r echo=FALSE}
 
-#  NRES 710, Lecture 10 
-#  University of Nevada, Reno 
+############################################################
+####                                                    ####  
+####  NRES 746, Lecture 10                              ####
+####                                                    ####
+####  Kevin Shoemaker                                   #### 
+####  University of Nevada, Reno                        ####
+####                                                    #### 
+############################################################
 
-#  Machine learning --------------------------                               
+
+############################################################
+####  Machine learning                                  ####
+############################################################
+
 
 ```
 
@@ -33,30 +38,21 @@ For those wishing to follow along with the R-based demo in class, [click here](L
 
 ## Machine Learning
 
-Machine Learning shares much in common with statistics, but there are some important differences as well. 
+Machine Learning may seem similar to statistics, but there are some important differences. 
 
-In statistics, we try to gain knowledge about a (statistical) population from a sample! We may also use our new understanding to make predictions and forecasts- but in statistics, prediction is often secondary to making inference about population parameters.
+In statistics, we attempt to gain knowledge about a (statistical) population from a sample! We may also use our new understanding to make predictions and forecasts- but in statistics, prediction is often secondary to making inference about population parameters. The concept of the sampling distribution is central to statistics, as it allows us to account for uncertainty using p-values and confidence intervals. (OR, in Bayesian statistics, we use Bayes Rule to update our state of knowledge and account for uncertainty about population parameters)  
 
-The concept of the sampling distribution is central to statistics, as it allows us to account for uncertainty using p-values and confidence intervals. (OR, in Bayesian statistics, we use Bayes Rule to update our state of knowledge and account for uncertainty about population parameters)  
-
-In Machine Learning, we attempt to use available data to detect generalizable predictive patterns. In Machine Learning we often care less about building understanding, and we care more about making robust predictions. 
-
-Machine learning is generally not going to allow us to make inference about population parameters of interest using confidence bounds, p-values etc. However, the predictions we make using Machine Learning tend to be more accurate than the predictions we make using statistical models -- at least when the training features are not fundamentally different from the features being used for prediction. 
-
-Nonetheless, machine learning can help generate hypotheses that can be tested more rigorously using statistical inference. 
+In Machine Learning, we attempt to use available data to detect generalizable predictive patterns. In Machine Learning we often don't care as much about building our understanding of the system, we simply want to be able to make better predictions. Machine learning is generally not going to allow us to make inference about population parameters of interest using confidence bounds, p-values etc. However, the predictions we make using Machine Learning can be more accurate than the predictions we make using statistical models. And in many cases, machine learning can help to generate hypotheses that can be tested more rigorously using statistical inference. 
 
 In statistics, we as analysts have to do a lot of work conceiving of potential data-generating models (e.g., likelihood functions), fitting these models (e.g., MLE), testing goodness-of-fit, etc.
 
-In Machine Learning, the analyst let's the computer do the heavy lifting. Machine Learning tends to impose fewer assumptions on the data than statistical models. For example, we often don't need to assume that residuals follow a Normal distribution, or that all relationships are linear! The computer algorithm tries to tease apart any signals that may be present in the data, regardless of the nature of these signals (linear, unimodal, etc.).
+In Machine Learning, the analyst let's the computer do the heavy lifting. Machine Learning tends to impose fewer assumptions on the data than statistical models. For example, we don't need to assume that residuals follow a Normal distribution, or even that all relationships are linear! The computer algorithm tries to tease apart any signals that may be present in the data. 
 
-In this lecture we will walk through a simple machine learning example using the Titanic passenger dataset- and using the Random Forest algorithm. Random forest models consist of an ensemble of decision trees- so let's dig first into what a decision tree is... 
 ### Decision trees
 
-A decision tree is essentially a set of rules for determining an expected response from a set of predictor variables (features). 
+A decision tree is essentially a set of branching rules for determining an expected response from a set of predictor variables (features). 
 
-First, we use one of the features to divide our full data set such that the response variables are as similar as possible within the two resulting *branches* of the tree. 
-
-For each of the resulting branches, we repeat this procedure, dividing the resulting branches again and again (recursively) until some endpoint rule is reached (e.g., 3 or fewer observations remaining in the branch). Each decision point in the tree is called a *node*. The final branches in the tree are called *leaves*. 
+First, we use one of the features to divide our full data set such that the response variables are as similar as possible within the two resulting *branches* of the tree. For each of the resulting branches, we repeat this procedure, dividing the resulting branches again and again (recursively) until some endpoint rule is reached (e.g., 3 or fewer observations remaining in the branch). Each decision point in the tree is called a *node*. The final branches in the tree are called *leaves*. 
 
 Here is an example:
 
@@ -64,13 +60,13 @@ Here is an example:
 
 ### Random forest
 
-Random Forest is one of the older and still most popular machine learning methods. It is relatively easy to understand, and tends to make very good predictions. A Random Forest consists of a large set of decision trees!
+Random Forest is one of the older and still most popular Machine Learning methods. It is relatively easy to understand, and tends to make very good predictions. A Random Forest consists of a large set of decision trees!
 
 The basic algorithm is as follows:    
 
 Build a large number of decision trees (e.g., 500) using the following algorithm:
 
-1. Draw a bootstrap sample (with replacement) from the original dataset- often substantially smaller than the original dataset.    
+1. Draw a small bootstrap sample from the original dataset- generally much smaller than the original dataset.    
 2. Build a decision tree using this bootstrap sample. At each node of the decision tree, determine the optimal splitting rule using a restricted subset of the available predictor variables (randomly sampled from the set of available features).
 3. [for determining variable importance] Randomly shuffle each feature in turn and see how much the predictive power is reduced, using only 'out of bag' observations (data that were not used to build the tree) to assess predictive performance.
 
@@ -78,7 +74,7 @@ Once you have the full set of trees, you make predictions by using a weighted av
 
 ![](Random_forest1.png)
 
-In Random Forest, each tree is meant to be somewhat independent from one another- in Machine Learning, each tree is a "weak learner". All of the trees (the ensemble) will generally be a much better and more robust predictor than any single tree in the forest- or for that matter, any single tree you could generate. The use of bootstrapping and random sampling of features within the random forest algorithm ensures that each tree is a weak learner and is relatively independent from other trees in the forest. This way, the collection of semi-independent trees becomes a better predictor than any single tree could be! 
+In Random Forest, each tree is meant to be somewhat independent from one another- in Machine Learning, each tree is a "weak learner". All of the trees (the 'committee' so to speak) will generally be a much better and more robust, generalizable predictor than any single tree in the forest- or for that matter, any single tree you could generate. The use of bootstrapping and random sampling of features within the random forest algorithm ensures that each tree is a weak learner and is relatively independent from other trees in the forest. This way, the collection of semi-independent trees becomes a better predictor than any single tree could be! 
 
 Random forest is not only a good way of making predictions, it also helps us:
 
@@ -95,7 +91,8 @@ You can load the Titanic data example [here](titanic.csv). Alternatively you can
 
 ```{r}
 
-# Titanic disaster example  (load data) ----------------
+##########
+# Titanic disaster example  (load data)
 
 titanic <- read.csv("titanic.csv",header=T)
 head(titanic)
@@ -111,8 +108,6 @@ While we're at it, let's load another package for running a single decision tree
 
 ```{r message=FALSE, warning=FALSE}
 
-# Load packages -------------------
-
 library(ranger)    # fast implementation of random forest
 library(party)     # good package for running decision tree analysis (and random forest- just slower)
 
@@ -121,8 +116,6 @@ library(party)     # good package for running decision tree analysis (and random
 When using categorical variables, we should make sure they are encoded as factors, not as numeric. Use class(data\$Resp) to check the encoding, and use as.factor(data\$Resp) to coerce your variable(s) to the 'factor' type.
 
 ```{r}
-
-# process data ----------------
 
 class(titanic$Survived)
 
@@ -166,27 +159,25 @@ formula1 <- as.formula(paste(response,"~",paste(pred.names,collapse="+")))    # 
 This is also known as a CART analysis (classification and regression tree) - a single tree, not a forest!
 
 ```{r}
-
-# Fit a single decision tree -------------
-
 TerrMamm.tr <- ctree(formula=formula1, data=titanic, controls = ctree_control(mincriterion = 0.85,maxdepth = 3))
 
 plot(TerrMamm.tr)
 ```
 
-But remember that a single tree is not typically very robust- these are very likely to over-fit to the data (a couple new data points could totally change the tree)! Random forest gets around this issue and is much more *robust* than CART analysis! 
+But remember that a single tree is not very robust- these are very likely to over-fit to the data! Random forest gets around this issue and is much more robust than CART analysis! 
 
-Like most machine learning algorithms, we can "tune" the algorithm in several different ways. Ideally, we would try out several alternative parameter tunings and see which one performs the best in cross-validation.  
+Like most machine learning algorithms, we can "tune" the algorithm in several different ways. If this were a "real" analysis, I would try several alternative parameter tunings.  
 
 ```{r}
 
-# Run a random forest model!  ---------------------
+####### Run a random forest model!
 
-titanic2 <- na.omit(titanic)   # remove missing data (ranger does not handle missing data- 'party' implementation of RF does...)
+titanic2 <- na.omit(titanic)   # remove missing data (ranger does not handle missing data- 'party' implementation does...)
 
-thismod <- ranger(formula1, data=titanic2, probability=T,importance = 'permutation', max.depth = 2, mtry = 3, sample.fraction=0.4, num.trees = 1500 )
+thismod <- ranger(formula1, data=titanic2, probability=T,importance = 'permutation' )
 
 ```
+
 
 ## Variable importance
 
@@ -199,7 +190,8 @@ varimp <- importance(thismod)
 
 
 lengthndx <- length(varimp)
-par(mai=c(1.2,2.4,0.6,0.9))
+#par(mai=c(0.95,3.1,0.6,0.4))
+par(mai=c(1.2,3.4,0.6,0.9))
 col <- rainbow(lengthndx, start = 3/6, end = 4/6)      
 barplot(height=varimp[order(varimp,decreasing = FALSE)],
         horiz=T,las=1,main="Order of Importance of Predictor Variables",
@@ -208,126 +200,12 @@ barplot(height=varimp[order(varimp,decreasing = FALSE)],
 
 ```
 
-## Feature selection
-
-Random forest is also really effective tool for identifying which variables can be eliminated. This isn't super important for the Titanic dataset since there aren't that many predictors to begin with, but this can be one of the best ways to perform feature selection for datasets with lots of potential predictor variables.  
-
-The 'caret' package provides some useful tools for feature selection, including the `rfe()` function:
-
-```{r}
-
-library(caret)
-
-# perform feature selection --------------
-
-# first add some random features!
-
-titanic2$random1 <- as.factor(sample(c("A","B","C"),replace=T, size=nrow(titanic2)))
-
-titanic2$random2 <- rnorm(nrow(titanic2))
-
-varstotry <- c(pred.names,"random1","random2")
-varstotry2 <- c(predictorNames,"random1","random2")
-response <- "Survived"
-
-form = as.formula(paste0(response, "~", paste(varstotry,collapse = "+")))
-
-thismod2 <- ranger(form, data=titanic2, probability=T,importance = 'permutation', max.depth = 2, mtry = 3, sample.fraction=0.4, num.trees = 1500 )
-
-    # get the importance values
-varimp2 <- importance(thismod2)
-
-
-lengthndx <- length(varimp)
-par(mai=c(1.2,2.4,0.6,0.9))
-col <- rainbow(lengthndx, start = 3/6, end = 4/6)      
-barplot(height=varimp2[order(varimp2,decreasing = FALSE)],
-        horiz=T,las=1,main="Order of Importance of Predictor Variables",
-        xlab="Index of overall importance",col=col,           
-        names.arg=varstotry2[match(names(varimp2),varstotry)][order(varimp2,decreasing = FALSE)])
-
-
-# recursive feature elimination (rfe) -------------------
-
-
-# read in function for using RFE with ranger
-
-rangerFuncs <-  list(summary = defaultSummary,
-                     fit = function(x, y, first, last, ...) {
-                       loadNamespace("ranger")
-                       dat <- if(is.data.frame(x)) 
-                         x else as.data.frame(x)
-                       dat$.outcome <- y
-                       ranger::ranger(.outcome ~ ., data = dat, 
-                                      importance = "permutation", 
-                                      probability = is.factor(y),
-                                      write.forest = TRUE,
-                                      ...)
-                     },
-                     pred = function(object, x)  {
-                       if(!is.data.frame(x)) x <- as.data.frame(x)
-                       out <- predict(object, x)$predictions
-                       if(object$treetype == "Probability estimation") {
-                         out <- cbind(pred = colnames(out)[apply(out, 1, which.max)],
-                                      out)
-                       } 
-                       out
-                     },
-                     rank = function(object, x, y) {
-                       if(length(object$variable.importance) == 0)
-                         stop("No importance values available")
-                       imps <- ranger:::importance(object)
-                       vimp <- data.frame(Overall = as.vector(imps),
-                                         var = names(imps))
-                       rownames(vimp) <- names(imps)
-                       
-                       vimp <- vimp[order(vimp$Overall, decreasing = TRUE),, drop = FALSE]
-                       vimp
-                     },
-                     selectSize = pickSizeBest,
-                     selectVar = pickVars)
-
-
-# define the settings for recursive feature elimination 
-reps = 10
-#folds <- lapply(1:reps,function(t) createFolds(titanic2$Survived,k=10))   # changed to leave out grids
-
-control <- caret::rfeControl(functions=rangerFuncs, method="repeatedcv", 
-                             repeats=reps, #index = folds, 
-                             rerank=T,allowParallel = TRUE)   # number=5,
-
-# run the RFE algorithm (takes a while even with reduced dataset)
-
-results <- caret::rfe(x=titanic2[,varstotry], y=titanic2[,response], 
-                      sizes=c(1:length(varstotry)), 
-                      rfeControl=control, max.depth = 2, #mtry = 3, 
-                      sample.fraction=0.4, num.trees = 1500 )
-
-# list the chosen features
-
-predictors(results)      
-
-# plot the results
-
-plot(results, type=c("g", "o"))    # visualize number of important features
-
-bestvars <- results$optVariables
-bestvars
-
-covars_new2 <- bestvars   #results$optVariables[1:7]
-
-formula <- as.formula(paste0(response,"~",paste(covars_new2,collapse = "+")))   # formula with further reduced covars
-
-
-```
-
 ## Univariate predictions
 
-We can also generate univariate predictive plots, also known as effects plots or "partial dependence plots". Note the use of the 'predict' function!
+We can also generate univariate predictive plots, also known as "partial dependence plots". Note the use of the 'predict' function!
 
 ```{r}
-# Make univariate 'effects' plots -------------
-
+##### Make univariate plots of the relationships- plot one relationship at a time
 varstoplot <- names(sort(varimp,decreasing = T))   # plot in order of decreasing importance
 par(mai=c(1,1,.8,.1))
 p=1
@@ -355,14 +233,12 @@ for(p in 1:length(pred.names)){            # loop through all predictor variable
 
 ## Interactions
 
-We can also identify and characterize the most important interactions!
+Finally, we can find and plot the most important interactions!
 
 In the following code block we assess the strength of all possible two-way interactions, by measuring the difference between the RF predictions across each 2-D parameter space and a fully additive model. Don't worry if this doesn't make sense- see me another time if you'd like me to explain the code in more detail!
 
 
 ```{r}
-
-# Identify and characterize interactions ----------------
 
 allcomb <- as.data.frame(t(combn(pred.names,2)))    # all bivariate combinations of the predictor variables 
 names(allcomb) <- c("var1","var2")
@@ -414,7 +290,6 @@ allcomb
 Next, we visualize our top interactions!
 
 ```{r}
-
 ### visualize interactions
 ints.torun <- 1:3
 int=2
@@ -467,7 +342,8 @@ Finally, let's bring this home by looking at model performance!
 
 ```{r}
 
-# CROSS VALIDATION -------------------------
+###################################
+#################### CROSS VALIDATION CODE
 
 n.folds = 10       # set the number of "folds"
 foldVector = rep(c(1:n.folds),times=floor(length(titanic2$Survived)/9))[1:length(titanic2$Survived)]
@@ -476,10 +352,11 @@ foldVector = rep(c(1:n.folds),times=floor(length(titanic2$Survived)/9))[1:length
 
 Then, we do the cross validation, looping through each fold of the data, leaving out each fold in turn for model training.
 
+
 ```{r}
 counter = 1
 CV_df <- data.frame(
-  CVprediction = numeric(nrow(titanic2)), # make a data frame for storage
+  CVprediction = numeric(nrow(titanic2)),      # make a data frame for storage
   realprediction = 0,
   realdata = 0
 )

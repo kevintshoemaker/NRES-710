@@ -29,8 +29,10 @@ navbar:
       href: LECTURE8.html
     - text: GLMM
       href: LECTURE9.html
-    - text: Next steps
+    - text: Machine Learning
       href: LECTURE10.html
+    - text: Next steps
+      href: LECTURE11.html
   - text: Exercises
     menu:
     - text: Exercise- data summary functions
