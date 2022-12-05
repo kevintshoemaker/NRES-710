@@ -103,7 +103,6 @@ Let's say we are fitting the following mixed-effects model:
 The simplest way to model random effects is to include them as **random intercepts**-- that is, the intercept term changes randomly with each factor level. 
 
 In many cases, simply adding a random intercept term for each random effect is appropriate for accounting for sources of non-independence in your data set- but in many cases it is not sufficient. That is because the slope (the relationship between your response and predictor-- the thing you are usually most interested in making inference about) can itself vary depending on your random effect levels. This is called a **random slopes** model. 
-
 Here is an equation to represent the simpler random-intercept analysis:
 
 $Clutch \space size = \beta_0 + \beta_1 \cdot precip_t + \beta_2 \cdot temp_t + \gamma_{site} + \gamma_{year} + \epsilon_{obs}$
@@ -170,7 +169,7 @@ ggplot(mc1,aes(x=Year,y=GS.NEE,colour=Site)) +
 
 Okay now let's fit a mixed-effects regression model with Net Ecosystem Exchange (NEE) as the response variable and Year as the fixed-effect (covariate). For our random effect we will have site- and the intercept and trend (slope term) can vary with site. That is, we have random intercept terms and random slope terms for each site. 
 
-Fitting a mixed model in 'lme4' (using the 'lmer' function) looks a lot like fitting a linear model in 'lm'. 
+Fitting a mixed model in 'lme4' (using the `lmer()` function or `glmer()` function) looks a lot like fitting a linear model in 'lm'. 
 
 ```{r}
 
@@ -184,7 +183,7 @@ A couple notes: first of all, the 'weights' term is there because some observati
 
 Secondly, note that year is treated as a fixed effect in this model. That is- we are looking for a trend in our response variable over time!
 
-Third, note the warning of a 'singular fit'. This is fairly common to see, and doesn't necessarily mean you can't use the model. But it means that lme4 struggled to fit the model and some of the parameters may have very wide confidence bounds!
+Third, don't be surprised if you get a 'singular fit' warning. This is fairly common to see, and doesn't necessarily mean you can't use the model. But it means that lme4 struggled to fit the model and often some of the parameters may have very wide confidence bounds!
 
 Let's look at the model results using 'summary':
 
@@ -194,12 +193,11 @@ summary(cmod_lmer)
 
 ```
 
-The results from the 'summary' function should look somewhat familiar! But note that there are no p-values associated with your fixed effects (regression coefficients)- just t-statistics! This is because it is difficult to compute the degrees of freedom- statisticians disagree about how and if p-values can/should be computed for these models. 
+The results from the `summary()` function should look somewhat familiar! But note that there are no p-values associated with your fixed effects (regression coefficients)- just t-statistics! This is because it is difficult to compute the degrees of freedom- statisticians disagree about how and if p-values can/should be computed for these models. 
 
 Also note that the summary now includes a summary of the random effects. One red flag here is that the random intercept term and random slope terms are perfectly (negatively) correlated (Corr=-1). This is the reason for the 'singular' warning in this case. 
 
 From the random effects summary we can see that site explains a relatively small percent of the total variance among observations. 
-
 
 To fit the model using glmmTMB we can use the following code:
 
@@ -210,7 +208,24 @@ cmod_glmmTMB <- glmmTMB(GS.NEE ~ cYear + (1+cYear|Site),
                 data=mc1,
                 weights=n,REML=F)
 
-summary(cmod_glmmTMB)
+summary(cmod_glmmTMB)   # note NAs present
+
+# try a different optimizer -still doesn't work...
+cmod_glmmTMB2 <- update(cmod_glmmTMB,control=glmmTMBControl(optimizer=optim,
+                                       optArgs=list(method="BFGS")))
+
+summary(cmod_glmmTMB2)
+
+# try a different specification- uncorrelated slope and intercept terms:
+
+cmod_glmmTMB3 <- glmmTMB(GS.NEE ~ cYear + (1|Site) + (0+cYear|Site),
+                data=mc1,
+                weights=n, REML=T)
+
+summary(cmod_glmmTMB3)  # fits- not saying it's a good model!
+
+
+
 ```
 
 The summary looks (vaguely) similar- but one difference you see is that there are p-values on the regression coefficients now. This is due to assumptions that are made in glmmTMB model fitting process (using the Laplace approximation), which allows p-values to be computed!  
@@ -235,16 +250,16 @@ The diagnostics look, well, okay! Let's try "DHARMa":
 ```{r}
 
 library(DHARMa)
-# resids <- simulateResiduals(cmod_lmer)  # similar results for the two different models
-# plot(resids)
+resids <- simulateResiduals(cmod_lmer)  # similar results for the two different models
+plot(resids)
 
-resids <- simulateResiduals(cmod_glmmTMB)
+resids <- simulateResiduals(cmod_glmmTMB3)
 plot(resids)
 testResiduals(resids)
 
 ```
 
-Not perfect... and this is from a published study. So you can probably forgive yourself if your GOF tests are not perfect in your class projects!
+Not perfect... and this is from a published study in Ecology Letters. So you can probably forgive yourself if your GOF tests are not perfect in your class projects!
 
 Okay let's visualize the random effects (both intercept and random slope terms):
 
@@ -267,12 +282,53 @@ Anova(cmod_lmer)
 
 ```
 
-Note that if we had a categorical variable and wanted to run pairwise comparisons, we could- using the 'emmeans' package (just like with standard ANOVA). 
+Or we can compare using AIC. When using AIC it's generally recommended not to use REML for model fitting.
+
+
+```{r}
+
+cmod_lmer2 <- lmer(GS.NEE ~ cYear + (1+cYear|Site),
+                data=mc1, weights=n,REML=F)
+cmod_lmer3 <- lmer(GS.NEE ~ 1 + (1+cYear|Site),
+                data=mc1, weights=n,REML=F)
+
+AIC(cmod_lmer2,cmod_lmer3)
+
+```
+
+We can also use similar tests to see if a random effect is worth including:
+
+```{r}
+
+cmod_lmer3 <- lmer(GS.NEE ~ cYear + (1+cYear|Site),
+                data=mc1, weights=n,REML=F)
+cmod_lmer4 <- lmer(GS.NEE ~ cYear + (1|Site),
+                data=mc1, weights=n,REML=F)
+
+anova(cmod_lmer4,cmod_lmer3)
+AIC(cmod_lmer3,cmod_lmer4)   # random slope term effect is not an artifact of random chance!
+
+
+```
+
+
+We can also compute R-squared-like statistics to evaluate performance for GLMMs:
+
+```{r}
+
+# Compute r-squared for GLMM! -----------------
+
+MuMIn::r.squaredGLMM(cmod_lmer)
+
+MuMIn::r.squaredGLMM(cmod_glmmTMB)
+
+```
+
+
+Note that if we had a categorical variable and wanted to run pairwise comparisons, we could- using the `emmeans()` function (just like with standard ANOVA). 
 
 
 If we want confidence intervals on our fixed effects, we can use the 'confint' function, just like in ordinary linear regression. Here we use the Wald method (simplified version) and only extract confidence intervals for the fixed effects. 
-
-I had to use 'suppressWarnings' to avoid lots of warning messages here!
 
 ```{r}
 
@@ -280,14 +336,16 @@ confint(cmod_lmer,parm="beta_",method="Wald")
 
 ```
 
+Other things we might want to do with GLMM models (no examples provided yet!): effects plots for main effect- and random intercepts/slopes!  
+
 
 ### Nonconvergence
 
-A common problem when fitting GLMMs is non-convergence. 
+A common problem when fitting GLMMs is nonconvergence. 
 
 Some helpful tips can be found [here](https://rstudio-pubs-static.s3.amazonaws.com/33653_57fc7b8e5d484c909b615d8633c01d51.html).
 
-Scaling and zero-centering all of your covariates can help a lot!
+Scaling and zero-centering all of your covariates can help!
 
 Also, it can help to try using glmmTMB or other model fitting packages in addition to 'lme4'.  
 
