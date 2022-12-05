@@ -227,6 +227,7 @@ rmd2rscript("LECTURE6.Rmd")
 rmd2rscript("LECTURE7.Rmd")  ##
 rmd2rscript("LECTURE8.Rmd")
 rmd2rscript("LECTURE9.Rmd")
+rmd2rscript("LECTURE10.Rmd")
 
 
 
