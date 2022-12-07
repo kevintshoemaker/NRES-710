@@ -31,6 +31,8 @@ navbar:
       href: LECTURE9.html
     - text: Machine Learning
       href: LECTURE10.html
+    - text: Intro to GIT
+      href: GIT_tutorial.html
     - text: Next steps
       href: LECTURE11.html
   - text: Exercises

@@ -68,9 +68,9 @@ Contributors to a project will often first *clone* the remote version of the rep
 2. make and test changes locally (```git branch``` >> ```git checkout``` >> ```git add``` >> ```git commit``` >> ```git merge``` )
 3. push upstream to the remote repository (```git push```)
 
-![](Git1.png)
+![](GIT1.png)
 
-![](Git2.png)
+![](GIT2.png)
 
 ## Workflow #1: web-based, in GitHub.com
 
@@ -93,11 +93,11 @@ To do this in GitHub, Click "Code" at the top of your repo. You will see "main" 
 We are going to edit the README.md file that was automatically created for you when you made the repo.  Once we do this, we are going to "Commit" the changes which means we are going to create a new version of our file (while preserving the original one). Usually you will edit code in your own developer environment, but we can do simple edits on the GitHub website for now.
 
 1. Click "Code". 
-2. Make sure you are in the "readme-edits" branch shown at the top left. If you are still in "main", drop that down and select the "readme-edits" branch:
+2. Make sure you are in the "newbranch" branch shown at the top left. If you are still in "main", drop that down and select the "newbranch" branch:
 3. Click the README.md filename, then click the "Edit this file" icon (the little pencil).
 4. Make any change to this file. Note that this is a markdown file, so you can create headers, italics etc just like you would with RMarkdown!
 5. Once you are done, you are going to save/commit changes (simultaneously for now, when we start doing real coding these will be separate steps). Write something helpful (but short, under 50 characters) in the Commit changes boxes, like "README.md edit to tell the world about myself".  Click "Commit changes".
-6. Confirm you are still in the "readme-edits" branch, and click the README.md file.  Check to make sure it has your changes.
+6. Confirm you are still in the "newbranch" branch, and click the README.md file.  Check to make sure it has your changes.
 7. Now change the branch back to "main".  Check the README.md file again and you should see the original file!  You have preserved both versions of the file!
 
 
@@ -141,8 +141,8 @@ Note that every time you start working on a collaborative project, you will prob
 4. Back in GitHub Desktop, try to push your new commit upstream to GitHub. You will find that you are not allowed to do this because there are new changes in the remote version. 
 5. Use the 'pull changes' button to download the new changes from GitHub. 
 6. GitHub desktop will tell you that you have a conflict that must be resolved before you can move on.
-7. Choose the option to resolve the conflict using Atom - this will open the Atom text editor and allow you to resolve conflicts manually. 
-8. In VS code, choose the option to keep both edits: "your changes first, then theirs". Then save the file.
+7. Choose the option to resolve the conflict using VS code - this will open the VS code text editor and allow you to resolve conflicts manually. 
+8. In VS code, choose the option to keep both "current" (local) and "incoming" (from GitHub) edits. Then save the file.
 9. Back in GitHub Desktop, push the changes back to GitHub. 
 10. You are done- you have resolved your first conflict!
 
@@ -150,9 +150,9 @@ Note that every time you start working on a collaborative project, you will prob
 
 GitHub Desktop is a general tool for working with GitHub repositories. 
 
-* You can easily clone or create new repositories using the file menu.   
+* You can clone or create new repositories using the file menu.   
 * You can post issues/bug reports to GitHub
-* You can easily create and checkout branches, and merge branches
+* You can create and checkout branches, and merge branches
 
 GitHub CLI is for those who prefer working in the command line. We won't work with GitHub CLI, but just know it has most of the same functionality as GitHub Desktop.  
 
