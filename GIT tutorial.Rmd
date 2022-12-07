@@ -17,11 +17,15 @@ NOTE: parts of this tutorial borrow heavily from Dr. Jonathan Greenberg's recent
 
 # Git tutorial
 
+***git***  *(n)*.  An unpleasant or contemptible person [*British colloquial*].
+
+Linus Torvalds, the developer of Git and Linux stated that that he is egotistical and therefore: “I name all my projects after myself. First Linux, now git.”
+
 Today we will run through a basic version control workflow in three different ways:
 
 1. GitHub.com (easy but not practical for most meaningful work)
 2. GitHub Desktop (graphical interface, easy to use and good for most tasks)
-3. command line (most powerful, a little more work to get started) (can be accessed through GitHub Desktop)
+3. Command line (most powerful, a little more work to get started) (can be accessed through GitHub Desktop)
 
 ## Install key software
 
@@ -29,29 +33,7 @@ Today we will run through a basic version control workflow in three different wa
 
 2. Install GitHub Desktop from [https://desktop.github.com/](https://desktop.github.com/). This is a GUI version of Git that makes it easy to manage repositories that are hosted on GitHub.com.  
 
-3. Install VS Code text editor from [https://code.visualstudio.com/](https://code.visualstudio.com/). This is a powerful source text editor for coding that enables (among many other things) streamlined solutions for resolving merge conflicts in Git.
-
-## Some definitions
-
-***git***  *(n)*.  An unpleasant or contemptible person [*British colloquial*].
-
-Linus Torvalds, the developer of Git and Linux stated that that he is egotistical and therefore: “I name all my projects after myself. First Linux, now git.”
-
-* *Version control*: a system for tracking changes among different versions of a project, branching and merging versions of a project, differentiating between different versions, handling merge conflicts, reverting to old versions, etc.
-* *Repository* (repo): a container for all the files and folders needed for your project. In a typical Git/GitHub workflow, repositories are stored both locally and in the cloud. Version control systems enable tracking, merging, restoring different versions of a repo.
-* *Git*: a widely used, open-source, system for version control.
-* *GitHub*: web-based system for storing repositories in the cloud and interfacing with these repositories using the Git version control system.
-* *main branch*: the 'official' or 'stable' version of the repository ('main' is the default name for this branch in GitHub) (you will typically have both local and remote copies of the main branch)
-* *branching*: creating a new parallel version of the project within the repo ('development branch') that is not yet ready for primetime. You can add to this branch and use it for testing until you feel it's ready to merge it back into the main branch (stable version).  
-* *staging*: proposing some new files or edits for version control within a branch of your repo.
-* *committing*: making staged changes 'official' (formally add a staged edit or addition to the repository as an official 'version')
-* *push*: export any changes you have make within your local repository 'upstream' to the remote copy of the repository.  
-* *pull/fetch*: import any new changes that have been made in the remote repo into your local copy of the repository. Pull and fetch are actually a bit different, but in this demo will basically be used interchangeably.
-* *origin*: shorthand for the remote version of a Git repository, often stored in GitHub.
-* *HEAD*: the most recently committed version of a repo branch
-* *cloning*: creating a fresh local copy of a repository from a remote source (usually GitHub).
-* *forking*: copying someone else's repository into your own account so you have full edit privileges. (this is specific to GitHub)(you can use this to propose changes to other people's projects)
-* *pull request*: asking permission to merge some proposed edits (e.g., in the form of a development branch or fork) into a project- either your own project or someone else's!
+3. Install Visual Studio Code (VS Code) text editor from [https://code.visualstudio.com/](https://code.visualstudio.com/). This is a powerful source text editor for coding that enables (among many other things) streamlined solutions for resolving merge conflicts in Git.
 
 Let's get started with Git!!
 
@@ -93,7 +75,7 @@ To do this in GitHub, Click "Code" at the top of your repo. You will see "main" 
 We are going to edit the README.md file that was automatically created for you when you made the repo.  Once we do this, we are going to "Commit" the changes which means we are going to create a new version of our file (while preserving the original one). Usually you will edit code in your own developer environment, but we can do simple edits on the GitHub website for now.
 
 1. Click "Code". 
-2. Make sure you are in the "readme-edits" branch shown at the top left. If you are still in "main", drop that down and select the "readme-edits" branch:
+2. Make sure you are in the "newbranch" branch shown at the top left. If you are still in "main", drop that down and select the "newbranch" branch:
 3. Click the README.md filename, then click the "Edit this file" icon (the little pencil).
 4. Make any change to this file. Note that this is a markdown file, so you can create headers, italics etc just like you would with RMarkdown!
 5. Once you are done, you are going to save/commit changes (simultaneously for now, when we start doing real coding these will be separate steps). Write something helpful (but short, under 50 characters) in the Commit changes boxes, like "README.md edit to tell the world about myself".  Click "Commit changes".
@@ -273,6 +255,25 @@ b. Mac:
 c. Other OSs: Please check: [https://GitHub.com/cli/cli#installation](https://GitHub.com/cli/cli#installation)
 
  
+ 
+## Some definitions
+
+* *Version control*: a system for tracking changes among different versions of a project, branching and merging versions of a project, differentiating between different versions, handling merge conflicts, reverting to old versions, etc.
+* *Repository* (repo): a container for all the files and folders needed for your project. In a typical Git/GitHub workflow, repositories are stored both locally and in the cloud. Version control systems enable tracking, merging, restoring different versions of a repo.
+* *Git*: a widely used, open-source, system for version control.
+* *GitHub*: web-based system for storing repositories in the cloud and interfacing with these repositories using the Git version control system.
+* *main branch*: the 'official' or 'stable' version of the repository ('main' is the default name for this branch in GitHub) (you will typically have both local and remote copies of the main branch)
+* *branching*: creating a new parallel version of the project within the repo ('development branch') that is not yet ready for primetime. You can add to this branch and use it for testing until you feel it's ready to merge it back into the main branch (stable version).  
+* *staging*: proposing some new files or edits for version control within a branch of your repo.
+* *committing*: making staged changes 'official' (formally add a staged edit or addition to the repository as an official 'version')
+* *push*: export any changes you have make within your local repository 'upstream' to the remote copy of the repository.  
+* *pull/fetch*: import any new changes that have been made in the remote repo into your local copy of the repository. Pull and fetch are actually a bit different, but in this demo will basically be used interchangeably.
+* *origin*: shorthand for the remote version of a Git repository, often stored in GitHub.
+* *HEAD*: the most recently committed version of a repo branch
+* *cloning*: creating a fresh local copy of a repository from a remote source (usually GitHub).
+* *forking*: copying someone else's repository into your own account so you have full edit privileges. (this is specific to GitHub)(you can use this to propose changes to other people's projects)
+* *pull request*: asking permission to merge some proposed edits (e.g., in the form of a development branch or fork) into a project- either your own project or someone else's!
+
 
 
 
