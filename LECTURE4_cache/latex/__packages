@@ -1,5 +1,7 @@
-base
 emmeans
 titanic
 carData
 car
+ggplot2
+simpleboot
+agricolae
