@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```{r echo=FALSE}
 
-#  NRES 710, Lecture 10 ---------------------------------------                             
+#  NRES 710, Lecture 11 ---------------------------------------                             
 #   University of Nevada, Reno                        
 #
 #    Next Steps                                   
@@ -80,8 +80,6 @@ Unsupervised machine learning (e.g., clustering algorithms) involve giving the a
 ## Multivariate statistics
 
 Multivariate statistics involves trying to interpret multiple response processes at the same time. For example, community ecologists often want to understand the presence/absence and population dynamics of multiple species in a single ecological community. These researchers therefore are dealing with muliple response variables at the same time - for example, they may wish to model the presence or absence of species A, B, C, and D as a function of three environmental covariates (x1, x2 and x3) and inter-species competitive exclusion. Such an analysis would be called a **multivariate analysis**. 
-
-I will try to post more on multivariate statistics later - and definitely in the next iteration of this class!
 
 ### Dimensionality reduction
 
