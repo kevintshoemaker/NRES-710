@@ -47,7 +47,7 @@ Readings will be provided as appropriate. Unless otherwise noted, all readings a
 
 Students will use the open source statistical software R to perform analyses. *All students should bring laptops to each class*; much of class time will be devoted to hands-on learning in R. 
 
-There are many good R books, but ultimately, most material can be found for free online. For the beginner in statistics or R, I recommend the following:
+There are many good R books, but many excellent materials can be found for free online. For the beginner in statistics or R, I recommend the following:
 
 1.	Discovering Statistics using R (Andy Field and Jeremy Miles)
 2.  [R for data science](https://r4ds.had.co.nz/) (Garrett Grolemund and Hadley Wickham). This book is available for free online.

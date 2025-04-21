@@ -66,7 +66,7 @@ The concept of **regression to the mean** is a natural consequence of the Centra
 
 The CLT is the magic wand of statistics. It does enormous amounts of work for us. Why?
 
-The CLT also implies that the sampling distribution (distribution of hypothetical samples collected from repeated sampling) for the sample mean (and many other summary statistics) will be approximately normally distributed -- even if the underlying data themselves are NOT normally distributed. 
+The CLT also says that the sampling distribution (distribution of hypothetical samples collected from repeated sampling) for the sample mean (and many other summary statistics) will be approximately normally distributed -- even if the underlying data themselves are NOT normally distributed. 
 
 Did you ever wonder why the normal (Gaussian) distribution is so common in statistics? It's because of the CLT- many summary statistics derived from a sample are expected to have a sampling distribution that is *approximately* normally distributed (based on the CLT)!
 
